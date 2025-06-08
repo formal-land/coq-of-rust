@@ -6403,7 +6403,7 @@ Module slice.
                           Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                           "unwrap_or_else",
                           [],
-                          [ Ty.function [ Ty.tuple [] ] (Ty.path "usize") ]
+                          [ Ty.function [] (Ty.path "usize") ]
                         |),
                         [
                           M.call_closure (|
@@ -6421,7 +6421,7 @@ Module slice.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Ty.function [ Ty.tuple [] ] (Ty.path "usize"),
+                                      Ty.path "usize",
                                       M.alloc (| Ty.tuple [], α0 |),
                                       [
                                         fun γ =>
@@ -6491,7 +6491,7 @@ Module slice.
                           Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                           "unwrap_or_else",
                           [],
-                          [ Ty.function [ Ty.tuple [] ] (Ty.path "usize") ]
+                          [ Ty.function [] (Ty.path "usize") ]
                         |),
                         [
                           M.call_closure (|
@@ -6509,7 +6509,7 @@ Module slice.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Ty.function [ Ty.tuple [] ] (Ty.path "usize"),
+                                      Ty.path "usize",
                                       M.alloc (| Ty.tuple [], α0 |),
                                       [
                                         fun γ =>
@@ -7736,7 +7736,7 @@ Module slice.
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                   "unwrap_or_else",
                                   [],
-                                  [ Ty.function [ Ty.tuple [] ] (Ty.path "usize") ]
+                                  [ Ty.function [] (Ty.path "usize") ]
                                 |),
                                 [
                                   M.call_closure (|
@@ -7759,7 +7759,7 @@ Module slice.
                                         | [ α0 ] =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
-                                              Ty.function [ Ty.tuple [] ] (Ty.path "usize"),
+                                              Ty.path "usize",
                                               M.alloc (| Ty.tuple [], α0 |),
                                               [
                                                 fun γ =>
@@ -7808,7 +7808,7 @@ Module slice.
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                   "unwrap_or_else",
                                   [],
-                                  [ Ty.function [ Ty.tuple [] ] (Ty.path "usize") ]
+                                  [ Ty.function [] (Ty.path "usize") ]
                                 |),
                                 [
                                   M.call_closure (|
@@ -7831,7 +7831,7 @@ Module slice.
                                         | [ α0 ] =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
-                                              Ty.function [ Ty.tuple [] ] (Ty.path "usize"),
+                                              Ty.path "usize",
                                               M.alloc (| Ty.tuple [], α0 |),
                                               [
                                                 fun γ =>

@@ -438,7 +438,7 @@ Module sync.
                   [],
                   [
                     Ty.function
-                      [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
+                      [ Ty.path "core::alloc::layout::Layout" ]
                       (Ty.apply
                         (Ty.path "core::result::Result")
                         []
@@ -480,18 +480,16 @@ Module sync.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
-                                (Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::ptr::non_null::NonNull")
-                                      []
-                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
-                                    Ty.path "core::alloc::AllocError"
-                                  ]),
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ptr::non_null::NonNull")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                  Ty.path "core::alloc::AllocError"
+                                ],
                               M.alloc (| Ty.path "core::alloc::layout::Layout", α0 |),
                               [
                                 fun γ =>
@@ -616,7 +614,7 @@ Module sync.
                   [],
                   [
                     Ty.function
-                      [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
+                      [ Ty.path "core::alloc::layout::Layout" ]
                       (Ty.apply
                         (Ty.path "core::result::Result")
                         []
@@ -658,18 +656,16 @@ Module sync.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
-                                (Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::ptr::non_null::NonNull")
-                                      []
-                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
-                                    Ty.path "core::alloc::AllocError"
-                                  ]),
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ptr::non_null::NonNull")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                  Ty.path "core::alloc::AllocError"
+                                ],
                               M.alloc (| Ty.path "core::alloc::layout::Layout", α0 |),
                               [
                                 fun γ =>
@@ -1586,7 +1582,7 @@ Module sync.
                                   [],
                                   [
                                     Ty.function
-                                      [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
+                                      [ Ty.path "core::alloc::layout::Layout" ]
                                       (Ty.apply
                                         (Ty.path "core::result::Result")
                                         []
@@ -1633,24 +1629,17 @@ Module sync.
                                         | [ α0 ] =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
-                                              Ty.function
-                                                [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ]
-                                                ]
-                                                (Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::ptr::non_null::NonNull")
-                                                      []
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "slice")
-                                                          []
-                                                          [ Ty.path "u8" ]
-                                                      ];
-                                                    Ty.path "core::alloc::AllocError"
-                                                  ]),
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::ptr::non_null::NonNull")
+                                                    []
+                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                    ];
+                                                  Ty.path "core::alloc::AllocError"
+                                                ],
                                               M.alloc (|
                                                 Ty.path "core::alloc::layout::Layout",
                                                 α0
@@ -2047,7 +2036,7 @@ Module sync.
                                   [],
                                   [
                                     Ty.function
-                                      [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
+                                      [ Ty.path "core::alloc::layout::Layout" ]
                                       (Ty.apply
                                         (Ty.path "core::result::Result")
                                         []
@@ -2094,24 +2083,17 @@ Module sync.
                                         | [ α0 ] =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
-                                              Ty.function
-                                                [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ]
-                                                ]
-                                                (Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::ptr::non_null::NonNull")
-                                                      []
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "slice")
-                                                          []
-                                                          [ Ty.path "u8" ]
-                                                      ];
-                                                    Ty.path "core::alloc::AllocError"
-                                                  ]),
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::ptr::non_null::NonNull")
+                                                    []
+                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                    ];
+                                                  Ty.path "core::alloc::AllocError"
+                                                ],
                                               M.alloc (|
                                                 Ty.path "core::alloc::layout::Layout",
                                                 α0
@@ -2471,7 +2453,7 @@ Module sync.
                   [],
                   [
                     Ty.function
-                      [ Ty.tuple [ Ty.path "core::alloc::AllocError" ] ]
+                      [ Ty.path "core::alloc::AllocError" ]
                       (Ty.apply
                         (Ty.path "core::ptr::non_null::NonNull")
                         []
@@ -2508,12 +2490,10 @@ Module sync.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [ Ty.tuple [ Ty.path "core::alloc::AllocError" ] ]
-                                (Ty.apply
-                                  (Ty.path "core::ptr::non_null::NonNull")
-                                  []
-                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                              Ty.apply
+                                (Ty.path "core::ptr::non_null::NonNull")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                               M.alloc (| Ty.path "core::alloc::AllocError", α0 |),
                               [
                                 fun γ =>
@@ -3643,7 +3623,7 @@ Module sync.
                   [],
                   [
                     Ty.function
-                      [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
+                      [ Ty.path "core::alloc::layout::Layout" ]
                       (Ty.apply
                         (Ty.path "core::result::Result")
                         []
@@ -3685,18 +3665,16 @@ Module sync.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
-                                (Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::ptr::non_null::NonNull")
-                                      []
-                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
-                                    Ty.path "core::alloc::AllocError"
-                                  ]),
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ptr::non_null::NonNull")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                  Ty.path "core::alloc::AllocError"
+                                ],
                               M.alloc (| Ty.path "core::alloc::layout::Layout", α0 |),
                               [
                                 fun γ =>
@@ -3817,7 +3795,7 @@ Module sync.
                   [],
                   [
                     Ty.function
-                      [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
+                      [ Ty.path "core::alloc::layout::Layout" ]
                       (Ty.apply
                         (Ty.path "core::result::Result")
                         []
@@ -3859,18 +3837,16 @@ Module sync.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
-                                (Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::ptr::non_null::NonNull")
-                                      []
-                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
-                                    Ty.path "core::alloc::AllocError"
-                                  ]),
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ptr::non_null::NonNull")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                  Ty.path "core::alloc::AllocError"
+                                ],
                               M.alloc (| Ty.path "core::alloc::layout::Layout", α0 |),
                               [
                                 fun γ =>
@@ -5374,7 +5350,7 @@ Module sync.
                                   [],
                                   [
                                     Ty.function
-                                      [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
+                                      [ Ty.path "core::alloc::layout::Layout" ]
                                       (Ty.apply
                                         (Ty.path "core::result::Result")
                                         []
@@ -5421,24 +5397,17 @@ Module sync.
                                         | [ α0 ] =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
-                                              Ty.function
-                                                [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ]
-                                                ]
-                                                (Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::ptr::non_null::NonNull")
-                                                      []
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "slice")
-                                                          []
-                                                          [ Ty.path "u8" ]
-                                                      ];
-                                                    Ty.path "core::alloc::AllocError"
-                                                  ]),
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::ptr::non_null::NonNull")
+                                                    []
+                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                    ];
+                                                  Ty.path "core::alloc::AllocError"
+                                                ],
                                               M.alloc (|
                                                 Ty.path "core::alloc::layout::Layout",
                                                 α0
@@ -5818,7 +5787,7 @@ Module sync.
                                   [],
                                   [
                                     Ty.function
-                                      [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
+                                      [ Ty.path "core::alloc::layout::Layout" ]
                                       (Ty.apply
                                         (Ty.path "core::result::Result")
                                         []
@@ -5865,24 +5834,17 @@ Module sync.
                                         | [ α0 ] =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
-                                              Ty.function
-                                                [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ]
-                                                ]
-                                                (Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::ptr::non_null::NonNull")
-                                                      []
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "slice")
-                                                          []
-                                                          [ Ty.path "u8" ]
-                                                      ];
-                                                    Ty.path "core::alloc::AllocError"
-                                                  ]),
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::ptr::non_null::NonNull")
+                                                    []
+                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                    ];
+                                                  Ty.path "core::alloc::AllocError"
+                                                ],
                                               M.alloc (|
                                                 Ty.path "core::alloc::layout::Layout",
                                                 α0
@@ -8254,7 +8216,7 @@ Module sync.
               [],
               [
                 Ty.function
-                  [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
+                  [ Ty.path "core::alloc::layout::Layout" ]
                   (Ty.apply
                     (Ty.path "core::result::Result")
                     []
@@ -8266,7 +8228,7 @@ Module sync.
                       Ty.path "core::alloc::AllocError"
                     ]);
                 Ty.function
-                  [ Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] ] ]
+                  [ Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] ]
                   (Ty.apply
                     (Ty.path "*mut")
                     []
@@ -8291,18 +8253,16 @@ Module sync.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
-                            (Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "core::ptr::non_null::NonNull")
-                                  []
-                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
-                                Ty.path "core::alloc::AllocError"
-                              ]),
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::ptr::non_null::NonNull")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                              Ty.path "core::alloc::AllocError"
+                            ],
                           M.alloc (| Ty.path "core::alloc::layout::Layout", α0 |),
                           [
                             fun γ =>
@@ -8348,12 +8308,10 @@ Module sync.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [ Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] ] ]
-                            (Ty.apply
-                              (Ty.path "*mut")
-                              []
-                              [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ]),
+                          Ty.apply
+                            (Ty.path "*mut")
+                            []
+                            [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
                           M.alloc (| Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ], α0 |),
                           [
                             fun γ =>
@@ -9417,7 +9375,7 @@ Module sync.
                 [ T; Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ] ],
               "unwrap_or_else",
               [],
-              [ Ty.function [ Ty.tuple [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ] ] ] T ]
+              [ Ty.function [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ] ] T ]
             |),
             [
               M.call_closure (|
@@ -9440,9 +9398,7 @@ Module sync.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [ Ty.tuple [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ] ] ]
-                            T,
+                          T,
                           M.alloc (| Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ], α0 |),
                           [
                             fun γ =>
@@ -10344,7 +10300,7 @@ Module sync.
                   [],
                   [
                     Ty.function
-                      [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
+                      [ Ty.path "core::alloc::layout::Layout" ]
                       (Ty.apply
                         (Ty.path "core::result::Result")
                         []
@@ -10356,7 +10312,7 @@ Module sync.
                           Ty.path "core::alloc::AllocError"
                         ]);
                     Ty.function
-                      [ Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] ] ]
+                      [ Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] ]
                       (Ty.apply
                         (Ty.path "*mut")
                         []
@@ -10415,18 +10371,16 @@ Module sync.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
-                                (Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::ptr::non_null::NonNull")
-                                      []
-                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
-                                    Ty.path "core::alloc::AllocError"
-                                  ]),
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ptr::non_null::NonNull")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                  Ty.path "core::alloc::AllocError"
+                                ],
                               M.alloc (| Ty.path "core::alloc::layout::Layout", α0 |),
                               [
                                 fun γ =>
@@ -10475,27 +10429,25 @@ Module sync.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [ Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] ] ]
-                                (Ty.apply
-                                  (Ty.path "*mut")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "alloc::sync::ArcInner")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "slice")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                              []
-                                              [ T ]
-                                          ]
-                                      ]
-                                  ]),
+                              Ty.apply
+                                (Ty.path "*mut")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::sync::ArcInner")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "slice")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
+                                            [ T ]
+                                        ]
+                                    ]
+                                ],
                               M.alloc (| Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ], α0 |),
                               [
                                 fun γ =>
@@ -10599,7 +10551,7 @@ Module sync.
               [],
               [
                 Ty.function
-                  [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
+                  [ Ty.path "core::alloc::layout::Layout" ]
                   (Ty.apply
                     (Ty.path "core::result::Result")
                     []
@@ -10611,7 +10563,7 @@ Module sync.
                       Ty.path "core::alloc::AllocError"
                     ]);
                 Ty.function
-                  [ Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] ] ]
+                  [ Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] ]
                   (Ty.apply
                     (Ty.path "*mut")
                     []
@@ -10664,18 +10616,16 @@ Module sync.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
-                            (Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "core::ptr::non_null::NonNull")
-                                  []
-                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
-                                Ty.path "core::alloc::AllocError"
-                              ]),
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::ptr::non_null::NonNull")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                              Ty.path "core::alloc::AllocError"
+                            ],
                           M.alloc (| Ty.path "core::alloc::layout::Layout", α0 |),
                           [
                             fun γ =>
@@ -10724,17 +10674,15 @@ Module sync.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [ Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] ] ]
-                            (Ty.apply
-                              (Ty.path "*mut")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "alloc::sync::ArcInner")
-                                  []
-                                  [ Ty.apply (Ty.path "slice") [] [ T ] ]
-                              ]),
+                          Ty.apply
+                            (Ty.path "*mut")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::sync::ArcInner")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                            ],
                           M.alloc (| Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ], α0 |),
                           [
                             fun γ =>
@@ -11476,7 +11424,7 @@ Module sync.
                   [],
                   [
                     Ty.function
-                      [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
+                      [ Ty.path "core::alloc::layout::Layout" ]
                       (Ty.apply
                         (Ty.path "core::result::Result")
                         []
@@ -11488,7 +11436,7 @@ Module sync.
                           Ty.path "core::alloc::AllocError"
                         ]);
                     Ty.function
-                      [ Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] ] ]
+                      [ Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] ]
                       (Ty.apply
                         (Ty.path "*mut")
                         []
@@ -11547,18 +11495,16 @@ Module sync.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
-                                (Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::ptr::non_null::NonNull")
-                                      []
-                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
-                                    Ty.path "core::alloc::AllocError"
-                                  ]),
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ptr::non_null::NonNull")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                  Ty.path "core::alloc::AllocError"
+                                ],
                               M.alloc (| Ty.path "core::alloc::layout::Layout", α0 |),
                               [
                                 fun γ =>
@@ -11599,27 +11545,25 @@ Module sync.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [ Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] ] ]
-                                (Ty.apply
-                                  (Ty.path "*mut")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "alloc::sync::ArcInner")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "slice")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                              []
-                                              [ T ]
-                                          ]
-                                      ]
-                                  ]),
+                              Ty.apply
+                                (Ty.path "*mut")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::sync::ArcInner")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "slice")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
+                                            [ T ]
+                                        ]
+                                    ]
+                                ],
                               M.alloc (| Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ], α0 |),
                               [
                                 fun γ =>
@@ -11732,7 +11676,7 @@ Module sync.
               [],
               [
                 Ty.function
-                  [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
+                  [ Ty.path "core::alloc::layout::Layout" ]
                   (Ty.apply
                     (Ty.path "core::result::Result")
                     []
@@ -11744,7 +11688,7 @@ Module sync.
                       Ty.path "core::alloc::AllocError"
                     ]);
                 Ty.function
-                  [ Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] ] ]
+                  [ Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] ]
                   (Ty.apply
                     (Ty.path "*mut")
                     []
@@ -11797,18 +11741,16 @@ Module sync.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
-                            (Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "core::ptr::non_null::NonNull")
-                                  []
-                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
-                                Ty.path "core::alloc::AllocError"
-                              ]),
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::ptr::non_null::NonNull")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                              Ty.path "core::alloc::AllocError"
+                            ],
                           M.alloc (| Ty.path "core::alloc::layout::Layout", α0 |),
                           [
                             fun γ =>
@@ -11854,17 +11796,15 @@ Module sync.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [ Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] ] ]
-                            (Ty.apply
-                              (Ty.path "*mut")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "alloc::sync::ArcInner")
-                                  []
-                                  [ Ty.apply (Ty.path "slice") [] [ T ] ]
-                              ]),
+                          Ty.apply
+                            (Ty.path "*mut")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::sync::ArcInner")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                            ],
                           M.alloc (| Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ], α0 |),
                           [
                             fun γ =>
@@ -20098,7 +20038,7 @@ Module sync.
                   [],
                   [
                     Ty.function
-                      [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
+                      [ Ty.path "core::alloc::layout::Layout" ]
                       (Ty.apply
                         (Ty.path "core::result::Result")
                         []
@@ -20110,7 +20050,7 @@ Module sync.
                           Ty.path "core::alloc::AllocError"
                         ]);
                     Ty.function
-                      [ Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] ] ]
+                      [ Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] ]
                       (Ty.apply
                         (Ty.path "*mut")
                         []
@@ -20126,18 +20066,16 @@ Module sync.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [ Ty.tuple [ Ty.path "core::alloc::layout::Layout" ] ]
-                                (Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::ptr::non_null::NonNull")
-                                      []
-                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
-                                    Ty.path "core::alloc::AllocError"
-                                  ]),
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ptr::non_null::NonNull")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                  Ty.path "core::alloc::AllocError"
+                                ],
                               M.alloc (| Ty.path "core::alloc::layout::Layout", α0 |),
                               [
                                 fun γ =>
@@ -20180,12 +20118,10 @@ Module sync.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [ Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] ] ]
-                                (Ty.apply
-                                  (Ty.path "*mut")
-                                  []
-                                  [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ]),
+                              Ty.apply
+                                (Ty.path "*mut")
+                                []
+                                [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
                               M.alloc (| Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ], α0 |),
                               [
                                 fun γ =>

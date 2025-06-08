@@ -555,7 +555,7 @@ Module sparse.
                       Ty.apply
                         (Ty.path "core::iter::sources::repeat_with::RepeatWith")
                         []
-                        [ Ty.function [ Ty.tuple [] ] (Ty.tuple [ Ty.path "usize"; T ]) ]
+                        [ Ty.function [] (Ty.tuple [ Ty.path "usize"; T ]) ]
                     ],
                   [],
                   [],
@@ -577,14 +577,14 @@ Module sparse.
                         Ty.apply
                           (Ty.path "core::iter::sources::repeat_with::RepeatWith")
                           []
-                          [ Ty.function [ Ty.tuple [] ] (Ty.tuple [ Ty.path "usize"; T ]) ]
+                          [ Ty.function [] (Ty.tuple [ Ty.path "usize"; T ]) ]
                       ],
                     M.get_trait_method (|
                       "core::iter::traits::iterator::Iterator",
                       Ty.apply
                         (Ty.path "core::iter::sources::repeat_with::RepeatWith")
                         []
-                        [ Ty.function [ Ty.tuple [] ] (Ty.tuple [ Ty.path "usize"; T ]) ],
+                        [ Ty.function [] (Ty.tuple [ Ty.path "usize"; T ]) ],
                       [],
                       [],
                       "take",
@@ -596,13 +596,13 @@ Module sparse.
                         Ty.apply
                           (Ty.path "core::iter::sources::repeat_with::RepeatWith")
                           []
-                          [ Ty.function [ Ty.tuple [] ] (Ty.tuple [ Ty.path "usize"; T ]) ],
+                          [ Ty.function [] (Ty.tuple [ Ty.path "usize"; T ]) ],
                         M.get_function (|
                           "core::iter::sources::repeat_with::repeat_with",
                           [],
                           [
                             Ty.tuple [ Ty.path "usize"; T ];
-                            Ty.function [ Ty.tuple [] ] (Ty.tuple [ Ty.path "usize"; T ])
+                            Ty.function [] (Ty.tuple [ Ty.path "usize"; T ])
                           ]
                         |),
                         [
@@ -613,7 +613,7 @@ Module sparse.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Ty.function [ Ty.tuple [] ] (Ty.tuple [ Ty.path "usize"; T ]),
+                                      Ty.tuple [ Ty.path "usize"; T ],
                                       M.alloc (| Ty.tuple [], α0 |),
                                       [
                                         fun γ =>
@@ -704,7 +704,7 @@ Module sparse.
                     []
                     [
                       Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ];
-                      Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.path "usize")
+                      Ty.function [ Ty.path "usize" ] (Ty.path "usize")
                     ],
                   [],
                   [],
@@ -727,7 +727,7 @@ Module sparse.
                           (Ty.path "core::ops::range::RangeInclusive")
                           []
                           [ Ty.path "usize" ];
-                        Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.path "usize")
+                        Ty.function [ Ty.path "usize" ] (Ty.path "usize")
                       ],
                     M.get_trait_method (|
                       "core::iter::traits::iterator::Iterator",
@@ -736,10 +736,7 @@ Module sparse.
                       [],
                       "map",
                       [],
-                      [
-                        Ty.path "usize";
-                        Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.path "usize")
-                      ]
+                      [ Ty.path "usize"; Ty.function [ Ty.path "usize" ] (Ty.path "usize") ]
                     |),
                     [
                       M.call_closure (|
@@ -765,7 +762,7 @@ Module sparse.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.path "usize"),
+                                  Ty.path "usize",
                                   M.alloc (| Ty.path "usize", α0 |),
                                   [
                                     fun γ =>
@@ -932,9 +929,7 @@ Module sparse.
                   [],
                   [
                     T;
-                    Ty.function
-                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.tuple [ Ty.path "usize"; T ] ] ] ]
-                      T
+                    Ty.function [ Ty.apply (Ty.path "&") [] [ Ty.tuple [ Ty.path "usize"; T ] ] ] T
                   ]
                 |),
                 [
@@ -956,13 +951,10 @@ Module sparse.
                       [
                         Ty.function
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.apply (Ty.path "&") [] [ Ty.tuple [ Ty.path "usize"; T ] ] ]
-                              ]
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "&") [] [ Ty.tuple [ Ty.path "usize"; T ] ] ]
                           ]
                           (Ty.path "bool")
                       ]
@@ -1027,22 +1019,7 @@ Module sparse.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [ Ty.tuple [ Ty.path "usize"; T ] ]
-                                            ]
-                                        ]
-                                    ]
-                                    (Ty.path "bool"),
+                                  Ty.path "bool",
                                   M.alloc (|
                                     Ty.apply
                                       (Ty.path "&")
@@ -1088,13 +1065,7 @@ Module sparse.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [ Ty.apply (Ty.path "&") [] [ Ty.tuple [ Ty.path "usize"; T ] ]
-                                    ]
-                                ]
-                                T,
+                              T,
                               M.alloc (|
                                 Ty.apply (Ty.path "&") [] [ Ty.tuple [ Ty.path "usize"; T ] ],
                                 α0

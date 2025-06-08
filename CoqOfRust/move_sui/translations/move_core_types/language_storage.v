@@ -115,12 +115,10 @@ Module language_storage.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [ Ty.tuple [] ]
-                              (Ty.apply
-                                (Ty.path "move_core_types::gas_algebra::GasQuantity")
-                                []
-                                [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ]),
+                            Ty.apply
+                              (Ty.path "move_core_types::gas_algebra::GasQuantity")
+                              []
+                              [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ],
                             M.alloc (| Ty.tuple [], α0 |),
                             [
                               fun γ =>
@@ -6670,17 +6668,14 @@ Module language_storage.
                       [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ];
                     Ty.function
                       [
-                        Ty.tuple
-                          [
-                            Ty.apply
-                              (Ty.path "move_core_types::gas_algebra::GasQuantity")
-                              []
-                              [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ];
-                            Ty.apply
-                              (Ty.path "&")
-                              []
-                              [ Ty.path "move_core_types::language_storage::TypeTag" ]
-                          ]
+                        Ty.apply
+                          (Ty.path "move_core_types::gas_algebra::GasQuantity")
+                          []
+                          [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ];
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "move_core_types::language_storage::TypeTag" ]
                       ]
                       (Ty.apply
                         (Ty.path "move_core_types::gas_algebra::GasQuantity")
@@ -6770,25 +6765,10 @@ Module language_storage.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "move_core_types::gas_algebra::GasQuantity")
-                                        []
-                                        [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit"
-                                        ];
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.path "move_core_types::language_storage::TypeTag" ]
-                                    ]
-                                ]
-                                (Ty.apply
-                                  (Ty.path "move_core_types::gas_algebra::GasQuantity")
-                                  []
-                                  [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ]),
+                              Ty.apply
+                                (Ty.path "move_core_types::gas_algebra::GasQuantity")
+                                []
+                                [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ],
                               M.alloc (|
                                 Ty.apply
                                   (Ty.path "move_core_types::gas_algebra::GasQuantity")
@@ -6811,34 +6791,11 @@ Module language_storage.
                                         γ
                                       |) in
                                     M.match_operator (|
-                                      Ty.function
-                                        [
-                                          Ty.tuple
-                                            [
-                                              Ty.apply
-                                                (Ty.path
-                                                  "move_core_types::gas_algebra::GasQuantity")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "move_core_types::gas_algebra::AbstractMemoryUnit"
-                                                ];
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "move_core_types::language_storage::TypeTag"
-                                                ]
-                                            ]
-                                        ]
-                                        (Ty.apply
-                                          (Ty.path "move_core_types::gas_algebra::GasQuantity")
-                                          []
-                                          [
-                                            Ty.path
-                                              "move_core_types::gas_algebra::AbstractMemoryUnit"
-                                          ]),
+                                      Ty.apply
+                                        (Ty.path "move_core_types::gas_algebra::GasQuantity")
+                                        []
+                                        [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit"
+                                        ],
                                       M.alloc (|
                                         Ty.apply
                                           (Ty.path "&")

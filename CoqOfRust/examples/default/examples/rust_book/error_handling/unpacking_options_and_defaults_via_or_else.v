@@ -179,7 +179,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             [] in
         let~ get_kiwi_as_fallback :
             Ty.function
-              [ Ty.tuple [] ]
+              []
               (Ty.apply
                 (Ty.path "core::option::Option")
                 []
@@ -191,12 +191,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 | [ α0 ] =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Ty.function
-                        [ Ty.tuple [] ]
-                        (Ty.apply
-                          (Ty.path "core::option::Option")
-                          []
-                          [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ]),
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ],
                       M.alloc (| Ty.tuple [], α0 |),
                       [
                         fun γ =>
@@ -266,7 +264,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 end)) in
         let~ get_lemon_as_fallback :
             Ty.function
-              [ Ty.tuple [] ]
+              []
               (Ty.apply
                 (Ty.path "core::option::Option")
                 []
@@ -278,12 +276,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 | [ α0 ] =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Ty.function
-                        [ Ty.tuple [] ]
-                        (Ty.apply
-                          (Ty.path "core::option::Option")
-                          []
-                          [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ]),
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "unpacking_options_and_defaults_via_or_else::Fruit" ],
                       M.alloc (| Ty.tuple [], α0 |),
                       [
                         fun γ =>
@@ -371,7 +367,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [],
               [
                 Ty.function
-                  [ Ty.tuple [] ]
+                  []
                   (Ty.apply
                     (Ty.path "core::option::Option")
                     []
@@ -393,7 +389,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   [],
                   [
                     Ty.function
-                      [ Ty.tuple [] ]
+                      []
                       (Ty.apply
                         (Ty.path "core::option::Option")
                         []

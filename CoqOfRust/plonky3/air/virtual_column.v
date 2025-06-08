@@ -547,7 +547,7 @@ Module virtual_column.
                         []
                         [ Ty.tuple [ Ty.path "usize"; F ]; Ty.path "alloc::alloc::Global" ];
                       Ty.function
-                        [ Ty.tuple [ Ty.tuple [ Ty.path "usize"; F ] ] ]
+                        [ Ty.tuple [ Ty.path "usize"; F ] ]
                         (Ty.tuple [ Ty.path "p3_air::virtual_column::PairCol"; F ])
                     ],
                   [],
@@ -575,7 +575,7 @@ Module virtual_column.
                           []
                           [ Ty.tuple [ Ty.path "usize"; F ]; Ty.path "alloc::alloc::Global" ];
                         Ty.function
-                          [ Ty.tuple [ Ty.tuple [ Ty.path "usize"; F ] ] ]
+                          [ Ty.tuple [ Ty.path "usize"; F ] ]
                           (Ty.tuple [ Ty.path "p3_air::virtual_column::PairCol"; F ])
                       ],
                     M.get_trait_method (|
@@ -591,7 +591,7 @@ Module virtual_column.
                       [
                         Ty.tuple [ Ty.path "p3_air::virtual_column::PairCol"; F ];
                         Ty.function
-                          [ Ty.tuple [ Ty.tuple [ Ty.path "usize"; F ] ] ]
+                          [ Ty.tuple [ Ty.path "usize"; F ] ]
                           (Ty.tuple [ Ty.path "p3_air::virtual_column::PairCol"; F ])
                       ]
                     |),
@@ -622,9 +622,7 @@ Module virtual_column.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.tuple [ Ty.path "usize"; F ] ] ]
-                                    (Ty.tuple [ Ty.path "p3_air::virtual_column::PairCol"; F ]),
+                                  Ty.tuple [ Ty.path "p3_air::virtual_column::PairCol"; F ],
                                   M.alloc (| Ty.tuple [ Ty.path "usize"; F ], α0 |),
                                   [
                                     fun γ =>
@@ -715,7 +713,7 @@ Module virtual_column.
                         []
                         [ Ty.tuple [ Ty.path "usize"; F ]; Ty.path "alloc::alloc::Global" ];
                       Ty.function
-                        [ Ty.tuple [ Ty.tuple [ Ty.path "usize"; F ] ] ]
+                        [ Ty.tuple [ Ty.path "usize"; F ] ]
                         (Ty.tuple [ Ty.path "p3_air::virtual_column::PairCol"; F ])
                     ],
                   [],
@@ -743,7 +741,7 @@ Module virtual_column.
                           []
                           [ Ty.tuple [ Ty.path "usize"; F ]; Ty.path "alloc::alloc::Global" ];
                         Ty.function
-                          [ Ty.tuple [ Ty.tuple [ Ty.path "usize"; F ] ] ]
+                          [ Ty.tuple [ Ty.path "usize"; F ] ]
                           (Ty.tuple [ Ty.path "p3_air::virtual_column::PairCol"; F ])
                       ],
                     M.get_trait_method (|
@@ -759,7 +757,7 @@ Module virtual_column.
                       [
                         Ty.tuple [ Ty.path "p3_air::virtual_column::PairCol"; F ];
                         Ty.function
-                          [ Ty.tuple [ Ty.tuple [ Ty.path "usize"; F ] ] ]
+                          [ Ty.tuple [ Ty.path "usize"; F ] ]
                           (Ty.tuple [ Ty.path "p3_air::virtual_column::PairCol"; F ])
                       ]
                     |),
@@ -790,9 +788,7 @@ Module virtual_column.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.tuple [ Ty.path "usize"; F ] ] ]
-                                    (Ty.tuple [ Ty.path "p3_air::virtual_column::PairCol"; F ]),
+                                  Ty.tuple [ Ty.path "p3_air::virtual_column::PairCol"; F ],
                                   M.alloc (| Ty.tuple [ Ty.path "usize"; F ], α0 |),
                                   [
                                     fun γ =>
@@ -1129,7 +1125,7 @@ Module virtual_column.
                         (Ty.path "alloc::vec::into_iter::IntoIter")
                         []
                         [ Ty.path "usize"; Ty.path "alloc::alloc::Global" ];
-                      Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.tuple [ Ty.path "usize"; F ])
+                      Ty.function [ Ty.path "usize" ] (Ty.tuple [ Ty.path "usize"; F ])
                     ],
                   [],
                   [],
@@ -1152,9 +1148,7 @@ Module virtual_column.
                           (Ty.path "alloc::vec::into_iter::IntoIter")
                           []
                           [ Ty.path "usize"; Ty.path "alloc::alloc::Global" ];
-                        Ty.function
-                          [ Ty.tuple [ Ty.path "usize" ] ]
-                          (Ty.tuple [ Ty.path "usize"; F ])
+                        Ty.function [ Ty.path "usize" ] (Ty.tuple [ Ty.path "usize"; F ])
                       ],
                     M.get_trait_method (|
                       "core::iter::traits::iterator::Iterator",
@@ -1168,9 +1162,7 @@ Module virtual_column.
                       [],
                       [
                         Ty.tuple [ Ty.path "usize"; F ];
-                        Ty.function
-                          [ Ty.tuple [ Ty.path "usize" ] ]
-                          (Ty.tuple [ Ty.path "usize"; F ])
+                        Ty.function [ Ty.path "usize" ] (Ty.tuple [ Ty.path "usize"; F ])
                       ]
                     |),
                     [
@@ -1200,9 +1192,7 @@ Module virtual_column.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.path "usize" ] ]
-                                    (Ty.tuple [ Ty.path "usize"; F ]),
+                                  Ty.tuple [ Ty.path "usize"; F ],
                                   M.alloc (| Ty.path "usize", α0 |),
                                   [
                                     fun γ =>
@@ -1299,7 +1289,7 @@ Module virtual_column.
                         (Ty.path "alloc::vec::into_iter::IntoIter")
                         []
                         [ Ty.path "usize"; Ty.path "alloc::alloc::Global" ];
-                      Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.tuple [ Ty.path "usize"; F ])
+                      Ty.function [ Ty.path "usize" ] (Ty.tuple [ Ty.path "usize"; F ])
                     ],
                   [],
                   [],
@@ -1322,9 +1312,7 @@ Module virtual_column.
                           (Ty.path "alloc::vec::into_iter::IntoIter")
                           []
                           [ Ty.path "usize"; Ty.path "alloc::alloc::Global" ];
-                        Ty.function
-                          [ Ty.tuple [ Ty.path "usize" ] ]
-                          (Ty.tuple [ Ty.path "usize"; F ])
+                        Ty.function [ Ty.path "usize" ] (Ty.tuple [ Ty.path "usize"; F ])
                       ],
                     M.get_trait_method (|
                       "core::iter::traits::iterator::Iterator",
@@ -1338,9 +1326,7 @@ Module virtual_column.
                       [],
                       [
                         Ty.tuple [ Ty.path "usize"; F ];
-                        Ty.function
-                          [ Ty.tuple [ Ty.path "usize" ] ]
-                          (Ty.tuple [ Ty.path "usize"; F ])
+                        Ty.function [ Ty.path "usize" ] (Ty.tuple [ Ty.path "usize"; F ])
                       ]
                     |),
                     [
@@ -1370,9 +1356,7 @@ Module virtual_column.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.path "usize" ] ]
-                                    (Ty.tuple [ Ty.path "usize"; F ]),
+                                  Ty.tuple [ Ty.path "usize"; F ],
                                   M.alloc (| Ty.path "usize", α0 |),
                                   [
                                     fun γ =>
@@ -1700,14 +1684,11 @@ Module virtual_column.
                 Expr;
                 Ty.function
                   [
-                    Ty.tuple
-                      [
-                        Expr;
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [ Ty.tuple [ Ty.path "p3_air::virtual_column::PairCol"; F ] ]
-                      ]
+                    Expr;
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.tuple [ Ty.path "p3_air::virtual_column::PairCol"; F ] ]
                   ]
                   Expr
               ]
@@ -1791,39 +1772,14 @@ Module virtual_column.
                     | [ α0; α1 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [
-                              Ty.tuple
-                                [
-                                  Expr;
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [ Ty.tuple [ Ty.path "p3_air::virtual_column::PairCol"; F ] ]
-                                ]
-                            ]
-                            Expr,
+                          Expr,
                           M.alloc (| Expr, α0 |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let acc := M.copy (| Expr, γ |) in
                                 M.match_operator (|
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Expr;
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.tuple
-                                                [ Ty.path "p3_air::virtual_column::PairCol"; F ]
-                                            ]
-                                        ]
-                                    ]
-                                    Expr,
+                                  Expr,
                                   M.alloc (|
                                     Ty.apply
                                       (Ty.path "&")

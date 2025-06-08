@@ -1554,14 +1554,11 @@ Module instructions.
                                                     [];
                                                   Ty.function
                                                     [
-                                                      Ty.tuple
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path
-                                                              "alloy_primitives::bits::fixed::FixedBytes")
-                                                            [ Value.Integer IntegerKind.Usize 32 ]
-                                                            []
-                                                        ]
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "alloy_primitives::bits::fixed::FixedBytes")
+                                                        [ Value.Integer IntegerKind.Usize 32 ]
+                                                        []
                                                     ]
                                                     (Ty.apply
                                                       (Ty.path "ruint::Uint")
@@ -1747,30 +1744,13 @@ Module instructions.
                                                       | [ α0 ] =>
                                                         ltac:(M.monadic
                                                           (M.match_operator (|
-                                                            Ty.function
+                                                            Ty.apply
+                                                              (Ty.path "ruint::Uint")
                                                               [
-                                                                Ty.tuple
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path
-                                                                        "alloy_primitives::bits::fixed::FixedBytes")
-                                                                      [
-                                                                        Value.Integer
-                                                                          IntegerKind.Usize
-                                                                          32
-                                                                      ]
-                                                                      []
-                                                                  ]
+                                                                Value.Integer IntegerKind.Usize 256;
+                                                                Value.Integer IntegerKind.Usize 4
                                                               ]
-                                                              (Ty.apply
-                                                                (Ty.path "ruint::Uint")
-                                                                [
-                                                                  Value.Integer
-                                                                    IntegerKind.Usize
-                                                                    256;
-                                                                  Value.Integer IntegerKind.Usize 4
-                                                                ]
-                                                                []),
+                                                              [],
                                                             M.alloc (|
                                                               Ty.apply
                                                                 (Ty.path

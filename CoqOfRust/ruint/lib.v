@@ -1272,7 +1272,7 @@ Module Impl_ruint_Uint_BITS_LIMBS.
                                 [],
                                 [
                                   Ty.function
-                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ] ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ]
                                     (Ty.path "bool")
                                 ]
                               |),
@@ -1311,12 +1311,7 @@ Module Impl_ruint_Uint_BITS_LIMBS.
                                       | [ α0 ] =>
                                         ltac:(M.monadic
                                           (M.match_operator (|
-                                            Ty.function
-                                              [
-                                                Ty.tuple
-                                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ]
-                                              ]
-                                              (Ty.path "bool"),
+                                            Ty.path "bool",
                                             M.alloc (|
                                               Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
                                               α0

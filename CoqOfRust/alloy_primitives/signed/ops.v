@@ -10666,14 +10666,8 @@ Module signed.
                   Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [];
                   Ty.function
                     [
-                      Ty.tuple
-                        [
-                          Ty.apply
-                            (Ty.path "alloy_primitives::signed::int::Signed")
-                            [ BITS; LIMBS ]
-                            [];
-                          T
-                        ]
+                      Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [];
+                      T
                     ]
                     (Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [])
                 ]
@@ -10694,21 +10688,10 @@ Module signed.
                       | [ α0; α1 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "alloy_primitives::signed::int::Signed")
-                                      [ BITS; LIMBS ]
-                                      [];
-                                    T
-                                  ]
-                              ]
-                              (Ty.apply
-                                (Ty.path "alloy_primitives::signed::int::Signed")
-                                [ BITS; LIMBS ]
-                                []),
+                            Ty.apply
+                              (Ty.path "alloy_primitives::signed::int::Signed")
+                              [ BITS; LIMBS ]
+                              [],
                             M.alloc (|
                               Ty.apply
                                 (Ty.path "alloy_primitives::signed::int::Signed")
@@ -10728,21 +10711,10 @@ Module signed.
                                       γ
                                     |) in
                                   M.match_operator (|
-                                    Ty.function
-                                      [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply
-                                              (Ty.path "alloy_primitives::signed::int::Signed")
-                                              [ BITS; LIMBS ]
-                                              [];
-                                            T
-                                          ]
-                                      ]
-                                      (Ty.apply
-                                        (Ty.path "alloy_primitives::signed::int::Signed")
-                                        [ BITS; LIMBS ]
-                                        []),
+                                    Ty.apply
+                                      (Ty.path "alloy_primitives::signed::int::Signed")
+                                      [ BITS; LIMBS ]
+                                      [],
                                     M.alloc (| T, α1 |),
                                     [
                                       fun γ =>
@@ -10822,14 +10794,8 @@ Module signed.
                   Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [];
                   Ty.function
                     [
-                      Ty.tuple
-                        [
-                          Ty.apply
-                            (Ty.path "alloy_primitives::signed::int::Signed")
-                            [ BITS; LIMBS ]
-                            [];
-                          T
-                        ]
+                      Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [];
+                      T
                     ]
                     (Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [])
                 ]
@@ -10850,21 +10816,10 @@ Module signed.
                       | [ α0; α1 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "alloy_primitives::signed::int::Signed")
-                                      [ BITS; LIMBS ]
-                                      [];
-                                    T
-                                  ]
-                              ]
-                              (Ty.apply
-                                (Ty.path "alloy_primitives::signed::int::Signed")
-                                [ BITS; LIMBS ]
-                                []),
+                            Ty.apply
+                              (Ty.path "alloy_primitives::signed::int::Signed")
+                              [ BITS; LIMBS ]
+                              [],
                             M.alloc (|
                               Ty.apply
                                 (Ty.path "alloy_primitives::signed::int::Signed")
@@ -10884,21 +10839,10 @@ Module signed.
                                       γ
                                     |) in
                                   M.match_operator (|
-                                    Ty.function
-                                      [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply
-                                              (Ty.path "alloy_primitives::signed::int::Signed")
-                                              [ BITS; LIMBS ]
-                                              [];
-                                            T
-                                          ]
-                                      ]
-                                      (Ty.apply
-                                        (Ty.path "alloy_primitives::signed::int::Signed")
-                                        [ BITS; LIMBS ]
-                                        []),
+                                    Ty.apply
+                                      (Ty.path "alloy_primitives::signed::int::Signed")
+                                      [ BITS; LIMBS ]
+                                      [],
                                     M.alloc (| T, α1 |),
                                     [
                                       fun γ =>

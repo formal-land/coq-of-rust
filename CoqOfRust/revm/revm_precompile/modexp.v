@@ -82,21 +82,17 @@ Module modexp.
             [
               Ty.function
                 [
-                  Ty.tuple
+                  Ty.path "u64";
+                  Ty.path "u64";
+                  Ty.path "u64";
+                  Ty.apply
+                    (Ty.path "&")
+                    []
                     [
-                      Ty.path "u64";
-                      Ty.path "u64";
-                      Ty.path "u64";
                       Ty.apply
-                        (Ty.path "&")
+                        (Ty.path "ruint::Uint")
+                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                         []
-                        [
-                          Ty.apply
-                            (Ty.path "ruint::Uint")
-                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
-                            ]
-                            []
-                        ]
                     ]
                 ]
                 (Ty.path "u64")
@@ -149,112 +145,28 @@ Module modexp.
                   | [ α0; α1; α2; α3 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.function
-                          [
-                            Ty.tuple
-                              [
-                                Ty.path "u64";
-                                Ty.path "u64";
-                                Ty.path "u64";
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "ruint::Uint")
-                                      [
-                                        Value.Integer IntegerKind.Usize 256;
-                                        Value.Integer IntegerKind.Usize 4
-                                      ]
-                                      []
-                                  ]
-                              ]
-                          ]
-                          (Ty.path "u64"),
+                        Ty.path "u64",
                         M.alloc (| Ty.path "u64", α0 |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let a := M.copy (| Ty.path "u64", γ |) in
                               M.match_operator (|
-                                Ty.function
-                                  [
-                                    Ty.tuple
-                                      [
-                                        Ty.path "u64";
-                                        Ty.path "u64";
-                                        Ty.path "u64";
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "ruint::Uint")
-                                              [
-                                                Value.Integer IntegerKind.Usize 256;
-                                                Value.Integer IntegerKind.Usize 4
-                                              ]
-                                              []
-                                          ]
-                                      ]
-                                  ]
-                                  (Ty.path "u64"),
+                                Ty.path "u64",
                                 M.alloc (| Ty.path "u64", α1 |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let b := M.copy (| Ty.path "u64", γ |) in
                                       M.match_operator (|
-                                        Ty.function
-                                          [
-                                            Ty.tuple
-                                              [
-                                                Ty.path "u64";
-                                                Ty.path "u64";
-                                                Ty.path "u64";
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "ruint::Uint")
-                                                      [
-                                                        Value.Integer IntegerKind.Usize 256;
-                                                        Value.Integer IntegerKind.Usize 4
-                                                      ]
-                                                      []
-                                                  ]
-                                              ]
-                                          ]
-                                          (Ty.path "u64"),
+                                        Ty.path "u64",
                                         M.alloc (| Ty.path "u64", α2 |),
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let c := M.copy (| Ty.path "u64", γ |) in
                                               M.match_operator (|
-                                                Ty.function
-                                                  [
-                                                    Ty.tuple
-                                                      [
-                                                        Ty.path "u64";
-                                                        Ty.path "u64";
-                                                        Ty.path "u64";
-                                                        Ty.apply
-                                                          (Ty.path "&")
-                                                          []
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "ruint::Uint")
-                                                              [
-                                                                Value.Integer IntegerKind.Usize 256;
-                                                                Value.Integer IntegerKind.Usize 4
-                                                              ]
-                                                              []
-                                                          ]
-                                                      ]
-                                                  ]
-                                                  (Ty.path "u64"),
+                                                Ty.path "u64",
                                                 M.alloc (|
                                                   Ty.apply
                                                     (Ty.path "&")
@@ -359,21 +271,17 @@ Module modexp.
             [
               Ty.function
                 [
-                  Ty.tuple
+                  Ty.path "u64";
+                  Ty.path "u64";
+                  Ty.path "u64";
+                  Ty.apply
+                    (Ty.path "&")
+                    []
                     [
-                      Ty.path "u64";
-                      Ty.path "u64";
-                      Ty.path "u64";
                       Ty.apply
-                        (Ty.path "&")
+                        (Ty.path "ruint::Uint")
+                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                         []
-                        [
-                          Ty.apply
-                            (Ty.path "ruint::Uint")
-                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
-                            ]
-                            []
-                        ]
                     ]
                 ]
                 (Ty.path "u64")
@@ -426,112 +334,28 @@ Module modexp.
                   | [ α0; α1; α2; α3 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.function
-                          [
-                            Ty.tuple
-                              [
-                                Ty.path "u64";
-                                Ty.path "u64";
-                                Ty.path "u64";
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "ruint::Uint")
-                                      [
-                                        Value.Integer IntegerKind.Usize 256;
-                                        Value.Integer IntegerKind.Usize 4
-                                      ]
-                                      []
-                                  ]
-                              ]
-                          ]
-                          (Ty.path "u64"),
+                        Ty.path "u64",
                         M.alloc (| Ty.path "u64", α0 |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let a := M.copy (| Ty.path "u64", γ |) in
                               M.match_operator (|
-                                Ty.function
-                                  [
-                                    Ty.tuple
-                                      [
-                                        Ty.path "u64";
-                                        Ty.path "u64";
-                                        Ty.path "u64";
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "ruint::Uint")
-                                              [
-                                                Value.Integer IntegerKind.Usize 256;
-                                                Value.Integer IntegerKind.Usize 4
-                                              ]
-                                              []
-                                          ]
-                                      ]
-                                  ]
-                                  (Ty.path "u64"),
+                                Ty.path "u64",
                                 M.alloc (| Ty.path "u64", α1 |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let b := M.copy (| Ty.path "u64", γ |) in
                                       M.match_operator (|
-                                        Ty.function
-                                          [
-                                            Ty.tuple
-                                              [
-                                                Ty.path "u64";
-                                                Ty.path "u64";
-                                                Ty.path "u64";
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "ruint::Uint")
-                                                      [
-                                                        Value.Integer IntegerKind.Usize 256;
-                                                        Value.Integer IntegerKind.Usize 4
-                                                      ]
-                                                      []
-                                                  ]
-                                              ]
-                                          ]
-                                          (Ty.path "u64"),
+                                        Ty.path "u64",
                                         M.alloc (| Ty.path "u64", α2 |),
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let c := M.copy (| Ty.path "u64", γ |) in
                                               M.match_operator (|
-                                                Ty.function
-                                                  [
-                                                    Ty.tuple
-                                                      [
-                                                        Ty.path "u64";
-                                                        Ty.path "u64";
-                                                        Ty.path "u64";
-                                                        Ty.apply
-                                                          (Ty.path "&")
-                                                          []
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "ruint::Uint")
-                                                              [
-                                                                Value.Integer IntegerKind.Usize 256;
-                                                                Value.Integer IntegerKind.Usize 4
-                                                              ]
-                                                              []
-                                                          ]
-                                                      ]
-                                                  ]
-                                                  (Ty.path "u64"),
+                                                Ty.path "u64",
                                                 M.alloc (|
                                                   Ty.apply
                                                     (Ty.path "&")

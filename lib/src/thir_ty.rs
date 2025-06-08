@@ -19,6 +19,7 @@ fn compile_poly_fn_sig<'a>(
     span: &rustc_span::Span,
     generics: &'a rustc_middle::ty::Generics,
     sig: &rustc_middle::ty::PolyFnSig<'a>,
+    from_closure: bool,
 ) -> Rc<CoqType> {
     let sig = sig.skip_binder();
     let args = sig
@@ -26,6 +27,19 @@ fn compile_poly_fn_sig<'a>(
         .iter()
         .map(|ty| compile_type(env, span, generics, ty))
         .collect::<Vec<_>>();
+    let args = if from_closure {
+        if let Some(arg) = args.first() {
+            if let CoqType::Tuple { tys } = arg.as_ref() {
+                tys.to_vec()
+            } else {
+                panic!("Expected a tuple for the first argument of a closure");
+            }
+        } else {
+            panic!("Expected a tuple for the first argument of a closure");
+        }
+    } else {
+        args
+    };
     let ret = compile_type(env, span, generics, &sig.output());
 
     Rc::new(CoqType::Function { args, ret })
@@ -98,7 +112,7 @@ pub(crate) fn compile_type<'a>(
             CoqType::make_ref(mutbl, compile_type(env, span, generics, ty))
         }
         TyKind::FnPtr(fn_sig, fn_header) => {
-            compile_poly_fn_sig(env, span, generics, &fn_sig.with(*fn_header))
+            compile_poly_fn_sig(env, span, generics, &fn_sig.with(*fn_header), false)
         }
         TyKind::Dynamic(existential_predicates, _, _) => {
             let traits = existential_predicates
@@ -130,12 +144,12 @@ pub(crate) fn compile_type<'a>(
         TyKind::FnDef(_, _) => {
             let fn_sig = ty.fn_sig(env.tcx);
 
-            compile_poly_fn_sig(env, span, generics, &fn_sig)
+            compile_poly_fn_sig(env, span, generics, &fn_sig, false)
         }
         TyKind::Closure(_, generic_args) => {
             let fn_sig = generic_args.as_closure().sig();
 
-            compile_poly_fn_sig(env, span, generics, &fn_sig)
+            compile_poly_fn_sig(env, span, generics, &fn_sig, true)
         }
         // Generator(DefId, &'tcx List<GenericArg<'tcx>>, Movability),
         // GeneratorWitness(DefId, &'tcx List<GenericArg<'tcx>>),

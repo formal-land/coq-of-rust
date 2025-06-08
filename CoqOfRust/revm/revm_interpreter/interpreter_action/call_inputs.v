@@ -1443,14 +1443,10 @@ Module interpreter_action.
                 [
                   Ty.function
                     [
-                      Ty.tuple
-                        [
-                          Ty.apply
-                            (Ty.path "ruint::Uint")
-                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
-                            ]
-                            []
-                        ]
+                      Ty.apply
+                        (Ty.path "ruint::Uint")
+                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                        []
                     ]
                     (Ty.path "bool")
                 ]
@@ -1490,20 +1486,7 @@ Module interpreter_action.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "ruint::Uint")
-                                      [
-                                        Value.Integer IntegerKind.Usize 256;
-                                        Value.Integer IntegerKind.Usize 4
-                                      ]
-                                      []
-                                  ]
-                              ]
-                              (Ty.path "bool"),
+                            Ty.path "bool",
                             M.alloc (|
                               Ty.apply
                                 (Ty.path "ruint::Uint")

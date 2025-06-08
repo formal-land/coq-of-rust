@@ -57,24 +57,13 @@ Module bn128.
                       | [ α0; α1 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
                               [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [ Ty.path "alloy_primitives::bytes_::Bytes" ];
-                                    Ty.path "u64"
-                                  ]
-                              ]
-                              (Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [
-                                  Ty.path "revm_precompile::interface::PrecompileOutput";
-                                  Ty.path "revm_precompile::interface::PrecompileErrors"
-                                ]),
+                                Ty.path "revm_precompile::interface::PrecompileOutput";
+                                Ty.path "revm_precompile::interface::PrecompileErrors"
+                              ],
                             M.alloc (|
                               Ty.apply
                                 (Ty.path "&")
@@ -94,24 +83,13 @@ Module bn128.
                                       γ
                                     |) in
                                   M.match_operator (|
-                                    Ty.function
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
                                       [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [ Ty.path "alloy_primitives::bytes_::Bytes" ];
-                                            Ty.path "u64"
-                                          ]
-                                      ]
-                                      (Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [
-                                          Ty.path "revm_precompile::interface::PrecompileOutput";
-                                          Ty.path "revm_precompile::interface::PrecompileErrors"
-                                        ]),
+                                        Ty.path "revm_precompile::interface::PrecompileOutput";
+                                        Ty.path "revm_precompile::interface::PrecompileErrors"
+                                      ],
                                     M.alloc (| Ty.path "u64", α1 |),
                                     [
                                       fun γ =>
@@ -248,24 +226,13 @@ Module bn128.
                       | [ α0; α1 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
                               [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [ Ty.path "alloy_primitives::bytes_::Bytes" ];
-                                    Ty.path "u64"
-                                  ]
-                              ]
-                              (Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [
-                                  Ty.path "revm_precompile::interface::PrecompileOutput";
-                                  Ty.path "revm_precompile::interface::PrecompileErrors"
-                                ]),
+                                Ty.path "revm_precompile::interface::PrecompileOutput";
+                                Ty.path "revm_precompile::interface::PrecompileErrors"
+                              ],
                             M.alloc (|
                               Ty.apply
                                 (Ty.path "&")
@@ -285,24 +252,13 @@ Module bn128.
                                       γ
                                     |) in
                                   M.match_operator (|
-                                    Ty.function
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
                                       [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [ Ty.path "alloy_primitives::bytes_::Bytes" ];
-                                            Ty.path "u64"
-                                          ]
-                                      ]
-                                      (Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [
-                                          Ty.path "revm_precompile::interface::PrecompileOutput";
-                                          Ty.path "revm_precompile::interface::PrecompileErrors"
-                                        ]),
+                                        Ty.path "revm_precompile::interface::PrecompileOutput";
+                                        Ty.path "revm_precompile::interface::PrecompileErrors"
+                                      ],
                                     M.alloc (| Ty.path "u64", α1 |),
                                     [
                                       fun γ =>
@@ -457,24 +413,13 @@ Module bn128.
                       | [ α0; α1 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
                               [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [ Ty.path "alloy_primitives::bytes_::Bytes" ];
-                                    Ty.path "u64"
-                                  ]
-                              ]
-                              (Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [
-                                  Ty.path "revm_precompile::interface::PrecompileOutput";
-                                  Ty.path "revm_precompile::interface::PrecompileErrors"
-                                ]),
+                                Ty.path "revm_precompile::interface::PrecompileOutput";
+                                Ty.path "revm_precompile::interface::PrecompileErrors"
+                              ],
                             M.alloc (|
                               Ty.apply
                                 (Ty.path "&")
@@ -494,24 +439,13 @@ Module bn128.
                                       γ
                                     |) in
                                   M.match_operator (|
-                                    Ty.function
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
                                       [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [ Ty.path "alloy_primitives::bytes_::Bytes" ];
-                                            Ty.path "u64"
-                                          ]
-                                      ]
-                                      (Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [
-                                          Ty.path "revm_precompile::interface::PrecompileOutput";
-                                          Ty.path "revm_precompile::interface::PrecompileErrors"
-                                        ]),
+                                        Ty.path "revm_precompile::interface::PrecompileOutput";
+                                        Ty.path "revm_precompile::interface::PrecompileErrors"
+                                      ],
                                     M.alloc (| Ty.path "u64", α1 |),
                                     [
                                       fun γ =>
@@ -648,24 +582,13 @@ Module bn128.
                       | [ α0; α1 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
                               [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [ Ty.path "alloy_primitives::bytes_::Bytes" ];
-                                    Ty.path "u64"
-                                  ]
-                              ]
-                              (Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [
-                                  Ty.path "revm_precompile::interface::PrecompileOutput";
-                                  Ty.path "revm_precompile::interface::PrecompileErrors"
-                                ]),
+                                Ty.path "revm_precompile::interface::PrecompileOutput";
+                                Ty.path "revm_precompile::interface::PrecompileErrors"
+                              ],
                             M.alloc (|
                               Ty.apply
                                 (Ty.path "&")
@@ -685,24 +608,13 @@ Module bn128.
                                       γ
                                     |) in
                                   M.match_operator (|
-                                    Ty.function
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
                                       [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [ Ty.path "alloy_primitives::bytes_::Bytes" ];
-                                            Ty.path "u64"
-                                          ]
-                                      ]
-                                      (Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [
-                                          Ty.path "revm_precompile::interface::PrecompileOutput";
-                                          Ty.path "revm_precompile::interface::PrecompileErrors"
-                                        ]),
+                                        Ty.path "revm_precompile::interface::PrecompileOutput";
+                                        Ty.path "revm_precompile::interface::PrecompileErrors"
+                                      ],
                                     M.alloc (| Ty.path "u64", α1 |),
                                     [
                                       fun γ =>
@@ -865,24 +777,13 @@ Module bn128.
                       | [ α0; α1 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
                               [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [ Ty.path "alloy_primitives::bytes_::Bytes" ];
-                                    Ty.path "u64"
-                                  ]
-                              ]
-                              (Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [
-                                  Ty.path "revm_precompile::interface::PrecompileOutput";
-                                  Ty.path "revm_precompile::interface::PrecompileErrors"
-                                ]),
+                                Ty.path "revm_precompile::interface::PrecompileOutput";
+                                Ty.path "revm_precompile::interface::PrecompileErrors"
+                              ],
                             M.alloc (|
                               Ty.apply
                                 (Ty.path "&")
@@ -902,24 +803,13 @@ Module bn128.
                                       γ
                                     |) in
                                   M.match_operator (|
-                                    Ty.function
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
                                       [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [ Ty.path "alloy_primitives::bytes_::Bytes" ];
-                                            Ty.path "u64"
-                                          ]
-                                      ]
-                                      (Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [
-                                          Ty.path "revm_precompile::interface::PrecompileOutput";
-                                          Ty.path "revm_precompile::interface::PrecompileErrors"
-                                        ]),
+                                        Ty.path "revm_precompile::interface::PrecompileOutput";
+                                        Ty.path "revm_precompile::interface::PrecompileErrors"
+                                      ],
                                     M.alloc (| Ty.path "u64", α1 |),
                                     [
                                       fun γ =>
@@ -1074,24 +964,13 @@ Module bn128.
                       | [ α0; α1 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
                               [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [ Ty.path "alloy_primitives::bytes_::Bytes" ];
-                                    Ty.path "u64"
-                                  ]
-                              ]
-                              (Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [
-                                  Ty.path "revm_precompile::interface::PrecompileOutput";
-                                  Ty.path "revm_precompile::interface::PrecompileErrors"
-                                ]),
+                                Ty.path "revm_precompile::interface::PrecompileOutput";
+                                Ty.path "revm_precompile::interface::PrecompileErrors"
+                              ],
                             M.alloc (|
                               Ty.apply
                                 (Ty.path "&")
@@ -1111,24 +990,13 @@ Module bn128.
                                       γ
                                     |) in
                                   M.match_operator (|
-                                    Ty.function
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
                                       [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [ Ty.path "alloy_primitives::bytes_::Bytes" ];
-                                            Ty.path "u64"
-                                          ]
-                                      ]
-                                      (Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [
-                                          Ty.path "revm_precompile::interface::PrecompileOutput";
-                                          Ty.path "revm_precompile::interface::PrecompileErrors"
-                                        ]),
+                                        Ty.path "revm_precompile::interface::PrecompileOutput";
+                                        Ty.path "revm_precompile::interface::PrecompileErrors"
+                                      ],
                                     M.alloc (| Ty.path "u64", α1 |),
                                     [
                                       fun γ =>
@@ -1311,7 +1179,7 @@ Module bn128.
             [
               Ty.path "revm_precompile::interface::PrecompileError";
               Ty.function
-                [ Ty.tuple [ Ty.path "substrate_bn::FieldError" ] ]
+                [ Ty.path "substrate_bn::FieldError" ]
                 (Ty.path "revm_precompile::interface::PrecompileError")
             ]
           |),
@@ -1366,9 +1234,7 @@ Module bn128.
                   | [ α0 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.function
-                          [ Ty.tuple [ Ty.path "substrate_bn::FieldError" ] ]
-                          (Ty.path "revm_precompile::interface::PrecompileError"),
+                        Ty.path "revm_precompile::interface::PrecompileError",
                         M.alloc (| Ty.path "substrate_bn::FieldError", α0 |),
                         [
                           fun γ =>
@@ -1939,7 +1805,7 @@ Module bn128.
                     [
                       Ty.path "revm_precompile::interface::PrecompileError";
                       Ty.function
-                        [ Ty.tuple [ Ty.path "substrate_bn::groups::Error" ] ]
+                        [ Ty.path "substrate_bn::groups::Error" ]
                         (Ty.path "revm_precompile::interface::PrecompileError")
                     ]
                   |),
@@ -1999,9 +1865,7 @@ Module bn128.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function
-                                  [ Ty.tuple [ Ty.path "substrate_bn::groups::Error" ] ]
-                                  (Ty.path "revm_precompile::interface::PrecompileError"),
+                                Ty.path "revm_precompile::interface::PrecompileError",
                                 M.alloc (| Ty.path "substrate_bn::groups::Error", α0 |),
                                 [
                                   fun γ =>
@@ -4055,7 +3919,7 @@ Module bn128.
                                                           M.read (|
                                                             let~ read_fq_at :
                                                                 Ty.function
-                                                                  [ Ty.tuple [ Ty.path "usize" ] ]
+                                                                  [ Ty.path "usize" ]
                                                                   (Ty.apply
                                                                     (Ty.path "core::result::Result")
                                                                     []
@@ -4071,21 +3935,16 @@ Module bn128.
                                                                     | [ α0 ] =>
                                                                       ltac:(M.monadic
                                                                         (M.match_operator (|
-                                                                          Ty.function
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::result::Result")
+                                                                            []
                                                                             [
-                                                                              Ty.tuple
-                                                                                [ Ty.path "usize" ]
-                                                                            ]
-                                                                            (Ty.apply
-                                                                              (Ty.path
-                                                                                "core::result::Result")
-                                                                              []
-                                                                              [
-                                                                                Ty.path
-                                                                                  "substrate_bn::Fq";
-                                                                                Ty.path
-                                                                                  "revm_precompile::interface::PrecompileError"
-                                                                              ]),
+                                                                              Ty.path
+                                                                                "substrate_bn::Fq";
+                                                                              Ty.path
+                                                                                "revm_precompile::interface::PrecompileError"
+                                                                            ],
                                                                           M.alloc (|
                                                                             Ty.path "usize",
                                                                             α0
@@ -4397,11 +4256,8 @@ Module bn128.
                                                                                             "revm_precompile::interface::PrecompileError";
                                                                                           Ty.function
                                                                                             [
-                                                                                              Ty.tuple
-                                                                                                [
-                                                                                                  Ty.path
-                                                                                                    "substrate_bn::FieldError"
-                                                                                                ]
+                                                                                              Ty.path
+                                                                                                "substrate_bn::FieldError"
                                                                                             ]
                                                                                             (Ty.path
                                                                                               "revm_precompile::interface::PrecompileError")
@@ -4447,16 +4303,8 @@ Module bn128.
                                                                                                   ] =>
                                                                                                 ltac:(M.monadic
                                                                                                   (M.match_operator (|
-                                                                                                    Ty.function
-                                                                                                      [
-                                                                                                        Ty.tuple
-                                                                                                          [
-                                                                                                            Ty.path
-                                                                                                              "substrate_bn::FieldError"
-                                                                                                          ]
-                                                                                                      ]
-                                                                                                      (Ty.path
-                                                                                                        "revm_precompile::interface::PrecompileError"),
+                                                                                                    Ty.path
+                                                                                                      "revm_precompile::interface::PrecompileError",
                                                                                                     M.alloc (|
                                                                                                       Ty.path
                                                                                                         "substrate_bn::FieldError",
@@ -4559,10 +4407,7 @@ Module bn128.
                                                                         M.get_trait_method (|
                                                                           "core::ops::function::Fn",
                                                                           Ty.function
-                                                                            [
-                                                                              Ty.tuple
-                                                                                [ Ty.path "usize" ]
-                                                                            ]
+                                                                            [ Ty.path "usize" ]
                                                                             (Ty.apply
                                                                               (Ty.path
                                                                                 "core::result::Result")
@@ -4762,10 +4607,7 @@ Module bn128.
                                                                         M.get_trait_method (|
                                                                           "core::ops::function::Fn",
                                                                           Ty.function
-                                                                            [
-                                                                              Ty.tuple
-                                                                                [ Ty.path "usize" ]
-                                                                            ]
+                                                                            [ Ty.path "usize" ]
                                                                             (Ty.apply
                                                                               (Ty.path
                                                                                 "core::result::Result")
@@ -4965,10 +4807,7 @@ Module bn128.
                                                                         M.get_trait_method (|
                                                                           "core::ops::function::Fn",
                                                                           Ty.function
-                                                                            [
-                                                                              Ty.tuple
-                                                                                [ Ty.path "usize" ]
-                                                                            ]
+                                                                            [ Ty.path "usize" ]
                                                                             (Ty.apply
                                                                               (Ty.path
                                                                                 "core::result::Result")
@@ -5168,10 +5007,7 @@ Module bn128.
                                                                         M.get_trait_method (|
                                                                           "core::ops::function::Fn",
                                                                           Ty.function
-                                                                            [
-                                                                              Ty.tuple
-                                                                                [ Ty.path "usize" ]
-                                                                            ]
+                                                                            [ Ty.path "usize" ]
                                                                             (Ty.apply
                                                                               (Ty.path
                                                                                 "core::result::Result")
@@ -5371,10 +5207,7 @@ Module bn128.
                                                                         M.get_trait_method (|
                                                                           "core::ops::function::Fn",
                                                                           Ty.function
-                                                                            [
-                                                                              Ty.tuple
-                                                                                [ Ty.path "usize" ]
-                                                                            ]
+                                                                            [ Ty.path "usize" ]
                                                                             (Ty.apply
                                                                               (Ty.path
                                                                                 "core::result::Result")
@@ -5574,10 +5407,7 @@ Module bn128.
                                                                         M.get_trait_method (|
                                                                           "core::ops::function::Fn",
                                                                           Ty.function
-                                                                            [
-                                                                              Ty.tuple
-                                                                                [ Ty.path "usize" ]
-                                                                            ]
+                                                                            [ Ty.path "usize" ]
                                                                             (Ty.apply
                                                                               (Ty.path
                                                                                 "core::result::Result")
@@ -6091,11 +5921,8 @@ Module bn128.
                                                                                               "revm_precompile::interface::PrecompileError";
                                                                                             Ty.function
                                                                                               [
-                                                                                                Ty.tuple
-                                                                                                  [
-                                                                                                    Ty.path
-                                                                                                      "substrate_bn::groups::Error"
-                                                                                                  ]
+                                                                                                Ty.path
+                                                                                                  "substrate_bn::groups::Error"
                                                                                               ]
                                                                                               (Ty.path
                                                                                                 "revm_precompile::interface::PrecompileError")
@@ -6141,16 +5968,8 @@ Module bn128.
                                                                                                     ] =>
                                                                                                   ltac:(M.monadic
                                                                                                     (M.match_operator (|
-                                                                                                      Ty.function
-                                                                                                        [
-                                                                                                          Ty.tuple
-                                                                                                            [
-                                                                                                              Ty.path
-                                                                                                                "substrate_bn::groups::Error"
-                                                                                                            ]
-                                                                                                        ]
-                                                                                                        (Ty.path
-                                                                                                          "revm_precompile::interface::PrecompileError"),
+                                                                                                      Ty.path
+                                                                                                        "revm_precompile::interface::PrecompileError",
                                                                                                       M.alloc (|
                                                                                                         Ty.path
                                                                                                           "substrate_bn::groups::Error",

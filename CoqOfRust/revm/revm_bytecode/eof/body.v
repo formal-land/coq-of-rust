@@ -2186,7 +2186,7 @@ Module eof.
                         [
                           Ty.path "alloy_primitives::bytes_::Bytes";
                           Ty.function
-                            [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ] ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ]
                             (Ty.path "alloy_primitives::bytes_::Bytes")
                         ]
                       |),
@@ -2246,9 +2246,7 @@ Module eof.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
-                                    Ty.function
-                                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ] ]
-                                      (Ty.path "alloy_primitives::bytes_::Bytes"),
+                                    Ty.path "alloy_primitives::bytes_::Bytes",
                                     M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], α0 |),
                                     [
                                       fun γ =>
@@ -2446,7 +2444,7 @@ Module eof.
                             [
                               Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "usize" ];
                               Ty.function
-                                [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ] ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ]
                                 (Ty.path "u16")
                             ],
                           [],
@@ -2468,7 +2466,7 @@ Module eof.
                               [
                                 Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "usize" ];
                                 Ty.function
-                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ]
                                   (Ty.path "u16")
                               ],
                             M.get_trait_method (|
@@ -2481,7 +2479,7 @@ Module eof.
                               [
                                 Ty.path "u16";
                                 Ty.function
-                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ] ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ]
                                   (Ty.path "u16")
                               ]
                             |),
@@ -2537,12 +2535,7 @@ Module eof.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ]
-                                            ]
-                                            (Ty.path "u16"),
+                                          Ty.path "u16",
                                           M.alloc (|
                                             Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
                                             α0
@@ -2608,13 +2601,10 @@ Module eof.
                                 [ Ty.path "alloy_primitives::bytes_::Bytes" ];
                               Ty.function
                                 [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.path "alloy_primitives::bytes_::Bytes" ]
-                                    ]
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "alloy_primitives::bytes_::Bytes" ]
                                 ]
                                 (Ty.path "u16")
                             ],
@@ -2641,13 +2631,10 @@ Module eof.
                                   [ Ty.path "alloy_primitives::bytes_::Bytes" ];
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.path "alloy_primitives::bytes_::Bytes" ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "alloy_primitives::bytes_::Bytes" ]
                                   ]
                                   (Ty.path "u16")
                               ],
@@ -2665,13 +2652,10 @@ Module eof.
                                 Ty.path "u16";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.path "alloy_primitives::bytes_::Bytes" ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "alloy_primitives::bytes_::Bytes" ]
                                   ]
                                   (Ty.path "u16")
                               ]
@@ -2742,17 +2726,7 @@ Module eof.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.path "alloy_primitives::bytes_::Bytes" ]
-                                                ]
-                                            ]
-                                            (Ty.path "u16"),
+                                          Ty.path "u16",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -2914,13 +2888,10 @@ Module eof.
                                 [ Ty.path "alloy_primitives::bytes_::Bytes" ];
                               Ty.function
                                 [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.path "alloy_primitives::bytes_::Bytes" ]
-                                    ]
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "alloy_primitives::bytes_::Bytes" ]
                                 ]
                                 (Ty.path "usize")
                             ],
@@ -2942,13 +2913,10 @@ Module eof.
                                   [ Ty.path "alloy_primitives::bytes_::Bytes" ];
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.path "alloy_primitives::bytes_::Bytes" ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "alloy_primitives::bytes_::Bytes" ]
                                   ]
                                   (Ty.path "usize")
                               ],
@@ -2966,13 +2934,10 @@ Module eof.
                                 Ty.path "usize";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.path "alloy_primitives::bytes_::Bytes" ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "alloy_primitives::bytes_::Bytes" ]
                                   ]
                                   (Ty.path "usize")
                               ]
@@ -3043,17 +3008,7 @@ Module eof.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.path "alloy_primitives::bytes_::Bytes" ]
-                                                ]
-                                            ]
-                                            (Ty.path "usize"),
+                                          Ty.path "usize",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -4843,7 +4798,7 @@ Module eof.
                                 [
                                   Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u16" ];
                                   Ty.function
-                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ] ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
                                     (Ty.path "usize")
                                 ],
                               M.call_closure (|
@@ -4856,7 +4811,7 @@ Module eof.
                                       []
                                       [ Ty.path "u16" ];
                                     Ty.function
-                                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ] ]
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
                                       (Ty.path "usize")
                                   ],
                                 M.get_trait_method (|
@@ -4870,7 +4825,7 @@ Module eof.
                                         []
                                         [ Ty.path "u16" ];
                                       Ty.function
-                                        [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ] ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
                                         (Ty.path "usize")
                                     ],
                                   [],
@@ -4890,8 +4845,7 @@ Module eof.
                                           []
                                           [ Ty.path "u16" ];
                                         Ty.function
-                                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
-                                          ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
                                           (Ty.path "usize")
                                       ],
                                     M.get_trait_method (|
@@ -4907,8 +4861,7 @@ Module eof.
                                       [
                                         Ty.path "usize";
                                         Ty.function
-                                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
-                                          ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
                                           (Ty.path "usize")
                                       ]
                                     |),
@@ -4969,17 +4922,7 @@ Module eof.
                                             | [ α0 ] =>
                                               ltac:(M.monadic
                                                 (M.match_operator (|
-                                                  Ty.function
-                                                    [
-                                                      Ty.tuple
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "&")
-                                                            []
-                                                            [ Ty.path "u16" ]
-                                                        ]
-                                                    ]
-                                                    (Ty.path "usize"),
+                                                  Ty.path "usize",
                                                   M.alloc (|
                                                     Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
                                                     α0
@@ -5023,10 +4966,7 @@ Module eof.
                                             []
                                             [ Ty.path "u16" ];
                                           Ty.function
-                                            [
-                                              Ty.tuple
-                                                [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
-                                            ]
+                                            [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
                                             (Ty.path "usize")
                                         ],
                                       γ
@@ -5060,13 +5000,10 @@ Module eof.
                                                         [ Ty.path "u16" ];
                                                       Ty.function
                                                         [
-                                                          Ty.tuple
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "&")
-                                                                []
-                                                                [ Ty.path "u16" ]
-                                                            ]
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [ Ty.path "u16" ]
                                                         ]
                                                         (Ty.path "usize")
                                                     ],
@@ -5224,7 +5161,7 @@ Module eof.
                                 [
                                   Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u16" ];
                                   Ty.function
-                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ] ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
                                     (Ty.path "usize")
                                 ],
                               M.call_closure (|
@@ -5237,7 +5174,7 @@ Module eof.
                                       []
                                       [ Ty.path "u16" ];
                                     Ty.function
-                                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ] ]
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
                                       (Ty.path "usize")
                                   ],
                                 M.get_trait_method (|
@@ -5251,7 +5188,7 @@ Module eof.
                                         []
                                         [ Ty.path "u16" ];
                                       Ty.function
-                                        [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ] ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
                                         (Ty.path "usize")
                                     ],
                                   [],
@@ -5271,8 +5208,7 @@ Module eof.
                                           []
                                           [ Ty.path "u16" ];
                                         Ty.function
-                                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
-                                          ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
                                           (Ty.path "usize")
                                       ],
                                     M.get_trait_method (|
@@ -5288,8 +5224,7 @@ Module eof.
                                       [
                                         Ty.path "usize";
                                         Ty.function
-                                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
-                                          ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
                                           (Ty.path "usize")
                                       ]
                                     |),
@@ -5350,17 +5285,7 @@ Module eof.
                                             | [ α0 ] =>
                                               ltac:(M.monadic
                                                 (M.match_operator (|
-                                                  Ty.function
-                                                    [
-                                                      Ty.tuple
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "&")
-                                                            []
-                                                            [ Ty.path "u16" ]
-                                                        ]
-                                                    ]
-                                                    (Ty.path "usize"),
+                                                  Ty.path "usize",
                                                   M.alloc (|
                                                     Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
                                                     α0
@@ -5404,10 +5329,7 @@ Module eof.
                                             []
                                             [ Ty.path "u16" ];
                                           Ty.function
-                                            [
-                                              Ty.tuple
-                                                [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
-                                            ]
+                                            [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
                                             (Ty.path "usize")
                                         ],
                                       γ
@@ -5441,13 +5363,10 @@ Module eof.
                                                         [ Ty.path "u16" ];
                                                       Ty.function
                                                         [
-                                                          Ty.tuple
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "&")
-                                                                []
-                                                                [ Ty.path "u16" ]
-                                                            ]
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [ Ty.path "u16" ]
                                                         ]
                                                         (Ty.path "usize")
                                                     ],

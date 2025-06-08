@@ -432,9 +432,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                   M.get_function (|
                                                     "std::thread::spawn",
                                                     [],
-                                                    [
-                                                      Ty.function [ Ty.tuple [] ] (Ty.path "u32");
-                                                      Ty.path "u32"
+                                                    [ Ty.function [] (Ty.path "u32"); Ty.path "u32"
                                                     ]
                                                   |),
                                                   [
@@ -445,9 +443,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                           | [ α0 ] =>
                                                             ltac:(M.monadic
                                                               (M.match_operator (|
-                                                                Ty.function
-                                                                  [ Ty.tuple [] ]
-                                                                  (Ty.path "u32"),
+                                                                Ty.path "u32",
                                                                 M.alloc (| Ty.tuple [], α0 |),
                                                                 [
                                                                   fun γ =>
@@ -467,12 +463,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                   Ty.path
                                                                                     "core::str::iter::Chars";
                                                                                   Ty.function
-                                                                                    [
-                                                                                      Ty.tuple
-                                                                                        [
-                                                                                          Ty.path
-                                                                                            "char"
-                                                                                        ]
+                                                                                    [ Ty.path "char"
                                                                                     ]
                                                                                     (Ty.path "u32")
                                                                                 ],
@@ -493,11 +484,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                       "core::str::iter::Chars";
                                                                                     Ty.function
                                                                                       [
-                                                                                        Ty.tuple
-                                                                                          [
-                                                                                            Ty.path
-                                                                                              "char"
-                                                                                          ]
+                                                                                        Ty.path
+                                                                                          "char"
                                                                                       ]
                                                                                       (Ty.path
                                                                                         "u32")
@@ -514,11 +502,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                     Ty.path "u32";
                                                                                     Ty.function
                                                                                       [
-                                                                                        Ty.tuple
-                                                                                          [
-                                                                                            Ty.path
-                                                                                              "char"
-                                                                                          ]
+                                                                                        Ty.path
+                                                                                          "char"
                                                                                       ]
                                                                                       (Ty.path
                                                                                         "u32")
@@ -552,16 +537,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                         | [ α0 ] =>
                                                                                           ltac:(M.monadic
                                                                                             (M.match_operator (|
-                                                                                              Ty.function
-                                                                                                [
-                                                                                                  Ty.tuple
-                                                                                                    [
-                                                                                                      Ty.path
-                                                                                                        "char"
-                                                                                                    ]
-                                                                                                ]
-                                                                                                (Ty.path
-                                                                                                  "u32"),
+                                                                                              Ty.path
+                                                                                                "u32",
                                                                                               M.alloc (|
                                                                                                 Ty.path
                                                                                                   "char",
@@ -833,8 +810,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       Ty.path "alloc::alloc::Global"
                     ];
                   Ty.function
-                    [ Ty.tuple [ Ty.apply (Ty.path "std::thread::JoinHandle") [] [ Ty.path "u32" ] ]
-                    ]
+                    [ Ty.apply (Ty.path "std::thread::JoinHandle") [] [ Ty.path "u32" ] ]
                     (Ty.path "u32")
                 ],
               [],
@@ -857,10 +833,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         Ty.path "alloc::alloc::Global"
                       ];
                     Ty.function
-                      [
-                        Ty.tuple
-                          [ Ty.apply (Ty.path "std::thread::JoinHandle") [] [ Ty.path "u32" ] ]
-                      ]
+                      [ Ty.apply (Ty.path "std::thread::JoinHandle") [] [ Ty.path "u32" ] ]
                       (Ty.path "u32")
                   ],
                 M.get_trait_method (|
@@ -879,10 +852,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   [
                     Ty.path "u32";
                     Ty.function
-                      [
-                        Ty.tuple
-                          [ Ty.apply (Ty.path "std::thread::JoinHandle") [] [ Ty.path "u32" ] ]
-                      ]
+                      [ Ty.apply (Ty.path "std::thread::JoinHandle") [] [ Ty.path "u32" ] ]
                       (Ty.path "u32")
                   ]
                 |),
@@ -919,17 +889,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "std::thread::JoinHandle")
-                                        []
-                                        [ Ty.path "u32" ]
-                                    ]
-                                ]
-                                (Ty.path "u32"),
+                              Ty.path "u32",
                               M.alloc (|
                                 Ty.apply (Ty.path "std::thread::JoinHandle") [] [ Ty.path "u32" ],
                                 α0

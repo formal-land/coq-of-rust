@@ -31,7 +31,7 @@ Module extension.
                     [
                       Self;
                       Ty.function
-                        [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Self ] ] ]
+                        [ Ty.apply (Ty.path "&") [] [ Self ] ]
                         (Ty.apply (Ty.path "core::option::Option") [] [ Self ])
                     ]
                 ],
@@ -53,7 +53,7 @@ Module extension.
                       [
                         Self;
                         Ty.function
-                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Self ] ] ]
+                          [ Ty.apply (Ty.path "&") [] [ Self ] ]
                           (Ty.apply (Ty.path "core::option::Option") [] [ Self ])
                       ]
                   ],
@@ -65,7 +65,7 @@ Module extension.
                     [
                       Self;
                       Ty.function
-                        [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Self ] ] ]
+                        [ Ty.apply (Ty.path "&") [] [ Self ] ]
                         (Ty.apply (Ty.path "core::option::Option") [] [ Self ])
                     ],
                   [],
@@ -82,7 +82,7 @@ Module extension.
                       [
                         Self;
                         Ty.function
-                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Self ] ] ]
+                          [ Ty.apply (Ty.path "&") [] [ Self ] ]
                           (Ty.apply (Ty.path "core::option::Option") [] [ Self ])
                       ],
                     M.get_function (|
@@ -91,7 +91,7 @@ Module extension.
                       [
                         Self;
                         Ty.function
-                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Self ] ] ]
+                          [ Ty.apply (Ty.path "&") [] [ Self ] ]
                           (Ty.apply (Ty.path "core::option::Option") [] [ Self ])
                       ]
                     |),
@@ -108,9 +108,7 @@ Module extension.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Self ] ] ]
-                                    (Ty.apply (Ty.path "core::option::Option") [] [ Self ]),
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Self ],
                                   M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], α0 |),
                                   [
                                     fun γ =>

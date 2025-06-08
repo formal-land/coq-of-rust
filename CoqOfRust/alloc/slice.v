@@ -801,10 +801,7 @@ Module slice.
                   [
                     T;
                     Ty.function
-                      [
-                        Ty.tuple
-                          [ Ty.apply (Ty.path "&") [] [ T ]; Ty.apply (Ty.path "&") [] [ T ] ]
-                      ]
+                      [ Ty.apply (Ty.path "&") [] [ T ]; Ty.apply (Ty.path "&") [] [ T ] ]
                       (Ty.path "bool")
                   ]
                 |),
@@ -817,30 +814,14 @@ Module slice.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply (Ty.path "&") [] [ T ];
-                                      Ty.apply (Ty.path "&") [] [ T ]
-                                    ]
-                                ]
-                                (Ty.path "bool"),
+                              Ty.path "bool",
                               M.alloc (| Ty.apply (Ty.path "&") [] [ T ], α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| Ty.apply (Ty.path "&") [] [ T ], γ |) in
                                     M.match_operator (|
-                                      Ty.function
-                                        [
-                                          Ty.tuple
-                                            [
-                                              Ty.apply (Ty.path "&") [] [ T ];
-                                              Ty.apply (Ty.path "&") [] [ T ]
-                                            ]
-                                        ]
-                                        (Ty.path "bool"),
+                                      Ty.path "bool",
                                       M.alloc (| Ty.apply (Ty.path "&") [] [ T ], α1 |),
                                       [
                                         fun γ =>
@@ -959,10 +940,7 @@ Module slice.
                   [
                     T;
                     Ty.function
-                      [
-                        Ty.tuple
-                          [ Ty.apply (Ty.path "&") [] [ T ]; Ty.apply (Ty.path "&") [] [ T ] ]
-                      ]
+                      [ Ty.apply (Ty.path "&") [] [ T ]; Ty.apply (Ty.path "&") [] [ T ] ]
                       (Ty.path "bool")
                   ]
                 |),
@@ -975,30 +953,14 @@ Module slice.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply (Ty.path "&") [] [ T ];
-                                      Ty.apply (Ty.path "&") [] [ T ]
-                                    ]
-                                ]
-                                (Ty.path "bool"),
+                              Ty.path "bool",
                               M.alloc (| Ty.apply (Ty.path "&") [] [ T ], α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let a := M.copy (| Ty.apply (Ty.path "&") [] [ T ], γ |) in
                                     M.match_operator (|
-                                      Ty.function
-                                        [
-                                          Ty.tuple
-                                            [
-                                              Ty.apply (Ty.path "&") [] [ T ];
-                                              Ty.apply (Ty.path "&") [] [ T ]
-                                            ]
-                                        ]
-                                        (Ty.path "bool"),
+                                      Ty.path "bool",
                                       M.alloc (| Ty.apply (Ty.path "&") [] [ T ], α1 |),
                                       [
                                         fun γ =>
@@ -1288,7 +1250,7 @@ Module slice.
                                                   ]
                                               ];
                                             Ty.function
-                                              [ Ty.tuple [ Ty.tuple [ Ty.path "usize"; K ] ] ]
+                                              [ Ty.tuple [ Ty.path "usize"; K ] ]
                                               (Ty.tuple [ K; Ty.path "u32" ])
                                           ],
                                         [],
@@ -1328,7 +1290,7 @@ Module slice.
                                                     ]
                                                 ];
                                               Ty.function
-                                                [ Ty.tuple [ Ty.tuple [ Ty.path "usize"; K ] ] ]
+                                                [ Ty.tuple [ Ty.path "usize"; K ] ]
                                                 (Ty.tuple [ K; Ty.path "u32" ])
                                             ],
                                           M.get_trait_method (|
@@ -1355,7 +1317,7 @@ Module slice.
                                             [
                                               Ty.tuple [ K; Ty.path "u32" ];
                                               Ty.function
-                                                [ Ty.tuple [ Ty.tuple [ Ty.path "usize"; K ] ] ]
+                                                [ Ty.tuple [ Ty.path "usize"; K ] ]
                                                 (Ty.tuple [ K; Ty.path "u32" ])
                                             ]
                                           |),
@@ -1450,12 +1412,7 @@ Module slice.
                                                   | [ α0 ] =>
                                                     ltac:(M.monadic
                                                       (M.match_operator (|
-                                                        Ty.function
-                                                          [
-                                                            Ty.tuple
-                                                              [ Ty.tuple [ Ty.path "usize"; K ] ]
-                                                          ]
-                                                          (Ty.tuple [ K; Ty.path "u32" ]),
+                                                        Ty.tuple [ K; Ty.path "u32" ],
                                                         M.alloc (|
                                                           Ty.tuple [ Ty.path "usize"; K ],
                                                           α0
@@ -1971,7 +1928,7 @@ Module slice.
                                 [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ]; F ]
                             ];
                           Ty.function
-                            [ Ty.tuple [ Ty.tuple [ Ty.path "usize"; K ] ] ]
+                            [ Ty.tuple [ Ty.path "usize"; K ] ]
                             (Ty.tuple [ K; Ty.path "usize" ])
                         ],
                       [],
@@ -2001,7 +1958,7 @@ Module slice.
                                   [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ]; F ]
                               ];
                             Ty.function
-                              [ Ty.tuple [ Ty.tuple [ Ty.path "usize"; K ] ] ]
+                              [ Ty.tuple [ Ty.path "usize"; K ] ]
                               (Ty.tuple [ K; Ty.path "usize" ])
                           ],
                         M.get_trait_method (|
@@ -2022,7 +1979,7 @@ Module slice.
                           [
                             Ty.tuple [ K; Ty.path "usize" ];
                             Ty.function
-                              [ Ty.tuple [ Ty.tuple [ Ty.path "usize"; K ] ] ]
+                              [ Ty.tuple [ Ty.path "usize"; K ] ]
                               (Ty.tuple [ K; Ty.path "usize" ])
                           ]
                         |),
@@ -2092,9 +2049,7 @@ Module slice.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Ty.function
-                                        [ Ty.tuple [ Ty.tuple [ Ty.path "usize"; K ] ] ]
-                                        (Ty.tuple [ K; Ty.path "usize" ]),
+                                      Ty.tuple [ K; Ty.path "usize" ],
                                       M.alloc (| Ty.tuple [ Ty.path "usize"; K ], α0 |),
                                       [
                                         fun γ =>
@@ -3399,7 +3354,7 @@ Module slice.
                     []
                     [
                       Ty.apply (Ty.path "core::slice::iter::Iter") [] [ V ];
-                      Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ V ] ] ] (Ty.path "usize")
+                      Ty.function [ Ty.apply (Ty.path "&") [] [ V ] ] (Ty.path "usize")
                     ],
                   [],
                   [],
@@ -3414,9 +3369,7 @@ Module slice.
                       []
                       [
                         Ty.apply (Ty.path "core::slice::iter::Iter") [] [ V ];
-                        Ty.function
-                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ V ] ] ]
-                          (Ty.path "usize")
+                        Ty.function [ Ty.apply (Ty.path "&") [] [ V ] ] (Ty.path "usize")
                       ],
                     M.get_trait_method (|
                       "core::iter::traits::iterator::Iterator",
@@ -3427,9 +3380,7 @@ Module slice.
                       [],
                       [
                         Ty.path "usize";
-                        Ty.function
-                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ V ] ] ]
-                          (Ty.path "usize")
+                        Ty.function [ Ty.apply (Ty.path "&") [] [ V ] ] (Ty.path "usize")
                       ]
                     |),
                     [
@@ -3450,9 +3401,7 @@ Module slice.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ V ] ] ]
-                                    (Ty.path "usize"),
+                                  Ty.path "usize",
                                   M.alloc (| Ty.apply (Ty.path "&") [] [ V ], α0 |),
                                   [
                                     fun γ =>
@@ -3799,9 +3748,7 @@ Module slice.
                                 []
                                 [
                                   Ty.apply (Ty.path "core::slice::iter::Iter") [] [ V ];
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ V ] ] ]
-                                    (Ty.path "usize")
+                                  Ty.function [ Ty.apply (Ty.path "&") [] [ V ] ] (Ty.path "usize")
                                 ],
                               [],
                               [],
@@ -3817,7 +3764,7 @@ Module slice.
                                   [
                                     Ty.apply (Ty.path "core::slice::iter::Iter") [] [ V ];
                                     Ty.function
-                                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ V ] ] ]
+                                      [ Ty.apply (Ty.path "&") [] [ V ] ]
                                       (Ty.path "usize")
                                   ],
                                 M.get_trait_method (|
@@ -3830,7 +3777,7 @@ Module slice.
                                   [
                                     Ty.path "usize";
                                     Ty.function
-                                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ V ] ] ]
+                                      [ Ty.apply (Ty.path "&") [] [ V ] ]
                                       (Ty.path "usize")
                                   ]
                                 |),
@@ -3857,9 +3804,7 @@ Module slice.
                                         | [ α0 ] =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
-                                              Ty.function
-                                                [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ V ] ] ]
-                                                (Ty.path "usize"),
+                                              Ty.path "usize",
                                               M.alloc (| Ty.apply (Ty.path "&") [] [ V ], α0 |),
                                               [
                                                 fun γ =>
@@ -4320,9 +4265,7 @@ Module slice.
                             []
                             [
                               Ty.apply (Ty.path "core::slice::iter::Iter") [] [ V ];
-                              Ty.function
-                                [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ V ] ] ]
-                                (Ty.path "usize")
+                              Ty.function [ Ty.apply (Ty.path "&") [] [ V ] ] (Ty.path "usize")
                             ],
                           [],
                           [],
@@ -4337,9 +4280,7 @@ Module slice.
                               []
                               [
                                 Ty.apply (Ty.path "core::slice::iter::Iter") [] [ V ];
-                                Ty.function
-                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ V ] ] ]
-                                  (Ty.path "usize")
+                                Ty.function [ Ty.apply (Ty.path "&") [] [ V ] ] (Ty.path "usize")
                               ],
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
@@ -4350,9 +4291,7 @@ Module slice.
                               [],
                               [
                                 Ty.path "usize";
-                                Ty.function
-                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ V ] ] ]
-                                  (Ty.path "usize")
+                                Ty.function [ Ty.apply (Ty.path "&") [] [ V ] ] (Ty.path "usize")
                               ]
                             |),
                             [
@@ -4374,9 +4313,7 @@ Module slice.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ V ] ] ]
-                                            (Ty.path "usize"),
+                                          Ty.path "usize",
                                           M.alloc (| Ty.apply (Ty.path "&") [] [ V ], α0 |),
                                           [
                                             fun γ =>

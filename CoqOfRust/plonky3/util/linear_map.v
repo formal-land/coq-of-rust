@@ -213,7 +213,7 @@ Module linear_map.
               [
                 Ty.apply (Ty.path "&") [] [ V ];
                 Ty.function
-                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ] ] ]
+                  [ Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ] ]
                   (Ty.apply (Ty.path "&") [] [ V ])
               ]
             |),
@@ -233,13 +233,10 @@ Module linear_map.
                   [
                     Ty.function
                       [
-                        Ty.tuple
-                          [
-                            Ty.apply
-                              (Ty.path "&")
-                              []
-                              [ Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ] ]
-                          ]
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ] ]
                       ]
                       (Ty.path "bool")
                   ]
@@ -302,17 +299,7 @@ Module linear_map.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ] ]
-                                    ]
-                                ]
-                                (Ty.path "bool"),
+                              Ty.path "bool",
                               M.alloc (|
                                 Ty.apply
                                   (Ty.path "&")
@@ -357,9 +344,7 @@ Module linear_map.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ] ] ]
-                            (Ty.apply (Ty.path "&") [] [ V ]),
+                          Ty.apply (Ty.path "&") [] [ V ],
                           M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ], α0 |),
                           [
                             fun γ =>
@@ -415,7 +400,7 @@ Module linear_map.
               [
                 Ty.apply (Ty.path "&mut") [] [ V ];
                 Ty.function
-                  [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ Ty.tuple [ K; V ] ] ] ]
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.tuple [ K; V ] ] ]
                   (Ty.apply (Ty.path "&mut") [] [ V ])
               ]
             |),
@@ -435,13 +420,10 @@ Module linear_map.
                   [
                     Ty.function
                       [
-                        Ty.tuple
-                          [
-                            Ty.apply
-                              (Ty.path "&")
-                              []
-                              [ Ty.apply (Ty.path "&mut") [] [ Ty.tuple [ K; V ] ] ]
-                          ]
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "&mut") [] [ Ty.tuple [ K; V ] ] ]
                       ]
                       (Ty.path "bool")
                   ]
@@ -504,17 +486,7 @@ Module linear_map.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.apply (Ty.path "&mut") [] [ Ty.tuple [ K; V ] ] ]
-                                    ]
-                                ]
-                                (Ty.path "bool"),
+                              Ty.path "bool",
                               M.alloc (|
                                 Ty.apply
                                   (Ty.path "&")
@@ -559,9 +531,7 @@ Module linear_map.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ Ty.tuple [ K; V ] ] ] ]
-                            (Ty.apply (Ty.path "&mut") [] [ V ]),
+                          Ty.apply (Ty.path "&mut") [] [ V ],
                           M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.tuple [ K; V ] ], α0 |),
                           [
                             fun γ =>
@@ -756,7 +726,7 @@ Module linear_map.
                       [],
                       [
                         Ty.function
-                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ] ] ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ] ]
                           (Ty.path "bool")
                       ]
                     |),
@@ -818,9 +788,7 @@ Module linear_map.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ] ] ]
-                                    (Ty.path "bool"),
+                                  Ty.path "bool",
                                   M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ], α0 |),
                                   [
                                     fun γ =>
@@ -1095,7 +1063,7 @@ Module linear_map.
               [
                 Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.tuple [ K; V ] ];
                 Ty.function
-                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ] ] ]
+                  [ Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ] ]
                   (Ty.apply (Ty.path "&") [] [ V ])
               ],
             M.get_trait_method (|
@@ -1108,7 +1076,7 @@ Module linear_map.
               [
                 Ty.apply (Ty.path "&") [] [ V ];
                 Ty.function
-                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ] ] ]
+                  [ Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ] ]
                   (Ty.apply (Ty.path "&") [] [ V ])
               ]
             |),
@@ -1164,9 +1132,7 @@ Module linear_map.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ] ] ]
-                            (Ty.apply (Ty.path "&") [] [ V ]),
+                          Ty.apply (Ty.path "&") [] [ V ],
                           M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ], α0 |),
                           [
                             fun γ =>

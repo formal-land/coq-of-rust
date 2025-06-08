@@ -149,7 +149,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           Ty.path "alloc::alloc::Global"
                         ];
                       Ty.function
-                        [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] ]
+                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                         (Ty.apply
                           (Ty.path "core::result::Result")
                           []
@@ -199,7 +199,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Ty.path "alloc::alloc::Global"
                           ];
                         Ty.function
-                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                           (Ty.apply
                             (Ty.path "core::result::Result")
                             []
@@ -224,7 +224,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           []
                           [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ];
                         Ty.function
-                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                           (Ty.apply
                             (Ty.path "core::result::Result")
                             []
@@ -264,12 +264,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] ]
-                                    (Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]),
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
                                   M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], α0 |),
                                   [
                                     fun γ =>

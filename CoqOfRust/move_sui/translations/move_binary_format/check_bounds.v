@@ -11159,15 +11159,10 @@ Module check_bounds.
                                     Ty.path "usize";
                                     Ty.function
                                       [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [
-                                                Ty.path
-                                                  "move_binary_format::file_format::StructHandle"
-                                              ]
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.path "move_binary_format::file_format::StructHandle"
                                           ]
                                       ]
                                       (Ty.path "usize")
@@ -11267,20 +11262,7 @@ Module check_bounds.
                                         | [ α0 ] =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
-                                              Ty.function
-                                                [
-                                                  Ty.tuple
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "&")
-                                                        []
-                                                        [
-                                                          Ty.path
-                                                            "move_binary_format::file_format::StructHandle"
-                                                        ]
-                                                    ]
-                                                ]
-                                                (Ty.path "usize"),
+                                              Ty.path "usize",
                                               M.alloc (|
                                                 Ty.apply
                                                   (Ty.path "&")

@@ -306,17 +306,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                   [
                                                     Ty.function
                                                       [
-                                                        Ty.tuple
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
                                                           [
                                                             Ty.apply
                                                               (Ty.path "&")
                                                               []
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path "&")
-                                                                  []
-                                                                  [ Ty.path "i32" ]
-                                                              ]
+                                                              [ Ty.path "i32" ]
                                                           ]
                                                       ]
                                                       (Ty.path "bool")
@@ -331,22 +328,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                         | [ α0 ] =>
                                                           ltac:(M.monadic
                                                             (M.match_operator (|
-                                                              Ty.function
-                                                                [
-                                                                  Ty.tuple
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path "&")
-                                                                        []
-                                                                        [
-                                                                          Ty.apply
-                                                                            (Ty.path "&")
-                                                                            []
-                                                                            [ Ty.path "i32" ]
-                                                                        ]
-                                                                    ]
-                                                                ]
-                                                                (Ty.path "bool"),
+                                                              Ty.path "bool",
                                                               M.alloc (|
                                                                 Ty.apply
                                                                   (Ty.path "&")
@@ -489,14 +471,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                   [],
                                                   [
                                                     Ty.function
-                                                      [
-                                                        Ty.tuple
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "&")
-                                                              []
-                                                              [ Ty.path "i32" ]
-                                                          ]
+                                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ]
                                                       ]
                                                       (Ty.path "bool")
                                                   ]
@@ -510,17 +485,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                         | [ α0 ] =>
                                                           ltac:(M.monadic
                                                             (M.match_operator (|
-                                                              Ty.function
-                                                                [
-                                                                  Ty.tuple
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path "&")
-                                                                        []
-                                                                        [ Ty.path "i32" ]
-                                                                    ]
-                                                                ]
-                                                                (Ty.path "bool"),
+                                                              Ty.path "bool",
                                                               M.alloc (|
                                                                 Ty.apply
                                                                   (Ty.path "&")
@@ -673,17 +638,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                   [
                                                     Ty.function
                                                       [
-                                                        Ty.tuple
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
                                                           [
                                                             Ty.apply
                                                               (Ty.path "&")
                                                               []
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path "&")
-                                                                  []
-                                                                  [ Ty.path "i32" ]
-                                                              ]
+                                                              [ Ty.path "i32" ]
                                                           ]
                                                       ]
                                                       (Ty.path "bool")
@@ -729,22 +691,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                         | [ α0 ] =>
                                                           ltac:(M.monadic
                                                             (M.match_operator (|
-                                                              Ty.function
-                                                                [
-                                                                  Ty.tuple
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path "&")
-                                                                        []
-                                                                        [
-                                                                          Ty.apply
-                                                                            (Ty.path "&")
-                                                                            []
-                                                                            [ Ty.path "i32" ]
-                                                                        ]
-                                                                    ]
-                                                                ]
-                                                                (Ty.path "bool"),
+                                                              Ty.path "bool",
                                                               M.alloc (|
                                                                 Ty.apply
                                                                   (Ty.path "&")
@@ -887,17 +834,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                   [
                                                     Ty.function
                                                       [
-                                                        Ty.tuple
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
                                                           [
                                                             Ty.apply
                                                               (Ty.path "&")
                                                               []
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path "&")
-                                                                  []
-                                                                  [ Ty.path "i32" ]
-                                                              ]
+                                                              [ Ty.path "i32" ]
                                                           ]
                                                       ]
                                                       (Ty.path "bool")
@@ -945,22 +889,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                         | [ α0 ] =>
                                                           ltac:(M.monadic
                                                             (M.match_operator (|
-                                                              Ty.function
-                                                                [
-                                                                  Ty.tuple
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path "&")
-                                                                        []
-                                                                        [
-                                                                          Ty.apply
-                                                                            (Ty.path "&")
-                                                                            []
-                                                                            [ Ty.path "i32" ]
-                                                                        ]
-                                                                    ]
-                                                                ]
-                                                                (Ty.path "bool"),
+                                                              Ty.path "bool",
                                                               M.alloc (|
                                                                 Ty.apply
                                                                   (Ty.path "&")

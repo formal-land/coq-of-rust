@@ -3296,15 +3296,12 @@ Module boxed.
                         ];
                       Ty.function
                         [
-                          Ty.tuple
+                          Ty.apply
+                            (Ty.path "alloc::boxed::Box")
+                            []
                             [
-                              Ty.apply
-                                (Ty.path "alloc::boxed::Box")
-                                []
-                                [
-                                  Ty.dyn [ ("core::error::Error::Trait", []) ];
-                                  Ty.path "alloc::alloc::Global"
-                                ]
+                              Ty.dyn [ ("core::error::Error::Trait", []) ];
+                              Ty.path "alloc::alloc::Global"
                             ]
                         ]
                         (Ty.apply
@@ -3353,30 +3350,17 @@ Module boxed.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function
+                                Ty.apply
+                                  (Ty.path "alloc::boxed::Box")
+                                  []
                                   [
-                                    Ty.tuple
+                                    Ty.dyn
                                       [
-                                        Ty.apply
-                                          (Ty.path "alloc::boxed::Box")
-                                          []
-                                          [
-                                            Ty.dyn [ ("core::error::Error::Trait", []) ];
-                                            Ty.path "alloc::alloc::Global"
-                                          ]
-                                      ]
-                                  ]
-                                  (Ty.apply
-                                    (Ty.path "alloc::boxed::Box")
-                                    []
-                                    [
-                                      Ty.dyn
-                                        [
-                                          ("core::error::Error::Trait", []);
-                                          ("core::marker::Send::AutoTrait", [])
-                                        ];
-                                      Ty.path "alloc::alloc::Global"
-                                    ]),
+                                        ("core::error::Error::Trait", []);
+                                        ("core::marker::Send::AutoTrait", [])
+                                      ];
+                                    Ty.path "alloc::alloc::Global"
+                                  ],
                                 M.alloc (|
                                   Ty.apply
                                     (Ty.path "alloc::boxed::Box")
@@ -3579,15 +3563,12 @@ Module boxed.
                         ];
                       Ty.function
                         [
-                          Ty.tuple
+                          Ty.apply
+                            (Ty.path "alloc::boxed::Box")
+                            []
                             [
-                              Ty.apply
-                                (Ty.path "alloc::boxed::Box")
-                                []
-                                [
-                                  Ty.dyn [ ("core::error::Error::Trait", []) ];
-                                  Ty.path "alloc::alloc::Global"
-                                ]
+                              Ty.dyn [ ("core::error::Error::Trait", []) ];
+                              Ty.path "alloc::alloc::Global"
                             ]
                         ]
                         (Ty.apply
@@ -3637,31 +3618,18 @@ Module boxed.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function
+                                Ty.apply
+                                  (Ty.path "alloc::boxed::Box")
+                                  []
                                   [
-                                    Ty.tuple
+                                    Ty.dyn
                                       [
-                                        Ty.apply
-                                          (Ty.path "alloc::boxed::Box")
-                                          []
-                                          [
-                                            Ty.dyn [ ("core::error::Error::Trait", []) ];
-                                            Ty.path "alloc::alloc::Global"
-                                          ]
-                                      ]
-                                  ]
-                                  (Ty.apply
-                                    (Ty.path "alloc::boxed::Box")
-                                    []
-                                    [
-                                      Ty.dyn
-                                        [
-                                          ("core::error::Error::Trait", []);
-                                          ("core::marker::Sync::AutoTrait", []);
-                                          ("core::marker::Send::AutoTrait", [])
-                                        ];
-                                      Ty.path "alloc::alloc::Global"
-                                    ]),
+                                        ("core::error::Error::Trait", []);
+                                        ("core::marker::Sync::AutoTrait", []);
+                                        ("core::marker::Send::AutoTrait", [])
+                                      ];
+                                    Ty.path "alloc::alloc::Global"
+                                  ],
                                 M.alloc (|
                                   Ty.apply
                                     (Ty.path "alloc::boxed::Box")

@@ -1126,15 +1126,10 @@ Module eip7702.
                                       [ Ty.path "alloy_eip7702::auth_list::SignedAuthorization" ];
                                     Ty.function
                                       [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [
-                                                Ty.path
-                                                  "alloy_eip7702::auth_list::SignedAuthorization"
-                                              ]
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.path "alloy_eip7702::auth_list::SignedAuthorization"
                                           ]
                                       ]
                                       (Ty.path
@@ -1157,15 +1152,12 @@ Module eip7702.
                                         [ Ty.path "alloy_eip7702::auth_list::SignedAuthorization" ];
                                       Ty.function
                                         [
-                                          Ty.tuple
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
                                             [
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "alloy_eip7702::auth_list::SignedAuthorization"
-                                                ]
+                                              Ty.path
+                                                "alloy_eip7702::auth_list::SignedAuthorization"
                                             ]
                                         ]
                                         (Ty.path
@@ -1189,15 +1181,10 @@ Module eip7702.
                                       [ Ty.path "alloy_eip7702::auth_list::SignedAuthorization" ];
                                     Ty.function
                                       [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [
-                                                Ty.path
-                                                  "alloy_eip7702::auth_list::SignedAuthorization"
-                                              ]
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.path "alloy_eip7702::auth_list::SignedAuthorization"
                                           ]
                                       ]
                                       (Ty.path
@@ -1218,15 +1205,10 @@ Module eip7702.
                                       "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization";
                                     Ty.function
                                       [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [
-                                                Ty.path
-                                                  "alloy_eip7702::auth_list::SignedAuthorization"
-                                              ]
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.path "alloy_eip7702::auth_list::SignedAuthorization"
                                           ]
                                       ]
                                       (Ty.path
@@ -1299,21 +1281,8 @@ Module eip7702.
                                         | [ α0 ] =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
-                                              Ty.function
-                                                [
-                                                  Ty.tuple
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "&")
-                                                        []
-                                                        [
-                                                          Ty.path
-                                                            "alloy_eip7702::auth_list::SignedAuthorization"
-                                                        ]
-                                                    ]
-                                                ]
-                                                (Ty.path
-                                                  "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization"),
+                                              Ty.path
+                                                "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization",
                                               M.alloc (|
                                                 Ty.apply
                                                   (Ty.path "&")
@@ -1588,10 +1557,7 @@ Module eip7702.
                                     Ty.path "alloc::alloc::Global"
                                   ];
                                 Ty.function
-                                  [
-                                    Ty.tuple
-                                      [ Ty.path "alloy_eip7702::auth_list::SignedAuthorization" ]
-                                  ]
+                                  [ Ty.path "alloy_eip7702::auth_list::SignedAuthorization" ]
                                   (Ty.path
                                     "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization")
                               ],
@@ -1624,10 +1590,7 @@ Module eip7702.
                                       Ty.path "alloc::alloc::Global"
                                     ];
                                   Ty.function
-                                    [
-                                      Ty.tuple
-                                        [ Ty.path "alloy_eip7702::auth_list::SignedAuthorization" ]
-                                    ]
+                                    [ Ty.path "alloy_eip7702::auth_list::SignedAuthorization" ]
                                     (Ty.path
                                       "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization")
                                 ],
@@ -1648,10 +1611,7 @@ Module eip7702.
                                   Ty.path
                                     "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization";
                                   Ty.function
-                                    [
-                                      Ty.tuple
-                                        [ Ty.path "alloy_eip7702::auth_list::SignedAuthorization" ]
-                                    ]
+                                    [ Ty.path "alloy_eip7702::auth_list::SignedAuthorization" ]
                                     (Ty.path
                                       "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization")
                                 ]
@@ -1689,16 +1649,8 @@ Module eip7702.
                                       | [ α0 ] =>
                                         ltac:(M.monadic
                                           (M.match_operator (|
-                                            Ty.function
-                                              [
-                                                Ty.tuple
-                                                  [
-                                                    Ty.path
-                                                      "alloy_eip7702::auth_list::SignedAuthorization"
-                                                  ]
-                                              ]
-                                              (Ty.path
-                                                "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization"),
+                                            Ty.path
+                                              "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization",
                                             M.alloc (|
                                               Ty.path
                                                 "alloy_eip7702::auth_list::SignedAuthorization",

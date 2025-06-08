@@ -1397,11 +1397,8 @@ Module interpreter.
                   Ty.path "usize";
                   Ty.function
                     [
-                      Ty.tuple
-                        [
-                          Ty.path
-                            "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame"
-                        ]
+                      Ty.path
+                        "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame"
                     ]
                     (Ty.path "usize")
                 ]
@@ -1446,15 +1443,7 @@ Module interpreter.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.path
-                                      "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame"
-                                  ]
-                              ]
-                              (Ty.path "usize"),
+                            Ty.path "usize",
                             M.alloc (|
                               Ty.path
                                 "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame",

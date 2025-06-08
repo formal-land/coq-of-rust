@@ -4564,7 +4564,7 @@ Module runtime_value.
                                   Ty.path "alloc::alloc::Global"
                                 ];
                               Ty.function
-                                [ Ty.tuple [ Ty.path "move_core_types::runtime_value::MoveValue" ] ]
+                                [ Ty.path "move_core_types::runtime_value::MoveValue" ]
                                 (Ty.path "move_core_types::annotated_value::MoveValue")
                             ],
                           [],
@@ -4595,8 +4595,7 @@ Module runtime_value.
                                     Ty.path "alloc::alloc::Global"
                                   ];
                                 Ty.function
-                                  [ Ty.tuple [ Ty.path "move_core_types::runtime_value::MoveValue" ]
-                                  ]
+                                  [ Ty.path "move_core_types::runtime_value::MoveValue" ]
                                   (Ty.path "move_core_types::annotated_value::MoveValue")
                               ],
                             M.get_trait_method (|
@@ -4615,8 +4614,7 @@ Module runtime_value.
                               [
                                 Ty.path "move_core_types::annotated_value::MoveValue";
                                 Ty.function
-                                  [ Ty.tuple [ Ty.path "move_core_types::runtime_value::MoveValue" ]
-                                  ]
+                                  [ Ty.path "move_core_types::runtime_value::MoveValue" ]
                                   (Ty.path "move_core_types::annotated_value::MoveValue")
                               ]
                             |),
@@ -4653,15 +4651,7 @@ Module runtime_value.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.path
-                                                    "move_core_types::runtime_value::MoveValue"
-                                                ]
-                                            ]
-                                            (Ty.path "move_core_types::annotated_value::MoveValue"),
+                                          Ty.path "move_core_types::annotated_value::MoveValue",
                                           M.alloc (|
                                             Ty.path "move_core_types::runtime_value::MoveValue",
                                             α0
@@ -4939,13 +4929,10 @@ Module runtime_value.
                   "IntoIter";
                 Ty.function
                   [
-                    Ty.tuple
-                      [
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [ Ty.path "move_core_types::runtime_value::MoveValue" ]
-                      ]
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.path "move_core_types::runtime_value::MoveValue" ]
                   ]
                   (Ty.apply
                     (Ty.path "alloc::vec::Vec")
@@ -4983,13 +4970,10 @@ Module runtime_value.
                     "IntoIter";
                   Ty.function
                     [
-                      Ty.tuple
-                        [
-                          Ty.apply
-                            (Ty.path "&")
-                            []
-                            [ Ty.path "move_core_types::runtime_value::MoveValue" ]
-                        ]
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.path "move_core_types::runtime_value::MoveValue" ]
                     ]
                     (Ty.apply
                       (Ty.path "alloc::vec::Vec")
@@ -5015,13 +4999,10 @@ Module runtime_value.
                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ];
                   Ty.function
                     [
-                      Ty.tuple
-                        [
-                          Ty.apply
-                            (Ty.path "&")
-                            []
-                            [ Ty.path "move_core_types::runtime_value::MoveValue" ]
-                        ]
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.path "move_core_types::runtime_value::MoveValue" ]
                     ]
                     (Ty.apply
                       (Ty.path "alloc::vec::Vec")
@@ -5055,20 +5036,10 @@ Module runtime_value.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [ Ty.path "move_core_types::runtime_value::MoveValue" ]
-                                  ]
-                              ]
-                              (Ty.apply
-                                (Ty.path "alloc::vec::Vec")
-                                []
-                                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]),
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                             M.alloc (|
                               Ty.apply
                                 (Ty.path "&")
@@ -5528,17 +5499,13 @@ Module runtime_value.
                                           [
                                             Ty.tuple
                                               [
-                                                Ty.tuple
+                                                Ty.path "move_core_types::runtime_value::MoveValue";
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
                                                   [
                                                     Ty.path
-                                                      "move_core_types::runtime_value::MoveValue";
-                                                    Ty.apply
-                                                      (Ty.path "&")
-                                                      []
-                                                      [
-                                                        Ty.path
-                                                          "move_core_types::annotated_value::MoveFieldLayout"
-                                                      ]
+                                                      "move_core_types::annotated_value::MoveFieldLayout"
                                                   ]
                                               ]
                                           ]
@@ -5596,17 +5563,14 @@ Module runtime_value.
                                             [
                                               Ty.tuple
                                                 [
-                                                  Ty.tuple
+                                                  Ty.path
+                                                    "move_core_types::runtime_value::MoveValue";
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
                                                     [
                                                       Ty.path
-                                                        "move_core_types::runtime_value::MoveValue";
-                                                      Ty.apply
-                                                        (Ty.path "&")
-                                                        []
-                                                        [
-                                                          Ty.path
-                                                            "move_core_types::annotated_value::MoveFieldLayout"
-                                                        ]
+                                                        "move_core_types::annotated_value::MoveFieldLayout"
                                                     ]
                                                 ]
                                             ]
@@ -5652,17 +5616,14 @@ Module runtime_value.
                                             [
                                               Ty.tuple
                                                 [
-                                                  Ty.tuple
+                                                  Ty.path
+                                                    "move_core_types::runtime_value::MoveValue";
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
                                                     [
                                                       Ty.path
-                                                        "move_core_types::runtime_value::MoveValue";
-                                                      Ty.apply
-                                                        (Ty.path "&")
-                                                        []
-                                                        [
-                                                          Ty.path
-                                                            "move_core_types::annotated_value::MoveFieldLayout"
-                                                        ]
+                                                        "move_core_types::annotated_value::MoveFieldLayout"
                                                     ]
                                                 ]
                                             ]
@@ -5763,31 +5724,13 @@ Module runtime_value.
                                               | [ α0 ] =>
                                                 ltac:(M.monadic
                                                   (M.match_operator (|
-                                                    Ty.function
+                                                    Ty.tuple
                                                       [
-                                                        Ty.tuple
-                                                          [
-                                                            Ty.tuple
-                                                              [
-                                                                Ty.path
-                                                                  "move_core_types::runtime_value::MoveValue";
-                                                                Ty.apply
-                                                                  (Ty.path "&")
-                                                                  []
-                                                                  [
-                                                                    Ty.path
-                                                                      "move_core_types::annotated_value::MoveFieldLayout"
-                                                                  ]
-                                                              ]
-                                                          ]
-                                                      ]
-                                                      (Ty.tuple
-                                                        [
-                                                          Ty.path
-                                                            "move_core_types::identifier::Identifier";
-                                                          Ty.path
-                                                            "move_core_types::annotated_value::MoveValue"
-                                                        ]),
+                                                        Ty.path
+                                                          "move_core_types::identifier::Identifier";
+                                                        Ty.path
+                                                          "move_core_types::annotated_value::MoveValue"
+                                                      ],
                                                     M.alloc (|
                                                       Ty.tuple
                                                         [

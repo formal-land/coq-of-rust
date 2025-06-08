@@ -948,11 +948,7 @@ Module num.
                 [],
                 "all",
                 [],
-                [
-                  Ty.function
-                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
-                    (Ty.path "bool")
-                ]
+                [ Ty.function [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] (Ty.path "bool") ]
               |),
               [
                 M.borrow (|
@@ -997,9 +993,7 @@ Module num.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
-                              (Ty.path "bool"),
+                            Ty.path "bool",
                             M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u32" ], α0 |),
                             [
                               fun γ =>
@@ -1075,11 +1069,7 @@ Module num.
                     [],
                     "rposition",
                     [],
-                    [
-                      Ty.function
-                        [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
-                        (Ty.path "bool")
-                    ]
+                    [ Ty.function [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] (Ty.path "bool") ]
                   |),
                   [
                     M.borrow (|
@@ -1105,9 +1095,7 @@ Module num.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function
-                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
-                                  (Ty.path "bool"),
+                                Ty.path "bool",
                                 M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u32" ], α0 |),
                                 [
                                   fun γ =>
@@ -2823,13 +2811,10 @@ Module num.
                                                     [
                                                       Ty.function
                                                         [
-                                                          Ty.tuple
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "&")
-                                                                []
-                                                                [ Ty.path "u32" ]
-                                                            ]
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [ Ty.path "u32" ]
                                                         ]
                                                         (Ty.path "bool")
                                                     ]
@@ -2935,17 +2920,7 @@ Module num.
                                                           | [ α0 ] =>
                                                             ltac:(M.monadic
                                                               (M.match_operator (|
-                                                                Ty.function
-                                                                  [
-                                                                    Ty.tuple
-                                                                      [
-                                                                        Ty.apply
-                                                                          (Ty.path "&")
-                                                                          []
-                                                                          [ Ty.path "u32" ]
-                                                                      ]
-                                                                  ]
-                                                                  (Ty.path "bool"),
+                                                                Ty.path "bool",
                                                                 M.alloc (|
                                                                   Ty.apply
                                                                     (Ty.path "&")
@@ -5740,15 +5715,7 @@ Module num.
                                                 [],
                                                 [
                                                   Ty.function
-                                                    [
-                                                      Ty.tuple
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "&")
-                                                            []
-                                                            [ Ty.path "u32" ]
-                                                        ]
-                                                    ]
+                                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ]
                                                     (Ty.path "bool")
                                                 ]
                                               |),
@@ -5850,17 +5817,7 @@ Module num.
                                                       | [ α0 ] =>
                                                         ltac:(M.monadic
                                                           (M.match_operator (|
-                                                            Ty.function
-                                                              [
-                                                                Ty.tuple
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path "&")
-                                                                      []
-                                                                      [ Ty.path "u32" ]
-                                                                  ]
-                                                              ]
-                                                              (Ty.path "bool"),
+                                                            Ty.path "bool",
                                                             M.alloc (|
                                                               Ty.apply
                                                                 (Ty.path "&")
@@ -5953,15 +5910,7 @@ Module num.
                                                 [],
                                                 [
                                                   Ty.function
-                                                    [
-                                                      Ty.tuple
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "&")
-                                                            []
-                                                            [ Ty.path "u32" ]
-                                                        ]
-                                                    ]
+                                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ]
                                                     (Ty.path "bool")
                                                 ]
                                               |),
@@ -6063,17 +6012,7 @@ Module num.
                                                       | [ α0 ] =>
                                                         ltac:(M.monadic
                                                           (M.match_operator (|
-                                                            Ty.function
-                                                              [
-                                                                Ty.tuple
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path "&")
-                                                                      []
-                                                                      [ Ty.path "u32" ]
-                                                                  ]
-                                                              ]
-                                                              (Ty.path "bool"),
+                                                            Ty.path "bool",
                                                             M.alloc (|
                                                               Ty.apply
                                                                 (Ty.path "&")
@@ -7976,11 +7915,7 @@ Module num.
                   [],
                   "all",
                   [],
-                  [
-                    Ty.function
-                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ] ]
-                      (Ty.path "bool")
-                  ]
+                  [ Ty.function [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ] (Ty.path "bool") ]
                 |),
                 [
                   M.borrow (|
@@ -8025,9 +7960,7 @@ Module num.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ] ]
-                                (Ty.path "bool"),
+                              Ty.path "bool",
                               M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u8" ], α0 |),
                               [
                                 fun γ =>
@@ -8104,10 +8037,7 @@ Module num.
                       [],
                       "rposition",
                       [],
-                      [
-                        Ty.function
-                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ] ]
-                          (Ty.path "bool")
+                      [ Ty.function [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ] (Ty.path "bool")
                       ]
                     |),
                     [
@@ -8134,9 +8064,7 @@ Module num.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ] ]
-                                    (Ty.path "bool"),
+                                  Ty.path "bool",
                                   M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u8" ], α0 |),
                                   [
                                     fun γ =>
@@ -9877,13 +9805,10 @@ Module num.
                                                       [
                                                         Ty.function
                                                           [
-                                                            Ty.tuple
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path "&")
-                                                                  []
-                                                                  [ Ty.path "u8" ]
-                                                              ]
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [ Ty.path "u8" ]
                                                           ]
                                                           (Ty.path "bool")
                                                       ]
@@ -9989,17 +9914,7 @@ Module num.
                                                             | [ α0 ] =>
                                                               ltac:(M.monadic
                                                                 (M.match_operator (|
-                                                                  Ty.function
-                                                                    [
-                                                                      Ty.tuple
-                                                                        [
-                                                                          Ty.apply
-                                                                            (Ty.path "&")
-                                                                            []
-                                                                            [ Ty.path "u8" ]
-                                                                        ]
-                                                                    ]
-                                                                    (Ty.path "bool"),
+                                                                  Ty.path "bool",
                                                                   M.alloc (|
                                                                     Ty.apply
                                                                       (Ty.path "&")
@@ -12855,15 +12770,7 @@ Module num.
                                                   [],
                                                   [
                                                     Ty.function
-                                                      [
-                                                        Ty.tuple
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "&")
-                                                              []
-                                                              [ Ty.path "u8" ]
-                                                          ]
-                                                      ]
+                                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
                                                       (Ty.path "bool")
                                                   ]
                                                 |),
@@ -12965,17 +12872,7 @@ Module num.
                                                         | [ α0 ] =>
                                                           ltac:(M.monadic
                                                             (M.match_operator (|
-                                                              Ty.function
-                                                                [
-                                                                  Ty.tuple
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path "&")
-                                                                        []
-                                                                        [ Ty.path "u8" ]
-                                                                    ]
-                                                                ]
-                                                                (Ty.path "bool"),
+                                                              Ty.path "bool",
                                                               M.alloc (|
                                                                 Ty.apply
                                                                   (Ty.path "&")
@@ -13072,15 +12969,7 @@ Module num.
                                                   [],
                                                   [
                                                     Ty.function
-                                                      [
-                                                        Ty.tuple
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "&")
-                                                              []
-                                                              [ Ty.path "u8" ]
-                                                          ]
-                                                      ]
+                                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
                                                       (Ty.path "bool")
                                                   ]
                                                 |),
@@ -13182,17 +13071,7 @@ Module num.
                                                         | [ α0 ] =>
                                                           ltac:(M.monadic
                                                             (M.match_operator (|
-                                                              Ty.function
-                                                                [
-                                                                  Ty.tuple
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path "&")
-                                                                        []
-                                                                        [ Ty.path "u8" ]
-                                                                    ]
-                                                                ]
-                                                                (Ty.path "bool"),
+                                                              Ty.path "bool",
                                                               M.alloc (|
                                                                 Ty.apply
                                                                   (Ty.path "&")

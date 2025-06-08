@@ -118,7 +118,7 @@ Module air.
                     [
                       Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
                       Ty.function
-                        [ Ty.tuple [ Ty.path "usize" ] ]
+                        [ Ty.path "usize" ]
                         (Ty.apply
                           (Ty.path "array")
                           [ Value.Integer IntegerKind.Usize 25 ]
@@ -149,7 +149,7 @@ Module air.
                       [
                         Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
                         Ty.function
-                          [ Ty.tuple [ Ty.path "usize" ] ]
+                          [ Ty.path "usize" ]
                           (Ty.apply
                             (Ty.path "array")
                             [ Value.Integer IntegerKind.Usize 25 ]
@@ -168,7 +168,7 @@ Module air.
                           [ Value.Integer IntegerKind.Usize 25 ]
                           [ Ty.path "u64" ];
                         Ty.function
-                          [ Ty.tuple [ Ty.path "usize" ] ]
+                          [ Ty.path "usize" ]
                           (Ty.apply
                             (Ty.path "array")
                             [ Value.Integer IntegerKind.Usize 25 ]
@@ -191,12 +191,10 @@ Module air.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.path "usize" ] ]
-                                    (Ty.apply
-                                      (Ty.path "array")
-                                      [ Value.Integer IntegerKind.Usize 25 ]
-                                      [ Ty.path "u64" ]),
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 25 ]
+                                    [ Ty.path "u64" ],
                                   M.alloc (| Ty.path "usize", α0 |),
                                   [
                                     fun γ =>
@@ -1232,11 +1230,8 @@ Module air.
                                                                                                       "Expr";
                                                                                                     Ty.function
                                                                                                       [
-                                                                                                        Ty.tuple
-                                                                                                          [
-                                                                                                            Ty.path
-                                                                                                              "usize"
-                                                                                                          ]
+                                                                                                        Ty.path
+                                                                                                          "usize"
                                                                                                       ]
                                                                                                       (Ty.associated_in_trait
                                                                                                         "p3_air::air::AirBuilder"
@@ -1259,20 +1254,12 @@ Module air.
                                                                                                             ] =>
                                                                                                           ltac:(M.monadic
                                                                                                             (M.match_operator (|
-                                                                                                              Ty.function
-                                                                                                                [
-                                                                                                                  Ty.tuple
-                                                                                                                    [
-                                                                                                                      Ty.path
-                                                                                                                        "usize"
-                                                                                                                    ]
-                                                                                                                ]
-                                                                                                                (Ty.associated_in_trait
-                                                                                                                  "p3_air::air::AirBuilder"
-                                                                                                                  []
-                                                                                                                  []
-                                                                                                                  AB
-                                                                                                                  "Expr"),
+                                                                                                              Ty.associated_in_trait
+                                                                                                                "p3_air::air::AirBuilder"
+                                                                                                                []
+                                                                                                                []
+                                                                                                                AB
+                                                                                                                "Expr",
                                                                                                               M.alloc (|
                                                                                                                 Ty.path
                                                                                                                   "usize",
@@ -1862,11 +1849,8 @@ Module air.
                                                                                                       "Expr";
                                                                                                     Ty.function
                                                                                                       [
-                                                                                                        Ty.tuple
-                                                                                                          [
-                                                                                                            Ty.path
-                                                                                                              "usize"
-                                                                                                          ]
+                                                                                                        Ty.path
+                                                                                                          "usize"
                                                                                                       ]
                                                                                                       (Ty.associated_in_trait
                                                                                                         "p3_air::air::AirBuilder"
@@ -1889,20 +1873,12 @@ Module air.
                                                                                                             ] =>
                                                                                                           ltac:(M.monadic
                                                                                                             (M.match_operator (|
-                                                                                                              Ty.function
-                                                                                                                [
-                                                                                                                  Ty.tuple
-                                                                                                                    [
-                                                                                                                      Ty.path
-                                                                                                                        "usize"
-                                                                                                                    ]
-                                                                                                                ]
-                                                                                                                (Ty.associated_in_trait
-                                                                                                                  "p3_air::air::AirBuilder"
-                                                                                                                  []
-                                                                                                                  []
-                                                                                                                  AB
-                                                                                                                  "Expr"),
+                                                                                                              Ty.associated_in_trait
+                                                                                                                "p3_air::air::AirBuilder"
+                                                                                                                []
+                                                                                                                []
+                                                                                                                AB
+                                                                                                                "Expr",
                                                                                                               M.alloc (|
                                                                                                                 Ty.path
                                                                                                                   "usize",
@@ -2350,10 +2326,7 @@ Module air.
                                                                         AB
                                                                         "Expr";
                                                                       Ty.function
-                                                                        [
-                                                                          Ty.tuple
-                                                                            [ Ty.path "usize" ]
-                                                                        ]
+                                                                        [ Ty.path "usize" ]
                                                                         (Ty.associated_in_trait
                                                                           "p3_air::air::AirBuilder"
                                                                           []
@@ -2370,20 +2343,12 @@ Module air.
                                                                           | [ α0 ] =>
                                                                             ltac:(M.monadic
                                                                               (M.match_operator (|
-                                                                                Ty.function
-                                                                                  [
-                                                                                    Ty.tuple
-                                                                                      [
-                                                                                        Ty.path
-                                                                                          "usize"
-                                                                                      ]
-                                                                                  ]
-                                                                                  (Ty.associated_in_trait
-                                                                                    "p3_air::air::AirBuilder"
-                                                                                    []
-                                                                                    []
-                                                                                    AB
-                                                                                    "Expr"),
+                                                                                Ty.associated_in_trait
+                                                                                  "p3_air::air::AirBuilder"
+                                                                                  []
+                                                                                  []
+                                                                                  AB
+                                                                                  "Expr",
                                                                                 M.alloc (|
                                                                                   Ty.path "usize",
                                                                                   α0
@@ -3032,11 +2997,8 @@ Module air.
                                                                                               get_bit :
                                                                                             Ty.function
                                                                                               [
-                                                                                                Ty.tuple
-                                                                                                  [
-                                                                                                    Ty.path
-                                                                                                      "usize"
-                                                                                                  ]
+                                                                                                Ty.path
+                                                                                                  "usize"
                                                                                               ]
                                                                                               (Ty.associated_in_trait
                                                                                                 "p3_air::air::AirBuilder"
@@ -3056,20 +3018,12 @@ Module air.
                                                                                                     ] =>
                                                                                                   ltac:(M.monadic
                                                                                                     (M.match_operator (|
-                                                                                                      Ty.function
-                                                                                                        [
-                                                                                                          Ty.tuple
-                                                                                                            [
-                                                                                                              Ty.path
-                                                                                                                "usize"
-                                                                                                            ]
-                                                                                                        ]
-                                                                                                        (Ty.associated_in_trait
-                                                                                                          "p3_air::air::AirBuilder"
-                                                                                                          []
-                                                                                                          []
-                                                                                                          AB
-                                                                                                          "Expr"),
+                                                                                                      Ty.associated_in_trait
+                                                                                                        "p3_air::air::AirBuilder"
+                                                                                                        []
+                                                                                                        []
+                                                                                                        AB
+                                                                                                        "Expr",
                                                                                                       M.alloc (|
                                                                                                         Ty.path
                                                                                                           "usize",
@@ -3446,11 +3400,8 @@ Module air.
                                                                                                       "Expr";
                                                                                                     Ty.function
                                                                                                       [
-                                                                                                        Ty.tuple
-                                                                                                          [
-                                                                                                            Ty.path
-                                                                                                              "usize"
-                                                                                                          ]
+                                                                                                        Ty.path
+                                                                                                          "usize"
                                                                                                       ]
                                                                                                       (Ty.associated_in_trait
                                                                                                         "p3_air::air::AirBuilder"
@@ -3473,20 +3424,12 @@ Module air.
                                                                                                             ] =>
                                                                                                           ltac:(M.monadic
                                                                                                             (M.match_operator (|
-                                                                                                              Ty.function
-                                                                                                                [
-                                                                                                                  Ty.tuple
-                                                                                                                    [
-                                                                                                                      Ty.path
-                                                                                                                        "usize"
-                                                                                                                    ]
-                                                                                                                ]
-                                                                                                                (Ty.associated_in_trait
-                                                                                                                  "p3_air::air::AirBuilder"
-                                                                                                                  []
-                                                                                                                  []
-                                                                                                                  AB
-                                                                                                                  "Expr"),
+                                                                                                              Ty.associated_in_trait
+                                                                                                                "p3_air::air::AirBuilder"
+                                                                                                                []
+                                                                                                                []
+                                                                                                                AB
+                                                                                                                "Expr",
                                                                                                               M.alloc (|
                                                                                                                 Ty.path
                                                                                                                   "usize",
@@ -3548,17 +3491,14 @@ Module air.
                                                                                                                                 "Expr";
                                                                                                                               Ty.function
                                                                                                                                 [
-                                                                                                                                  Ty.tuple
-                                                                                                                                    [
-                                                                                                                                      Ty.associated_in_trait
-                                                                                                                                        "p3_air::air::AirBuilder"
-                                                                                                                                        []
-                                                                                                                                        []
-                                                                                                                                        AB
-                                                                                                                                        "Expr";
-                                                                                                                                      Ty.path
-                                                                                                                                        "usize"
-                                                                                                                                    ]
+                                                                                                                                  Ty.associated_in_trait
+                                                                                                                                    "p3_air::air::AirBuilder"
+                                                                                                                                    []
+                                                                                                                                    []
+                                                                                                                                    AB
+                                                                                                                                    "Expr";
+                                                                                                                                  Ty.path
+                                                                                                                                    "usize"
                                                                                                                                 ]
                                                                                                                                 (Ty.associated_in_trait
                                                                                                                                   "p3_air::air::AirBuilder"
@@ -3682,26 +3622,12 @@ Module air.
                                                                                                                                       ] =>
                                                                                                                                     ltac:(M.monadic
                                                                                                                                       (M.match_operator (|
-                                                                                                                                        Ty.function
-                                                                                                                                          [
-                                                                                                                                            Ty.tuple
-                                                                                                                                              [
-                                                                                                                                                Ty.associated_in_trait
-                                                                                                                                                  "p3_air::air::AirBuilder"
-                                                                                                                                                  []
-                                                                                                                                                  []
-                                                                                                                                                  AB
-                                                                                                                                                  "Expr";
-                                                                                                                                                Ty.path
-                                                                                                                                                  "usize"
-                                                                                                                                              ]
-                                                                                                                                          ]
-                                                                                                                                          (Ty.associated_in_trait
-                                                                                                                                            "p3_air::air::AirBuilder"
-                                                                                                                                            []
-                                                                                                                                            []
-                                                                                                                                            AB
-                                                                                                                                            "Expr"),
+                                                                                                                                        Ty.associated_in_trait
+                                                                                                                                          "p3_air::air::AirBuilder"
+                                                                                                                                          []
+                                                                                                                                          []
+                                                                                                                                          AB
+                                                                                                                                          "Expr",
                                                                                                                                         M.alloc (|
                                                                                                                                           Ty.associated_in_trait
                                                                                                                                             "p3_air::air::AirBuilder"
@@ -3727,26 +3653,12 @@ Module air.
                                                                                                                                                   γ
                                                                                                                                                 |) in
                                                                                                                                               M.match_operator (|
-                                                                                                                                                Ty.function
-                                                                                                                                                  [
-                                                                                                                                                    Ty.tuple
-                                                                                                                                                      [
-                                                                                                                                                        Ty.associated_in_trait
-                                                                                                                                                          "p3_air::air::AirBuilder"
-                                                                                                                                                          []
-                                                                                                                                                          []
-                                                                                                                                                          AB
-                                                                                                                                                          "Expr";
-                                                                                                                                                        Ty.path
-                                                                                                                                                          "usize"
-                                                                                                                                                      ]
-                                                                                                                                                  ]
-                                                                                                                                                  (Ty.associated_in_trait
-                                                                                                                                                    "p3_air::air::AirBuilder"
-                                                                                                                                                    []
-                                                                                                                                                    []
-                                                                                                                                                    AB
-                                                                                                                                                    "Expr"),
+                                                                                                                                                Ty.associated_in_trait
+                                                                                                                                                  "p3_air::air::AirBuilder"
+                                                                                                                                                  []
+                                                                                                                                                  []
+                                                                                                                                                  AB
+                                                                                                                                                  "Expr",
                                                                                                                                                 M.alloc (|
                                                                                                                                                   Ty.path
                                                                                                                                                     "usize",
@@ -3831,11 +3743,8 @@ Module air.
                                                                                                                                                               "core::ops::function::Fn",
                                                                                                                                                               Ty.function
                                                                                                                                                                 [
-                                                                                                                                                                  Ty.tuple
-                                                                                                                                                                    [
-                                                                                                                                                                      Ty.path
-                                                                                                                                                                        "usize"
-                                                                                                                                                                    ]
+                                                                                                                                                                  Ty.path
+                                                                                                                                                                    "usize"
                                                                                                                                                                 ]
                                                                                                                                                                 (Ty.associated_in_trait
                                                                                                                                                                   "p3_air::air::AirBuilder"
@@ -4199,10 +4108,7 @@ Module air.
                                                                         AB
                                                                         "Expr";
                                                                       Ty.function
-                                                                        [
-                                                                          Ty.tuple
-                                                                            [ Ty.path "usize" ]
-                                                                        ]
+                                                                        [ Ty.path "usize" ]
                                                                         (Ty.associated_in_trait
                                                                           "p3_air::air::AirBuilder"
                                                                           []
@@ -4219,20 +4125,12 @@ Module air.
                                                                           | [ α0 ] =>
                                                                             ltac:(M.monadic
                                                                               (M.match_operator (|
-                                                                                Ty.function
-                                                                                  [
-                                                                                    Ty.tuple
-                                                                                      [
-                                                                                        Ty.path
-                                                                                          "usize"
-                                                                                      ]
-                                                                                  ]
-                                                                                  (Ty.associated_in_trait
-                                                                                    "p3_air::air::AirBuilder"
-                                                                                    []
-                                                                                    []
-                                                                                    AB
-                                                                                    "Expr"),
+                                                                                Ty.associated_in_trait
+                                                                                  "p3_air::air::AirBuilder"
+                                                                                  []
+                                                                                  []
+                                                                                  AB
+                                                                                  "Expr",
                                                                                 M.alloc (|
                                                                                   Ty.path "usize",
                                                                                   α0
@@ -4278,11 +4176,8 @@ Module air.
                                                                                                     ];
                                                                                                   Ty.function
                                                                                                     [
-                                                                                                      Ty.tuple
-                                                                                                        [
-                                                                                                          Ty.path
-                                                                                                            "usize"
-                                                                                                        ]
+                                                                                                      Ty.path
+                                                                                                        "usize"
                                                                                                     ]
                                                                                                     (Ty.associated_in_trait
                                                                                                       "p3_air::air::AirBuilder"
@@ -4321,11 +4216,8 @@ Module air.
                                                                                                       ];
                                                                                                     Ty.function
                                                                                                       [
-                                                                                                        Ty.tuple
-                                                                                                          [
-                                                                                                            Ty.path
-                                                                                                              "usize"
-                                                                                                          ]
+                                                                                                        Ty.path
+                                                                                                          "usize"
                                                                                                       ]
                                                                                                       (Ty.associated_in_trait
                                                                                                         "p3_air::air::AirBuilder"
@@ -4357,11 +4249,8 @@ Module air.
                                                                                                       "Expr";
                                                                                                     Ty.function
                                                                                                       [
-                                                                                                        Ty.tuple
-                                                                                                          [
-                                                                                                            Ty.path
-                                                                                                              "usize"
-                                                                                                          ]
+                                                                                                        Ty.path
+                                                                                                          "usize"
                                                                                                       ]
                                                                                                       (Ty.associated_in_trait
                                                                                                         "p3_air::air::AirBuilder"
@@ -4401,20 +4290,12 @@ Module air.
                                                                                                             ] =>
                                                                                                           ltac:(M.monadic
                                                                                                             (M.match_operator (|
-                                                                                                              Ty.function
-                                                                                                                [
-                                                                                                                  Ty.tuple
-                                                                                                                    [
-                                                                                                                      Ty.path
-                                                                                                                        "usize"
-                                                                                                                    ]
-                                                                                                                ]
-                                                                                                                (Ty.associated_in_trait
-                                                                                                                  "p3_air::air::AirBuilder"
-                                                                                                                  []
-                                                                                                                  []
-                                                                                                                  AB
-                                                                                                                  "Expr"),
+                                                                                                              Ty.associated_in_trait
+                                                                                                                "p3_air::air::AirBuilder"
+                                                                                                                []
+                                                                                                                []
+                                                                                                                AB
+                                                                                                                "Expr",
                                                                                                               M.alloc (|
                                                                                                                 Ty.path
                                                                                                                   "usize",
@@ -5071,11 +4952,8 @@ Module air.
                                                                                               get_bit :
                                                                                             Ty.function
                                                                                               [
-                                                                                                Ty.tuple
-                                                                                                  [
-                                                                                                    Ty.path
-                                                                                                      "usize"
-                                                                                                  ]
+                                                                                                Ty.path
+                                                                                                  "usize"
                                                                                               ]
                                                                                               (Ty.associated_in_trait
                                                                                                 "p3_air::air::AirBuilder"
@@ -5095,20 +4973,12 @@ Module air.
                                                                                                     ] =>
                                                                                                   ltac:(M.monadic
                                                                                                     (M.match_operator (|
-                                                                                                      Ty.function
-                                                                                                        [
-                                                                                                          Ty.tuple
-                                                                                                            [
-                                                                                                              Ty.path
-                                                                                                                "usize"
-                                                                                                            ]
-                                                                                                        ]
-                                                                                                        (Ty.associated_in_trait
-                                                                                                          "p3_air::air::AirBuilder"
-                                                                                                          []
-                                                                                                          []
-                                                                                                          AB
-                                                                                                          "Expr"),
+                                                                                                      Ty.associated_in_trait
+                                                                                                        "p3_air::air::AirBuilder"
+                                                                                                        []
+                                                                                                        []
+                                                                                                        AB
+                                                                                                        "Expr",
                                                                                                       M.alloc (|
                                                                                                         Ty.path
                                                                                                           "usize",
@@ -5577,11 +5447,8 @@ Module air.
                                                                                                       "Expr";
                                                                                                     Ty.function
                                                                                                       [
-                                                                                                        Ty.tuple
-                                                                                                          [
-                                                                                                            Ty.path
-                                                                                                              "usize"
-                                                                                                          ]
+                                                                                                        Ty.path
+                                                                                                          "usize"
                                                                                                       ]
                                                                                                       (Ty.associated_in_trait
                                                                                                         "p3_air::air::AirBuilder"
@@ -5604,20 +5471,12 @@ Module air.
                                                                                                             ] =>
                                                                                                           ltac:(M.monadic
                                                                                                             (M.match_operator (|
-                                                                                                              Ty.function
-                                                                                                                [
-                                                                                                                  Ty.tuple
-                                                                                                                    [
-                                                                                                                      Ty.path
-                                                                                                                        "usize"
-                                                                                                                    ]
-                                                                                                                ]
-                                                                                                                (Ty.associated_in_trait
-                                                                                                                  "p3_air::air::AirBuilder"
-                                                                                                                  []
-                                                                                                                  []
-                                                                                                                  AB
-                                                                                                                  "Expr"),
+                                                                                                              Ty.associated_in_trait
+                                                                                                                "p3_air::air::AirBuilder"
+                                                                                                                []
+                                                                                                                []
+                                                                                                                AB
+                                                                                                                "Expr",
                                                                                                               M.alloc (|
                                                                                                                 Ty.path
                                                                                                                   "usize",
@@ -5679,17 +5538,14 @@ Module air.
                                                                                                                                 "Expr";
                                                                                                                               Ty.function
                                                                                                                                 [
-                                                                                                                                  Ty.tuple
-                                                                                                                                    [
-                                                                                                                                      Ty.associated_in_trait
-                                                                                                                                        "p3_air::air::AirBuilder"
-                                                                                                                                        []
-                                                                                                                                        []
-                                                                                                                                        AB
-                                                                                                                                        "Expr";
-                                                                                                                                      Ty.path
-                                                                                                                                        "usize"
-                                                                                                                                    ]
+                                                                                                                                  Ty.associated_in_trait
+                                                                                                                                    "p3_air::air::AirBuilder"
+                                                                                                                                    []
+                                                                                                                                    []
+                                                                                                                                    AB
+                                                                                                                                    "Expr";
+                                                                                                                                  Ty.path
+                                                                                                                                    "usize"
                                                                                                                                 ]
                                                                                                                                 (Ty.associated_in_trait
                                                                                                                                   "p3_air::air::AirBuilder"
@@ -5813,26 +5669,12 @@ Module air.
                                                                                                                                       ] =>
                                                                                                                                     ltac:(M.monadic
                                                                                                                                       (M.match_operator (|
-                                                                                                                                        Ty.function
-                                                                                                                                          [
-                                                                                                                                            Ty.tuple
-                                                                                                                                              [
-                                                                                                                                                Ty.associated_in_trait
-                                                                                                                                                  "p3_air::air::AirBuilder"
-                                                                                                                                                  []
-                                                                                                                                                  []
-                                                                                                                                                  AB
-                                                                                                                                                  "Expr";
-                                                                                                                                                Ty.path
-                                                                                                                                                  "usize"
-                                                                                                                                              ]
-                                                                                                                                          ]
-                                                                                                                                          (Ty.associated_in_trait
-                                                                                                                                            "p3_air::air::AirBuilder"
-                                                                                                                                            []
-                                                                                                                                            []
-                                                                                                                                            AB
-                                                                                                                                            "Expr"),
+                                                                                                                                        Ty.associated_in_trait
+                                                                                                                                          "p3_air::air::AirBuilder"
+                                                                                                                                          []
+                                                                                                                                          []
+                                                                                                                                          AB
+                                                                                                                                          "Expr",
                                                                                                                                         M.alloc (|
                                                                                                                                           Ty.associated_in_trait
                                                                                                                                             "p3_air::air::AirBuilder"
@@ -5858,26 +5700,12 @@ Module air.
                                                                                                                                                   γ
                                                                                                                                                 |) in
                                                                                                                                               M.match_operator (|
-                                                                                                                                                Ty.function
-                                                                                                                                                  [
-                                                                                                                                                    Ty.tuple
-                                                                                                                                                      [
-                                                                                                                                                        Ty.associated_in_trait
-                                                                                                                                                          "p3_air::air::AirBuilder"
-                                                                                                                                                          []
-                                                                                                                                                          []
-                                                                                                                                                          AB
-                                                                                                                                                          "Expr";
-                                                                                                                                                        Ty.path
-                                                                                                                                                          "usize"
-                                                                                                                                                      ]
-                                                                                                                                                  ]
-                                                                                                                                                  (Ty.associated_in_trait
-                                                                                                                                                    "p3_air::air::AirBuilder"
-                                                                                                                                                    []
-                                                                                                                                                    []
-                                                                                                                                                    AB
-                                                                                                                                                    "Expr"),
+                                                                                                                                                Ty.associated_in_trait
+                                                                                                                                                  "p3_air::air::AirBuilder"
+                                                                                                                                                  []
+                                                                                                                                                  []
+                                                                                                                                                  AB
+                                                                                                                                                  "Expr",
                                                                                                                                                 M.alloc (|
                                                                                                                                                   Ty.path
                                                                                                                                                     "usize",
@@ -5962,11 +5790,8 @@ Module air.
                                                                                                                                                               "core::ops::function::Fn",
                                                                                                                                                               Ty.function
                                                                                                                                                                 [
-                                                                                                                                                                  Ty.tuple
-                                                                                                                                                                    [
-                                                                                                                                                                      Ty.path
-                                                                                                                                                                        "usize"
-                                                                                                                                                                    ]
+                                                                                                                                                                  Ty.path
+                                                                                                                                                                    "usize"
                                                                                                                                                                 ]
                                                                                                                                                                 (Ty.associated_in_trait
                                                                                                                                                                   "p3_air::air::AirBuilder"
@@ -6178,7 +6003,7 @@ Module air.
                                       AB
                                       "Expr";
                                     Ty.function
-                                      [ Ty.tuple [ Ty.path "usize" ] ]
+                                      [ Ty.path "usize" ]
                                       (Ty.associated_in_trait
                                         "p3_air::air::AirBuilder"
                                         []
@@ -6195,14 +6020,12 @@ Module air.
                                         | [ α0 ] =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
-                                              Ty.function
-                                                [ Ty.tuple [ Ty.path "usize" ] ]
-                                                (Ty.associated_in_trait
-                                                  "p3_air::air::AirBuilder"
-                                                  []
-                                                  []
-                                                  AB
-                                                  "Expr"),
+                                              Ty.associated_in_trait
+                                                "p3_air::air::AirBuilder"
+                                                []
+                                                []
+                                                AB
+                                                "Expr",
                                               M.alloc (| Ty.path "usize", α0 |),
                                               [
                                                 fun γ =>
@@ -6249,16 +6072,13 @@ Module air.
                                                                 "Expr";
                                                               Ty.function
                                                                 [
-                                                                  Ty.tuple
-                                                                    [
-                                                                      Ty.associated_in_trait
-                                                                        "p3_air::air::AirBuilder"
-                                                                        []
-                                                                        []
-                                                                        AB
-                                                                        "Expr";
-                                                                      Ty.path "usize"
-                                                                    ]
+                                                                  Ty.associated_in_trait
+                                                                    "p3_air::air::AirBuilder"
+                                                                    []
+                                                                    []
+                                                                    AB
+                                                                    "Expr";
+                                                                  Ty.path "usize"
                                                                 ]
                                                                 (Ty.associated_in_trait
                                                                   "p3_air::air::AirBuilder"
@@ -6358,25 +6178,12 @@ Module air.
                                                                   | [ α0; α1 ] =>
                                                                     ltac:(M.monadic
                                                                       (M.match_operator (|
-                                                                        Ty.function
-                                                                          [
-                                                                            Ty.tuple
-                                                                              [
-                                                                                Ty.associated_in_trait
-                                                                                  "p3_air::air::AirBuilder"
-                                                                                  []
-                                                                                  []
-                                                                                  AB
-                                                                                  "Expr";
-                                                                                Ty.path "usize"
-                                                                              ]
-                                                                          ]
-                                                                          (Ty.associated_in_trait
-                                                                            "p3_air::air::AirBuilder"
-                                                                            []
-                                                                            []
-                                                                            AB
-                                                                            "Expr"),
+                                                                        Ty.associated_in_trait
+                                                                          "p3_air::air::AirBuilder"
+                                                                          []
+                                                                          []
+                                                                          AB
+                                                                          "Expr",
                                                                         M.alloc (|
                                                                           Ty.associated_in_trait
                                                                             "p3_air::air::AirBuilder"
@@ -6400,26 +6207,12 @@ Module air.
                                                                                   γ
                                                                                 |) in
                                                                               M.match_operator (|
-                                                                                Ty.function
-                                                                                  [
-                                                                                    Ty.tuple
-                                                                                      [
-                                                                                        Ty.associated_in_trait
-                                                                                          "p3_air::air::AirBuilder"
-                                                                                          []
-                                                                                          []
-                                                                                          AB
-                                                                                          "Expr";
-                                                                                        Ty.path
-                                                                                          "usize"
-                                                                                      ]
-                                                                                  ]
-                                                                                  (Ty.associated_in_trait
-                                                                                    "p3_air::air::AirBuilder"
-                                                                                    []
-                                                                                    []
-                                                                                    AB
-                                                                                    "Expr"),
+                                                                                Ty.associated_in_trait
+                                                                                  "p3_air::air::AirBuilder"
+                                                                                  []
+                                                                                  []
+                                                                                  AB
+                                                                                  "Expr",
                                                                                 M.alloc (|
                                                                                   Ty.path "usize",
                                                                                   α1
@@ -6591,7 +6384,7 @@ Module air.
                           |) in
                         let~ get_xored_bit :
                             Ty.function
-                              [ Ty.tuple [ Ty.path "usize" ] ]
+                              [ Ty.path "usize" ]
                               (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr") :=
                           M.closure
                             (fun γ =>
@@ -6600,14 +6393,12 @@ Module air.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Ty.function
-                                        [ Ty.tuple [ Ty.path "usize" ] ]
-                                        (Ty.associated_in_trait
-                                          "p3_air::air::AirBuilder"
-                                          []
-                                          []
-                                          AB
-                                          "Expr"),
+                                      Ty.associated_in_trait
+                                        "p3_air::air::AirBuilder"
+                                        []
+                                        []
+                                        AB
+                                        "Expr",
                                       M.alloc (| Ty.path "usize", α0 |),
                                       [
                                         fun γ =>
@@ -7063,7 +6854,7 @@ Module air.
                                       AB
                                       "Expr";
                                     Ty.function
-                                      [ Ty.tuple [ Ty.path "usize" ] ]
+                                      [ Ty.path "usize" ]
                                       (Ty.associated_in_trait
                                         "p3_air::air::AirBuilder"
                                         []
@@ -7080,14 +6871,12 @@ Module air.
                                         | [ α0 ] =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
-                                              Ty.function
-                                                [ Ty.tuple [ Ty.path "usize" ] ]
-                                                (Ty.associated_in_trait
-                                                  "p3_air::air::AirBuilder"
-                                                  []
-                                                  []
-                                                  AB
-                                                  "Expr"),
+                                              Ty.associated_in_trait
+                                                "p3_air::air::AirBuilder"
+                                                []
+                                                []
+                                                AB
+                                                "Expr",
                                               M.alloc (| Ty.path "usize", α0 |),
                                               [
                                                 fun γ =>
@@ -7134,16 +6923,13 @@ Module air.
                                                                 "Expr";
                                                               Ty.function
                                                                 [
-                                                                  Ty.tuple
-                                                                    [
-                                                                      Ty.associated_in_trait
-                                                                        "p3_air::air::AirBuilder"
-                                                                        []
-                                                                        []
-                                                                        AB
-                                                                        "Expr";
-                                                                      Ty.path "usize"
-                                                                    ]
+                                                                  Ty.associated_in_trait
+                                                                    "p3_air::air::AirBuilder"
+                                                                    []
+                                                                    []
+                                                                    AB
+                                                                    "Expr";
+                                                                  Ty.path "usize"
                                                                 ]
                                                                 (Ty.associated_in_trait
                                                                   "p3_air::air::AirBuilder"
@@ -7243,25 +7029,12 @@ Module air.
                                                                   | [ α0; α1 ] =>
                                                                     ltac:(M.monadic
                                                                       (M.match_operator (|
-                                                                        Ty.function
-                                                                          [
-                                                                            Ty.tuple
-                                                                              [
-                                                                                Ty.associated_in_trait
-                                                                                  "p3_air::air::AirBuilder"
-                                                                                  []
-                                                                                  []
-                                                                                  AB
-                                                                                  "Expr";
-                                                                                Ty.path "usize"
-                                                                              ]
-                                                                          ]
-                                                                          (Ty.associated_in_trait
-                                                                            "p3_air::air::AirBuilder"
-                                                                            []
-                                                                            []
-                                                                            AB
-                                                                            "Expr"),
+                                                                        Ty.associated_in_trait
+                                                                          "p3_air::air::AirBuilder"
+                                                                          []
+                                                                          []
+                                                                          AB
+                                                                          "Expr",
                                                                         M.alloc (|
                                                                           Ty.associated_in_trait
                                                                             "p3_air::air::AirBuilder"
@@ -7285,26 +7058,12 @@ Module air.
                                                                                   γ
                                                                                 |) in
                                                                               M.match_operator (|
-                                                                                Ty.function
-                                                                                  [
-                                                                                    Ty.tuple
-                                                                                      [
-                                                                                        Ty.associated_in_trait
-                                                                                          "p3_air::air::AirBuilder"
-                                                                                          []
-                                                                                          []
-                                                                                          AB
-                                                                                          "Expr";
-                                                                                        Ty.path
-                                                                                          "usize"
-                                                                                      ]
-                                                                                  ]
-                                                                                  (Ty.associated_in_trait
-                                                                                    "p3_air::air::AirBuilder"
-                                                                                    []
-                                                                                    []
-                                                                                    AB
-                                                                                    "Expr"),
+                                                                                Ty.associated_in_trait
+                                                                                  "p3_air::air::AirBuilder"
+                                                                                  []
+                                                                                  []
+                                                                                  AB
+                                                                                  "Expr",
                                                                                 M.alloc (|
                                                                                   Ty.path "usize",
                                                                                   α1
@@ -7386,11 +7145,8 @@ Module air.
                                                                                               "core::ops::function::Fn",
                                                                                               Ty.function
                                                                                                 [
-                                                                                                  Ty.tuple
-                                                                                                    [
-                                                                                                      Ty.path
-                                                                                                        "usize"
-                                                                                                    ]
+                                                                                                  Ty.path
+                                                                                                    "usize"
                                                                                                 ]
                                                                                                 (Ty.associated_in_trait
                                                                                                   "p3_air::air::AirBuilder"
@@ -7934,11 +7690,8 @@ Module air.
                                                                                                   "Expr";
                                                                                                 Ty.function
                                                                                                   [
-                                                                                                    Ty.tuple
-                                                                                                      [
-                                                                                                        Ty.path
-                                                                                                          "usize"
-                                                                                                      ]
+                                                                                                    Ty.path
+                                                                                                      "usize"
                                                                                                   ]
                                                                                                   (Ty.associated_in_trait
                                                                                                     "p3_air::air::AirBuilder"
@@ -7961,20 +7714,12 @@ Module air.
                                                                                                         ] =>
                                                                                                       ltac:(M.monadic
                                                                                                         (M.match_operator (|
-                                                                                                          Ty.function
-                                                                                                            [
-                                                                                                              Ty.tuple
-                                                                                                                [
-                                                                                                                  Ty.path
-                                                                                                                    "usize"
-                                                                                                                ]
-                                                                                                            ]
-                                                                                                            (Ty.associated_in_trait
-                                                                                                              "p3_air::air::AirBuilder"
-                                                                                                              []
-                                                                                                              []
-                                                                                                              AB
-                                                                                                              "Expr"),
+                                                                                                          Ty.associated_in_trait
+                                                                                                            "p3_air::air::AirBuilder"
+                                                                                                            []
+                                                                                                            []
+                                                                                                            AB
+                                                                                                            "Expr",
                                                                                                           M.alloc (|
                                                                                                             Ty.path
                                                                                                               "usize",

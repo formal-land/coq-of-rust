@@ -394,9 +394,7 @@ Definition cook (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           [],
           [
             Ty.path "combinators_map::Cooked";
-            Ty.function
-              [ Ty.tuple [ Ty.path "combinators_map::Chopped" ] ]
-              (Ty.path "combinators_map::Cooked")
+            Ty.function [ Ty.path "combinators_map::Chopped" ] (Ty.path "combinators_map::Cooked")
           ]
         |),
         [
@@ -408,9 +406,7 @@ Definition cook (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 | [ α0 ] =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Ty.function
-                        [ Ty.tuple [ Ty.path "combinators_map::Chopped" ] ]
-                        (Ty.path "combinators_map::Cooked"),
+                      Ty.path "combinators_map::Cooked",
                       M.alloc (| Ty.path "combinators_map::Chopped", α0 |),
                       [
                         fun γ =>
@@ -464,9 +460,7 @@ Definition process (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
           [],
           [
             Ty.path "combinators_map::Cooked";
-            Ty.function
-              [ Ty.tuple [ Ty.path "combinators_map::Chopped" ] ]
-              (Ty.path "combinators_map::Cooked")
+            Ty.function [ Ty.path "combinators_map::Chopped" ] (Ty.path "combinators_map::Cooked")
           ]
         |),
         [
@@ -479,7 +473,7 @@ Definition process (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
               [
                 Ty.path "combinators_map::Chopped";
                 Ty.function
-                  [ Ty.tuple [ Ty.path "combinators_map::Peeled" ] ]
+                  [ Ty.path "combinators_map::Peeled" ]
                   (Ty.path "combinators_map::Chopped")
               ]
             |),
@@ -493,7 +487,7 @@ Definition process (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                   [
                     Ty.path "combinators_map::Peeled";
                     Ty.function
-                      [ Ty.tuple [ Ty.path "combinators_map::Food" ] ]
+                      [ Ty.path "combinators_map::Food" ]
                       (Ty.path "combinators_map::Peeled")
                   ]
                 |),
@@ -506,9 +500,7 @@ Definition process (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [ Ty.tuple [ Ty.path "combinators_map::Food" ] ]
-                                (Ty.path "combinators_map::Peeled"),
+                              Ty.path "combinators_map::Peeled",
                               M.alloc (| Ty.path "combinators_map::Food", α0 |),
                               [
                                 fun γ =>
@@ -532,9 +524,7 @@ Definition process (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [ Ty.tuple [ Ty.path "combinators_map::Peeled" ] ]
-                            (Ty.path "combinators_map::Chopped"),
+                          Ty.path "combinators_map::Chopped",
                           M.alloc (| Ty.path "combinators_map::Peeled", α0 |),
                           [
                             fun γ =>
@@ -564,9 +554,7 @@ Definition process (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                 | [ α0 ] =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Ty.function
-                        [ Ty.tuple [ Ty.path "combinators_map::Chopped" ] ]
-                        (Ty.path "combinators_map::Cooked"),
+                      Ty.path "combinators_map::Cooked",
                       M.alloc (| Ty.path "combinators_map::Chopped", α0 |),
                       [
                         fun γ =>

@@ -505,7 +505,7 @@ Module Matrix.
             [
               Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
               Ty.function
-                [ Ty.tuple [ Ty.path "usize" ] ]
+                [ Ty.path "usize" ]
                 (Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "Row")
             ],
           M.get_trait_method (|
@@ -518,7 +518,7 @@ Module Matrix.
             [
               Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "Row";
               Ty.function
-                [ Ty.tuple [ Ty.path "usize" ] ]
+                [ Ty.path "usize" ]
                 (Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "Row")
             ]
           |),
@@ -543,9 +543,7 @@ Module Matrix.
                   | [ α0 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.function
-                          [ Ty.tuple [ Ty.path "usize" ] ]
-                          (Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "Row"),
+                        Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "Row",
                         M.alloc (| Ty.path "usize", α0 |),
                         [
                           fun γ =>
@@ -591,7 +589,7 @@ Module Matrix.
             [
               Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
               Ty.function
-                [ Ty.tuple [ Ty.path "usize" ] ]
+                [ Ty.path "usize" ]
                 (Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "Row")
             ],
           M.get_trait_method (|
@@ -604,7 +602,7 @@ Module Matrix.
             [
               Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "Row";
               Ty.function
-                [ Ty.tuple [ Ty.path "usize" ] ]
+                [ Ty.path "usize" ]
                 (Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "Row")
             ]
           |),
@@ -651,9 +649,7 @@ Module Matrix.
                   | [ α0 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.function
-                          [ Ty.tuple [ Ty.path "usize" ] ]
-                          (Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "Row"),
+                        Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "Row",
                         M.alloc (| Ty.path "usize", α0 |),
                         [
                           fun γ =>
@@ -803,7 +799,7 @@ Module Matrix.
                     Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
                     Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "Row";
                     Ty.function
-                      [ Ty.tuple [ Ty.path "usize" ] ]
+                      [ Ty.path "usize" ]
                       (Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "Row")
                   ],
                 [],
@@ -821,7 +817,7 @@ Module Matrix.
                       Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
                       Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "Row";
                       Ty.function
-                        [ Ty.tuple [ Ty.path "usize" ] ]
+                        [ Ty.path "usize" ]
                         (Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "Row")
                     ],
                   M.get_trait_method (|
@@ -834,7 +830,7 @@ Module Matrix.
                     [
                       Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "Row";
                       Ty.function
-                        [ Ty.tuple [ Ty.path "usize" ] ]
+                        [ Ty.path "usize" ]
                         (Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "Row")
                     ]
                   |),
@@ -867,9 +863,7 @@ Module Matrix.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function
-                                  [ Ty.tuple [ Ty.path "usize" ] ]
-                                  (Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "Row"),
+                                Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "Row",
                                 M.alloc (| Ty.path "usize", α0 |),
                                 [
                                   fun γ =>
@@ -947,7 +941,7 @@ Module Matrix.
                 []
                 [
                   Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
-                  Ty.function [ Ty.tuple [ Ty.path "usize" ] ] P
+                  Ty.function [ Ty.path "usize" ] P
                 ] :=
             M.call_closure (|
               Ty.apply
@@ -955,7 +949,7 @@ Module Matrix.
                 []
                 [
                   Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
-                  Ty.function [ Ty.tuple [ Ty.path "usize" ] ] P
+                  Ty.function [ Ty.path "usize" ] P
                 ],
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
@@ -964,7 +958,7 @@ Module Matrix.
                 [],
                 "map",
                 [],
-                [ P; Ty.function [ Ty.tuple [ Ty.path "usize" ] ] P ]
+                [ P; Ty.function [ Ty.path "usize" ] P ]
               |),
               [
                 Value.mkStructRecord
@@ -980,7 +974,7 @@ Module Matrix.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function [ Ty.tuple [ Ty.path "usize" ] ] P,
+                            P,
                             M.alloc (| Ty.path "usize", α0 |),
                             [
                               fun γ =>
@@ -995,7 +989,7 @@ Module Matrix.
                                       [],
                                       "from_fn",
                                       [],
-                                      [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] T ]
+                                      [ Ty.function [ Ty.path "usize" ] T ]
                                     |),
                                     [
                                       M.closure
@@ -1005,7 +999,7 @@ Module Matrix.
                                             | [ α0 ] =>
                                               ltac:(M.monadic
                                                 (M.match_operator (|
-                                                  Ty.function [ Ty.tuple [ Ty.path "usize" ] ] T,
+                                                  T,
                                                   M.alloc (| Ty.path "usize", α0 |),
                                                   [
                                                     fun γ =>
@@ -1068,7 +1062,7 @@ Module Matrix.
                 []
                 [
                   Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
-                  Ty.function [ Ty.tuple [ Ty.path "usize" ] ] T
+                  Ty.function [ Ty.path "usize" ] T
                 ] :=
             M.call_closure (|
               Ty.apply
@@ -1076,7 +1070,7 @@ Module Matrix.
                 []
                 [
                   Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
-                  Ty.function [ Ty.tuple [ Ty.path "usize" ] ] T
+                  Ty.function [ Ty.path "usize" ] T
                 ],
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
@@ -1085,7 +1079,7 @@ Module Matrix.
                 [],
                 "map",
                 [],
-                [ T; Ty.function [ Ty.tuple [ Ty.path "usize" ] ] T ]
+                [ T; Ty.function [ Ty.path "usize" ] T ]
               |),
               [
                 Value.mkStructRecord
@@ -1129,7 +1123,7 @@ Module Matrix.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function [ Ty.tuple [ Ty.path "usize" ] ] T,
+                            T,
                             M.alloc (| Ty.path "usize", α0 |),
                             [
                               fun γ =>
@@ -1169,14 +1163,14 @@ Module Matrix.
                   []
                   [
                     Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
-                    Ty.function [ Ty.tuple [ Ty.path "usize" ] ] P
+                    Ty.function [ Ty.path "usize" ] P
                   ];
                 Ty.apply
                   (Ty.path "core::iter::adapters::map::Map")
                   []
                   [
                     Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
-                    Ty.function [ Ty.tuple [ Ty.path "usize" ] ] T
+                    Ty.function [ Ty.path "usize" ] T
                   ]
               ],
             Value.Tuple [ M.read (| packed |); M.read (| sfx |) ]
@@ -1227,7 +1221,7 @@ Module Matrix.
               []
               [
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
-                Ty.function [ Ty.tuple [ Ty.path "usize" ] ] P
+                Ty.function [ Ty.path "usize" ] P
               ],
             M.call_closure (|
               Ty.apply
@@ -1235,7 +1229,7 @@ Module Matrix.
                 []
                 [
                   Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
-                  Ty.function [ Ty.tuple [ Ty.path "usize" ] ] P
+                  Ty.function [ Ty.path "usize" ] P
                 ],
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
@@ -1244,7 +1238,7 @@ Module Matrix.
                 [],
                 "map",
                 [],
-                [ P; Ty.function [ Ty.tuple [ Ty.path "usize" ] ] P ]
+                [ P; Ty.function [ Ty.path "usize" ] P ]
               |),
               [
                 Value.mkStructRecord
@@ -1260,7 +1254,7 @@ Module Matrix.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function [ Ty.tuple [ Ty.path "usize" ] ] P,
+                            P,
                             M.alloc (| Ty.path "usize", α0 |),
                             [
                               fun γ =>
@@ -1274,7 +1268,7 @@ Module Matrix.
                                       [],
                                       "from_fn",
                                       [],
-                                      [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] T ]
+                                      [ Ty.function [ Ty.path "usize" ] T ]
                                     |),
                                     [
                                       M.closure
@@ -1284,7 +1278,7 @@ Module Matrix.
                                             | [ α0 ] =>
                                               ltac:(M.monadic
                                                 (M.match_operator (|
-                                                  Ty.function [ Ty.tuple [ Ty.path "usize" ] ] T,
+                                                  T,
                                                   M.alloc (| Ty.path "usize", α0 |),
                                                   [
                                                     fun γ =>
@@ -1369,7 +1363,7 @@ Module Matrix.
             [
               Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
               Ty.function
-                [ Ty.tuple [ Ty.path "usize" ] ]
+                [ Ty.path "usize" ]
                 (Ty.tuple
                   [
                     Ty.associated_in_trait "p3_matrix::Matrix" [] [ T; P ] Self "{{synthetic}}'3";
@@ -1390,7 +1384,7 @@ Module Matrix.
                   Ty.associated_in_trait "p3_matrix::Matrix" [] [ T; P ] Self "{{synthetic}}'4"
                 ];
               Ty.function
-                [ Ty.tuple [ Ty.path "usize" ] ]
+                [ Ty.path "usize" ]
                 (Ty.tuple
                   [
                     Ty.associated_in_trait "p3_matrix::Matrix" [] [ T; P ] Self "{{synthetic}}'3";
@@ -1441,23 +1435,21 @@ Module Matrix.
                   | [ α0 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.function
-                          [ Ty.tuple [ Ty.path "usize" ] ]
-                          (Ty.tuple
-                            [
-                              Ty.associated_in_trait
-                                "p3_matrix::Matrix"
-                                []
-                                [ T; P ]
-                                Self
-                                "{{synthetic}}'3";
-                              Ty.associated_in_trait
-                                "p3_matrix::Matrix"
-                                []
-                                [ T; P ]
-                                Self
-                                "{{synthetic}}'4"
-                            ]),
+                        Ty.tuple
+                          [
+                            Ty.associated_in_trait
+                              "p3_matrix::Matrix"
+                              []
+                              [ T; P ]
+                              Self
+                              "{{synthetic}}'3";
+                            Ty.associated_in_trait
+                              "p3_matrix::Matrix"
+                              []
+                              [ T; P ]
+                              Self
+                              "{{synthetic}}'4"
+                          ],
                         M.alloc (| Ty.path "usize", α0 |),
                         [
                           fun γ =>
@@ -1525,7 +1517,7 @@ Module Matrix.
             [
               Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
               Ty.function
-                [ Ty.tuple [ Ty.path "usize" ] ]
+                [ Ty.path "usize" ]
                 (Ty.associated_in_trait "p3_matrix::Matrix" [] [ T; P ] Self "{{synthetic}}'5")
             ],
           M.get_trait_method (|
@@ -1538,7 +1530,7 @@ Module Matrix.
             [
               Ty.associated_in_trait "p3_matrix::Matrix" [] [ T; P ] Self "{{synthetic}}'5";
               Ty.function
-                [ Ty.tuple [ Ty.path "usize" ] ]
+                [ Ty.path "usize" ]
                 (Ty.associated_in_trait "p3_matrix::Matrix" [] [ T; P ] Self "{{synthetic}}'5")
             ]
           |),
@@ -1585,14 +1577,12 @@ Module Matrix.
                   | [ α0 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.function
-                          [ Ty.tuple [ Ty.path "usize" ] ]
-                          (Ty.associated_in_trait
-                            "p3_matrix::Matrix"
-                            []
-                            [ T; P ]
-                            Self
-                            "{{synthetic}}'5"),
+                        Ty.associated_in_trait
+                          "p3_matrix::Matrix"
+                          []
+                          [ T; P ]
+                          Self
+                          "{{synthetic}}'5",
                         M.alloc (| Ty.path "usize", α0 |),
                         [
                           fun γ =>
@@ -1670,7 +1660,7 @@ Module Matrix.
                   [
                     Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
                     Ty.function
-                      [ Ty.tuple [ Ty.path "usize" ] ]
+                      [ Ty.path "usize" ]
                       (Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "{{synthetic}}'2")
                   ],
                 [],
@@ -1687,7 +1677,7 @@ Module Matrix.
                     [
                       Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
                       Ty.function
-                        [ Ty.tuple [ Ty.path "usize" ] ]
+                        [ Ty.path "usize" ]
                         (Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "{{synthetic}}'2")
                     ],
                   M.get_trait_method (|
@@ -1700,7 +1690,7 @@ Module Matrix.
                     [
                       Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "{{synthetic}}'2";
                       Ty.function
-                        [ Ty.tuple [ Ty.path "usize" ] ]
+                        [ Ty.path "usize" ]
                         (Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "{{synthetic}}'2")
                     ]
                   |),
@@ -1726,14 +1716,12 @@ Module Matrix.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function
-                                  [ Ty.tuple [ Ty.path "usize" ] ]
-                                  (Ty.associated_in_trait
-                                    "p3_matrix::Matrix"
-                                    []
-                                    [ T ]
-                                    Self
-                                    "{{synthetic}}'2"),
+                                Ty.associated_in_trait
+                                  "p3_matrix::Matrix"
+                                  []
+                                  [ T ]
+                                  Self
+                                  "{{synthetic}}'2",
                                 M.alloc (| Ty.path "usize", α0 |),
                                 [
                                   fun γ =>
@@ -1805,7 +1793,7 @@ Module Matrix.
               []
               [
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
-                Ty.function [ Ty.tuple [ Ty.path "usize" ] ] P
+                Ty.function [ Ty.path "usize" ] P
               ],
             M.call_closure (|
               Ty.apply
@@ -1813,7 +1801,7 @@ Module Matrix.
                 []
                 [
                   Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
-                  Ty.function [ Ty.tuple [ Ty.path "usize" ] ] P
+                  Ty.function [ Ty.path "usize" ] P
                 ],
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
@@ -1822,7 +1810,7 @@ Module Matrix.
                 [],
                 "map",
                 [],
-                [ P; Ty.function [ Ty.tuple [ Ty.path "usize" ] ] P ]
+                [ P; Ty.function [ Ty.path "usize" ] P ]
               |),
               [
                 Value.mkStructRecord
@@ -1853,7 +1841,7 @@ Module Matrix.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function [ Ty.tuple [ Ty.path "usize" ] ] P,
+                            P,
                             M.alloc (| Ty.path "usize", α0 |),
                             [
                               fun γ =>
@@ -1868,7 +1856,7 @@ Module Matrix.
                                       [],
                                       "from_fn",
                                       [],
-                                      [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] T ]
+                                      [ Ty.function [ Ty.path "usize" ] T ]
                                     |),
                                     [
                                       M.closure
@@ -1878,7 +1866,7 @@ Module Matrix.
                                             | [ α0 ] =>
                                               ltac:(M.monadic
                                                 (M.match_operator (|
-                                                  Ty.function [ Ty.tuple [ Ty.path "usize" ] ] T,
+                                                  T,
                                                   M.alloc (| Ty.path "usize", α0 |),
                                                   [
                                                     fun γ =>
@@ -2022,7 +2010,7 @@ Module Matrix.
                   [
                     Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
                     Ty.function
-                      [ Ty.tuple [ Ty.path "usize" ] ]
+                      [ Ty.path "usize" ]
                       (Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "{{synthetic}}'2")
                   ],
                 [],
@@ -2039,7 +2027,7 @@ Module Matrix.
                     [
                       Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
                       Ty.function
-                        [ Ty.tuple [ Ty.path "usize" ] ]
+                        [ Ty.path "usize" ]
                         (Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "{{synthetic}}'2")
                     ],
                   M.get_trait_method (|
@@ -2052,7 +2040,7 @@ Module Matrix.
                     [
                       Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "{{synthetic}}'2";
                       Ty.function
-                        [ Ty.tuple [ Ty.path "usize" ] ]
+                        [ Ty.path "usize" ]
                         (Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "{{synthetic}}'2")
                     ]
                   |),
@@ -2078,14 +2066,12 @@ Module Matrix.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function
-                                  [ Ty.tuple [ Ty.path "usize" ] ]
-                                  (Ty.associated_in_trait
-                                    "p3_matrix::Matrix"
-                                    []
-                                    [ T ]
-                                    Self
-                                    "{{synthetic}}'2"),
+                                Ty.associated_in_trait
+                                  "p3_matrix::Matrix"
+                                  []
+                                  [ T ]
+                                  Self
+                                  "{{synthetic}}'2",
                                 M.alloc (| Ty.path "usize", α0 |),
                                 [
                                   fun γ =>
@@ -2175,7 +2161,7 @@ Module Matrix.
                   [
                     Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
                     Ty.function
-                      [ Ty.tuple [ Ty.path "usize" ] ]
+                      [ Ty.path "usize" ]
                       (Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "{{synthetic}}'2")
                   ],
                 [],
@@ -2192,7 +2178,7 @@ Module Matrix.
                     [
                       Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
                       Ty.function
-                        [ Ty.tuple [ Ty.path "usize" ] ]
+                        [ Ty.path "usize" ]
                         (Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "{{synthetic}}'2")
                     ],
                   M.get_trait_method (|
@@ -2205,7 +2191,7 @@ Module Matrix.
                     [
                       Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "{{synthetic}}'2";
                       Ty.function
-                        [ Ty.tuple [ Ty.path "usize" ] ]
+                        [ Ty.path "usize" ]
                         (Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Self "{{synthetic}}'2")
                     ]
                   |),
@@ -2231,14 +2217,12 @@ Module Matrix.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function
-                                  [ Ty.tuple [ Ty.path "usize" ] ]
-                                  (Ty.associated_in_trait
-                                    "p3_matrix::Matrix"
-                                    []
-                                    [ T ]
-                                    Self
-                                    "{{synthetic}}'2"),
+                                Ty.associated_in_trait
+                                  "p3_matrix::Matrix"
+                                  []
+                                  [ T ]
+                                  Self
+                                  "{{synthetic}}'2",
                                 M.alloc (| Ty.path "usize", α0 |),
                                 [
                                   fun γ =>
@@ -2326,14 +2310,14 @@ Module Matrix.
                       []
                       [
                         Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
-                        Ty.function [ Ty.tuple [ Ty.path "usize" ] ] P
+                        Ty.function [ Ty.path "usize" ] P
                       ];
                     Ty.apply
                       (Ty.path "core::iter::adapters::map::Map")
                       []
                       [
                         Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
-                        Ty.function [ Ty.tuple [ Ty.path "usize" ] ] P
+                        Ty.function [ Ty.path "usize" ] P
                       ]
                   ],
                 [],
@@ -2353,14 +2337,14 @@ Module Matrix.
                         []
                         [
                           Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
-                          Ty.function [ Ty.tuple [ Ty.path "usize" ] ] P
+                          Ty.function [ Ty.path "usize" ] P
                         ];
                       Ty.apply
                         (Ty.path "core::iter::adapters::map::Map")
                         []
                         [
                           Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
-                          Ty.function [ Ty.tuple [ Ty.path "usize" ] ] P
+                          Ty.function [ Ty.path "usize" ] P
                         ]
                     ],
                   M.get_trait_method (|
@@ -2370,7 +2354,7 @@ Module Matrix.
                       []
                       [
                         Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
-                        Ty.function [ Ty.tuple [ Ty.path "usize" ] ] P
+                        Ty.function [ Ty.path "usize" ] P
                       ],
                     [],
                     [],
@@ -2382,7 +2366,7 @@ Module Matrix.
                         []
                         [
                           Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
-                          Ty.function [ Ty.tuple [ Ty.path "usize" ] ] P
+                          Ty.function [ Ty.path "usize" ] P
                         ]
                     ]
                   |),
@@ -2393,7 +2377,7 @@ Module Matrix.
                         []
                         [
                           Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
-                          Ty.function [ Ty.tuple [ Ty.path "usize" ] ] P
+                          Ty.function [ Ty.path "usize" ] P
                         ],
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
@@ -2402,7 +2386,7 @@ Module Matrix.
                         [],
                         "map",
                         [],
-                        [ P; Ty.function [ Ty.tuple [ Ty.path "usize" ] ] P ]
+                        [ P; Ty.function [ Ty.path "usize" ] P ]
                       |),
                       [
                         Value.mkStructRecord
@@ -2433,7 +2417,7 @@ Module Matrix.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
-                                    Ty.function [ Ty.tuple [ Ty.path "usize" ] ] P,
+                                    P,
                                     M.alloc (| Ty.path "usize", α0 |),
                                     [
                                       fun γ =>
@@ -2448,7 +2432,7 @@ Module Matrix.
                                               [],
                                               "from_fn",
                                               [],
-                                              [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] T ]
+                                              [ Ty.function [ Ty.path "usize" ] T ]
                                             |),
                                             [
                                               M.closure
@@ -2458,9 +2442,7 @@ Module Matrix.
                                                     | [ α0 ] =>
                                                       ltac:(M.monadic
                                                         (M.match_operator (|
-                                                          Ty.function
-                                                            [ Ty.tuple [ Ty.path "usize" ] ]
-                                                            T,
+                                                          T,
                                                           M.alloc (| Ty.path "usize", α0 |),
                                                           [
                                                             fun γ =>
@@ -2567,7 +2549,7 @@ Module Matrix.
                         []
                         [
                           Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
-                          Ty.function [ Ty.tuple [ Ty.path "usize" ] ] P
+                          Ty.function [ Ty.path "usize" ] P
                         ],
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
@@ -2576,7 +2558,7 @@ Module Matrix.
                         [],
                         "map",
                         [],
-                        [ P; Ty.function [ Ty.tuple [ Ty.path "usize" ] ] P ]
+                        [ P; Ty.function [ Ty.path "usize" ] P ]
                       |),
                       [
                         Value.mkStructRecord
@@ -2607,7 +2589,7 @@ Module Matrix.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
-                                    Ty.function [ Ty.tuple [ Ty.path "usize" ] ] P,
+                                    P,
                                     M.alloc (| Ty.path "usize", α0 |),
                                     [
                                       fun γ =>
@@ -2622,7 +2604,7 @@ Module Matrix.
                                               [],
                                               "from_fn",
                                               [],
-                                              [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] T ]
+                                              [ Ty.function [ Ty.path "usize" ] T ]
                                             |),
                                             [
                                               M.closure
@@ -2632,9 +2614,7 @@ Module Matrix.
                                                     | [ α0 ] =>
                                                       ltac:(M.monadic
                                                         (M.match_operator (|
-                                                          Ty.function
-                                                            [ Ty.tuple [ Ty.path "usize" ] ]
-                                                            T,
+                                                          T,
                                                           M.alloc (| Ty.path "usize", α0 |),
                                                           [
                                                             fun γ =>
@@ -3745,7 +3725,7 @@ Module Matrix.
                           Ty.path "alloc::alloc::Global"
                         ];
                       Ty.function
-                        [ Ty.tuple [] ]
+                        []
                         (Ty.apply
                           (Ty.path "alloc::vec::Vec")
                           []
@@ -3760,38 +3740,30 @@ Module Matrix.
                           ]);
                       Ty.function
                         [
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "p3_field::field::ExtensionField"
+                                []
+                                [ T ]
+                                EF
+                                "ExtensionPacking";
+                              Ty.path "alloc::alloc::Global"
+                            ];
                           Ty.tuple
                             [
-                              Ty.apply
-                                (Ty.path "alloc::vec::Vec")
+                              Ty.associated_in_trait
+                                "p3_matrix::Matrix"
                                 []
                                 [
-                                  Ty.associated_in_trait
-                                    "p3_field::field::ExtensionField"
-                                    []
-                                    [ T ]
-                                    EF
-                                    "ExtensionPacking";
-                                  Ty.path "alloc::alloc::Global"
-                                ];
-                              Ty.tuple
-                                [
-                                  Ty.associated_in_trait
-                                    "p3_matrix::Matrix"
-                                    []
-                                    [
-                                      T;
-                                      Ty.associated_in_trait
-                                        "p3_field::field::Field"
-                                        []
-                                        []
-                                        T
-                                        "Packing"
-                                    ]
-                                    Self
-                                    "{{synthetic}}'10";
-                                  Ty.apply (Ty.path "&") [] [ EF ]
+                                  T;
+                                  Ty.associated_in_trait "p3_field::field::Field" [] [] T "Packing"
                                 ]
+                                Self
+                                "{{synthetic}}'10";
+                              Ty.apply (Ty.path "&") [] [ EF ]
                             ]
                         ]
                         (Ty.apply
@@ -3808,32 +3780,29 @@ Module Matrix.
                           ]);
                       Ty.function
                         [
-                          Ty.tuple
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            []
                             [
-                              Ty.apply
-                                (Ty.path "alloc::vec::Vec")
+                              Ty.associated_in_trait
+                                "p3_field::field::ExtensionField"
                                 []
-                                [
-                                  Ty.associated_in_trait
-                                    "p3_field::field::ExtensionField"
-                                    []
-                                    [ T ]
-                                    EF
-                                    "ExtensionPacking";
-                                  Ty.path "alloc::alloc::Global"
-                                ];
-                              Ty.apply
-                                (Ty.path "alloc::vec::Vec")
+                                [ T ]
+                                EF
+                                "ExtensionPacking";
+                              Ty.path "alloc::alloc::Global"
+                            ];
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "p3_field::field::ExtensionField"
                                 []
-                                [
-                                  Ty.associated_in_trait
-                                    "p3_field::field::ExtensionField"
-                                    []
-                                    [ T ]
-                                    EF
-                                    "ExtensionPacking";
-                                  Ty.path "alloc::alloc::Global"
-                                ]
+                                [ T ]
+                                EF
+                                "ExtensionPacking";
+                              Ty.path "alloc::alloc::Global"
                             ]
                         ]
                         (Ty.apply
@@ -3907,20 +3876,18 @@ Module Matrix.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function
-                                  [ Ty.tuple [] ]
-                                  (Ty.apply
-                                    (Ty.path "alloc::vec::Vec")
-                                    []
-                                    [
-                                      Ty.associated_in_trait
-                                        "p3_field::field::ExtensionField"
-                                        []
-                                        [ T ]
-                                        EF
-                                        "ExtensionPacking";
-                                      Ty.path "alloc::alloc::Global"
-                                    ]),
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [
+                                    Ty.associated_in_trait
+                                      "p3_field::field::ExtensionField"
+                                      []
+                                      [ T ]
+                                      EF
+                                      "ExtensionPacking";
+                                    Ty.path "alloc::alloc::Global"
+                                  ],
                                 M.alloc (| Ty.tuple [], α0 |),
                                 [
                                   fun γ =>
@@ -3965,54 +3932,18 @@ Module Matrix.
                           | [ α0; α1 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
-                                          []
-                                          [
-                                            Ty.associated_in_trait
-                                              "p3_field::field::ExtensionField"
-                                              []
-                                              [ T ]
-                                              EF
-                                              "ExtensionPacking";
-                                            Ty.path "alloc::alloc::Global"
-                                          ];
-                                        Ty.tuple
-                                          [
-                                            Ty.associated_in_trait
-                                              "p3_matrix::Matrix"
-                                              []
-                                              [
-                                                T;
-                                                Ty.associated_in_trait
-                                                  "p3_field::field::Field"
-                                                  []
-                                                  []
-                                                  T
-                                                  "Packing"
-                                              ]
-                                              Self
-                                              "{{synthetic}}'10";
-                                            Ty.apply (Ty.path "&") [] [ EF ]
-                                          ]
-                                      ]
-                                  ]
-                                  (Ty.apply
-                                    (Ty.path "alloc::vec::Vec")
-                                    []
-                                    [
-                                      Ty.associated_in_trait
-                                        "p3_field::field::ExtensionField"
-                                        []
-                                        [ T ]
-                                        EF
-                                        "ExtensionPacking";
-                                      Ty.path "alloc::alloc::Global"
-                                    ]),
+                                    Ty.associated_in_trait
+                                      "p3_field::field::ExtensionField"
+                                      []
+                                      [ T ]
+                                      EF
+                                      "ExtensionPacking";
+                                    Ty.path "alloc::alloc::Global"
+                                  ],
                                 M.alloc (|
                                   Ty.apply
                                     (Ty.path "alloc::vec::Vec")
@@ -4048,54 +3979,18 @@ Module Matrix.
                                           γ
                                         |) in
                                       M.match_operator (|
-                                        Ty.function
+                                        Ty.apply
+                                          (Ty.path "alloc::vec::Vec")
+                                          []
                                           [
-                                            Ty.tuple
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "alloc::vec::Vec")
-                                                  []
-                                                  [
-                                                    Ty.associated_in_trait
-                                                      "p3_field::field::ExtensionField"
-                                                      []
-                                                      [ T ]
-                                                      EF
-                                                      "ExtensionPacking";
-                                                    Ty.path "alloc::alloc::Global"
-                                                  ];
-                                                Ty.tuple
-                                                  [
-                                                    Ty.associated_in_trait
-                                                      "p3_matrix::Matrix"
-                                                      []
-                                                      [
-                                                        T;
-                                                        Ty.associated_in_trait
-                                                          "p3_field::field::Field"
-                                                          []
-                                                          []
-                                                          T
-                                                          "Packing"
-                                                      ]
-                                                      Self
-                                                      "{{synthetic}}'10";
-                                                    Ty.apply (Ty.path "&") [] [ EF ]
-                                                  ]
-                                              ]
-                                          ]
-                                          (Ty.apply
-                                            (Ty.path "alloc::vec::Vec")
-                                            []
-                                            [
-                                              Ty.associated_in_trait
-                                                "p3_field::field::ExtensionField"
-                                                []
-                                                [ T ]
-                                                EF
-                                                "ExtensionPacking";
-                                              Ty.path "alloc::alloc::Global"
-                                            ]),
+                                            Ty.associated_in_trait
+                                              "p3_field::field::ExtensionField"
+                                              []
+                                              [ T ]
+                                              EF
+                                              "ExtensionPacking";
+                                            Ty.path "alloc::alloc::Global"
+                                          ],
                                         M.alloc (|
                                           Ty.tuple
                                             [
@@ -4179,7 +4074,7 @@ Module Matrix.
                                                       [],
                                                       [
                                                         Ty.function
-                                                          [ Ty.tuple [ Ty.path "usize" ] ]
+                                                          [ Ty.path "usize" ]
                                                           (Ty.associated_in_trait
                                                             "p3_field::field::Field"
                                                             []
@@ -4196,14 +4091,12 @@ Module Matrix.
                                                             | [ α0 ] =>
                                                               ltac:(M.monadic
                                                                 (M.match_operator (|
-                                                                  Ty.function
-                                                                    [ Ty.tuple [ Ty.path "usize" ] ]
-                                                                    (Ty.associated_in_trait
-                                                                      "p3_field::field::Field"
-                                                                      []
-                                                                      []
-                                                                      T
-                                                                      "Packing"),
+                                                                  Ty.associated_in_trait
+                                                                    "p3_field::field::Field"
+                                                                    []
+                                                                    []
+                                                                    T
+                                                                    "Packing",
                                                                   M.alloc (| Ty.path "usize", α0 |),
                                                                   [
                                                                     fun γ =>
@@ -4323,26 +4216,23 @@ Module Matrix.
                                                           [
                                                             Ty.tuple
                                                               [
-                                                                Ty.tuple
+                                                                Ty.apply
+                                                                  (Ty.path "&mut")
+                                                                  []
                                                                   [
-                                                                    Ty.apply
-                                                                      (Ty.path "&mut")
-                                                                      []
-                                                                      [
-                                                                        Ty.associated_in_trait
-                                                                          "p3_field::field::ExtensionField"
-                                                                          []
-                                                                          [ T ]
-                                                                          EF
-                                                                          "ExtensionPacking"
-                                                                      ];
                                                                     Ty.associated_in_trait
-                                                                      "p3_field::field::Field"
+                                                                      "p3_field::field::ExtensionField"
                                                                       []
-                                                                      []
-                                                                      T
-                                                                      "Packing"
-                                                                  ]
+                                                                      [ T ]
+                                                                      EF
+                                                                      "ExtensionPacking"
+                                                                  ];
+                                                                Ty.associated_in_trait
+                                                                  "p3_field::field::Field"
+                                                                  []
+                                                                  []
+                                                                  T
+                                                                  "Packing"
                                                               ]
                                                           ]
                                                           (Ty.tuple [])
@@ -4469,33 +4359,7 @@ Module Matrix.
                                                             | [ α0 ] =>
                                                               ltac:(M.monadic
                                                                 (M.match_operator (|
-                                                                  Ty.function
-                                                                    [
-                                                                      Ty.tuple
-                                                                        [
-                                                                          Ty.tuple
-                                                                            [
-                                                                              Ty.apply
-                                                                                (Ty.path "&mut")
-                                                                                []
-                                                                                [
-                                                                                  Ty.associated_in_trait
-                                                                                    "p3_field::field::ExtensionField"
-                                                                                    []
-                                                                                    [ T ]
-                                                                                    EF
-                                                                                    "ExtensionPacking"
-                                                                                ];
-                                                                              Ty.associated_in_trait
-                                                                                "p3_field::field::Field"
-                                                                                []
-                                                                                []
-                                                                                T
-                                                                                "Packing"
-                                                                            ]
-                                                                        ]
-                                                                    ]
-                                                                    (Ty.tuple []),
+                                                                  Ty.tuple [],
                                                                   M.alloc (|
                                                                     Ty.tuple
                                                                       [
@@ -4645,48 +4509,18 @@ Module Matrix.
                           | [ α0; α1 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
-                                          []
-                                          [
-                                            Ty.associated_in_trait
-                                              "p3_field::field::ExtensionField"
-                                              []
-                                              [ T ]
-                                              EF
-                                              "ExtensionPacking";
-                                            Ty.path "alloc::alloc::Global"
-                                          ];
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
-                                          []
-                                          [
-                                            Ty.associated_in_trait
-                                              "p3_field::field::ExtensionField"
-                                              []
-                                              [ T ]
-                                              EF
-                                              "ExtensionPacking";
-                                            Ty.path "alloc::alloc::Global"
-                                          ]
-                                      ]
-                                  ]
-                                  (Ty.apply
-                                    (Ty.path "alloc::vec::Vec")
-                                    []
-                                    [
-                                      Ty.associated_in_trait
-                                        "p3_field::field::ExtensionField"
-                                        []
-                                        [ T ]
-                                        EF
-                                        "ExtensionPacking";
-                                      Ty.path "alloc::alloc::Global"
-                                    ]),
+                                    Ty.associated_in_trait
+                                      "p3_field::field::ExtensionField"
+                                      []
+                                      [ T ]
+                                      EF
+                                      "ExtensionPacking";
+                                    Ty.path "alloc::alloc::Global"
+                                  ],
                                 M.alloc (|
                                   Ty.apply
                                     (Ty.path "alloc::vec::Vec")
@@ -4722,48 +4556,18 @@ Module Matrix.
                                           γ
                                         |) in
                                       M.match_operator (|
-                                        Ty.function
+                                        Ty.apply
+                                          (Ty.path "alloc::vec::Vec")
+                                          []
                                           [
-                                            Ty.tuple
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "alloc::vec::Vec")
-                                                  []
-                                                  [
-                                                    Ty.associated_in_trait
-                                                      "p3_field::field::ExtensionField"
-                                                      []
-                                                      [ T ]
-                                                      EF
-                                                      "ExtensionPacking";
-                                                    Ty.path "alloc::alloc::Global"
-                                                  ];
-                                                Ty.apply
-                                                  (Ty.path "alloc::vec::Vec")
-                                                  []
-                                                  [
-                                                    Ty.associated_in_trait
-                                                      "p3_field::field::ExtensionField"
-                                                      []
-                                                      [ T ]
-                                                      EF
-                                                      "ExtensionPacking";
-                                                    Ty.path "alloc::alloc::Global"
-                                                  ]
-                                              ]
-                                          ]
-                                          (Ty.apply
-                                            (Ty.path "alloc::vec::Vec")
-                                            []
-                                            [
-                                              Ty.associated_in_trait
-                                                "p3_field::field::ExtensionField"
-                                                []
-                                                [ T ]
-                                                EF
-                                                "ExtensionPacking";
-                                              Ty.path "alloc::alloc::Global"
-                                            ]),
+                                            Ty.associated_in_trait
+                                              "p3_field::field::ExtensionField"
+                                              []
+                                              [ T ]
+                                              EF
+                                              "ExtensionPacking";
+                                            Ty.path "alloc::alloc::Global"
+                                          ],
                                         M.alloc (|
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
@@ -4842,26 +4646,23 @@ Module Matrix.
                                                           [
                                                             Ty.tuple
                                                               [
-                                                                Ty.tuple
+                                                                Ty.apply
+                                                                  (Ty.path "&mut")
+                                                                  []
                                                                   [
-                                                                    Ty.apply
-                                                                      (Ty.path "&mut")
-                                                                      []
-                                                                      [
-                                                                        Ty.associated_in_trait
-                                                                          "p3_field::field::ExtensionField"
-                                                                          []
-                                                                          [ T ]
-                                                                          EF
-                                                                          "ExtensionPacking"
-                                                                      ];
                                                                     Ty.associated_in_trait
                                                                       "p3_field::field::ExtensionField"
                                                                       []
                                                                       [ T ]
                                                                       EF
                                                                       "ExtensionPacking"
-                                                                  ]
+                                                                  ];
+                                                                Ty.associated_in_trait
+                                                                  "p3_field::field::ExtensionField"
+                                                                  []
+                                                                  [ T ]
+                                                                  EF
+                                                                  "ExtensionPacking"
                                                               ]
                                                           ]
                                                           (Ty.tuple [])
@@ -4985,33 +4786,7 @@ Module Matrix.
                                                             | [ α0 ] =>
                                                               ltac:(M.monadic
                                                                 (M.match_operator (|
-                                                                  Ty.function
-                                                                    [
-                                                                      Ty.tuple
-                                                                        [
-                                                                          Ty.tuple
-                                                                            [
-                                                                              Ty.apply
-                                                                                (Ty.path "&mut")
-                                                                                []
-                                                                                [
-                                                                                  Ty.associated_in_trait
-                                                                                    "p3_field::field::ExtensionField"
-                                                                                    []
-                                                                                    [ T ]
-                                                                                    EF
-                                                                                    "ExtensionPacking"
-                                                                                ];
-                                                                              Ty.associated_in_trait
-                                                                                "p3_field::field::ExtensionField"
-                                                                                []
-                                                                                [ T ]
-                                                                                EF
-                                                                                "ExtensionPacking"
-                                                                            ]
-                                                                        ]
-                                                                    ]
-                                                                    (Ty.tuple []),
+                                                                  Ty.tuple [],
                                                                   M.alloc (|
                                                                     Ty.tuple
                                                                       [
@@ -5155,19 +4930,16 @@ Module Matrix.
                               []
                               [
                                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
-                                Ty.function [ Ty.tuple [ Ty.path "usize" ] ] EF
+                                Ty.function [ Ty.path "usize" ] EF
                               ];
                             Ty.function
                               [
-                                Ty.tuple
-                                  [
-                                    Ty.associated_in_trait
-                                      "p3_field::field::ExtensionField"
-                                      []
-                                      [ T ]
-                                      EF
-                                      "ExtensionPacking"
-                                  ]
+                                Ty.associated_in_trait
+                                  "p3_field::field::ExtensionField"
+                                  []
+                                  [ T ]
+                                  EF
+                                  "ExtensionPacking"
                               ]
                               (Ty.apply
                                 (Ty.path "core::iter::adapters::map::Map")
@@ -5177,7 +4949,7 @@ Module Matrix.
                                     (Ty.path "core::ops::range::Range")
                                     []
                                     [ Ty.path "usize" ];
-                                  Ty.function [ Ty.tuple [ Ty.path "usize" ] ] EF
+                                  Ty.function [ Ty.path "usize" ] EF
                                 ])
                           ]
                       ],
@@ -5218,19 +4990,16 @@ Module Matrix.
                                     (Ty.path "core::ops::range::Range")
                                     []
                                     [ Ty.path "usize" ];
-                                  Ty.function [ Ty.tuple [ Ty.path "usize" ] ] EF
+                                  Ty.function [ Ty.path "usize" ] EF
                                 ];
                               Ty.function
                                 [
-                                  Ty.tuple
-                                    [
-                                      Ty.associated_in_trait
-                                        "p3_field::field::ExtensionField"
-                                        []
-                                        [ T ]
-                                        EF
-                                        "ExtensionPacking"
-                                    ]
+                                  Ty.associated_in_trait
+                                    "p3_field::field::ExtensionField"
+                                    []
+                                    [ T ]
+                                    EF
+                                    "ExtensionPacking"
                                 ]
                                 (Ty.apply
                                   (Ty.path "core::iter::adapters::map::Map")
@@ -5240,7 +5009,7 @@ Module Matrix.
                                       (Ty.path "core::ops::range::Range")
                                       []
                                       [ Ty.path "usize" ];
-                                    Ty.function [ Ty.tuple [ Ty.path "usize" ] ] EF
+                                    Ty.function [ Ty.path "usize" ] EF
                                   ])
                             ]
                         ],
@@ -5267,19 +5036,16 @@ Module Matrix.
                               []
                               [
                                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
-                                Ty.function [ Ty.tuple [ Ty.path "usize" ] ] EF
+                                Ty.function [ Ty.path "usize" ] EF
                               ];
                             Ty.function
                               [
-                                Ty.tuple
-                                  [
-                                    Ty.associated_in_trait
-                                      "p3_field::field::ExtensionField"
-                                      []
-                                      [ T ]
-                                      EF
-                                      "ExtensionPacking"
-                                  ]
+                                Ty.associated_in_trait
+                                  "p3_field::field::ExtensionField"
+                                  []
+                                  [ T ]
+                                  EF
+                                  "ExtensionPacking"
                               ]
                               (Ty.apply
                                 (Ty.path "core::iter::adapters::map::Map")
@@ -5289,7 +5055,7 @@ Module Matrix.
                                     (Ty.path "core::ops::range::Range")
                                     []
                                     [ Ty.path "usize" ];
-                                  Ty.function [ Ty.tuple [ Ty.path "usize" ] ] EF
+                                  Ty.function [ Ty.path "usize" ] EF
                                 ])
                           ],
                         [],
@@ -5324,19 +5090,16 @@ Module Matrix.
                                     (Ty.path "core::ops::range::Range")
                                     []
                                     [ Ty.path "usize" ];
-                                  Ty.function [ Ty.tuple [ Ty.path "usize" ] ] EF
+                                  Ty.function [ Ty.path "usize" ] EF
                                 ];
                               Ty.function
                                 [
-                                  Ty.tuple
-                                    [
-                                      Ty.associated_in_trait
-                                        "p3_field::field::ExtensionField"
-                                        []
-                                        [ T ]
-                                        EF
-                                        "ExtensionPacking"
-                                    ]
+                                  Ty.associated_in_trait
+                                    "p3_field::field::ExtensionField"
+                                    []
+                                    [ T ]
+                                    EF
+                                    "ExtensionPacking"
                                 ]
                                 (Ty.apply
                                   (Ty.path "core::iter::adapters::map::Map")
@@ -5346,7 +5109,7 @@ Module Matrix.
                                       (Ty.path "core::ops::range::Range")
                                       []
                                       [ Ty.path "usize" ];
-                                    Ty.function [ Ty.tuple [ Ty.path "usize" ] ] EF
+                                    Ty.function [ Ty.path "usize" ] EF
                                   ])
                             ],
                           M.get_trait_method (|
@@ -5376,19 +5139,16 @@ Module Matrix.
                                     (Ty.path "core::ops::range::Range")
                                     []
                                     [ Ty.path "usize" ];
-                                  Ty.function [ Ty.tuple [ Ty.path "usize" ] ] EF
+                                  Ty.function [ Ty.path "usize" ] EF
                                 ];
                               Ty.function
                                 [
-                                  Ty.tuple
-                                    [
-                                      Ty.associated_in_trait
-                                        "p3_field::field::ExtensionField"
-                                        []
-                                        [ T ]
-                                        EF
-                                        "ExtensionPacking"
-                                    ]
+                                  Ty.associated_in_trait
+                                    "p3_field::field::ExtensionField"
+                                    []
+                                    [ T ]
+                                    EF
+                                    "ExtensionPacking"
                                 ]
                                 (Ty.apply
                                   (Ty.path "core::iter::adapters::map::Map")
@@ -5398,7 +5158,7 @@ Module Matrix.
                                       (Ty.path "core::ops::range::Range")
                                       []
                                       [ Ty.path "usize" ];
-                                    Ty.function [ Ty.tuple [ Ty.path "usize" ] ] EF
+                                    Ty.function [ Ty.path "usize" ] EF
                                   ])
                             ]
                           |),
@@ -5445,28 +5205,16 @@ Module Matrix.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Ty.function
+                                        Ty.apply
+                                          (Ty.path "core::iter::adapters::map::Map")
+                                          []
                                           [
-                                            Ty.tuple
-                                              [
-                                                Ty.associated_in_trait
-                                                  "p3_field::field::ExtensionField"
-                                                  []
-                                                  [ T ]
-                                                  EF
-                                                  "ExtensionPacking"
-                                              ]
-                                          ]
-                                          (Ty.apply
-                                            (Ty.path "core::iter::adapters::map::Map")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::ops::range::Range")
-                                                []
-                                                [ Ty.path "usize" ];
-                                              Ty.function [ Ty.tuple [ Ty.path "usize" ] ] EF
-                                            ]),
+                                            Ty.apply
+                                              (Ty.path "core::ops::range::Range")
+                                              []
+                                              [ Ty.path "usize" ];
+                                            Ty.function [ Ty.path "usize" ] EF
+                                          ],
                                         M.alloc (|
                                           Ty.associated_in_trait
                                             "p3_field::field::ExtensionField"
@@ -5498,7 +5246,7 @@ Module Matrix.
                                                       (Ty.path "core::ops::range::Range")
                                                       []
                                                       [ Ty.path "usize" ];
-                                                    Ty.function [ Ty.tuple [ Ty.path "usize" ] ] EF
+                                                    Ty.function [ Ty.path "usize" ] EF
                                                   ],
                                                 M.get_trait_method (|
                                                   "core::iter::traits::iterator::Iterator",
@@ -5510,10 +5258,7 @@ Module Matrix.
                                                   [],
                                                   "map",
                                                   [],
-                                                  [
-                                                    EF;
-                                                    Ty.function [ Ty.tuple [ Ty.path "usize" ] ] EF
-                                                  ]
+                                                  [ EF; Ty.function [ Ty.path "usize" ] EF ]
                                                 |),
                                                 [
                                                   Value.mkStructRecord
@@ -5537,9 +5282,7 @@ Module Matrix.
                                                         | [ α0 ] =>
                                                           ltac:(M.monadic
                                                             (M.match_operator (|
-                                                              Ty.function
-                                                                [ Ty.tuple [ Ty.path "usize" ] ]
-                                                                EF,
+                                                              EF,
                                                               M.alloc (| Ty.path "usize", α0 |),
                                                               [
                                                                 fun γ =>
@@ -5560,10 +5303,7 @@ Module Matrix.
                                                                         [],
                                                                         [
                                                                           Ty.function
-                                                                            [
-                                                                              Ty.tuple
-                                                                                [ Ty.path "usize" ]
-                                                                            ]
+                                                                            [ Ty.path "usize" ]
                                                                             T
                                                                         ]
                                                                       |),
@@ -5575,15 +5315,7 @@ Module Matrix.
                                                                               | [ α0 ] =>
                                                                                 ltac:(M.monadic
                                                                                   (M.match_operator (|
-                                                                                    Ty.function
-                                                                                      [
-                                                                                        Ty.tuple
-                                                                                          [
-                                                                                            Ty.path
-                                                                                              "usize"
-                                                                                          ]
-                                                                                      ]
-                                                                                      T,
+                                                                                    T,
                                                                                     M.alloc (|
                                                                                       Ty.path
                                                                                         "usize",
@@ -5879,15 +5611,12 @@ Module Matrix.
                   "{{synthetic}}'9";
                 Ty.function
                   [
-                    Ty.tuple
-                      [
-                        Ty.associated_in_trait
-                          "p3_matrix::Matrix"
-                          []
-                          [ T; Ty.associated_in_trait "p3_field::field::Field" [] [] T "Packing" ]
-                          Self
-                          "{{synthetic}}'10"
-                      ]
+                    Ty.associated_in_trait
+                      "p3_matrix::Matrix"
+                      []
+                      [ T; Ty.associated_in_trait "p3_field::field::Field" [] [] T "Packing" ]
+                      Self
+                      "{{synthetic}}'10"
                   ]
                   EF
               ],
@@ -5904,15 +5633,12 @@ Module Matrix.
                     "{{synthetic}}'9";
                   Ty.function
                     [
-                      Ty.tuple
-                        [
-                          Ty.associated_in_trait
-                            "p3_matrix::Matrix"
-                            []
-                            [ T; Ty.associated_in_trait "p3_field::field::Field" [] [] T "Packing" ]
-                            Self
-                            "{{synthetic}}'10"
-                        ]
+                      Ty.associated_in_trait
+                        "p3_matrix::Matrix"
+                        []
+                        [ T; Ty.associated_in_trait "p3_field::field::Field" [] [] T "Packing" ]
+                        Self
+                        "{{synthetic}}'10"
                     ]
                     EF
                 ],
@@ -5932,15 +5658,12 @@ Module Matrix.
                   EF;
                   Ty.function
                     [
-                      Ty.tuple
-                        [
-                          Ty.associated_in_trait
-                            "p3_matrix::Matrix"
-                            []
-                            [ T; Ty.associated_in_trait "p3_field::field::Field" [] [] T "Packing" ]
-                            Self
-                            "{{synthetic}}'10"
-                        ]
+                      Ty.associated_in_trait
+                        "p3_matrix::Matrix"
+                        []
+                        [ T; Ty.associated_in_trait "p3_field::field::Field" [] [] T "Packing" ]
+                        Self
+                        "{{synthetic}}'10"
                     ]
                     EF
                 ]
@@ -5971,27 +5694,7 @@ Module Matrix.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.associated_in_trait
-                                      "p3_matrix::Matrix"
-                                      []
-                                      [
-                                        T;
-                                        Ty.associated_in_trait
-                                          "p3_field::field::Field"
-                                          []
-                                          []
-                                          T
-                                          "Packing"
-                                      ]
-                                      Self
-                                      "{{synthetic}}'10"
-                                  ]
-                              ]
-                              EF,
+                            EF,
                             M.alloc (|
                               Ty.associated_in_trait
                                 "p3_matrix::Matrix"
@@ -6177,7 +5880,7 @@ Module Matrix.
                                           [ T ],
                                           "from_basis_coefficients_fn",
                                           [],
-                                          [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] T ]
+                                          [ Ty.function [ Ty.path "usize" ] T ]
                                         |),
                                         [
                                           M.closure
@@ -6187,9 +5890,7 @@ Module Matrix.
                                                 | [ α0 ] =>
                                                   ltac:(M.monadic
                                                     (M.match_operator (|
-                                                      Ty.function
-                                                        [ Ty.tuple [ Ty.path "usize" ] ]
-                                                        T,
+                                                      T,
                                                       M.alloc (| Ty.path "usize", α0 |),
                                                       [
                                                         fun γ =>

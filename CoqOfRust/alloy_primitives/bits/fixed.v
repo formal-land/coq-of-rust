@@ -1346,13 +1346,10 @@ Module bits.
                     [ Ty.apply (Ty.path "alloy_primitives::bits::fixed::FixedBytes") [ N ] [] ];
                   Ty.function
                     [
-                      Ty.tuple
-                        [
-                          Ty.apply
-                            (Ty.path "&")
-                            []
-                            [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ] ]
-                        ]
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ] ]
                     ]
                     (Ty.apply
                       (Ty.path "&")
@@ -1391,25 +1388,15 @@ Module bits.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
+                            Ty.apply
+                              (Ty.path "&")
+                              []
                               [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ] ]
-                                  ]
-                              ]
-                              (Ty.apply
-                                (Ty.path "&")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                    [ N ]
-                                    []
-                                ]),
+                                Ty.apply
+                                  (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                  [ N ]
+                                  []
+                              ],
                             M.alloc (|
                               Ty.apply
                                 (Ty.path "&")
@@ -1538,13 +1525,10 @@ Module bits.
                     [ Ty.apply (Ty.path "alloy_primitives::bits::fixed::FixedBytes") [ N ] [] ];
                   Ty.function
                     [
-                      Ty.tuple
-                        [
-                          Ty.apply
-                            (Ty.path "&mut")
-                            []
-                            [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ] ]
-                        ]
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ] ]
                     ]
                     (Ty.apply
                       (Ty.path "&mut")
@@ -1590,25 +1574,15 @@ Module bits.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
                               [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&mut")
-                                      []
-                                      [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ] ]
-                                  ]
-                              ]
-                              (Ty.apply
-                                (Ty.path "&mut")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                    [ N ]
-                                    []
-                                ]),
+                                Ty.apply
+                                  (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                  [ N ]
+                                  []
+                              ],
                             M.alloc (|
                               Ty.apply
                                 (Ty.path "&mut")
@@ -5695,11 +5669,8 @@ Module bits.
                         [
                           Ty.tuple
                             [
-                              Ty.tuple
-                                [
-                                  Ty.apply (Ty.path "&mut") [] [ Ty.path "u8" ];
-                                  Ty.apply (Ty.path "&") [] [ Ty.path "u8" ]
-                                ]
+                              Ty.apply (Ty.path "&mut") [] [ Ty.path "u8" ];
+                              Ty.apply (Ty.path "&") [] [ Ty.path "u8" ]
                             ]
                         ]
                         (Ty.tuple [])
@@ -5747,18 +5718,7 @@ Module bits.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function
-                                  [
-                                    Ty.tuple
-                                      [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply (Ty.path "&mut") [] [ Ty.path "u8" ];
-                                            Ty.apply (Ty.path "&") [] [ Ty.path "u8" ]
-                                          ]
-                                      ]
-                                  ]
-                                  (Ty.tuple []),
+                                Ty.tuple [],
                                 M.alloc (|
                                   Ty.tuple
                                     [
@@ -5932,11 +5892,8 @@ Module bits.
                         [
                           Ty.tuple
                             [
-                              Ty.tuple
-                                [
-                                  Ty.apply (Ty.path "&mut") [] [ Ty.path "u8" ];
-                                  Ty.apply (Ty.path "&") [] [ Ty.path "u8" ]
-                                ]
+                              Ty.apply (Ty.path "&mut") [] [ Ty.path "u8" ];
+                              Ty.apply (Ty.path "&") [] [ Ty.path "u8" ]
                             ]
                         ]
                         (Ty.tuple [])
@@ -5984,18 +5941,7 @@ Module bits.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function
-                                  [
-                                    Ty.tuple
-                                      [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply (Ty.path "&mut") [] [ Ty.path "u8" ];
-                                            Ty.apply (Ty.path "&") [] [ Ty.path "u8" ]
-                                          ]
-                                      ]
-                                  ]
-                                  (Ty.tuple []),
+                                Ty.tuple [],
                                 M.alloc (|
                                   Ty.tuple
                                     [
@@ -6169,11 +6115,8 @@ Module bits.
                         [
                           Ty.tuple
                             [
-                              Ty.tuple
-                                [
-                                  Ty.apply (Ty.path "&mut") [] [ Ty.path "u8" ];
-                                  Ty.apply (Ty.path "&") [] [ Ty.path "u8" ]
-                                ]
+                              Ty.apply (Ty.path "&mut") [] [ Ty.path "u8" ];
+                              Ty.apply (Ty.path "&") [] [ Ty.path "u8" ]
                             ]
                         ]
                         (Ty.tuple [])
@@ -6221,18 +6164,7 @@ Module bits.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function
-                                  [
-                                    Ty.tuple
-                                      [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply (Ty.path "&mut") [] [ Ty.path "u8" ];
-                                            Ty.apply (Ty.path "&") [] [ Ty.path "u8" ]
-                                          ]
-                                      ]
-                                  ]
-                                  (Ty.tuple []),
+                                Ty.tuple [],
                                 M.alloc (|
                                   Ty.tuple
                                     [
@@ -6325,11 +6257,7 @@ Module bits.
                     [],
                     "for_each",
                     [],
-                    [
-                      Ty.function
-                        [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ Ty.path "u8" ] ] ]
-                        (Ty.tuple [])
-                    ]
+                    [ Ty.function [ Ty.apply (Ty.path "&mut") [] [ Ty.path "u8" ] ] (Ty.tuple []) ]
                   |),
                   [
                     M.call_closure (|
@@ -6376,9 +6304,7 @@ Module bits.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function
-                                  [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ Ty.path "u8" ] ] ]
-                                  (Ty.tuple []),
+                                Ty.tuple [],
                                 M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "u8" ], α0 |),
                                 [
                                   fun γ =>

@@ -1653,7 +1653,7 @@ Module collections.
                 Ty.apply (Ty.path "core::option::Option") [] [ T ],
                 "map",
                 [],
-                [ T; Ty.function [ Ty.tuple [ T ] ] T ]
+                [ T; Ty.function [ T ] T ]
               |),
               [
                 M.call_closure (|
@@ -1682,7 +1682,7 @@ Module collections.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function [ Ty.tuple [ T ] ] T,
+                            T,
                             M.alloc (| T, α0 |),
                             [
                               fun γ =>
@@ -4345,8 +4345,7 @@ Module collections.
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "retain",
                     [],
-                    [ Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ] (Ty.path "bool")
-                    ]
+                    [ Ty.function [ Ty.apply (Ty.path "&") [] [ T ] ] (Ty.path "bool") ]
                   |),
                   [
                     M.borrow (|
@@ -4372,9 +4371,7 @@ Module collections.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function
-                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
-                                  (Ty.path "bool"),
+                                Ty.path "bool",
                                 M.alloc (| Ty.apply (Ty.path "&") [] [ T ], α0 |),
                                 [
                                   fun γ =>

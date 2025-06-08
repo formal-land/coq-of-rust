@@ -2427,7 +2427,7 @@ Module ffi.
                 [
                   Ty.path "alloc::ffi::c_str::IntoStringError";
                   Ty.function
-                    [ Ty.tuple [ Ty.path "alloc::string::FromUtf8Error" ] ]
+                    [ Ty.path "alloc::string::FromUtf8Error" ]
                     (Ty.path "alloc::ffi::c_str::IntoStringError")
                 ]
               |),
@@ -2466,9 +2466,7 @@ Module ffi.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [ Ty.tuple [ Ty.path "alloc::string::FromUtf8Error" ] ]
-                              (Ty.path "alloc::ffi::c_str::IntoStringError"),
+                            Ty.path "alloc::ffi::c_str::IntoStringError",
                             M.alloc (| Ty.path "alloc::string::FromUtf8Error", α0 |),
                             [
                               fun γ =>

@@ -16310,7 +16310,7 @@ Module iter.
                             [
                               Ty.path "usize";
                               Ty.function
-                                [ Ty.tuple [ Ty.path "usize" ] ]
+                                [ Ty.path "usize" ]
                                 (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ])
                             ]
                           |),
@@ -16323,12 +16323,10 @@ Module iter.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Ty.function
-                                          [ Ty.tuple [ Ty.path "usize" ] ]
-                                          (Ty.apply
-                                            (Ty.path "core::option::Option")
-                                            []
-                                            [ Ty.path "usize" ]),
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "usize" ],
                                         M.alloc (| Ty.path "usize", α0 |),
                                         [
                                           fun γ =>
@@ -16438,7 +16436,7 @@ Module iter.
                             [
                               Ty.path "usize";
                               Ty.function
-                                [ Ty.tuple [ Ty.path "usize" ] ]
+                                [ Ty.path "usize" ]
                                 (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ])
                             ]
                           |),
@@ -16512,12 +16510,10 @@ Module iter.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Ty.function
-                                          [ Ty.tuple [ Ty.path "usize" ] ]
-                                          (Ty.apply
-                                            (Ty.path "core::option::Option")
-                                            []
-                                            [ Ty.path "usize" ]),
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "usize" ],
                                         M.alloc (| Ty.path "usize", α0 |),
                                         [
                                           fun γ =>

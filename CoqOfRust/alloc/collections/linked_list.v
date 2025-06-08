@@ -1345,13 +1345,10 @@ Module collections.
                     ];
                   Ty.function
                     [
-                      Ty.tuple
-                        [
-                          Ty.apply
-                            (Ty.path "core::ptr::non_null::NonNull")
-                            []
-                            [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
-                        ]
+                      Ty.apply
+                        (Ty.path "core::ptr::non_null::NonNull")
+                        []
+                        [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                     ]
                     (Ty.apply
                       (Ty.path "alloc::boxed::Box")
@@ -1377,31 +1374,13 @@ Module collections.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
                               [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::ptr::non_null::NonNull")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloc::collections::linked_list::Node")
-                                          []
-                                          [ T ]
-                                      ]
-                                  ]
-                              ]
-                              (Ty.apply
-                                (Ty.path "alloc::boxed::Box")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "alloc::collections::linked_list::Node")
-                                    []
-                                    [ T ];
-                                  Ty.apply (Ty.path "&") [] [ A ]
-                                ]),
+                                Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ];
+                                Ty.apply (Ty.path "&") [] [ A ]
+                              ],
                             M.alloc (|
                               Ty.apply
                                 (Ty.path "core::ptr::non_null::NonNull")
@@ -1983,13 +1962,10 @@ Module collections.
                     ];
                   Ty.function
                     [
-                      Ty.tuple
-                        [
-                          Ty.apply
-                            (Ty.path "core::ptr::non_null::NonNull")
-                            []
-                            [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
-                        ]
+                      Ty.apply
+                        (Ty.path "core::ptr::non_null::NonNull")
+                        []
+                        [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                     ]
                     (Ty.apply
                       (Ty.path "alloc::boxed::Box")
@@ -2015,31 +1991,13 @@ Module collections.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
                               [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::ptr::non_null::NonNull")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloc::collections::linked_list::Node")
-                                          []
-                                          [ T ]
-                                      ]
-                                  ]
-                              ]
-                              (Ty.apply
-                                (Ty.path "alloc::boxed::Box")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "alloc::collections::linked_list::Node")
-                                    []
-                                    [ T ];
-                                  Ty.apply (Ty.path "&") [] [ A ]
-                                ]),
+                                Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ];
+                                Ty.apply (Ty.path "&") [] [ A ]
+                              ],
                             M.alloc (|
                               Ty.apply
                                 (Ty.path "core::ptr::non_null::NonNull")
@@ -5026,7 +4984,7 @@ Module collections.
                 [],
                 "any",
                 [],
-                [ Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ] (Ty.path "bool") ]
+                [ Ty.function [ Ty.apply (Ty.path "&") [] [ T ] ] (Ty.path "bool") ]
               |),
               [
                 M.borrow (|
@@ -5055,9 +5013,7 @@ Module collections.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
-                              (Ty.path "bool"),
+                            Ty.path "bool",
                             M.alloc (| Ty.apply (Ty.path "&") [] [ T ], α0 |),
                             [
                               fun γ =>
@@ -5135,22 +5091,14 @@ Module collections.
                   Ty.apply (Ty.path "&") [] [ T ];
                   Ty.function
                     [
-                      Ty.tuple
+                      Ty.apply
+                        (Ty.path "&")
+                        []
                         [
                           Ty.apply
-                            (Ty.path "&")
+                            (Ty.path "core::ptr::non_null::NonNull")
                             []
-                            [
-                              Ty.apply
-                                (Ty.path "core::ptr::non_null::NonNull")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "alloc::collections::linked_list::Node")
-                                    []
-                                    [ T ]
-                                ]
-                            ]
+                            [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                         ]
                     ]
                     (Ty.apply (Ty.path "&") [] [ T ])
@@ -5204,27 +5152,7 @@ Module collections.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::ptr::non_null::NonNull")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "alloc::collections::linked_list::Node")
-                                              []
-                                              [ T ]
-                                          ]
-                                      ]
-                                  ]
-                              ]
-                              (Ty.apply (Ty.path "&") [] [ T ]),
+                            Ty.apply (Ty.path "&") [] [ T ],
                             M.alloc (|
                               Ty.apply
                                 (Ty.path "&")
@@ -5359,22 +5287,14 @@ Module collections.
                   Ty.apply (Ty.path "&mut") [] [ T ];
                   Ty.function
                     [
-                      Ty.tuple
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
                         [
                           Ty.apply
-                            (Ty.path "&mut")
+                            (Ty.path "core::ptr::non_null::NonNull")
                             []
-                            [
-                              Ty.apply
-                                (Ty.path "core::ptr::non_null::NonNull")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "alloc::collections::linked_list::Node")
-                                    []
-                                    [ T ]
-                                ]
-                            ]
+                            [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                         ]
                     ]
                     (Ty.apply (Ty.path "&mut") [] [ T ])
@@ -5428,27 +5348,7 @@ Module collections.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&mut")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::ptr::non_null::NonNull")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "alloc::collections::linked_list::Node")
-                                              []
-                                              [ T ]
-                                          ]
-                                      ]
-                                  ]
-                              ]
-                              (Ty.apply (Ty.path "&mut") [] [ T ]),
+                            Ty.apply (Ty.path "&mut") [] [ T ],
                             M.alloc (|
                               Ty.apply
                                 (Ty.path "&mut")
@@ -5583,22 +5483,14 @@ Module collections.
                   Ty.apply (Ty.path "&") [] [ T ];
                   Ty.function
                     [
-                      Ty.tuple
+                      Ty.apply
+                        (Ty.path "&")
+                        []
                         [
                           Ty.apply
-                            (Ty.path "&")
+                            (Ty.path "core::ptr::non_null::NonNull")
                             []
-                            [
-                              Ty.apply
-                                (Ty.path "core::ptr::non_null::NonNull")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "alloc::collections::linked_list::Node")
-                                    []
-                                    [ T ]
-                                ]
-                            ]
+                            [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                         ]
                     ]
                     (Ty.apply (Ty.path "&") [] [ T ])
@@ -5652,27 +5544,7 @@ Module collections.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::ptr::non_null::NonNull")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "alloc::collections::linked_list::Node")
-                                              []
-                                              [ T ]
-                                          ]
-                                      ]
-                                  ]
-                              ]
-                              (Ty.apply (Ty.path "&") [] [ T ]),
+                            Ty.apply (Ty.path "&") [] [ T ],
                             M.alloc (|
                               Ty.apply
                                 (Ty.path "&")
@@ -5807,22 +5679,14 @@ Module collections.
                   Ty.apply (Ty.path "&mut") [] [ T ];
                   Ty.function
                     [
-                      Ty.tuple
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
                         [
                           Ty.apply
-                            (Ty.path "&mut")
+                            (Ty.path "core::ptr::non_null::NonNull")
                             []
-                            [
-                              Ty.apply
-                                (Ty.path "core::ptr::non_null::NonNull")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "alloc::collections::linked_list::Node")
-                                    []
-                                    [ T ]
-                                ]
-                            ]
+                            [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                         ]
                     ]
                     (Ty.apply (Ty.path "&mut") [] [ T ])
@@ -5876,27 +5740,7 @@ Module collections.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&mut")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::ptr::non_null::NonNull")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "alloc::collections::linked_list::Node")
-                                              []
-                                              [ T ]
-                                          ]
-                                      ]
-                                  ]
-                              ]
-                              (Ty.apply (Ty.path "&mut") [] [ T ]),
+                            Ty.apply (Ty.path "&mut") [] [ T ],
                             M.alloc (|
                               Ty.apply
                                 (Ty.path "&mut")
@@ -7875,11 +7719,7 @@ Module collections.
                     Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                     "retain_mut",
                     [],
-                    [
-                      Ty.function
-                        [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ]
-                        (Ty.path "bool")
-                    ]
+                    [ Ty.function [ Ty.apply (Ty.path "&mut") [] [ T ] ] (Ty.path "bool") ]
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
@@ -7890,9 +7730,7 @@ Module collections.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function
-                                  [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ]
-                                  (Ty.path "bool"),
+                                Ty.path "bool",
                                 M.alloc (| Ty.apply (Ty.path "&mut") [] [ T ], α0 |),
                                 [
                                   fun γ =>
@@ -9031,17 +8869,14 @@ Module collections.
                           Ty.apply (Ty.path "&") [] [ T ];
                           Ty.function
                             [
-                              Ty.tuple
+                              Ty.apply
+                                (Ty.path "core::ptr::non_null::NonNull")
+                                []
                                 [
                                   Ty.apply
-                                    (Ty.path "core::ptr::non_null::NonNull")
+                                    (Ty.path "alloc::collections::linked_list::Node")
                                     []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "alloc::collections::linked_list::Node")
-                                        []
-                                        [ T ]
-                                    ]
+                                    [ T ]
                                 ]
                             ]
                             (Ty.apply (Ty.path "&") [] [ T ])
@@ -9062,22 +8897,7 @@ Module collections.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
-                                    Ty.function
-                                      [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::ptr::non_null::NonNull")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "alloc::collections::linked_list::Node")
-                                                  []
-                                                  [ T ]
-                                              ]
-                                          ]
-                                      ]
-                                      (Ty.apply (Ty.path "&") [] [ T ]),
+                                    Ty.apply (Ty.path "&") [] [ T ],
                                     M.alloc (|
                                       Ty.apply
                                         (Ty.path "core::ptr::non_null::NonNull")
@@ -9386,17 +9206,14 @@ Module collections.
                           Ty.apply (Ty.path "&") [] [ T ];
                           Ty.function
                             [
-                              Ty.tuple
+                              Ty.apply
+                                (Ty.path "core::ptr::non_null::NonNull")
+                                []
                                 [
                                   Ty.apply
-                                    (Ty.path "core::ptr::non_null::NonNull")
+                                    (Ty.path "alloc::collections::linked_list::Node")
                                     []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "alloc::collections::linked_list::Node")
-                                        []
-                                        [ T ]
-                                    ]
+                                    [ T ]
                                 ]
                             ]
                             (Ty.apply (Ty.path "&") [] [ T ])
@@ -9417,22 +9234,7 @@ Module collections.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
-                                    Ty.function
-                                      [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::ptr::non_null::NonNull")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "alloc::collections::linked_list::Node")
-                                                  []
-                                                  [ T ]
-                                              ]
-                                          ]
-                                      ]
-                                      (Ty.apply (Ty.path "&") [] [ T ]),
+                                    Ty.apply (Ty.path "&") [] [ T ],
                                     M.alloc (|
                                       Ty.apply
                                         (Ty.path "core::ptr::non_null::NonNull")
@@ -9777,17 +9579,14 @@ Module collections.
                           Ty.apply (Ty.path "&mut") [] [ T ];
                           Ty.function
                             [
-                              Ty.tuple
+                              Ty.apply
+                                (Ty.path "core::ptr::non_null::NonNull")
+                                []
                                 [
                                   Ty.apply
-                                    (Ty.path "core::ptr::non_null::NonNull")
+                                    (Ty.path "alloc::collections::linked_list::Node")
                                     []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "alloc::collections::linked_list::Node")
-                                        []
-                                        [ T ]
-                                    ]
+                                    [ T ]
                                 ]
                             ]
                             (Ty.apply (Ty.path "&mut") [] [ T ])
@@ -9808,22 +9607,7 @@ Module collections.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
-                                    Ty.function
-                                      [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::ptr::non_null::NonNull")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "alloc::collections::linked_list::Node")
-                                                  []
-                                                  [ T ]
-                                              ]
-                                          ]
-                                      ]
-                                      (Ty.apply (Ty.path "&mut") [] [ T ]),
+                                    Ty.apply (Ty.path "&mut") [] [ T ],
                                     M.alloc (|
                                       Ty.apply
                                         (Ty.path "core::ptr::non_null::NonNull")
@@ -10137,17 +9921,14 @@ Module collections.
                           Ty.apply (Ty.path "&mut") [] [ T ];
                           Ty.function
                             [
-                              Ty.tuple
+                              Ty.apply
+                                (Ty.path "core::ptr::non_null::NonNull")
+                                []
                                 [
                                   Ty.apply
-                                    (Ty.path "core::ptr::non_null::NonNull")
+                                    (Ty.path "alloc::collections::linked_list::Node")
                                     []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "alloc::collections::linked_list::Node")
-                                        []
-                                        [ T ]
-                                    ]
+                                    [ T ]
                                 ]
                             ]
                             (Ty.apply (Ty.path "&mut") [] [ T ])
@@ -10168,22 +9949,7 @@ Module collections.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
-                                    Ty.function
-                                      [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::ptr::non_null::NonNull")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "alloc::collections::linked_list::Node")
-                                                  []
-                                                  [ T ]
-                                              ]
-                                          ]
-                                      ]
-                                      (Ty.apply (Ty.path "&mut") [] [ T ]),
+                                    Ty.apply (Ty.path "&mut") [] [ T ],
                                     M.alloc (|
                                       Ty.apply
                                         (Ty.path "core::ptr::non_null::NonNull")
@@ -11559,7 +11325,7 @@ Module collections.
                               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                               "unwrap_or_else",
                               [],
-                              [ Ty.function [ Ty.tuple [] ] (Ty.path "usize") ]
+                              [ Ty.function [] (Ty.path "usize") ]
                             |),
                             [
                               M.call_closure (|
@@ -11588,7 +11354,7 @@ Module collections.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function [ Ty.tuple [] ] (Ty.path "usize"),
+                                          Ty.path "usize",
                                           M.alloc (| Ty.tuple [], α0 |),
                                           [
                                             fun γ =>
@@ -11676,13 +11442,10 @@ Module collections.
                   Ty.apply (Ty.path "&") [] [ T ];
                   Ty.function
                     [
-                      Ty.tuple
-                        [
-                          Ty.apply
-                            (Ty.path "core::ptr::non_null::NonNull")
-                            []
-                            [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
-                        ]
+                      Ty.apply
+                        (Ty.path "core::ptr::non_null::NonNull")
+                        []
+                        [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                     ]
                     (Ty.apply (Ty.path "&") [] [ T ])
                 ]
@@ -11702,22 +11465,7 @@ Module collections.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::ptr::non_null::NonNull")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloc::collections::linked_list::Node")
-                                          []
-                                          [ T ]
-                                      ]
-                                  ]
-                              ]
-                              (Ty.apply (Ty.path "&") [] [ T ]),
+                            Ty.apply (Ty.path "&") [] [ T ],
                             M.alloc (|
                               Ty.apply
                                 (Ty.path "core::ptr::non_null::NonNull")
@@ -11938,18 +11686,10 @@ Module collections.
                       Ty.apply (Ty.path "&") [] [ T ];
                       Ty.function
                         [
-                          Ty.tuple
-                            [
-                              Ty.apply
-                                (Ty.path "core::ptr::non_null::NonNull")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "alloc::collections::linked_list::Node")
-                                    []
-                                    [ T ]
-                                ]
-                            ]
+                          Ty.apply
+                            (Ty.path "core::ptr::non_null::NonNull")
+                            []
+                            [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                         ]
                         (Ty.apply (Ty.path "&") [] [ T ])
                     ]
@@ -11963,22 +11703,7 @@ Module collections.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function
-                                  [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::ptr::non_null::NonNull")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "alloc::collections::linked_list::Node")
-                                              []
-                                              [ T ]
-                                          ]
-                                      ]
-                                  ]
-                                  (Ty.apply (Ty.path "&") [] [ T ]),
+                                Ty.apply (Ty.path "&") [] [ T ],
                                 M.alloc (|
                                   Ty.apply
                                     (Ty.path "core::ptr::non_null::NonNull")
@@ -12203,18 +11928,10 @@ Module collections.
                       Ty.apply (Ty.path "&") [] [ T ];
                       Ty.function
                         [
-                          Ty.tuple
-                            [
-                              Ty.apply
-                                (Ty.path "core::ptr::non_null::NonNull")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "alloc::collections::linked_list::Node")
-                                    []
-                                    [ T ]
-                                ]
-                            ]
+                          Ty.apply
+                            (Ty.path "core::ptr::non_null::NonNull")
+                            []
+                            [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                         ]
                         (Ty.apply (Ty.path "&") [] [ T ])
                     ]
@@ -12228,22 +11945,7 @@ Module collections.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function
-                                  [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::ptr::non_null::NonNull")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "alloc::collections::linked_list::Node")
-                                              []
-                                              [ T ]
-                                          ]
-                                      ]
-                                  ]
-                                  (Ty.apply (Ty.path "&") [] [ T ]),
+                                Ty.apply (Ty.path "&") [] [ T ],
                                 M.alloc (|
                                   Ty.apply
                                     (Ty.path "core::ptr::non_null::NonNull")
@@ -13106,7 +12808,7 @@ Module collections.
                               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                               "unwrap_or_else",
                               [],
-                              [ Ty.function [ Ty.tuple [] ] (Ty.path "usize") ]
+                              [ Ty.function [] (Ty.path "usize") ]
                             |),
                             [
                               M.call_closure (|
@@ -13135,7 +12837,7 @@ Module collections.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function [ Ty.tuple [] ] (Ty.path "usize"),
+                                          Ty.path "usize",
                                           M.alloc (| Ty.tuple [], α0 |),
                                           [
                                             fun γ =>
@@ -13223,13 +12925,10 @@ Module collections.
                   Ty.apply (Ty.path "&mut") [] [ T ];
                   Ty.function
                     [
-                      Ty.tuple
-                        [
-                          Ty.apply
-                            (Ty.path "core::ptr::non_null::NonNull")
-                            []
-                            [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
-                        ]
+                      Ty.apply
+                        (Ty.path "core::ptr::non_null::NonNull")
+                        []
+                        [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                     ]
                     (Ty.apply (Ty.path "&mut") [] [ T ])
                 ]
@@ -13249,22 +12948,7 @@ Module collections.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::ptr::non_null::NonNull")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloc::collections::linked_list::Node")
-                                          []
-                                          [ T ]
-                                      ]
-                                  ]
-                              ]
-                              (Ty.apply (Ty.path "&mut") [] [ T ]),
+                            Ty.apply (Ty.path "&mut") [] [ T ],
                             M.alloc (|
                               Ty.apply
                                 (Ty.path "core::ptr::non_null::NonNull")
@@ -13488,18 +13172,10 @@ Module collections.
                       Ty.apply (Ty.path "&mut") [] [ T ];
                       Ty.function
                         [
-                          Ty.tuple
-                            [
-                              Ty.apply
-                                (Ty.path "core::ptr::non_null::NonNull")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "alloc::collections::linked_list::Node")
-                                    []
-                                    [ T ]
-                                ]
-                            ]
+                          Ty.apply
+                            (Ty.path "core::ptr::non_null::NonNull")
+                            []
+                            [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                         ]
                         (Ty.apply (Ty.path "&mut") [] [ T ])
                     ]
@@ -13513,22 +13189,7 @@ Module collections.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function
-                                  [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::ptr::non_null::NonNull")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "alloc::collections::linked_list::Node")
-                                              []
-                                              [ T ]
-                                          ]
-                                      ]
-                                  ]
-                                  (Ty.apply (Ty.path "&mut") [] [ T ]),
+                                Ty.apply (Ty.path "&mut") [] [ T ],
                                 M.alloc (|
                                   Ty.apply
                                     (Ty.path "core::ptr::non_null::NonNull")
@@ -13756,18 +13417,10 @@ Module collections.
                       Ty.apply (Ty.path "&mut") [] [ T ];
                       Ty.function
                         [
-                          Ty.tuple
-                            [
-                              Ty.apply
-                                (Ty.path "core::ptr::non_null::NonNull")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "alloc::collections::linked_list::Node")
-                                    []
-                                    [ T ]
-                                ]
-                            ]
+                          Ty.apply
+                            (Ty.path "core::ptr::non_null::NonNull")
+                            []
+                            [ Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ] ]
                         ]
                         (Ty.apply (Ty.path "&mut") [] [ T ])
                     ]
@@ -13781,22 +13434,7 @@ Module collections.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function
-                                  [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::ptr::non_null::NonNull")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "alloc::collections::linked_list::Node")
-                                              []
-                                              [ T ]
-                                          ]
-                                      ]
-                                  ]
-                                  (Ty.apply (Ty.path "&mut") [] [ T ]),
+                                Ty.apply (Ty.path "&mut") [] [ T ],
                                 M.alloc (|
                                   Ty.apply
                                     (Ty.path "core::ptr::non_null::NonNull")
@@ -18867,15 +18505,12 @@ Module collections.
                     [
                       Ty.function
                         [
-                          Ty.tuple
-                            [
-                              Ty.associated_in_trait
-                                "core::iter::traits::collect::IntoIterator"
-                                []
-                                []
-                                I
-                                "Item"
-                            ]
+                          Ty.associated_in_trait
+                            "core::iter::traits::collect::IntoIterator"
+                            []
+                            []
+                            I
+                            "Item"
                         ]
                         (Ty.tuple [])
                     ]
@@ -18906,19 +18541,7 @@ Module collections.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function
-                                  [
-                                    Ty.tuple
-                                      [
-                                        Ty.associated_in_trait
-                                          "core::iter::traits::collect::IntoIterator"
-                                          []
-                                          []
-                                          I
-                                          "Item"
-                                      ]
-                                  ]
-                                  (Ty.tuple []),
+                                Ty.tuple [],
                                 M.alloc (|
                                   Ty.associated_in_trait
                                     "core::iter::traits::collect::IntoIterator"

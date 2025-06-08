@@ -6150,7 +6150,7 @@ Module array.
                   (Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Residual")
                   "TryType";
                 Ty.function
-                  [ Ty.tuple [ Ty.apply (Ty.path "core::array::drain::Drain") [] [ T ] ] ]
+                  [ Ty.apply (Ty.path "core::array::drain::Drain") [] [ T ] ]
                   (Ty.associated_in_trait
                     "core::ops::try_trait::Residual"
                     []
@@ -6173,31 +6173,24 @@ Module array.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [ Ty.tuple [ Ty.apply (Ty.path "core::array::drain::Drain") [] [ T ] ] ]
-                            (Ty.associated_in_trait
-                              "core::ops::try_trait::Residual"
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "array")
-                                  [ N ]
-                                  [
-                                    Ty.associated_in_trait
-                                      "core::ops::try_trait::Try"
-                                      []
-                                      []
-                                      R
-                                      "Output"
-                                  ]
-                              ]
-                              (Ty.associated_in_trait
-                                "core::ops::try_trait::Try"
-                                []
-                                []
-                                R
-                                "Residual")
-                              "TryType"),
+                          Ty.associated_in_trait
+                            "core::ops::try_trait::Residual"
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ N ]
+                                [
+                                  Ty.associated_in_trait
+                                    "core::ops::try_trait::Try"
+                                    []
+                                    []
+                                    R
+                                    "Output"
+                                ]
+                            ]
+                            (Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Residual")
+                            "TryType",
                           M.alloc (| Ty.apply (Ty.path "core::array::drain::Drain") [] [ T ], α0 |),
                           [
                             fun γ =>
@@ -7253,7 +7246,7 @@ Module array.
                 | [ α0 ] =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Ty.function [ Ty.tuple [ Ty.path "usize" ] ] T,
+                      T,
                       M.alloc (| Ty.path "usize", α0 |),
                       [
                         fun γ =>

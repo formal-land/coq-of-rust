@@ -439,7 +439,7 @@ Module Impl_updated_incrementer_Incrementer.
                   [ Ty.tuple []; Ty.path "updated_incrementer::Error" ],
                 "unwrap_or_else",
                 [],
-                [ Ty.function [ Ty.tuple [ Ty.path "updated_incrementer::Error" ] ] (Ty.tuple []) ]
+                [ Ty.function [ Ty.path "updated_incrementer::Error" ] (Ty.tuple []) ]
               |),
               [
                 M.call_closure (|
@@ -488,9 +488,7 @@ Module Impl_updated_incrementer_Incrementer.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [ Ty.tuple [ Ty.path "updated_incrementer::Error" ] ]
-                              (Ty.tuple []),
+                            Ty.tuple [],
                             M.alloc (| Ty.path "updated_incrementer::Error", α0 |),
                             [
                               fun γ =>

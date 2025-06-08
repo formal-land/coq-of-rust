@@ -302,7 +302,7 @@ Module str.
                         [
                           Ty.path "usize";
                           Ty.function
-                            [ Ty.tuple [ Ty.path "usize" ] ]
+                            [ Ty.path "usize" ]
                             (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ])
                         ]
                       |),
@@ -334,12 +334,10 @@ Module str.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
-                                    Ty.function
-                                      [ Ty.tuple [ Ty.path "usize" ] ]
-                                      (Ty.apply
-                                        (Ty.path "core::option::Option")
-                                        []
-                                        [ Ty.path "usize" ]),
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.path "usize" ],
                                     M.alloc (| Ty.path "usize", α0 |),
                                     [
                                       fun γ =>
@@ -361,7 +359,7 @@ Module str.
                                                     []
                                                     [ S ];
                                                   Ty.function
-                                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ S ] ] ]
+                                                    [ Ty.apply (Ty.path "&") [] [ S ] ]
                                                     (Ty.path "usize")
                                                 ],
                                               [],
@@ -395,10 +393,7 @@ Module str.
                                                         []
                                                         [ S ];
                                                       Ty.function
-                                                        [
-                                                          Ty.tuple
-                                                            [ Ty.apply (Ty.path "&") [] [ S ] ]
-                                                        ]
+                                                        [ Ty.apply (Ty.path "&") [] [ S ] ]
                                                         (Ty.path "usize")
                                                     ],
                                                   M.call_closure (|
@@ -411,10 +406,7 @@ Module str.
                                                           []
                                                           [ S ];
                                                         Ty.function
-                                                          [
-                                                            Ty.tuple
-                                                              [ Ty.apply (Ty.path "&") [] [ S ] ]
-                                                          ]
+                                                          [ Ty.apply (Ty.path "&") [] [ S ] ]
                                                           (Ty.path "usize")
                                                       ],
                                                     M.get_trait_method (|
@@ -430,10 +422,7 @@ Module str.
                                                       [
                                                         Ty.path "usize";
                                                         Ty.function
-                                                          [
-                                                            Ty.tuple
-                                                              [ Ty.apply (Ty.path "&") [] [ S ] ]
-                                                          ]
+                                                          [ Ty.apply (Ty.path "&") [] [ S ] ]
                                                           (Ty.path "usize")
                                                       ]
                                                     |),
@@ -463,17 +452,7 @@ Module str.
                                                             | [ α0 ] =>
                                                               ltac:(M.monadic
                                                                 (M.match_operator (|
-                                                                  Ty.function
-                                                                    [
-                                                                      Ty.tuple
-                                                                        [
-                                                                          Ty.apply
-                                                                            (Ty.path "&")
-                                                                            []
-                                                                            [ S ]
-                                                                        ]
-                                                                    ]
-                                                                    (Ty.path "usize"),
+                                                                  Ty.path "usize",
                                                                   M.alloc (|
                                                                     Ty.apply (Ty.path "&") [] [ S ],
                                                                     α0
@@ -896,7 +875,7 @@ Module str.
                         [
                           Ty.apply (Ty.path "core::slice::iter::Iter") [] [ S ];
                           Ty.function
-                            [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ S ] ] ]
+                            [ Ty.apply (Ty.path "&") [] [ S ] ]
                             (Ty.apply
                               (Ty.path "&")
                               []
@@ -919,7 +898,7 @@ Module str.
                         [
                           Ty.apply (Ty.path "core::slice::iter::Iter") [] [ S ];
                           Ty.function
-                            [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ S ] ] ]
+                            [ Ty.apply (Ty.path "&") [] [ S ] ]
                             (Ty.apply
                               (Ty.path "&")
                               []
@@ -954,7 +933,7 @@ Module str.
                                 ]
                             ];
                           Ty.function
-                            [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ S ] ] ]
+                            [ Ty.apply (Ty.path "&") [] [ S ] ]
                             (Ty.apply
                               (Ty.path "&")
                               []
@@ -980,22 +959,20 @@ Module str.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
-                                    Ty.function
-                                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ S ] ] ]
-                                      (Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "slice")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                                []
-                                                [ T ]
-                                            ]
-                                        ]),
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
+                                              [ T ]
+                                          ]
+                                      ],
                                     M.alloc (| Ty.apply (Ty.path "&") [] [ S ], α0 |),
                                     [
                                       fun γ =>
@@ -1195,7 +1172,7 @@ Module str.
                                 [
                                   Ty.apply (Ty.path "core::slice::iter::Iter") [] [ S ];
                                   Ty.function
-                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ S ] ] ]
+                                    [ Ty.apply (Ty.path "&") [] [ S ] ]
                                     (Ty.apply
                                       (Ty.path "&")
                                       []
@@ -1281,7 +1258,7 @@ Module str.
                                                     []
                                                     [ S ];
                                                   Ty.function
-                                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ S ] ] ]
+                                                    [ Ty.apply (Ty.path "&") [] [ S ] ]
                                                     (Ty.apply
                                                       (Ty.path "&")
                                                       []
@@ -1308,8 +1285,7 @@ Module str.
                                                       []
                                                       [ S ];
                                                     Ty.function
-                                                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ S ] ]
-                                                      ]
+                                                      [ Ty.apply (Ty.path "&") [] [ S ] ]
                                                       (Ty.apply
                                                         (Ty.path "&")
                                                         []
@@ -1337,10 +1313,7 @@ Module str.
                                                         []
                                                         [ S ];
                                                       Ty.function
-                                                        [
-                                                          Ty.tuple
-                                                            [ Ty.apply (Ty.path "&") [] [ S ] ]
-                                                        ]
+                                                        [ Ty.apply (Ty.path "&") [] [ S ] ]
                                                         (Ty.apply
                                                           (Ty.path "&")
                                                           []
@@ -1380,10 +1353,7 @@ Module str.
                                                             []
                                                             [ S ];
                                                           Ty.function
-                                                            [
-                                                              Ty.tuple
-                                                                [ Ty.apply (Ty.path "&") [] [ S ] ]
-                                                            ]
+                                                            [ Ty.apply (Ty.path "&") [] [ S ] ]
                                                             (Ty.apply
                                                               (Ty.path "&")
                                                               []
@@ -1465,13 +1435,10 @@ Module str.
                                                                         [ S ];
                                                                       Ty.function
                                                                         [
-                                                                          Ty.tuple
-                                                                            [
-                                                                              Ty.apply
-                                                                                (Ty.path "&")
-                                                                                []
-                                                                                [ S ]
-                                                                            ]
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [ S ]
                                                                         ]
                                                                         (Ty.apply
                                                                           (Ty.path "&")
@@ -2243,7 +2210,7 @@ Module str.
                                                     []
                                                     [ S ];
                                                   Ty.function
-                                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ S ] ] ]
+                                                    [ Ty.apply (Ty.path "&") [] [ S ] ]
                                                     (Ty.apply
                                                       (Ty.path "&")
                                                       []
@@ -2270,8 +2237,7 @@ Module str.
                                                       []
                                                       [ S ];
                                                     Ty.function
-                                                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ S ] ]
-                                                      ]
+                                                      [ Ty.apply (Ty.path "&") [] [ S ] ]
                                                       (Ty.apply
                                                         (Ty.path "&")
                                                         []
@@ -2299,10 +2265,7 @@ Module str.
                                                         []
                                                         [ S ];
                                                       Ty.function
-                                                        [
-                                                          Ty.tuple
-                                                            [ Ty.apply (Ty.path "&") [] [ S ] ]
-                                                        ]
+                                                        [ Ty.apply (Ty.path "&") [] [ S ] ]
                                                         (Ty.apply
                                                           (Ty.path "&")
                                                           []
@@ -2342,10 +2305,7 @@ Module str.
                                                             []
                                                             [ S ];
                                                           Ty.function
-                                                            [
-                                                              Ty.tuple
-                                                                [ Ty.apply (Ty.path "&") [] [ S ] ]
-                                                            ]
+                                                            [ Ty.apply (Ty.path "&") [] [ S ] ]
                                                             (Ty.apply
                                                               (Ty.path "&")
                                                               []
@@ -2427,13 +2387,10 @@ Module str.
                                                                         [ S ];
                                                                       Ty.function
                                                                         [
-                                                                          Ty.tuple
-                                                                            [
-                                                                              Ty.apply
-                                                                                (Ty.path "&")
-                                                                                []
-                                                                                [ S ]
-                                                                            ]
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [ S ]
                                                                         ]
                                                                         (Ty.apply
                                                                           (Ty.path "&")
@@ -3205,7 +3162,7 @@ Module str.
                                                     []
                                                     [ S ];
                                                   Ty.function
-                                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ S ] ] ]
+                                                    [ Ty.apply (Ty.path "&") [] [ S ] ]
                                                     (Ty.apply
                                                       (Ty.path "&")
                                                       []
@@ -3232,8 +3189,7 @@ Module str.
                                                       []
                                                       [ S ];
                                                     Ty.function
-                                                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ S ] ]
-                                                      ]
+                                                      [ Ty.apply (Ty.path "&") [] [ S ] ]
                                                       (Ty.apply
                                                         (Ty.path "&")
                                                         []
@@ -3261,10 +3217,7 @@ Module str.
                                                         []
                                                         [ S ];
                                                       Ty.function
-                                                        [
-                                                          Ty.tuple
-                                                            [ Ty.apply (Ty.path "&") [] [ S ] ]
-                                                        ]
+                                                        [ Ty.apply (Ty.path "&") [] [ S ] ]
                                                         (Ty.apply
                                                           (Ty.path "&")
                                                           []
@@ -3304,10 +3257,7 @@ Module str.
                                                             []
                                                             [ S ];
                                                           Ty.function
-                                                            [
-                                                              Ty.tuple
-                                                                [ Ty.apply (Ty.path "&") [] [ S ] ]
-                                                            ]
+                                                            [ Ty.apply (Ty.path "&") [] [ S ] ]
                                                             (Ty.apply
                                                               (Ty.path "&")
                                                               []
@@ -3389,13 +3339,10 @@ Module str.
                                                                         [ S ];
                                                                       Ty.function
                                                                         [
-                                                                          Ty.tuple
-                                                                            [
-                                                                              Ty.apply
-                                                                                (Ty.path "&")
-                                                                                []
-                                                                                [ S ]
-                                                                            ]
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [ S ]
                                                                         ]
                                                                         (Ty.apply
                                                                           (Ty.path "&")
@@ -4167,7 +4114,7 @@ Module str.
                                                     []
                                                     [ S ];
                                                   Ty.function
-                                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ S ] ] ]
+                                                    [ Ty.apply (Ty.path "&") [] [ S ] ]
                                                     (Ty.apply
                                                       (Ty.path "&")
                                                       []
@@ -4194,8 +4141,7 @@ Module str.
                                                       []
                                                       [ S ];
                                                     Ty.function
-                                                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ S ] ]
-                                                      ]
+                                                      [ Ty.apply (Ty.path "&") [] [ S ] ]
                                                       (Ty.apply
                                                         (Ty.path "&")
                                                         []
@@ -4223,10 +4169,7 @@ Module str.
                                                         []
                                                         [ S ];
                                                       Ty.function
-                                                        [
-                                                          Ty.tuple
-                                                            [ Ty.apply (Ty.path "&") [] [ S ] ]
-                                                        ]
+                                                        [ Ty.apply (Ty.path "&") [] [ S ] ]
                                                         (Ty.apply
                                                           (Ty.path "&")
                                                           []
@@ -4266,10 +4209,7 @@ Module str.
                                                             []
                                                             [ S ];
                                                           Ty.function
-                                                            [
-                                                              Ty.tuple
-                                                                [ Ty.apply (Ty.path "&") [] [ S ] ]
-                                                            ]
+                                                            [ Ty.apply (Ty.path "&") [] [ S ] ]
                                                             (Ty.apply
                                                               (Ty.path "&")
                                                               []
@@ -4351,13 +4291,10 @@ Module str.
                                                                         [ S ];
                                                                       Ty.function
                                                                         [
-                                                                          Ty.tuple
-                                                                            [
-                                                                              Ty.apply
-                                                                                (Ty.path "&")
-                                                                                []
-                                                                                [ S ]
-                                                                            ]
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [ S ]
                                                                         ]
                                                                         (Ty.apply
                                                                           (Ty.path "&")
@@ -5129,7 +5066,7 @@ Module str.
                                                     []
                                                     [ S ];
                                                   Ty.function
-                                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ S ] ] ]
+                                                    [ Ty.apply (Ty.path "&") [] [ S ] ]
                                                     (Ty.apply
                                                       (Ty.path "&")
                                                       []
@@ -5156,8 +5093,7 @@ Module str.
                                                       []
                                                       [ S ];
                                                     Ty.function
-                                                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ S ] ]
-                                                      ]
+                                                      [ Ty.apply (Ty.path "&") [] [ S ] ]
                                                       (Ty.apply
                                                         (Ty.path "&")
                                                         []
@@ -5185,10 +5121,7 @@ Module str.
                                                         []
                                                         [ S ];
                                                       Ty.function
-                                                        [
-                                                          Ty.tuple
-                                                            [ Ty.apply (Ty.path "&") [] [ S ] ]
-                                                        ]
+                                                        [ Ty.apply (Ty.path "&") [] [ S ] ]
                                                         (Ty.apply
                                                           (Ty.path "&")
                                                           []
@@ -5228,10 +5161,7 @@ Module str.
                                                             []
                                                             [ S ];
                                                           Ty.function
-                                                            [
-                                                              Ty.tuple
-                                                                [ Ty.apply (Ty.path "&") [] [ S ] ]
-                                                            ]
+                                                            [ Ty.apply (Ty.path "&") [] [ S ] ]
                                                             (Ty.apply
                                                               (Ty.path "&")
                                                               []
@@ -5313,13 +5243,10 @@ Module str.
                                                                         [ S ];
                                                                       Ty.function
                                                                         [
-                                                                          Ty.tuple
-                                                                            [
-                                                                              Ty.apply
-                                                                                (Ty.path "&")
-                                                                                []
-                                                                                [ S ]
-                                                                            ]
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [ S ]
                                                                         ]
                                                                         (Ty.apply
                                                                           (Ty.path "&")
@@ -6086,7 +6013,7 @@ Module str.
                                                     []
                                                     [ S ];
                                                   Ty.function
-                                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ S ] ] ]
+                                                    [ Ty.apply (Ty.path "&") [] [ S ] ]
                                                     (Ty.apply
                                                       (Ty.path "&")
                                                       []
@@ -6113,8 +6040,7 @@ Module str.
                                                       []
                                                       [ S ];
                                                     Ty.function
-                                                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ S ] ]
-                                                      ]
+                                                      [ Ty.apply (Ty.path "&") [] [ S ] ]
                                                       (Ty.apply
                                                         (Ty.path "&")
                                                         []
@@ -6142,10 +6068,7 @@ Module str.
                                                         []
                                                         [ S ];
                                                       Ty.function
-                                                        [
-                                                          Ty.tuple
-                                                            [ Ty.apply (Ty.path "&") [] [ S ] ]
-                                                        ]
+                                                        [ Ty.apply (Ty.path "&") [] [ S ] ]
                                                         (Ty.apply
                                                           (Ty.path "&")
                                                           []
@@ -6185,10 +6108,7 @@ Module str.
                                                             []
                                                             [ S ];
                                                           Ty.function
-                                                            [
-                                                              Ty.tuple
-                                                                [ Ty.apply (Ty.path "&") [] [ S ] ]
-                                                            ]
+                                                            [ Ty.apply (Ty.path "&") [] [ S ] ]
                                                             (Ty.apply
                                                               (Ty.path "&")
                                                               []
@@ -6270,13 +6190,10 @@ Module str.
                                                                         [ S ];
                                                                       Ty.function
                                                                         [
-                                                                          Ty.tuple
-                                                                            [
-                                                                              Ty.apply
-                                                                                (Ty.path "&")
-                                                                                []
-                                                                                [ S ]
-                                                                            ]
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [ S ]
                                                                         ]
                                                                         (Ty.apply
                                                                           (Ty.path "&")
@@ -7482,10 +7399,7 @@ Module str.
                                           [
                                             Ty.path "u8";
                                             Ty.function
-                                              [
-                                                Ty.tuple
-                                                  [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
-                                              ]
+                                              [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
                                               (Ty.path "u8")
                                           ]
                                         |),
@@ -7510,15 +7424,7 @@ Module str.
                                                 | [ α0 ] =>
                                                   ltac:(M.monadic
                                                     (M.match_operator (|
-                                                      Ty.function
-                                                        [
-                                                          Ty.tuple
-                                                            [
-                                                              Ty.path
-                                                                "core::ascii::ascii_char::AsciiChar"
-                                                            ]
-                                                        ]
-                                                        (Ty.path "u8"),
+                                                      Ty.path "u8",
                                                       M.alloc (|
                                                         Ty.path
                                                           "core::ascii::ascii_char::AsciiChar",
@@ -10236,13 +10142,10 @@ Module str.
                                                               [ Ty.path "bool" ];
                                                             Ty.function
                                                               [
-                                                                Ty.tuple
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path "&")
-                                                                      []
-                                                                      [ Ty.path "bool" ]
-                                                                  ]
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [ Ty.path "bool" ]
                                                               ]
                                                               (Ty.path "u8")
                                                           ],
@@ -10265,13 +10168,10 @@ Module str.
                                                                 [ Ty.path "bool" ];
                                                               Ty.function
                                                                 [
-                                                                  Ty.tuple
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path "&")
-                                                                        []
-                                                                        [ Ty.path "bool" ]
-                                                                    ]
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [ Ty.path "bool" ]
                                                                 ]
                                                                 (Ty.path "u8")
                                                             ],
@@ -10289,13 +10189,10 @@ Module str.
                                                               Ty.path "u8";
                                                               Ty.function
                                                                 [
-                                                                  Ty.tuple
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path "&")
-                                                                        []
-                                                                        [ Ty.path "bool" ]
-                                                                    ]
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [ Ty.path "bool" ]
                                                                 ]
                                                                 (Ty.path "u8")
                                                             ]
@@ -10331,17 +10228,7 @@ Module str.
                                                                   | [ α0 ] =>
                                                                     ltac:(M.monadic
                                                                       (M.match_operator (|
-                                                                        Ty.function
-                                                                          [
-                                                                            Ty.tuple
-                                                                              [
-                                                                                Ty.apply
-                                                                                  (Ty.path "&")
-                                                                                  []
-                                                                                  [ Ty.path "bool" ]
-                                                                              ]
-                                                                          ]
-                                                                          (Ty.path "u8"),
+                                                                        Ty.path "u8",
                                                                         M.alloc (|
                                                                           Ty.apply
                                                                             (Ty.path "&")
@@ -11099,9 +10986,7 @@ Module str.
                   []
                   [
                     Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ];
-                    Ty.function
-                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ] ]
-                      (Ty.path "u8")
+                    Ty.function [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ] (Ty.path "u8")
                   ],
                 [],
                 [],
@@ -11121,9 +11006,7 @@ Module str.
                     []
                     [
                       Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ];
-                      Ty.function
-                        [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ] ]
-                        (Ty.path "u8")
+                      Ty.function [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ] (Ty.path "u8")
                     ],
                   M.get_trait_method (|
                     "core::iter::traits::iterator::Iterator",
@@ -11134,9 +11017,7 @@ Module str.
                     [],
                     [
                       Ty.path "u8";
-                      Ty.function
-                        [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ] ]
-                        (Ty.path "u8")
+                      Ty.function [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ] (Ty.path "u8")
                     ]
                   |),
                   [
@@ -11157,9 +11038,7 @@ Module str.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function
-                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ] ]
-                                  (Ty.path "u8"),
+                                Ty.path "u8",
                                 M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u8" ], α0 |),
                                 [
                                   fun γ =>

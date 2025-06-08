@@ -2391,13 +2391,10 @@ Module control_flow_graph.
                       Ty.apply (Ty.path "core::slice::iter::Windows") [] [ Ty.path "u16" ];
                       Ty.function
                         [
-                          Ty.tuple
-                            [
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ] ]
-                            ]
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ] ]
                         ]
                         (Ty.tuple [ Ty.path "u16"; Ty.path "u16" ])
                     ],
@@ -2421,13 +2418,10 @@ Module control_flow_graph.
                         Ty.apply (Ty.path "core::slice::iter::Windows") [] [ Ty.path "u16" ];
                         Ty.function
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ] ]
-                              ]
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ] ]
                           ]
                           (Ty.tuple [ Ty.path "u16"; Ty.path "u16" ])
                       ],
@@ -2442,13 +2436,10 @@ Module control_flow_graph.
                         Ty.tuple [ Ty.path "u16"; Ty.path "u16" ];
                         Ty.function
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ] ]
-                              ]
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ] ]
                           ]
                           (Ty.tuple [ Ty.path "u16"; Ty.path "u16" ])
                       ]
@@ -2497,17 +2488,7 @@ Module control_flow_graph.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ] ]
-                                        ]
-                                    ]
-                                    (Ty.tuple [ Ty.path "u16"; Ty.path "u16" ]),
+                                  Ty.tuple [ Ty.path "u16"; Ty.path "u16" ],
                                   M.alloc (|
                                     Ty.apply
                                       (Ty.path "&")
@@ -4665,17 +4646,14 @@ Module control_flow_graph.
                 Ty.path "bool";
                 Ty.function
                   [
-                    Ty.tuple
+                    Ty.apply
+                      (Ty.path "&")
+                      []
                       [
                         Ty.apply
-                          (Ty.path "&")
+                          (Ty.path "alloc::collections::btree::set::BTreeSet")
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "alloc::collections::btree::set::BTreeSet")
-                              []
-                              [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
-                          ]
+                          [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
                       ]
                   ]
                   (Ty.path "bool")
@@ -4736,22 +4714,7 @@ Module control_flow_graph.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [
-                              Ty.tuple
-                                [
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "alloc::collections::btree::set::BTreeSet")
-                                        []
-                                        [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
-                                    ]
-                                ]
-                            ]
-                            (Ty.path "bool"),
+                          Ty.path "bool",
                           M.alloc (|
                             Ty.apply
                               (Ty.path "&")
@@ -4852,21 +4815,18 @@ Module control_flow_graph.
                 Ty.path "usize";
                 Ty.function
                   [
+                    Ty.path "usize";
                     Ty.tuple
                       [
-                        Ty.path "usize";
-                        Ty.tuple
+                        Ty.apply (Ty.path "&") [] [ Ty.path "u16" ];
+                        Ty.apply
+                          (Ty.path "&")
+                          []
                           [
-                            Ty.apply (Ty.path "&") [] [ Ty.path "u16" ];
                             Ty.apply
-                              (Ty.path "&")
+                              (Ty.path "alloc::collections::btree::set::BTreeSet")
                               []
-                              [
-                                Ty.apply
-                                  (Ty.path "alloc::collections::btree::set::BTreeSet")
-                                  []
-                                  [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
-                              ]
+                              [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
                           ]
                       ]
                   ]
@@ -4920,56 +4880,14 @@ Module control_flow_graph.
                     | [ α0; α1 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [
-                              Ty.tuple
-                                [
-                                  Ty.path "usize";
-                                  Ty.tuple
-                                    [
-                                      Ty.apply (Ty.path "&") [] [ Ty.path "u16" ];
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "alloc::collections::btree::set::BTreeSet")
-                                            []
-                                            [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
-                                        ]
-                                    ]
-                                ]
-                            ]
-                            (Ty.path "usize"),
+                          Ty.path "usize",
                           M.alloc (| Ty.path "usize", α0 |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let acc := M.copy (| Ty.path "usize", γ |) in
                                 M.match_operator (|
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.path "usize";
-                                          Ty.tuple
-                                            [
-                                              Ty.apply (Ty.path "&") [] [ Ty.path "u16" ];
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path
-                                                      "alloc::collections::btree::set::BTreeSet")
-                                                    []
-                                                    [ Ty.path "u16"; Ty.path "alloc::alloc::Global"
-                                                    ]
-                                                ]
-                                            ]
-                                        ]
-                                    ]
-                                    (Ty.path "usize"),
+                                  Ty.path "usize",
                                   M.alloc (|
                                     Ty.tuple
                                       [

@@ -875,7 +875,7 @@ Module loop_summary.
                     [
                       Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u16" ];
                       Ty.function
-                        [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ] ]
+                        [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
                         (Ty.path "move_bytecode_verifier::loop_summary::new::Frontier")
                     ],
                   [],
@@ -900,7 +900,7 @@ Module loop_summary.
                       [
                         Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u16" ];
                         Ty.function
-                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ] ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
                           (Ty.path "move_bytecode_verifier::loop_summary::new::Frontier")
                       ],
                     M.get_trait_method (|
@@ -913,7 +913,7 @@ Module loop_summary.
                       [
                         Ty.path "move_bytecode_verifier::loop_summary::new::Frontier";
                         Ty.function
-                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ] ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
                           (Ty.path "move_bytecode_verifier::loop_summary::new::Frontier")
                       ]
                     |),
@@ -994,9 +994,7 @@ Module loop_summary.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ] ]
-                                    (Ty.path "move_bytecode_verifier::loop_summary::new::Frontier"),
+                                  Ty.path "move_bytecode_verifier::loop_summary::new::Frontier",
                                   M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u16" ], α0 |),
                                   [
                                     fun γ =>
@@ -1914,13 +1912,10 @@ Module loop_summary.
                                                               [ Ty.path "u16" ];
                                                             Ty.function
                                                               [
-                                                                Ty.tuple
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path "&")
-                                                                      []
-                                                                      [ Ty.path "u16" ]
-                                                                  ]
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [ Ty.path "u16" ]
                                                               ]
                                                               (Ty.path
                                                                 "move_bytecode_verifier::loop_summary::new::Frontier")
@@ -1940,13 +1935,10 @@ Module loop_summary.
                                                               [ Ty.path "u16" ];
                                                             Ty.function
                                                               [
-                                                                Ty.tuple
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path "&")
-                                                                      []
-                                                                      [ Ty.path "u16" ]
-                                                                  ]
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [ Ty.path "u16" ]
                                                               ]
                                                               (Ty.path
                                                                 "move_bytecode_verifier::loop_summary::new::Frontier")
@@ -1966,13 +1958,10 @@ Module loop_summary.
                                                               "move_bytecode_verifier::loop_summary::new::Frontier";
                                                             Ty.function
                                                               [
-                                                                Ty.tuple
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path "&")
-                                                                      []
-                                                                      [ Ty.path "u16" ]
-                                                                  ]
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [ Ty.path "u16" ]
                                                               ]
                                                               (Ty.path
                                                                 "move_bytecode_verifier::loop_summary::new::Frontier")
@@ -2077,18 +2066,8 @@ Module loop_summary.
                                                                 | [ α0 ] =>
                                                                   ltac:(M.monadic
                                                                     (M.match_operator (|
-                                                                      Ty.function
-                                                                        [
-                                                                          Ty.tuple
-                                                                            [
-                                                                              Ty.apply
-                                                                                (Ty.path "&")
-                                                                                []
-                                                                                [ Ty.path "u16" ]
-                                                                            ]
-                                                                        ]
-                                                                        (Ty.path
-                                                                          "move_bytecode_verifier::loop_summary::new::Frontier"),
+                                                                      Ty.path
+                                                                        "move_bytecode_verifier::loop_summary::new::Frontier",
                                                                       M.alloc (|
                                                                         Ty.apply
                                                                           (Ty.path "&")
@@ -2324,7 +2303,7 @@ Module loop_summary.
               [
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
                 Ty.function
-                  [ Ty.tuple [ Ty.path "usize" ] ]
+                  [ Ty.path "usize" ]
                   (Ty.path "move_bytecode_verifier::loop_summary::NodeId")
               ],
             M.get_trait_method (|
@@ -2337,7 +2316,7 @@ Module loop_summary.
               [
                 Ty.path "move_bytecode_verifier::loop_summary::NodeId";
                 Ty.function
-                  [ Ty.tuple [ Ty.path "usize" ] ]
+                  [ Ty.path "usize" ]
                   (Ty.path "move_bytecode_verifier::loop_summary::NodeId")
               ]
             |),
@@ -2379,9 +2358,7 @@ Module loop_summary.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [ Ty.tuple [ Ty.path "usize" ] ]
-                            (Ty.path "move_bytecode_verifier::loop_summary::NodeId"),
+                          Ty.path "move_bytecode_verifier::loop_summary::NodeId",
                           M.alloc (| Ty.path "usize", α0 |),
                           [
                             fun γ =>
@@ -2733,7 +2710,7 @@ Module loop_summary.
                           [
                             Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
                             Ty.function
-                              [ Ty.tuple [ Ty.path "usize" ] ]
+                              [ Ty.path "usize" ]
                               (Ty.path "move_bytecode_verifier::loop_summary::NodeId")
                           ],
                         [],
@@ -2758,7 +2735,7 @@ Module loop_summary.
                             [
                               Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
                               Ty.function
-                                [ Ty.tuple [ Ty.path "usize" ] ]
+                                [ Ty.path "usize" ]
                                 (Ty.path "move_bytecode_verifier::loop_summary::NodeId")
                             ],
                           M.get_trait_method (|
@@ -2771,7 +2748,7 @@ Module loop_summary.
                             [
                               Ty.path "move_bytecode_verifier::loop_summary::NodeId";
                               Ty.function
-                                [ Ty.tuple [ Ty.path "usize" ] ]
+                                [ Ty.path "usize" ]
                                 (Ty.path "move_bytecode_verifier::loop_summary::NodeId")
                             ]
                           |),
@@ -2791,9 +2768,7 @@ Module loop_summary.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Ty.function
-                                          [ Ty.tuple [ Ty.path "usize" ] ]
-                                          (Ty.path "move_bytecode_verifier::loop_summary::NodeId"),
+                                        Ty.path "move_bytecode_verifier::loop_summary::NodeId",
                                         M.alloc (| Ty.path "usize", α0 |),
                                         [
                                           fun γ =>

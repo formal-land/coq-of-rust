@@ -33591,13 +33591,10 @@ Module normalized.
                         [ Ty.path "move_binary_format::file_format::StructDefinition" ];
                       Ty.function
                         [
-                          Ty.tuple
-                            [
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.path "move_binary_format::file_format::StructDefinition" ]
-                            ]
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_binary_format::file_format::StructDefinition" ]
                         ]
                         (Ty.tuple
                           [
@@ -33632,13 +33629,10 @@ Module normalized.
                           [ Ty.path "move_binary_format::file_format::StructDefinition" ];
                         Ty.function
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "move_binary_format::file_format::StructDefinition" ]
-                              ]
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::StructDefinition" ]
                           ]
                           (Ty.tuple
                             [
@@ -33664,13 +33658,10 @@ Module normalized.
                           ];
                         Ty.function
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "move_binary_format::file_format::StructDefinition" ]
-                              ]
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::StructDefinition" ]
                           ]
                           (Ty.tuple
                             [
@@ -33728,24 +33719,11 @@ Module normalized.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.path
-                                                "move_binary_format::file_format::StructDefinition"
-                                            ]
-                                        ]
-                                    ]
-                                    (Ty.tuple
-                                      [
-                                        Ty.path "move_core_types::identifier::Identifier";
-                                        Ty.path "move_binary_format::normalized::Struct"
-                                      ]),
+                                      Ty.path "move_core_types::identifier::Identifier";
+                                      Ty.path "move_binary_format::normalized::Struct"
+                                    ],
                                   M.alloc (|
                                     Ty.apply
                                       (Ty.path "&")
@@ -33851,13 +33829,10 @@ Module normalized.
                         [ Ty.path "move_binary_format::file_format::Constant" ];
                       Ty.function
                         [
-                          Ty.tuple
-                            [
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.path "move_binary_format::file_format::Constant" ]
-                            ]
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_binary_format::file_format::Constant" ]
                         ]
                         (Ty.path "move_binary_format::normalized::Constant")
                     ],
@@ -33887,13 +33862,10 @@ Module normalized.
                           [ Ty.path "move_binary_format::file_format::Constant" ];
                         Ty.function
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "move_binary_format::file_format::Constant" ]
-                              ]
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::Constant" ]
                           ]
                           (Ty.path "move_binary_format::normalized::Constant")
                       ],
@@ -33911,13 +33883,10 @@ Module normalized.
                         Ty.path "move_binary_format::normalized::Constant";
                         Ty.function
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "move_binary_format::file_format::Constant" ]
-                              ]
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::Constant" ]
                           ]
                           (Ty.path "move_binary_format::normalized::Constant")
                       ]
@@ -33970,17 +33939,7 @@ Module normalized.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [ Ty.path "move_binary_format::file_format::Constant" ]
-                                        ]
-                                    ]
-                                    (Ty.path "move_binary_format::normalized::Constant"),
+                                  Ty.path "move_binary_format::normalized::Constant",
                                   M.alloc (|
                                     Ty.apply
                                       (Ty.path "&")
@@ -34057,13 +34016,10 @@ Module normalized.
                         [ Ty.path "move_binary_format::file_format::FunctionDefinition" ];
                       Ty.function
                         [
-                          Ty.tuple
-                            [
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
-                            ]
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
                         ]
                         (Ty.tuple
                           [
@@ -34098,13 +34054,10 @@ Module normalized.
                           [ Ty.path "move_binary_format::file_format::FunctionDefinition" ];
                         Ty.function
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
-                              ]
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
                           ]
                           (Ty.tuple
                             [
@@ -34130,13 +34083,10 @@ Module normalized.
                           ];
                         Ty.function
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
-                              ]
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
                           ]
                           (Ty.tuple
                             [
@@ -34196,24 +34146,11 @@ Module normalized.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.path
-                                                "move_binary_format::file_format::FunctionDefinition"
-                                            ]
-                                        ]
-                                    ]
-                                    (Ty.tuple
-                                      [
-                                        Ty.path "move_core_types::identifier::Identifier";
-                                        Ty.path "move_binary_format::normalized::Function"
-                                      ]),
+                                      Ty.path "move_core_types::identifier::Identifier";
+                                      Ty.path "move_binary_format::normalized::Function"
+                                    ],
                                   M.alloc (|
                                     Ty.apply
                                       (Ty.path "&")
@@ -35080,15 +35017,12 @@ Module normalized.
                                               ];
                                             Ty.function
                                               [
-                                                Ty.tuple
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
                                                   [
-                                                    Ty.apply
-                                                      (Ty.path "&")
-                                                      []
-                                                      [
-                                                        Ty.path
-                                                          "move_binary_format::file_format::SignatureToken"
-                                                      ]
+                                                    Ty.path
+                                                      "move_binary_format::file_format::SignatureToken"
                                                   ]
                                               ]
                                               (Ty.path "move_binary_format::normalized::Type")
@@ -35122,15 +35056,12 @@ Module normalized.
                                                 ];
                                               Ty.function
                                                 [
-                                                  Ty.tuple
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
                                                     [
-                                                      Ty.apply
-                                                        (Ty.path "&")
-                                                        []
-                                                        [
-                                                          Ty.path
-                                                            "move_binary_format::file_format::SignatureToken"
-                                                        ]
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureToken"
                                                     ]
                                                 ]
                                                 (Ty.path "move_binary_format::normalized::Type")
@@ -35152,15 +35083,12 @@ Module normalized.
                                               Ty.path "move_binary_format::normalized::Type";
                                               Ty.function
                                                 [
-                                                  Ty.tuple
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
                                                     [
-                                                      Ty.apply
-                                                        (Ty.path "&")
-                                                        []
-                                                        [
-                                                          Ty.path
-                                                            "move_binary_format::file_format::SignatureToken"
-                                                        ]
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureToken"
                                                     ]
                                                 ]
                                                 (Ty.path "move_binary_format::normalized::Type")
@@ -35238,21 +35166,8 @@ Module normalized.
                                                   | [ α0 ] =>
                                                     ltac:(M.monadic
                                                       (M.match_operator (|
-                                                        Ty.function
-                                                          [
-                                                            Ty.tuple
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path "&")
-                                                                  []
-                                                                  [
-                                                                    Ty.path
-                                                                      "move_binary_format::file_format::SignatureToken"
-                                                                  ]
-                                                              ]
-                                                          ]
-                                                          (Ty.path
-                                                            "move_binary_format::normalized::Type"),
+                                                        Ty.path
+                                                          "move_binary_format::normalized::Type",
                                                         M.alloc (|
                                                           Ty.apply
                                                             (Ty.path "&")
@@ -35758,13 +35673,10 @@ Module normalized.
                       [
                         Ty.function
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "move_binary_format::normalized::Type" ]
-                              ]
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::normalized::Type" ]
                           ]
                           (Ty.path "bool")
                       ]
@@ -35840,17 +35752,7 @@ Module normalized.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [ Ty.path "move_binary_format::normalized::Type" ]
-                                        ]
-                                    ]
-                                    (Ty.path "bool"),
+                                  Ty.path "bool",
                                   M.alloc (|
                                     Ty.apply
                                       (Ty.path "&")
@@ -36466,11 +36368,8 @@ Module normalized.
                                                           ];
                                                         Ty.function
                                                           [
-                                                            Ty.tuple
-                                                              [
-                                                                Ty.path
-                                                                  "move_binary_format::normalized::Type"
-                                                              ]
+                                                            Ty.path
+                                                              "move_binary_format::normalized::Type"
                                                           ]
                                                           (Ty.path
                                                             "move_core_types::language_storage::TypeTag")
@@ -36507,11 +36406,8 @@ Module normalized.
                                                             ];
                                                           Ty.function
                                                             [
-                                                              Ty.tuple
-                                                                [
-                                                                  Ty.path
-                                                                    "move_binary_format::normalized::Type"
-                                                                ]
+                                                              Ty.path
+                                                                "move_binary_format::normalized::Type"
                                                             ]
                                                             (Ty.path
                                                               "move_core_types::language_storage::TypeTag")
@@ -36536,11 +36432,8 @@ Module normalized.
                                                             "move_core_types::language_storage::TypeTag";
                                                           Ty.function
                                                             [
-                                                              Ty.tuple
-                                                                [
-                                                                  Ty.path
-                                                                    "move_binary_format::normalized::Type"
-                                                                ]
+                                                              Ty.path
+                                                                "move_binary_format::normalized::Type"
                                                             ]
                                                             (Ty.path
                                                               "move_core_types::language_storage::TypeTag")
@@ -36582,16 +36475,8 @@ Module normalized.
                                                               | [ α0 ] =>
                                                                 ltac:(M.monadic
                                                                   (M.match_operator (|
-                                                                    Ty.function
-                                                                      [
-                                                                        Ty.tuple
-                                                                          [
-                                                                            Ty.path
-                                                                              "move_binary_format::normalized::Type"
-                                                                          ]
-                                                                      ]
-                                                                      (Ty.path
-                                                                        "move_core_types::language_storage::TypeTag"),
+                                                                    Ty.path
+                                                                      "move_core_types::language_storage::TypeTag",
                                                                     M.alloc (|
                                                                       Ty.path
                                                                         "move_binary_format::normalized::Type",
@@ -37381,13 +37266,10 @@ Module normalized.
                                   [ Ty.path "move_binary_format::normalized::Type" ];
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.path "move_binary_format::normalized::Type" ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_binary_format::normalized::Type" ]
                                   ]
                                   (Ty.path "move_binary_format::normalized::Type")
                               ],
@@ -37417,13 +37299,10 @@ Module normalized.
                                     [ Ty.path "move_binary_format::normalized::Type" ];
                                   Ty.function
                                     [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [ Ty.path "move_binary_format::normalized::Type" ]
-                                        ]
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.path "move_binary_format::normalized::Type" ]
                                     ]
                                     (Ty.path "move_binary_format::normalized::Type")
                                 ],
@@ -37441,13 +37320,10 @@ Module normalized.
                                   Ty.path "move_binary_format::normalized::Type";
                                   Ty.function
                                     [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [ Ty.path "move_binary_format::normalized::Type" ]
-                                        ]
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.path "move_binary_format::normalized::Type" ]
                                     ]
                                     (Ty.path "move_binary_format::normalized::Type")
                                 ]
@@ -37514,20 +37390,7 @@ Module normalized.
                                       | [ α0 ] =>
                                         ltac:(M.monadic
                                           (M.match_operator (|
-                                            Ty.function
-                                              [
-                                                Ty.tuple
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "&")
-                                                      []
-                                                      [
-                                                        Ty.path
-                                                          "move_binary_format::normalized::Type"
-                                                      ]
-                                                  ]
-                                              ]
-                                              (Ty.path "move_binary_format::normalized::Type"),
+                                            Ty.path "move_binary_format::normalized::Type",
                                             M.alloc (|
                                               Ty.apply
                                                 (Ty.path "&")
@@ -37963,14 +37826,10 @@ Module normalized.
                                 [ Ty.path "move_binary_format::file_format::FieldDefinition" ];
                               Ty.function
                                 [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.path "move_binary_format::file_format::FieldDefinition"
-                                        ]
-                                    ]
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::FieldDefinition" ]
                                 ]
                                 (Ty.path "move_binary_format::normalized::Field")
                             ],
@@ -38000,16 +37859,10 @@ Module normalized.
                                   [ Ty.path "move_binary_format::file_format::FieldDefinition" ];
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [
-                                            Ty.path
-                                              "move_binary_format::file_format::FieldDefinition"
-                                          ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_binary_format::file_format::FieldDefinition" ]
                                   ]
                                   (Ty.path "move_binary_format::normalized::Field")
                               ],
@@ -38027,16 +37880,10 @@ Module normalized.
                                 Ty.path "move_binary_format::normalized::Field";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [
-                                            Ty.path
-                                              "move_binary_format::file_format::FieldDefinition"
-                                          ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_binary_format::file_format::FieldDefinition" ]
                                   ]
                                   (Ty.path "move_binary_format::normalized::Field")
                               ]
@@ -38107,20 +37954,7 @@ Module normalized.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [
-                                                      Ty.path
-                                                        "move_binary_format::file_format::FieldDefinition"
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "move_binary_format::normalized::Field"),
+                                          Ty.path "move_binary_format::normalized::Field",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -38377,13 +38211,10 @@ Module normalized.
                   [ Ty.path "move_binary_format::file_format::StructTypeParameter" ];
                 Ty.function
                   [
-                    Ty.tuple
-                      [
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [ Ty.path "move_binary_format::file_format::StructTypeParameter" ]
-                      ]
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.path "move_binary_format::file_format::StructTypeParameter" ]
                   ]
                   (Ty.apply
                     (Ty.path "&")
@@ -38404,13 +38235,10 @@ Module normalized.
                 Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::file_format::AbilitySet" ];
                 Ty.function
                   [
-                    Ty.tuple
-                      [
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [ Ty.path "move_binary_format::file_format::StructTypeParameter" ]
-                      ]
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.path "move_binary_format::file_format::StructTypeParameter" ]
                   ]
                   (Ty.apply
                     (Ty.path "&")
@@ -38484,21 +38312,10 @@ Module normalized.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [
-                              Ty.tuple
-                                [
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [ Ty.path "move_binary_format::file_format::StructTypeParameter"
-                                    ]
-                                ]
-                            ]
-                            (Ty.apply
-                              (Ty.path "&")
-                              []
-                              [ Ty.path "move_binary_format::file_format::AbilitySet" ]),
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_binary_format::file_format::AbilitySet" ],
                           M.alloc (|
                             Ty.apply
                               (Ty.path "&")
@@ -38741,13 +38558,10 @@ Module normalized.
                           ];
                         Ty.function
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "move_binary_format::file_format::CodeUnit" ]
-                              ]
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::CodeUnit" ]
                           ]
                           (Ty.apply
                             (Ty.path "alloc::vec::Vec")
@@ -38796,23 +38610,13 @@ Module normalized.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
+                                  Ty.apply
+                                    (Ty.path "alloc::vec::Vec")
+                                    []
                                     [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [ Ty.path "move_binary_format::file_format::CodeUnit" ]
-                                        ]
-                                    ]
-                                    (Ty.apply
-                                      (Ty.path "alloc::vec::Vec")
-                                      []
-                                      [
-                                        Ty.path "move_binary_format::normalized::Bytecode";
-                                        Ty.path "alloc::alloc::Global"
-                                      ]),
+                                      Ty.path "move_binary_format::normalized::Bytecode";
+                                      Ty.path "alloc::alloc::Global"
+                                    ],
                                   M.alloc (|
                                     Ty.apply
                                       (Ty.path "&")
@@ -38855,15 +38659,12 @@ Module normalized.
                                                   ];
                                                 Ty.function
                                                   [
-                                                    Ty.tuple
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
                                                       [
-                                                        Ty.apply
-                                                          (Ty.path "&")
-                                                          []
-                                                          [
-                                                            Ty.path
-                                                              "move_binary_format::file_format::Bytecode"
-                                                          ]
+                                                        Ty.path
+                                                          "move_binary_format::file_format::Bytecode"
                                                       ]
                                                   ]
                                                   (Ty.path
@@ -38899,15 +38700,12 @@ Module normalized.
                                                     ];
                                                   Ty.function
                                                     [
-                                                      Ty.tuple
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
                                                         [
-                                                          Ty.apply
-                                                            (Ty.path "&")
-                                                            []
-                                                            [
-                                                              Ty.path
-                                                                "move_binary_format::file_format::Bytecode"
-                                                            ]
+                                                          Ty.path
+                                                            "move_binary_format::file_format::Bytecode"
                                                         ]
                                                     ]
                                                     (Ty.path
@@ -38931,15 +38729,12 @@ Module normalized.
                                                     "move_binary_format::normalized::Bytecode";
                                                   Ty.function
                                                     [
-                                                      Ty.tuple
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
                                                         [
-                                                          Ty.apply
-                                                            (Ty.path "&")
-                                                            []
-                                                            [
-                                                              Ty.path
-                                                                "move_binary_format::file_format::Bytecode"
-                                                            ]
+                                                          Ty.path
+                                                            "move_binary_format::file_format::Bytecode"
                                                         ]
                                                     ]
                                                     (Ty.path
@@ -39022,21 +38817,8 @@ Module normalized.
                                                       | [ α0 ] =>
                                                         ltac:(M.monadic
                                                           (M.match_operator (|
-                                                            Ty.function
-                                                              [
-                                                                Ty.tuple
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path "&")
-                                                                      []
-                                                                      [
-                                                                        Ty.path
-                                                                          "move_binary_format::file_format::Bytecode"
-                                                                      ]
-                                                                  ]
-                                                              ]
-                                                              (Ty.path
-                                                                "move_binary_format::normalized::Bytecode"),
+                                                            Ty.path
+                                                              "move_binary_format::normalized::Bytecode",
                                                             M.alloc (|
                                                               Ty.apply
                                                                 (Ty.path "&")
@@ -39179,13 +38961,10 @@ Module normalized.
                               [ Ty.path "move_binary_format::file_format::SignatureToken" ];
                             Ty.function
                               [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [ Ty.path "move_binary_format::file_format::SignatureToken" ]
-                                  ]
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                               ]
                               (Ty.path "move_binary_format::normalized::Type")
                           ],
@@ -39215,14 +38994,10 @@ Module normalized.
                                 [ Ty.path "move_binary_format::file_format::SignatureToken" ];
                               Ty.function
                                 [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
-                                        ]
-                                    ]
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                                 ]
                                 (Ty.path "move_binary_format::normalized::Type")
                             ],
@@ -39240,14 +39015,10 @@ Module normalized.
                               Ty.path "move_binary_format::normalized::Type";
                               Ty.function
                                 [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
-                                        ]
-                                    ]
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                                 ]
                                 (Ty.path "move_binary_format::normalized::Type")
                             ]
@@ -39352,20 +39123,7 @@ Module normalized.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Ty.function
-                                          [
-                                            Ty.tuple
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_binary_format::file_format::SignatureToken"
-                                                  ]
-                                              ]
-                                          ]
-                                          (Ty.path "move_binary_format::normalized::Type"),
+                                        Ty.path "move_binary_format::normalized::Type",
                                         M.alloc (|
                                           Ty.apply
                                             (Ty.path "&")
@@ -39438,13 +39196,10 @@ Module normalized.
                               [ Ty.path "move_binary_format::file_format::SignatureToken" ];
                             Ty.function
                               [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [ Ty.path "move_binary_format::file_format::SignatureToken" ]
-                                  ]
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                               ]
                               (Ty.path "move_binary_format::normalized::Type")
                           ],
@@ -39474,14 +39229,10 @@ Module normalized.
                                 [ Ty.path "move_binary_format::file_format::SignatureToken" ];
                               Ty.function
                                 [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
-                                        ]
-                                    ]
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                                 ]
                                 (Ty.path "move_binary_format::normalized::Type")
                             ],
@@ -39499,14 +39250,10 @@ Module normalized.
                               Ty.path "move_binary_format::normalized::Type";
                               Ty.function
                                 [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
-                                        ]
-                                    ]
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                                 ]
                                 (Ty.path "move_binary_format::normalized::Type")
                             ]
@@ -39611,20 +39358,7 @@ Module normalized.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Ty.function
-                                          [
-                                            Ty.tuple
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_binary_format::file_format::SignatureToken"
-                                                  ]
-                                              ]
-                                          ]
-                                          (Ty.path "move_binary_format::normalized::Type"),
+                                        Ty.path "move_binary_format::normalized::Type",
                                         M.alloc (|
                                           Ty.apply
                                             (Ty.path "&")
@@ -40320,10 +40054,7 @@ Module normalized.
                                     Ty.path "alloc::alloc::Global"
                                   ];
                                 Ty.function
-                                  [
-                                    Ty.tuple
-                                      [ Ty.path "move_core_types::language_storage::TypeTag" ]
-                                  ]
+                                  [ Ty.path "move_core_types::language_storage::TypeTag" ]
                                   (Ty.path "move_binary_format::normalized::Type")
                               ],
                             [],
@@ -40354,10 +40085,7 @@ Module normalized.
                                       Ty.path "alloc::alloc::Global"
                                     ];
                                   Ty.function
-                                    [
-                                      Ty.tuple
-                                        [ Ty.path "move_core_types::language_storage::TypeTag" ]
-                                    ]
+                                    [ Ty.path "move_core_types::language_storage::TypeTag" ]
                                     (Ty.path "move_binary_format::normalized::Type")
                                 ],
                               M.get_trait_method (|
@@ -40376,10 +40104,7 @@ Module normalized.
                                 [
                                   Ty.path "move_binary_format::normalized::Type";
                                   Ty.function
-                                    [
-                                      Ty.tuple
-                                        [ Ty.path "move_core_types::language_storage::TypeTag" ]
-                                    ]
+                                    [ Ty.path "move_core_types::language_storage::TypeTag" ]
                                     (Ty.path "move_binary_format::normalized::Type")
                                 ]
                               |),
@@ -40424,15 +40149,7 @@ Module normalized.
                                       | [ α0 ] =>
                                         ltac:(M.monadic
                                           (M.match_operator (|
-                                            Ty.function
-                                              [
-                                                Ty.tuple
-                                                  [
-                                                    Ty.path
-                                                      "move_core_types::language_storage::TypeTag"
-                                                  ]
-                                              ]
-                                              (Ty.path "move_binary_format::normalized::Type"),
+                                            Ty.path "move_binary_format::normalized::Type",
                                             M.alloc (|
                                               Ty.path "move_core_types::language_storage::TypeTag",
                                               α0
@@ -41661,15 +41378,12 @@ Module normalized.
                                                 ];
                                               Ty.function
                                                 [
-                                                  Ty.tuple
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
                                                     [
-                                                      Ty.apply
-                                                        (Ty.path "&")
-                                                        []
-                                                        [
-                                                          Ty.path
-                                                            "move_binary_format::file_format::SignatureToken"
-                                                        ]
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureToken"
                                                     ]
                                                 ]
                                                 (Ty.path "move_binary_format::normalized::Type")
@@ -41703,15 +41417,12 @@ Module normalized.
                                                   ];
                                                 Ty.function
                                                   [
-                                                    Ty.tuple
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
                                                       [
-                                                        Ty.apply
-                                                          (Ty.path "&")
-                                                          []
-                                                          [
-                                                            Ty.path
-                                                              "move_binary_format::file_format::SignatureToken"
-                                                          ]
+                                                        Ty.path
+                                                          "move_binary_format::file_format::SignatureToken"
                                                       ]
                                                   ]
                                                   (Ty.path "move_binary_format::normalized::Type")
@@ -41733,15 +41444,12 @@ Module normalized.
                                                 Ty.path "move_binary_format::normalized::Type";
                                                 Ty.function
                                                   [
-                                                    Ty.tuple
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
                                                       [
-                                                        Ty.apply
-                                                          (Ty.path "&")
-                                                          []
-                                                          [
-                                                            Ty.path
-                                                              "move_binary_format::file_format::SignatureToken"
-                                                          ]
+                                                        Ty.path
+                                                          "move_binary_format::file_format::SignatureToken"
                                                       ]
                                                   ]
                                                   (Ty.path "move_binary_format::normalized::Type")
@@ -41825,21 +41533,8 @@ Module normalized.
                                                     | [ α0 ] =>
                                                       ltac:(M.monadic
                                                         (M.match_operator (|
-                                                          Ty.function
-                                                            [
-                                                              Ty.tuple
-                                                                [
-                                                                  Ty.apply
-                                                                    (Ty.path "&")
-                                                                    []
-                                                                    [
-                                                                      Ty.path
-                                                                        "move_binary_format::file_format::SignatureToken"
-                                                                    ]
-                                                                ]
-                                                            ]
-                                                            (Ty.path
-                                                              "move_binary_format::normalized::Type"),
+                                                          Ty.path
+                                                            "move_binary_format::normalized::Type",
                                                           M.alloc (|
                                                             Ty.apply
                                                               (Ty.path "&")
@@ -45811,15 +45506,12 @@ Module normalized.
                                       [ Ty.path "move_binary_format::file_format::SignatureToken" ];
                                     Ty.function
                                       [
-                                        Ty.tuple
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
                                           [
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [
-                                                Ty.path
-                                                  "move_binary_format::file_format::SignatureToken"
-                                              ]
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken"
                                           ]
                                       ]
                                       (Ty.path "move_binary_format::normalized::Type")
@@ -45851,15 +45543,12 @@ Module normalized.
                                         ];
                                       Ty.function
                                         [
-                                          Ty.tuple
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
                                             [
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "move_binary_format::file_format::SignatureToken"
-                                                ]
+                                              Ty.path
+                                                "move_binary_format::file_format::SignatureToken"
                                             ]
                                         ]
                                         (Ty.path "move_binary_format::normalized::Type")
@@ -45878,15 +45567,12 @@ Module normalized.
                                       Ty.path "move_binary_format::normalized::Type";
                                       Ty.function
                                         [
-                                          Ty.tuple
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
                                             [
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "move_binary_format::file_format::SignatureToken"
-                                                ]
+                                              Ty.path
+                                                "move_binary_format::file_format::SignatureToken"
                                             ]
                                         ]
                                         (Ty.path "move_binary_format::normalized::Type")
@@ -45994,20 +45680,7 @@ Module normalized.
                                           | [ α0 ] =>
                                             ltac:(M.monadic
                                               (M.match_operator (|
-                                                Ty.function
-                                                  [
-                                                    Ty.tuple
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "&")
-                                                          []
-                                                          [
-                                                            Ty.path
-                                                              "move_binary_format::file_format::SignatureToken"
-                                                          ]
-                                                      ]
-                                                  ]
-                                                  (Ty.path "move_binary_format::normalized::Type"),
+                                                Ty.path "move_binary_format::normalized::Type",
                                                 M.alloc (|
                                                   Ty.apply
                                                     (Ty.path "&")
@@ -46247,13 +45920,10 @@ Module normalized.
                               [ Ty.path "move_binary_format::file_format::SignatureToken" ];
                             Ty.function
                               [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [ Ty.path "move_binary_format::file_format::SignatureToken" ]
-                                  ]
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                               ]
                               (Ty.path "move_binary_format::normalized::Type")
                           ],
@@ -46283,14 +45953,10 @@ Module normalized.
                                 [ Ty.path "move_binary_format::file_format::SignatureToken" ];
                               Ty.function
                                 [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
-                                        ]
-                                    ]
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                                 ]
                                 (Ty.path "move_binary_format::normalized::Type")
                             ],
@@ -46308,14 +45974,10 @@ Module normalized.
                               Ty.path "move_binary_format::normalized::Type";
                               Ty.function
                                 [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
-                                        ]
-                                    ]
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                                 ]
                                 (Ty.path "move_binary_format::normalized::Type")
                             ]
@@ -46416,20 +46078,7 @@ Module normalized.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Ty.function
-                                          [
-                                            Ty.tuple
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_binary_format::file_format::SignatureToken"
-                                                  ]
-                                              ]
-                                          ]
-                                          (Ty.path "move_binary_format::normalized::Type"),
+                                        Ty.path "move_binary_format::normalized::Type",
                                         M.alloc (|
                                           Ty.apply
                                             (Ty.path "&")

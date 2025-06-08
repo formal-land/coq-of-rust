@@ -4388,14 +4388,11 @@ Module collections.
                       [
                         Ty.tuple
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply (Ty.path "&") [] [ T ];
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                              ]
+                            Ty.apply (Ty.path "&") [] [ T ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
                           ]
                       ]
                       (Ty.apply (Ty.path "&") [] [ T ])
@@ -4444,24 +4441,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply (Ty.path "&") [] [ T ];
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.path
-                                                "alloc::collections::btree::set_val::SetValZST"
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                                (Ty.apply (Ty.path "&") [] [ T ]),
+                              Ty.apply (Ty.path "&") [] [ T ],
                               M.alloc (|
                                 Ty.tuple
                                   [
@@ -5654,13 +5634,10 @@ Module collections.
                                                                               "core::cmp::Ordering";
                                                                             Ty.function
                                                                               [
-                                                                                Ty.tuple
-                                                                                  [
-                                                                                    Ty.apply
-                                                                                      (Ty.path "&")
-                                                                                      []
-                                                                                      [ T ]
-                                                                                  ]
+                                                                                Ty.apply
+                                                                                  (Ty.path "&")
+                                                                                  []
+                                                                                  [ T ]
                                                                               ]
                                                                               (Ty.path
                                                                                 "core::cmp::Ordering")
@@ -5710,20 +5687,8 @@ Module collections.
                                                                                 | [ α0 ] =>
                                                                                   ltac:(M.monadic
                                                                                     (M.match_operator (|
-                                                                                      Ty.function
-                                                                                        [
-                                                                                          Ty.tuple
-                                                                                            [
-                                                                                              Ty.apply
-                                                                                                (Ty.path
-                                                                                                  "&")
-                                                                                                []
-                                                                                                [ T
-                                                                                                ]
-                                                                                            ]
-                                                                                        ]
-                                                                                        (Ty.path
-                                                                                          "core::cmp::Ordering"),
+                                                                                      Ty.path
+                                                                                        "core::cmp::Ordering",
                                                                                       M.alloc (|
                                                                                         Ty.apply
                                                                                           (Ty.path
@@ -5993,14 +5958,11 @@ Module collections.
                       [
                         Ty.tuple
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply (Ty.path "&") [] [ T ];
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                              ]
+                            Ty.apply (Ty.path "&") [] [ T ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
                           ]
                       ]
                       (Ty.apply (Ty.path "&") [] [ T ])
@@ -6048,24 +6010,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply (Ty.path "&") [] [ T ];
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.path
-                                                "alloc::collections::btree::set_val::SetValZST"
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                                (Ty.apply (Ty.path "&") [] [ T ]),
+                              Ty.apply (Ty.path "&") [] [ T ],
                               M.alloc (|
                                 Ty.tuple
                                   [
@@ -6144,14 +6089,11 @@ Module collections.
                       [
                         Ty.tuple
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply (Ty.path "&") [] [ T ];
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                              ]
+                            Ty.apply (Ty.path "&") [] [ T ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
                           ]
                       ]
                       (Ty.apply (Ty.path "&") [] [ T ])
@@ -6199,24 +6141,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply (Ty.path "&") [] [ T ];
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.path
-                                                "alloc::collections::btree::set_val::SetValZST"
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                                (Ty.apply (Ty.path "&") [] [ T ]),
+                              Ty.apply (Ty.path "&") [] [ T ],
                               M.alloc (|
                                 Ty.tuple
                                   [
@@ -6288,11 +6213,7 @@ Module collections.
                   [
                     T;
                     Ty.function
-                      [
-                        Ty.tuple
-                          [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                          ]
-                      ]
+                      [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ] ]
                       T
                   ]
                 |),
@@ -6329,16 +6250,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"
-                                        ]
-                                    ]
-                                ]
-                                T,
+                              T,
                               M.alloc (|
                                 Ty.tuple
                                   [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
@@ -6410,11 +6322,7 @@ Module collections.
                   [
                     T;
                     Ty.function
-                      [
-                        Ty.tuple
-                          [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                          ]
-                      ]
+                      [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ] ]
                       T
                   ]
                 |),
@@ -6451,16 +6359,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"
-                                        ]
-                                    ]
-                                ]
-                                T,
+                              T,
                               M.alloc (|
                                 Ty.tuple
                                   [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
@@ -7049,11 +6948,7 @@ Module collections.
                   [
                     T;
                     Ty.function
-                      [
-                        Ty.tuple
-                          [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                          ]
-                      ]
+                      [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ] ]
                       T
                   ]
                 |),
@@ -7091,16 +6986,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"
-                                        ]
-                                    ]
-                                ]
-                                T,
+                              T,
                               M.alloc (|
                                 Ty.tuple
                                   [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
@@ -7160,13 +7046,7 @@ Module collections.
                       Ty.apply
                         (Ty.path "alloc::collections::btree::set::ExtractIf")
                         []
-                        [
-                          T;
-                          Ty.function
-                            [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
-                            (Ty.path "bool");
-                          A
-                        ],
+                        [ T; Ty.function [ Ty.apply (Ty.path "&") [] [ T ] ] (Ty.path "bool"); A ],
                       [],
                       [],
                       "for_each",
@@ -7178,22 +7058,13 @@ Module collections.
                         Ty.apply
                           (Ty.path "alloc::collections::btree::set::ExtractIf")
                           []
-                          [
-                            T;
-                            Ty.function
-                              [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
-                              (Ty.path "bool");
-                            A
+                          [ T; Ty.function [ Ty.apply (Ty.path "&") [] [ T ] ] (Ty.path "bool"); A
                           ],
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ],
                           "extract_if",
                           [],
-                          [
-                            Ty.function
-                              [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
-                              (Ty.path "bool")
-                          ]
+                          [ Ty.function [ Ty.apply (Ty.path "&") [] [ T ] ] (Ty.path "bool") ]
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
@@ -7204,9 +7075,7 @@ Module collections.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Ty.function
-                                        [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
-                                        (Ty.path "bool"),
+                                      Ty.path "bool",
                                       M.alloc (| Ty.apply (Ty.path "&") [] [ T ], α0 |),
                                       [
                                         fun γ =>
@@ -8000,7 +7869,7 @@ Module collections.
                       [
                         I;
                         Ty.function
-                          [ Ty.tuple [ T ] ]
+                          [ T ]
                           (Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ])
                       ] :=
                   M.call_closure (|
@@ -8010,7 +7879,7 @@ Module collections.
                       [
                         I;
                         Ty.function
-                          [ Ty.tuple [ T ] ]
+                          [ T ]
                           (Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ])
                       ],
                     M.get_trait_method (|
@@ -8023,7 +7892,7 @@ Module collections.
                       [
                         Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ];
                         Ty.function
-                          [ Ty.tuple [ T ] ]
+                          [ T ]
                           (Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ])
                       ]
                     |),
@@ -8036,11 +7905,8 @@ Module collections.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [ Ty.tuple [ T ] ]
-                                    (Ty.tuple
-                                      [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"
-                                      ]),
+                                  Ty.tuple
+                                    [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
                                   M.alloc (| T, α0 |),
                                   [
                                     fun γ =>
@@ -8095,7 +7961,7 @@ Module collections.
                           [
                             I;
                             Ty.function
-                              [ Ty.tuple [ T ] ]
+                              [ T ]
                               (Ty.tuple
                                 [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ])
                           ]
@@ -8459,7 +8325,7 @@ Module collections.
                           [
                             Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ];
                             Ty.function
-                              [ Ty.tuple [ T ] ]
+                              [ T ]
                               (Ty.tuple
                                 [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ])
                           ] :=
@@ -8470,7 +8336,7 @@ Module collections.
                           [
                             Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ];
                             Ty.function
-                              [ Ty.tuple [ T ] ]
+                              [ T ]
                               (Ty.tuple
                                 [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ])
                           ],
@@ -8484,7 +8350,7 @@ Module collections.
                           [
                             Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ];
                             Ty.function
-                              [ Ty.tuple [ T ] ]
+                              [ T ]
                               (Ty.tuple
                                 [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ])
                           ]
@@ -8510,13 +8376,9 @@ Module collections.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Ty.function
-                                        [ Ty.tuple [ T ] ]
-                                        (Ty.tuple
-                                          [
-                                            T;
-                                            Ty.path "alloc::collections::btree::set_val::SetValZST"
-                                          ]),
+                                      Ty.tuple
+                                        [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"
+                                        ],
                                       M.alloc (| T, α0 |),
                                       [
                                         fun γ =>
@@ -8583,7 +8445,7 @@ Module collections.
                               [
                                 Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ];
                                 Ty.function
-                                  [ Ty.tuple [ T ] ]
+                                  [ T ]
                                   (Ty.tuple
                                     [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ])
                               ]
@@ -8895,16 +8757,13 @@ Module collections.
                                             [
                                               Ty.tuple
                                                 [
-                                                  Ty.tuple
+                                                  Ty.apply (Ty.path "&") [] [ T ];
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
                                                     [
-                                                      Ty.apply (Ty.path "&") [] [ T ];
-                                                      Ty.apply
-                                                        (Ty.path "&")
-                                                        []
-                                                        [
-                                                          Ty.path
-                                                            "alloc::collections::btree::set_val::SetValZST"
-                                                        ]
+                                                      Ty.path
+                                                        "alloc::collections::btree::set_val::SetValZST"
                                                     ]
                                                 ]
                                             ]
@@ -8961,24 +8820,7 @@ Module collections.
                                               | [ α0 ] =>
                                                 ltac:(M.monadic
                                                   (M.match_operator (|
-                                                    Ty.function
-                                                      [
-                                                        Ty.tuple
-                                                          [
-                                                            Ty.tuple
-                                                              [
-                                                                Ty.apply (Ty.path "&") [] [ T ];
-                                                                Ty.apply
-                                                                  (Ty.path "&")
-                                                                  []
-                                                                  [
-                                                                    Ty.path
-                                                                      "alloc::collections::btree::set_val::SetValZST"
-                                                                  ]
-                                                              ]
-                                                          ]
-                                                      ]
-                                                      (Ty.apply (Ty.path "&") [] [ T ]),
+                                                    Ty.apply (Ty.path "&") [] [ T ],
                                                     M.alloc (|
                                                       Ty.tuple
                                                         [
@@ -9082,14 +8924,11 @@ Module collections.
                 let~ mapped_pred :
                     Ty.function
                       [
-                        Ty.tuple
-                          [
-                            Ty.apply (Ty.path "&") [] [ T ];
-                            Ty.apply
-                              (Ty.path "&mut")
-                              []
-                              [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                          ]
+                        Ty.apply (Ty.path "&") [] [ T ];
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
                       ]
                       (Ty.path "bool") :=
                   M.closure
@@ -9099,39 +8938,14 @@ Module collections.
                         | [ α0; α1 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply (Ty.path "&") [] [ T ];
-                                      Ty.apply
-                                        (Ty.path "&mut")
-                                        []
-                                        [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                                    ]
-                                ]
-                                (Ty.path "bool"),
+                              Ty.path "bool",
                               M.alloc (| Ty.apply (Ty.path "&") [] [ T ], α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let k := M.copy (| Ty.apply (Ty.path "&") [] [ T ], γ |) in
                                     M.match_operator (|
-                                      Ty.function
-                                        [
-                                          Ty.tuple
-                                            [
-                                              Ty.apply (Ty.path "&") [] [ T ];
-                                              Ty.apply
-                                                (Ty.path "&mut")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "alloc::collections::btree::set_val::SetValZST"
-                                                ]
-                                            ]
-                                        ]
-                                        (Ty.path "bool"),
+                                      Ty.path "bool",
                                       M.alloc (|
                                         Ty.apply
                                           (Ty.path "&mut")
@@ -9199,12 +9013,7 @@ Module collections.
                       [
                         T;
                         Ty.function
-                          [
-                            Ty.tuple
-                              [
-                                Ty.tuple
-                                  [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                              ]
+                          [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ]
                           ]
                           T
                       ]
@@ -9226,14 +9035,11 @@ Module collections.
                           [
                             Ty.function
                               [
-                                Ty.tuple
-                                  [
-                                    Ty.apply (Ty.path "&") [] [ T ];
-                                    Ty.apply
-                                      (Ty.path "&mut")
-                                      []
-                                      [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                                  ]
+                                Ty.apply (Ty.path "&") [] [ T ];
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
                               ]
                               (Ty.path "bool");
                             A
@@ -9283,19 +9089,7 @@ Module collections.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.tuple
-                                            [
-                                              T;
-                                              Ty.path
-                                                "alloc::collections::btree::set_val::SetValZST"
-                                            ]
-                                        ]
-                                    ]
-                                    T,
+                                  T,
                                   M.alloc (|
                                     Ty.tuple
                                       [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"
@@ -9443,7 +9237,7 @@ Module collections.
                       [],
                       "for_each",
                       [],
-                      [ Ty.function [ Ty.tuple [ T ] ] (Ty.tuple []) ]
+                      [ Ty.function [ T ] (Ty.tuple []) ]
                     |),
                     [
                       M.call_closure (|
@@ -9471,7 +9265,7 @@ Module collections.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function [ Ty.tuple [ T ] ] (Ty.tuple []),
+                                  Ty.tuple [],
                                   M.alloc (| T, α0 |),
                                   [
                                     fun γ =>
@@ -10968,11 +10762,7 @@ Module collections.
                   [
                     T;
                     Ty.function
-                      [
-                        Ty.tuple
-                          [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                          ]
-                      ]
+                      [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ] ]
                       T
                   ]
                 |),
@@ -11012,16 +10802,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"
-                                        ]
-                                    ]
-                                ]
-                                T,
+                              T,
                               M.alloc (|
                                 Ty.tuple
                                   [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
@@ -11205,11 +10986,7 @@ Module collections.
                   [
                     T;
                     Ty.function
-                      [
-                        Ty.tuple
-                          [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                          ]
-                      ]
+                      [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ] ]
                       T
                   ]
                 |),
@@ -11249,16 +11026,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"
-                                        ]
-                                    ]
-                                ]
-                                T,
+                              T,
                               M.alloc (|
                                 Ty.tuple
                                   [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
@@ -11536,14 +11304,11 @@ Module collections.
                       [
                         Ty.tuple
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply (Ty.path "&") [] [ T ];
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                              ]
+                            Ty.apply (Ty.path "&") [] [ T ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
                           ]
                       ]
                       (Ty.apply (Ty.path "&") [] [ T ])
@@ -11594,24 +11359,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply (Ty.path "&") [] [ T ];
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.path
-                                                "alloc::collections::btree::set_val::SetValZST"
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                                (Ty.apply (Ty.path "&") [] [ T ]),
+                              Ty.apply (Ty.path "&") [] [ T ],
                               M.alloc (|
                                 Ty.tuple
                                   [
@@ -11801,14 +11549,11 @@ Module collections.
                       [
                         Ty.tuple
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply (Ty.path "&") [] [ T ];
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                              ]
+                            Ty.apply (Ty.path "&") [] [ T ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
                           ]
                       ]
                       (Ty.apply (Ty.path "&") [] [ T ])
@@ -11859,24 +11604,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply (Ty.path "&") [] [ T ];
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.path
-                                                "alloc::collections::btree::set_val::SetValZST"
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                                (Ty.apply (Ty.path "&") [] [ T ]),
+                              Ty.apply (Ty.path "&") [] [ T ],
                               M.alloc (|
                                 Ty.tuple
                                   [
@@ -12584,13 +12312,10 @@ Module collections.
                                                   Ty.path "core::cmp::Ordering";
                                                   Ty.function
                                                     [
-                                                      Ty.tuple
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "&")
-                                                            []
-                                                            [ Ty.apply (Ty.path "&") [] [ T ] ]
-                                                        ]
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [ Ty.apply (Ty.path "&") [] [ T ] ]
                                                     ]
                                                     (Ty.path "core::cmp::Ordering")
                                                 ]
@@ -12641,22 +12366,7 @@ Module collections.
                                                       | [ α0 ] =>
                                                         ltac:(M.monadic
                                                           (M.match_operator (|
-                                                            Ty.function
-                                                              [
-                                                                Ty.tuple
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path "&")
-                                                                      []
-                                                                      [
-                                                                        Ty.apply
-                                                                          (Ty.path "&")
-                                                                          []
-                                                                          [ T ]
-                                                                      ]
-                                                                  ]
-                                                              ]
-                                                              (Ty.path "core::cmp::Ordering"),
+                                                            Ty.path "core::cmp::Ordering",
                                                             M.alloc (|
                                                               Ty.apply
                                                                 (Ty.path "&")
@@ -16439,14 +16149,11 @@ Module collections.
                       [
                         Ty.tuple
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply (Ty.path "&") [] [ K ];
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                              ]
+                            Ty.apply (Ty.path "&") [] [ K ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
                           ]
                       ]
                       (Ty.apply (Ty.path "&") [] [ K ])
@@ -16494,24 +16201,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply (Ty.path "&") [] [ K ];
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.path
-                                                "alloc::collections::btree::set_val::SetValZST"
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                                (Ty.apply (Ty.path "&") [] [ K ]),
+                              Ty.apply (Ty.path "&") [] [ K ],
                               M.alloc (|
                                 Ty.tuple
                                   [
@@ -16587,14 +16277,11 @@ Module collections.
                       [
                         Ty.tuple
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply (Ty.path "&") [] [ K ];
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                              ]
+                            Ty.apply (Ty.path "&") [] [ K ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
                           ]
                       ]
                       (Ty.apply (Ty.path "&") [] [ K ])
@@ -16642,24 +16329,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply (Ty.path "&") [] [ K ];
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.path
-                                                "alloc::collections::btree::set_val::SetValZST"
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                                (Ty.apply (Ty.path "&") [] [ K ]),
+                              Ty.apply (Ty.path "&") [] [ K ],
                               M.alloc (|
                                 Ty.tuple
                                   [
@@ -16735,14 +16405,11 @@ Module collections.
                       [
                         Ty.tuple
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply (Ty.path "&") [] [ K ];
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                              ]
+                            Ty.apply (Ty.path "&") [] [ K ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
                           ]
                       ]
                       (Ty.apply (Ty.path "&") [] [ K ])
@@ -16790,24 +16457,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply (Ty.path "&") [] [ K ];
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.path
-                                                "alloc::collections::btree::set_val::SetValZST"
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                                (Ty.apply (Ty.path "&") [] [ K ]),
+                              Ty.apply (Ty.path "&") [] [ K ],
                               M.alloc (|
                                 Ty.tuple
                                   [
@@ -16883,14 +16533,11 @@ Module collections.
                       [
                         Ty.tuple
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply (Ty.path "&") [] [ K ];
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                              ]
+                            Ty.apply (Ty.path "&") [] [ K ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
                           ]
                       ]
                       (Ty.apply (Ty.path "&") [] [ K ])
@@ -16938,24 +16585,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply (Ty.path "&") [] [ K ];
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.path
-                                                "alloc::collections::btree::set_val::SetValZST"
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                                (Ty.apply (Ty.path "&") [] [ K ]),
+                              Ty.apply (Ty.path "&") [] [ K ],
                               M.alloc (|
                                 Ty.tuple
                                   [
@@ -17036,14 +16666,11 @@ Module collections.
                       [
                         Ty.tuple
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply (Ty.path "&") [] [ T ];
-                                Ty.apply
-                                  (Ty.path "&mut")
-                                  []
-                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                              ]
+                            Ty.apply (Ty.path "&") [] [ T ];
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
                           ]
                       ]
                       (Ty.apply (Ty.path "&") [] [ T ])
@@ -17091,24 +16718,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply (Ty.path "&") [] [ T ];
-                                          Ty.apply
-                                            (Ty.path "&mut")
-                                            []
-                                            [
-                                              Ty.path
-                                                "alloc::collections::btree::set_val::SetValZST"
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                                (Ty.apply (Ty.path "&") [] [ T ]),
+                              Ty.apply (Ty.path "&") [] [ T ],
                               M.alloc (|
                                 Ty.tuple
                                   [
@@ -17184,14 +16794,11 @@ Module collections.
                       [
                         Ty.tuple
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply (Ty.path "&") [] [ T ];
-                                Ty.apply
-                                  (Ty.path "&mut")
-                                  []
-                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                              ]
+                            Ty.apply (Ty.path "&") [] [ T ];
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
                           ]
                       ]
                       (Ty.apply (Ty.path "&") [] [ T ])
@@ -17239,24 +16846,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply (Ty.path "&") [] [ T ];
-                                          Ty.apply
-                                            (Ty.path "&mut")
-                                            []
-                                            [
-                                              Ty.path
-                                                "alloc::collections::btree::set_val::SetValZST"
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                                (Ty.apply (Ty.path "&") [] [ T ]),
+                              Ty.apply (Ty.path "&") [] [ T ],
                               M.alloc (|
                                 Ty.tuple
                                   [
@@ -17337,14 +16927,11 @@ Module collections.
                       [
                         Ty.tuple
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply (Ty.path "&") [] [ T ];
-                                Ty.apply
-                                  (Ty.path "&mut")
-                                  []
-                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                              ]
+                            Ty.apply (Ty.path "&") [] [ T ];
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
                           ]
                       ]
                       (Ty.apply (Ty.path "&") [] [ T ])
@@ -17392,24 +16979,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply (Ty.path "&") [] [ T ];
-                                          Ty.apply
-                                            (Ty.path "&mut")
-                                            []
-                                            [
-                                              Ty.path
-                                                "alloc::collections::btree::set_val::SetValZST"
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                                (Ty.apply (Ty.path "&") [] [ T ]),
+                              Ty.apply (Ty.path "&") [] [ T ],
                               M.alloc (|
                                 Ty.tuple
                                   [
@@ -17490,14 +17060,11 @@ Module collections.
                       [
                         Ty.tuple
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply (Ty.path "&") [] [ T ];
-                                Ty.apply
-                                  (Ty.path "&mut")
-                                  []
-                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                              ]
+                            Ty.apply (Ty.path "&") [] [ T ];
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
                           ]
                       ]
                       (Ty.apply (Ty.path "&") [] [ T ])
@@ -17545,24 +17112,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply (Ty.path "&") [] [ T ];
-                                          Ty.apply
-                                            (Ty.path "&mut")
-                                            []
-                                            [
-                                              Ty.path
-                                                "alloc::collections::btree::set_val::SetValZST"
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                                (Ty.apply (Ty.path "&") [] [ T ]),
+                              Ty.apply (Ty.path "&") [] [ T ],
                               M.alloc (|
                                 Ty.tuple
                                   [
@@ -17991,11 +17541,7 @@ Module collections.
                   [
                     T;
                     Ty.function
-                      [
-                        Ty.tuple
-                          [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                          ]
-                      ]
+                      [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ] ]
                       T
                   ]
                 |),
@@ -18032,16 +17578,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"
-                                        ]
-                                    ]
-                                ]
-                                T,
+                              T,
                               M.alloc (|
                                 Ty.tuple
                                   [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
@@ -18104,11 +17641,7 @@ Module collections.
                   [
                     T;
                     Ty.function
-                      [
-                        Ty.tuple
-                          [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                          ]
-                      ]
+                      [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ] ]
                       T
                   ]
                 |),
@@ -18145,16 +17678,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"
-                                        ]
-                                    ]
-                                ]
-                                T,
+                              T,
                               M.alloc (|
                                 Ty.tuple
                                   [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
@@ -18230,14 +17754,11 @@ Module collections.
                       [
                         Ty.tuple
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply (Ty.path "&mut") [] [ T ];
-                                Ty.apply
-                                  (Ty.path "&mut")
-                                  []
-                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                              ]
+                            Ty.apply (Ty.path "&mut") [] [ T ];
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
                           ]
                       ]
                       (Ty.apply (Ty.path "&mut") [] [ T ])
@@ -18285,24 +17806,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply (Ty.path "&mut") [] [ T ];
-                                          Ty.apply
-                                            (Ty.path "&mut")
-                                            []
-                                            [
-                                              Ty.path
-                                                "alloc::collections::btree::set_val::SetValZST"
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                                (Ty.apply (Ty.path "&mut") [] [ T ]),
+                              Ty.apply (Ty.path "&mut") [] [ T ],
                               M.alloc (|
                                 Ty.tuple
                                   [
@@ -18380,14 +17884,11 @@ Module collections.
                       [
                         Ty.tuple
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply (Ty.path "&mut") [] [ T ];
-                                Ty.apply
-                                  (Ty.path "&mut")
-                                  []
-                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                              ]
+                            Ty.apply (Ty.path "&mut") [] [ T ];
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
                           ]
                       ]
                       (Ty.apply (Ty.path "&mut") [] [ T ])
@@ -18435,24 +17936,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply (Ty.path "&mut") [] [ T ];
-                                          Ty.apply
-                                            (Ty.path "&mut")
-                                            []
-                                            [
-                                              Ty.path
-                                                "alloc::collections::btree::set_val::SetValZST"
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                                (Ty.apply (Ty.path "&mut") [] [ T ]),
+                              Ty.apply (Ty.path "&mut") [] [ T ],
                               M.alloc (|
                                 Ty.tuple
                                   [
@@ -18535,14 +18019,11 @@ Module collections.
                       [
                         Ty.tuple
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply (Ty.path "&mut") [] [ T ];
-                                Ty.apply
-                                  (Ty.path "&mut")
-                                  []
-                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                              ]
+                            Ty.apply (Ty.path "&mut") [] [ T ];
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
                           ]
                       ]
                       (Ty.apply (Ty.path "&mut") [] [ T ])
@@ -18590,24 +18071,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply (Ty.path "&mut") [] [ T ];
-                                          Ty.apply
-                                            (Ty.path "&mut")
-                                            []
-                                            [
-                                              Ty.path
-                                                "alloc::collections::btree::set_val::SetValZST"
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                                (Ty.apply (Ty.path "&mut") [] [ T ]),
+                              Ty.apply (Ty.path "&mut") [] [ T ],
                               M.alloc (|
                                 Ty.tuple
                                   [
@@ -18690,14 +18154,11 @@ Module collections.
                       [
                         Ty.tuple
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply (Ty.path "&mut") [] [ T ];
-                                Ty.apply
-                                  (Ty.path "&mut")
-                                  []
-                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                              ]
+                            Ty.apply (Ty.path "&mut") [] [ T ];
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
                           ]
                       ]
                       (Ty.apply (Ty.path "&mut") [] [ T ])
@@ -18745,24 +18206,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply (Ty.path "&mut") [] [ T ];
-                                          Ty.apply
-                                            (Ty.path "&mut")
-                                            []
-                                            [
-                                              Ty.path
-                                                "alloc::collections::btree::set_val::SetValZST"
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                                (Ty.apply (Ty.path "&mut") [] [ T ]),
+                              Ty.apply (Ty.path "&mut") [] [ T ],
                               M.alloc (|
                                 Ty.tuple
                                   [
@@ -19138,11 +18582,7 @@ Module collections.
                   [
                     T;
                     Ty.function
-                      [
-                        Ty.tuple
-                          [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                          ]
-                      ]
+                      [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ] ]
                       T
                   ]
                 |),
@@ -19179,16 +18619,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"
-                                        ]
-                                    ]
-                                ]
-                                T,
+                              T,
                               M.alloc (|
                                 Ty.tuple
                                   [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
@@ -19252,11 +18683,7 @@ Module collections.
                   [
                     T;
                     Ty.function
-                      [
-                        Ty.tuple
-                          [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ]
-                          ]
-                      ]
+                      [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ] ]
                       T
                   ]
                 |),
@@ -19293,16 +18720,7 @@ Module collections.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.tuple
-                                        [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"
-                                        ]
-                                    ]
-                                ]
-                                T,
+                              T,
                               M.alloc (|
                                 Ty.tuple
                                   [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],

@@ -1393,7 +1393,7 @@ Module extension.
                     M.get_function (|
                       "core::array::from_fn",
                       [ D ],
-                      [ PF; Ty.function [ Ty.tuple [ Ty.path "usize" ] ] PF ]
+                      [ PF; Ty.function [ Ty.path "usize" ] PF ]
                     |),
                     [
                       M.closure
@@ -1403,7 +1403,7 @@ Module extension.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function [ Ty.tuple [ Ty.path "usize" ] ] PF,
+                                  PF,
                                   M.alloc (| Ty.path "usize", α0 |),
                                   [
                                     fun γ =>
@@ -2475,7 +2475,7 @@ Module extension.
                     [ D ]
                     [ F; PF ];
                   Ty.function
-                    [ Ty.tuple [] ]
+                    []
                     (Ty.apply
                       (Ty.path
                         "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
@@ -2511,13 +2511,11 @@ Module extension.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [ Ty.tuple [] ]
-                              (Ty.apply
-                                (Ty.path
-                                  "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
-                                [ D ]
-                                [ F; PF ]),
+                            Ty.apply
+                              (Ty.path
+                                "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                              [ D ]
+                              [ F; PF ],
                             M.alloc (| Ty.tuple [], α0 |),
                             [
                               fun γ =>
@@ -2544,7 +2542,7 @@ Module extension.
                                         M.get_function (|
                                           "core::array::from_fn",
                                           [ D ],
-                                          [ PF; Ty.function [ Ty.tuple [ Ty.path "usize" ] ] PF ]
+                                          [ PF; Ty.function [ Ty.path "usize" ] PF ]
                                         |),
                                         [
                                           M.closure
@@ -2554,9 +2552,7 @@ Module extension.
                                                 | [ α0 ] =>
                                                   ltac:(M.monadic
                                                     (M.match_operator (|
-                                                      Ty.function
-                                                        [ Ty.tuple [ Ty.path "usize" ] ]
-                                                        PF,
+                                                      PF,
                                                       M.alloc (| Ty.path "usize", α0 |),
                                                       [
                                                         fun γ =>
@@ -2940,7 +2936,7 @@ Module extension.
                     [
                       Ty.associated_in_trait "p3_field::field::Field" [] [] F "Packing";
                       Ty.function
-                        [ Ty.tuple [ Ty.path "usize" ] ]
+                        [ Ty.path "usize" ]
                         (Ty.associated_in_trait "p3_field::field::Field" [] [] F "Packing")
                     ]
                   |),
@@ -2952,14 +2948,7 @@ Module extension.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function
-                                  [ Ty.tuple [ Ty.path "usize" ] ]
-                                  (Ty.associated_in_trait
-                                    "p3_field::field::Field"
-                                    []
-                                    []
-                                    F
-                                    "Packing"),
+                                Ty.associated_in_trait "p3_field::field::Field" [] [] F "Packing",
                                 M.alloc (| Ty.path "usize", α0 |),
                                 [
                                   fun γ =>
@@ -2984,7 +2973,7 @@ Module extension.
                                           [],
                                           "from_fn",
                                           [],
-                                          [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] F ]
+                                          [ Ty.function [ Ty.path "usize" ] F ]
                                         |),
                                         [
                                           M.closure
@@ -2994,9 +2983,7 @@ Module extension.
                                                 | [ α0 ] =>
                                                   ltac:(M.monadic
                                                     (M.match_operator (|
-                                                      Ty.function
-                                                        [ Ty.tuple [ Ty.path "usize" ] ]
-                                                        F,
+                                                      F,
                                                       M.alloc (| Ty.path "usize", α0 |),
                                                       [
                                                         fun γ =>
@@ -3106,7 +3093,7 @@ Module extension.
                       [
                         Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
                         Ty.function
-                          [ Ty.tuple [ Ty.path "usize" ] ]
+                          [ Ty.path "usize" ]
                           (Ty.apply
                             (Ty.path
                               "p3_field::extension::binomial_extension::BinomialExtensionField")
@@ -3115,15 +3102,11 @@ Module extension.
                       ];
                     Ty.function
                       [
-                        Ty.tuple
-                          [
-                            Ty.apply
-                              (Ty.path
-                                "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
-                              [ D ]
-                              [ F; Ty.associated_in_trait "p3_field::field::Field" [] [] F "Packing"
-                              ]
-                          ]
+                        Ty.apply
+                          (Ty.path
+                            "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                          [ D ]
+                          [ F; Ty.associated_in_trait "p3_field::field::Field" [] [] F "Packing" ]
                       ]
                       (Ty.apply
                         (Ty.path "core::iter::adapters::map::Map")
@@ -3131,7 +3114,7 @@ Module extension.
                         [
                           Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
                           Ty.function
-                            [ Ty.tuple [ Ty.path "usize" ] ]
+                            [ Ty.path "usize" ]
                             (Ty.apply
                               (Ty.path
                                 "p3_field::extension::binomial_extension::BinomialExtensionField")
@@ -3156,7 +3139,7 @@ Module extension.
                         [
                           Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
                           Ty.function
-                            [ Ty.tuple [ Ty.path "usize" ] ]
+                            [ Ty.path "usize" ]
                             (Ty.apply
                               (Ty.path
                                 "p3_field::extension::binomial_extension::BinomialExtensionField")
@@ -3165,17 +3148,11 @@ Module extension.
                         ];
                       Ty.function
                         [
-                          Ty.tuple
-                            [
-                              Ty.apply
-                                (Ty.path
-                                  "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
-                                [ D ]
-                                [
-                                  F;
-                                  Ty.associated_in_trait "p3_field::field::Field" [] [] F "Packing"
-                                ]
-                            ]
+                          Ty.apply
+                            (Ty.path
+                              "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                            [ D ]
+                            [ F; Ty.associated_in_trait "p3_field::field::Field" [] [] F "Packing" ]
                         ]
                         (Ty.apply
                           (Ty.path "core::iter::adapters::map::Map")
@@ -3183,7 +3160,7 @@ Module extension.
                           [
                             Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
                             Ty.function
-                              [ Ty.tuple [ Ty.path "usize" ] ]
+                              [ Ty.path "usize" ]
                               (Ty.apply
                                 (Ty.path
                                   "p3_field::extension::binomial_extension::BinomialExtensionField")
@@ -3210,7 +3187,7 @@ Module extension.
                         [
                           Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
                           Ty.function
-                            [ Ty.tuple [ Ty.path "usize" ] ]
+                            [ Ty.path "usize" ]
                             (Ty.apply
                               (Ty.path
                                 "p3_field::extension::binomial_extension::BinomialExtensionField")
@@ -3219,17 +3196,11 @@ Module extension.
                         ];
                       Ty.function
                         [
-                          Ty.tuple
-                            [
-                              Ty.apply
-                                (Ty.path
-                                  "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
-                                [ D ]
-                                [
-                                  F;
-                                  Ty.associated_in_trait "p3_field::field::Field" [] [] F "Packing"
-                                ]
-                            ]
+                          Ty.apply
+                            (Ty.path
+                              "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                            [ D ]
+                            [ F; Ty.associated_in_trait "p3_field::field::Field" [] [] F "Packing" ]
                         ]
                         (Ty.apply
                           (Ty.path "core::iter::adapters::map::Map")
@@ -3237,7 +3208,7 @@ Module extension.
                           [
                             Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
                             Ty.function
-                              [ Ty.tuple [ Ty.path "usize" ] ]
+                              [ Ty.path "usize" ]
                               (Ty.apply
                                 (Ty.path
                                   "p3_field::extension::binomial_extension::BinomialExtensionField")
@@ -3272,41 +3243,22 @@ Module extension.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function
+                                Ty.apply
+                                  (Ty.path "core::iter::adapters::map::Map")
+                                  []
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path
-                                            "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
-                                          [ D ]
-                                          [
-                                            F;
-                                            Ty.associated_in_trait
-                                              "p3_field::field::Field"
-                                              []
-                                              []
-                                              F
-                                              "Packing"
-                                          ]
-                                      ]
-                                  ]
-                                  (Ty.apply
-                                    (Ty.path "core::iter::adapters::map::Map")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::ops::range::Range")
-                                        []
-                                        [ Ty.path "usize" ];
-                                      Ty.function
-                                        [ Ty.tuple [ Ty.path "usize" ] ]
-                                        (Ty.apply
-                                          (Ty.path
-                                            "p3_field::extension::binomial_extension::BinomialExtensionField")
-                                          [ D ]
-                                          [ F; F ])
-                                    ]),
+                                    Ty.apply
+                                      (Ty.path "core::ops::range::Range")
+                                      []
+                                      [ Ty.path "usize" ];
+                                    Ty.function
+                                      [ Ty.path "usize" ]
+                                      (Ty.apply
+                                        (Ty.path
+                                          "p3_field::extension::binomial_extension::BinomialExtensionField")
+                                        [ D ]
+                                        [ F; F ])
+                                  ],
                                 M.alloc (|
                                   Ty.apply
                                     (Ty.path
@@ -3353,7 +3305,7 @@ Module extension.
                                               []
                                               [ Ty.path "usize" ];
                                             Ty.function
-                                              [ Ty.tuple [ Ty.path "usize" ] ]
+                                              [ Ty.path "usize" ]
                                               (Ty.apply
                                                 (Ty.path
                                                   "p3_field::extension::binomial_extension::BinomialExtensionField")
@@ -3377,7 +3329,7 @@ Module extension.
                                               [ D ]
                                               [ F; F ];
                                             Ty.function
-                                              [ Ty.tuple [ Ty.path "usize" ] ]
+                                              [ Ty.path "usize" ]
                                               (Ty.apply
                                                 (Ty.path
                                                   "p3_field::extension::binomial_extension::BinomialExtensionField")
@@ -3401,13 +3353,11 @@ Module extension.
                                                 | [ α0 ] =>
                                                   ltac:(M.monadic
                                                     (M.match_operator (|
-                                                      Ty.function
-                                                        [ Ty.tuple [ Ty.path "usize" ] ]
-                                                        (Ty.apply
-                                                          (Ty.path
-                                                            "p3_field::extension::binomial_extension::BinomialExtensionField")
-                                                          [ D ]
-                                                          [ F; F ]),
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "p3_field::extension::binomial_extension::BinomialExtensionField")
+                                                        [ D ]
+                                                        [ F; F ],
                                                       M.alloc (| Ty.path "usize", α0 |),
                                                       [
                                                         fun γ =>
@@ -3431,10 +3381,7 @@ Module extension.
                                                                     [
                                                                       F;
                                                                       Ty.function
-                                                                        [
-                                                                          Ty.tuple
-                                                                            [ Ty.path "usize" ]
-                                                                        ]
+                                                                        [ Ty.path "usize" ]
                                                                         F
                                                                     ]
                                                                   |),
@@ -3446,15 +3393,7 @@ Module extension.
                                                                           | [ α0 ] =>
                                                                             ltac:(M.monadic
                                                                               (M.match_operator (|
-                                                                                Ty.function
-                                                                                  [
-                                                                                    Ty.tuple
-                                                                                      [
-                                                                                        Ty.path
-                                                                                          "usize"
-                                                                                      ]
-                                                                                  ]
-                                                                                  F,
+                                                                                F,
                                                                                 M.alloc (|
                                                                                   Ty.path "usize",
                                                                                   α0
@@ -4922,19 +4861,16 @@ Module extension.
                     [
                       Ty.function
                         [
-                          Ty.tuple
-                            [
-                              Ty.apply
-                                (Ty.path
-                                  "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
-                                [ D ]
-                                [ F; PF ];
-                              Ty.apply
-                                (Ty.path
-                                  "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
-                                [ D ]
-                                [ F; PF ]
-                            ]
+                          Ty.apply
+                            (Ty.path
+                              "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                            [ D ]
+                            [ F; PF ];
+                          Ty.apply
+                            (Ty.path
+                              "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                            [ D ]
+                            [ F; PF ]
                         ]
                         (Ty.apply
                           (Ty.path
@@ -4952,27 +4888,11 @@ Module extension.
                           | [ α0; α1 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function
-                                  [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path
-                                            "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
-                                          [ D ]
-                                          [ F; PF ];
-                                        Ty.apply
-                                          (Ty.path
-                                            "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
-                                          [ D ]
-                                          [ F; PF ]
-                                      ]
-                                  ]
-                                  (Ty.apply
-                                    (Ty.path
-                                      "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
-                                    [ D ]
-                                    [ F; PF ]),
+                                Ty.apply
+                                  (Ty.path
+                                    "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                                  [ D ]
+                                  [ F; PF ],
                                 M.alloc (|
                                   Ty.apply
                                     (Ty.path
@@ -4994,27 +4914,11 @@ Module extension.
                                           γ
                                         |) in
                                       M.match_operator (|
-                                        Ty.function
-                                          [
-                                            Ty.tuple
-                                              [
-                                                Ty.apply
-                                                  (Ty.path
-                                                    "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
-                                                  [ D ]
-                                                  [ F; PF ];
-                                                Ty.apply
-                                                  (Ty.path
-                                                    "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
-                                                  [ D ]
-                                                  [ F; PF ]
-                                              ]
-                                          ]
-                                          (Ty.apply
-                                            (Ty.path
-                                              "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
-                                            [ D ]
-                                            [ F; PF ]),
+                                        Ty.apply
+                                          (Ty.path
+                                            "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                                          [ D ]
+                                          [ F; PF ],
                                         M.alloc (|
                                           Ty.apply
                                             (Ty.path
@@ -6098,7 +6002,7 @@ Module extension.
                       Ty.apply (Ty.path "array") [ D ] [ PF ],
                       "map",
                       [],
-                      [ Ty.function [ Ty.tuple [ PF ] ] PF; PF ]
+                      [ Ty.function [ PF ] PF; PF ]
                     |),
                     [
                       M.read (|
@@ -6115,7 +6019,7 @@ Module extension.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function [ Ty.tuple [ PF ] ] PF,
+                                  PF,
                                   M.alloc (| PF, α0 |),
                                   [
                                     fun γ =>
@@ -6225,19 +6129,16 @@ Module extension.
                     [
                       Ty.function
                         [
-                          Ty.tuple
-                            [
-                              Ty.apply
-                                (Ty.path
-                                  "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
-                                [ D ]
-                                [ F; PF ];
-                              Ty.apply
-                                (Ty.path
-                                  "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
-                                [ D ]
-                                [ F; PF ]
-                            ]
+                          Ty.apply
+                            (Ty.path
+                              "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                            [ D ]
+                            [ F; PF ];
+                          Ty.apply
+                            (Ty.path
+                              "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                            [ D ]
+                            [ F; PF ]
                         ]
                         (Ty.apply
                           (Ty.path
@@ -6255,27 +6156,11 @@ Module extension.
                           | [ α0; α1 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function
-                                  [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path
-                                            "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
-                                          [ D ]
-                                          [ F; PF ];
-                                        Ty.apply
-                                          (Ty.path
-                                            "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
-                                          [ D ]
-                                          [ F; PF ]
-                                      ]
-                                  ]
-                                  (Ty.apply
-                                    (Ty.path
-                                      "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
-                                    [ D ]
-                                    [ F; PF ]),
+                                Ty.apply
+                                  (Ty.path
+                                    "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                                  [ D ]
+                                  [ F; PF ],
                                 M.alloc (|
                                   Ty.apply
                                     (Ty.path
@@ -6297,27 +6182,11 @@ Module extension.
                                           γ
                                         |) in
                                       M.match_operator (|
-                                        Ty.function
-                                          [
-                                            Ty.tuple
-                                              [
-                                                Ty.apply
-                                                  (Ty.path
-                                                    "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
-                                                  [ D ]
-                                                  [ F; PF ];
-                                                Ty.apply
-                                                  (Ty.path
-                                                    "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
-                                                  [ D ]
-                                                  [ F; PF ]
-                                              ]
-                                          ]
-                                          (Ty.apply
-                                            (Ty.path
-                                              "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
-                                            [ D ]
-                                            [ F; PF ]),
+                                        Ty.apply
+                                          (Ty.path
+                                            "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                                          [ D ]
+                                          [ F; PF ],
                                         M.alloc (|
                                           Ty.apply
                                             (Ty.path

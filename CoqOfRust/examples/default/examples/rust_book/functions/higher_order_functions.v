@@ -384,15 +384,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         []
                         [
                           Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "u32" ];
-                          Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32")
+                          Ty.function [ Ty.path "u32" ] (Ty.path "u32")
                         ];
-                      Ty.function
-                        [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
-                        (Ty.path "bool")
+                      Ty.function [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] (Ty.path "bool")
                     ];
-                  Ty.function
-                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
-                    (Ty.path "bool")
+                  Ty.function [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] (Ty.path "bool")
                 ],
               [],
               [],
@@ -415,15 +411,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           []
                           [
                             Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "u32" ];
-                            Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32")
+                            Ty.function [ Ty.path "u32" ] (Ty.path "u32")
                           ];
-                        Ty.function
-                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
-                          (Ty.path "bool")
+                        Ty.function [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] (Ty.path "bool")
                       ];
-                    Ty.function
-                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
-                      (Ty.path "bool")
+                    Ty.function [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] (Ty.path "bool")
                   ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
@@ -436,21 +428,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         []
                         [
                           Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "u32" ];
-                          Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32")
+                          Ty.function [ Ty.path "u32" ] (Ty.path "u32")
                         ];
-                      Ty.function
-                        [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
-                        (Ty.path "bool")
+                      Ty.function [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] (Ty.path "bool")
                     ],
                   [],
                   [],
                   "filter",
                   [],
-                  [
-                    Ty.function
-                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
-                      (Ty.path "bool")
-                  ]
+                  [ Ty.function [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] (Ty.path "bool") ]
                 |),
                 [
                   M.call_closure (|
@@ -463,11 +449,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           []
                           [
                             Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "u32" ];
-                            Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32")
+                            Ty.function [ Ty.path "u32" ] (Ty.path "u32")
                           ];
-                        Ty.function
-                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
-                          (Ty.path "bool")
+                        Ty.function [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] (Ty.path "bool")
                       ],
                     M.get_trait_method (|
                       "core::iter::traits::iterator::Iterator",
@@ -476,16 +460,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         []
                         [
                           Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "u32" ];
-                          Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32")
+                          Ty.function [ Ty.path "u32" ] (Ty.path "u32")
                         ],
                       [],
                       [],
                       "take_while",
                       [],
-                      [
-                        Ty.function
-                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
-                          (Ty.path "bool")
+                      [ Ty.function [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] (Ty.path "bool")
                       ]
                     |),
                     [
@@ -495,7 +476,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           []
                           [
                             Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "u32" ];
-                            Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32")
+                            Ty.function [ Ty.path "u32" ] (Ty.path "u32")
                           ],
                         M.get_trait_method (|
                           "core::iter::traits::iterator::Iterator",
@@ -504,10 +485,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           [],
                           "map",
                           [],
-                          [
-                            Ty.path "u32";
-                            Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32")
-                          ]
+                          [ Ty.path "u32"; Ty.function [ Ty.path "u32" ] (Ty.path "u32") ]
                         |),
                         [
                           Value.mkStructRecord
@@ -522,7 +500,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32"),
+                                      Ty.path "u32",
                                       M.alloc (| Ty.path "u32", α0 |),
                                       [
                                         fun γ =>
@@ -546,9 +524,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
-                                    (Ty.path "bool"),
+                                  Ty.path "bool",
                                   M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u32" ], α0 |),
                                   [
                                     fun γ =>
@@ -573,9 +549,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
-                                (Ty.path "bool"),
+                              Ty.path "bool",
                               M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u32" ], α0 |),
                               [
                                 fun γ =>

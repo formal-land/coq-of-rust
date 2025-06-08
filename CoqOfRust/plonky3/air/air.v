@@ -517,7 +517,7 @@ Module air.
                   [],
                   [
                     Ty.function
-                      [ Ty.tuple [ I ] ]
+                      [ I ]
                       (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] Self "Expr");
                     Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] Self "Expr"
                   ]
@@ -531,14 +531,7 @@ Module air.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [ Ty.tuple [ I ] ]
-                                (Ty.associated_in_trait
-                                  "p3_air::air::AirBuilder"
-                                  []
-                                  []
-                                  Self
-                                  "Expr"),
+                              Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] Self "Expr",
                               M.alloc (| I, α0 |),
                               [
                                 fun γ =>

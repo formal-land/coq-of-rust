@@ -1232,9 +1232,7 @@ Module net.
                 [],
                 [
                   Ty.path "char";
-                  Ty.function
-                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ] ]
-                    (Ty.path "char")
+                  Ty.function [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ] (Ty.path "char")
                 ]
               |),
               [
@@ -1271,9 +1269,7 @@ Module net.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ] ]
-                              (Ty.path "char"),
+                            Ty.path "char",
                             M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u8" ], α0 |),
                             [
                               fun γ =>
@@ -1345,14 +1341,11 @@ Module net.
                     [
                       Ty.tuple
                         [
-                          Ty.tuple
-                            [
-                              Ty.apply (Ty.path "&") [] [ Ty.path "u8" ];
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                            ]
+                          Ty.apply (Ty.path "&") [] [ Ty.path "u8" ];
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                         ]
                     ]
                     (Ty.path "char")
@@ -1401,21 +1394,7 @@ Module net.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply (Ty.path "&") [] [ Ty.path "u8" ];
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
-                                  ]
-                              ]
-                              (Ty.path "char"),
+                            Ty.path "char",
                             M.alloc (|
                               Ty.tuple
                                 [
@@ -1512,10 +1491,7 @@ Module net.
                 [
                   Ty.tuple [];
                   Ty.function
-                    [
-                      Ty.tuple
-                        [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
-                    ]
+                    [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
                     (Ty.apply (Ty.path "core::option::Option") [] [ Ty.tuple [] ])
                 ]
               |),
@@ -1528,17 +1504,7 @@ Module net.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&mut")
-                                      []
-                                      [ Ty.path "core::net::parser::Parser" ]
-                                  ]
-                              ]
-                              (Ty.apply (Ty.path "core::option::Option") [] [ Ty.tuple [] ]),
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.tuple [] ],
                             M.alloc (|
                               Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ],
                               α0
@@ -1566,7 +1532,7 @@ Module net.
                                       [
                                         Ty.tuple [];
                                         Ty.function
-                                          [ Ty.tuple [ Ty.path "char" ] ]
+                                          [ Ty.path "char" ]
                                           (Ty.apply
                                             (Ty.path "core::option::Option")
                                             []
@@ -1599,12 +1565,10 @@ Module net.
                                             | [ α0 ] =>
                                               ltac:(M.monadic
                                                 (M.match_operator (|
-                                                  Ty.function
-                                                    [ Ty.tuple [ Ty.path "char" ] ]
-                                                    (Ty.apply
-                                                      (Ty.path "core::option::Option")
-                                                      []
-                                                      [ Ty.tuple [] ]),
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.tuple [] ],
                                                   M.alloc (| Ty.path "char", α0 |),
                                                   [
                                                     fun γ =>
@@ -1705,10 +1669,7 @@ Module net.
                 [
                   T;
                   Ty.function
-                    [
-                      Ty.tuple
-                        [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
-                    ]
+                    [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
                     (Ty.apply (Ty.path "core::option::Option") [] [ T ])
                 ]
               |),
@@ -1721,17 +1682,7 @@ Module net.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&mut")
-                                      []
-                                      [ Ty.path "core::net::parser::Parser" ]
-                                  ]
-                              ]
-                              (Ty.apply (Ty.path "core::option::Option") [] [ T ]),
+                            Ty.apply (Ty.path "core::option::Option") [] [ T ],
                             M.alloc (|
                               Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ],
                               α0
@@ -2035,10 +1986,7 @@ Module net.
                 [
                   T;
                   Ty.function
-                    [
-                      Ty.tuple
-                        [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
-                    ]
+                    [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
                     (Ty.apply (Ty.path "core::option::Option") [] [ T ])
                 ]
               |),
@@ -2051,17 +1999,7 @@ Module net.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&mut")
-                                      []
-                                      [ Ty.path "core::net::parser::Parser" ]
-                                  ]
-                              ]
-                              (Ty.apply (Ty.path "core::option::Option") [] [ T ]),
+                            Ty.apply (Ty.path "core::option::Option") [] [ T ],
                             M.alloc (|
                               Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ],
                               α0
@@ -2283,16 +2221,12 @@ Module net.
                                                                             Ty.path "u32";
                                                                             Ty.function
                                                                               [
-                                                                                Ty.tuple
+                                                                                Ty.apply
+                                                                                  (Ty.path "&mut")
+                                                                                  []
                                                                                   [
-                                                                                    Ty.apply
-                                                                                      (Ty.path
-                                                                                        "&mut")
-                                                                                      []
-                                                                                      [
-                                                                                        Ty.path
-                                                                                          "core::net::parser::Parser"
-                                                                                      ]
+                                                                                    Ty.path
+                                                                                      "core::net::parser::Parser"
                                                                                   ]
                                                                               ]
                                                                               (Ty.apply
@@ -2316,28 +2250,14 @@ Module net.
                                                                                 | [ α0 ] =>
                                                                                   ltac:(M.monadic
                                                                                     (M.match_operator (|
-                                                                                      Ty.function
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "core::option::Option")
+                                                                                        []
                                                                                         [
-                                                                                          Ty.tuple
-                                                                                            [
-                                                                                              Ty.apply
-                                                                                                (Ty.path
-                                                                                                  "&mut")
-                                                                                                []
-                                                                                                [
-                                                                                                  Ty.path
-                                                                                                    "core::net::parser::Parser"
-                                                                                                ]
-                                                                                            ]
-                                                                                        ]
-                                                                                        (Ty.apply
-                                                                                          (Ty.path
-                                                                                            "core::option::Option")
-                                                                                          []
-                                                                                          [
-                                                                                            Ty.path
-                                                                                              "u32"
-                                                                                          ]),
+                                                                                          Ty.path
+                                                                                            "u32"
+                                                                                        ],
                                                                                       M.alloc (|
                                                                                         Ty.apply
                                                                                           (Ty.path
@@ -2800,16 +2720,12 @@ Module net.
                                                                             Ty.path "u32";
                                                                             Ty.function
                                                                               [
-                                                                                Ty.tuple
+                                                                                Ty.apply
+                                                                                  (Ty.path "&mut")
+                                                                                  []
                                                                                   [
-                                                                                    Ty.apply
-                                                                                      (Ty.path
-                                                                                        "&mut")
-                                                                                      []
-                                                                                      [
-                                                                                        Ty.path
-                                                                                          "core::net::parser::Parser"
-                                                                                      ]
+                                                                                    Ty.path
+                                                                                      "core::net::parser::Parser"
                                                                                   ]
                                                                               ]
                                                                               (Ty.apply
@@ -2833,28 +2749,14 @@ Module net.
                                                                                 | [ α0 ] =>
                                                                                   ltac:(M.monadic
                                                                                     (M.match_operator (|
-                                                                                      Ty.function
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "core::option::Option")
+                                                                                        []
                                                                                         [
-                                                                                          Ty.tuple
-                                                                                            [
-                                                                                              Ty.apply
-                                                                                                (Ty.path
-                                                                                                  "&mut")
-                                                                                                []
-                                                                                                [
-                                                                                                  Ty.path
-                                                                                                    "core::net::parser::Parser"
-                                                                                                ]
-                                                                                            ]
-                                                                                        ]
-                                                                                        (Ty.apply
-                                                                                          (Ty.path
-                                                                                            "core::option::Option")
-                                                                                          []
-                                                                                          [
-                                                                                            Ty.path
-                                                                                              "u32"
-                                                                                          ]),
+                                                                                          Ty.path
+                                                                                            "u32"
+                                                                                        ],
                                                                                       M.alloc (|
                                                                                         Ty.apply
                                                                                           (Ty.path
@@ -3601,10 +3503,7 @@ Module net.
                 [
                   Ty.path "core::net::ip_addr::Ipv4Addr";
                   Ty.function
-                    [
-                      Ty.tuple
-                        [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
-                    ]
+                    [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
                     (Ty.apply
                       (Ty.path "core::option::Option")
                       []
@@ -3620,20 +3519,10 @@ Module net.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&mut")
-                                      []
-                                      [ Ty.path "core::net::parser::Parser" ]
-                                  ]
-                              ]
-                              (Ty.apply
-                                (Ty.path "core::option::Option")
-                                []
-                                [ Ty.path "core::net::ip_addr::Ipv4Addr" ]),
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "core::net::ip_addr::Ipv4Addr" ],
                             M.alloc (|
                               Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ],
                               α0
@@ -3957,16 +3846,13 @@ Module net.
                                                                                           "u8";
                                                                                         Ty.function
                                                                                           [
-                                                                                            Ty.tuple
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "&mut")
+                                                                                              []
                                                                                               [
-                                                                                                Ty.apply
-                                                                                                  (Ty.path
-                                                                                                    "&mut")
-                                                                                                  []
-                                                                                                  [
-                                                                                                    Ty.path
-                                                                                                      "core::net::parser::Parser"
-                                                                                                  ]
+                                                                                                Ty.path
+                                                                                                  "core::net::parser::Parser"
                                                                                               ]
                                                                                           ]
                                                                                           (Ty.apply
@@ -4002,28 +3888,14 @@ Module net.
                                                                                                 ] =>
                                                                                               ltac:(M.monadic
                                                                                                 (M.match_operator (|
-                                                                                                  Ty.function
+                                                                                                  Ty.apply
+                                                                                                    (Ty.path
+                                                                                                      "core::option::Option")
+                                                                                                    []
                                                                                                     [
-                                                                                                      Ty.tuple
-                                                                                                        [
-                                                                                                          Ty.apply
-                                                                                                            (Ty.path
-                                                                                                              "&mut")
-                                                                                                            []
-                                                                                                            [
-                                                                                                              Ty.path
-                                                                                                                "core::net::parser::Parser"
-                                                                                                            ]
-                                                                                                        ]
-                                                                                                    ]
-                                                                                                    (Ty.apply
-                                                                                                      (Ty.path
-                                                                                                        "core::option::Option")
-                                                                                                      []
-                                                                                                      [
-                                                                                                        Ty.path
-                                                                                                          "u8"
-                                                                                                      ]),
+                                                                                                      Ty.path
+                                                                                                        "u8"
+                                                                                                    ],
                                                                                                   M.alloc (|
                                                                                                     Ty.apply
                                                                                                       (Ty.path
@@ -4342,10 +4214,7 @@ Module net.
                 [
                   Ty.path "core::net::ip_addr::Ipv6Addr";
                   Ty.function
-                    [
-                      Ty.tuple
-                        [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
-                    ]
+                    [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
                     (Ty.apply
                       (Ty.path "core::option::Option")
                       []
@@ -4361,20 +4230,10 @@ Module net.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&mut")
-                                      []
-                                      [ Ty.path "core::net::parser::Parser" ]
-                                  ]
-                              ]
-                              (Ty.apply
-                                (Ty.path "core::option::Option")
-                                []
-                                [ Ty.path "core::net::ip_addr::Ipv6Addr" ]),
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "core::net::ip_addr::Ipv6Addr" ],
                             M.alloc (|
                               Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ],
                               α0
@@ -5177,7 +5036,7 @@ Module net.
                 [],
                 [
                   Ty.function
-                    [ Ty.tuple [] ]
+                    []
                     (Ty.apply
                       (Ty.path "core::option::Option")
                       []
@@ -5228,12 +5087,10 @@ Module net.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [ Ty.tuple [] ]
-                              (Ty.apply
-                                (Ty.path "core::option::Option")
-                                []
-                                [ Ty.path "core::net::ip_addr::IpAddr" ]),
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "core::net::ip_addr::IpAddr" ],
                             M.alloc (| Ty.tuple [], α0 |),
                             [
                               fun γ =>
@@ -5322,10 +5179,7 @@ Module net.
                 [
                   Ty.path "u16";
                   Ty.function
-                    [
-                      Ty.tuple
-                        [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
-                    ]
+                    [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
                     (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ])
                 ]
               |),
@@ -5338,17 +5192,7 @@ Module net.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&mut")
-                                      []
-                                      [ Ty.path "core::net::parser::Parser" ]
-                                  ]
-                              ]
-                              (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ]),
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
                             M.alloc (|
                               Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ],
                               α0
@@ -5556,10 +5400,7 @@ Module net.
                 [
                   Ty.path "u32";
                   Ty.function
-                    [
-                      Ty.tuple
-                        [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
-                    ]
+                    [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
                     (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ])
                 ]
               |),
@@ -5572,17 +5413,7 @@ Module net.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&mut")
-                                      []
-                                      [ Ty.path "core::net::parser::Parser" ]
-                                  ]
-                              ]
-                              (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ]),
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                             M.alloc (|
                               Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ],
                               α0
@@ -5794,10 +5625,7 @@ Module net.
                 [
                   Ty.path "core::net::socket_addr::SocketAddrV4";
                   Ty.function
-                    [
-                      Ty.tuple
-                        [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
-                    ]
+                    [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
                     (Ty.apply
                       (Ty.path "core::option::Option")
                       []
@@ -5813,20 +5641,10 @@ Module net.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&mut")
-                                      []
-                                      [ Ty.path "core::net::parser::Parser" ]
-                                  ]
-                              ]
-                              (Ty.apply
-                                (Ty.path "core::option::Option")
-                                []
-                                [ Ty.path "core::net::socket_addr::SocketAddrV4" ]),
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "core::net::socket_addr::SocketAddrV4" ],
                             M.alloc (|
                               Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ],
                               α0
@@ -6166,10 +5984,7 @@ Module net.
                 [
                   Ty.path "core::net::socket_addr::SocketAddrV6";
                   Ty.function
-                    [
-                      Ty.tuple
-                        [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
-                    ]
+                    [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
                     (Ty.apply
                       (Ty.path "core::option::Option")
                       []
@@ -6185,20 +6000,10 @@ Module net.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&mut")
-                                      []
-                                      [ Ty.path "core::net::parser::Parser" ]
-                                  ]
-                              ]
-                              (Ty.apply
-                                (Ty.path "core::option::Option")
-                                []
-                                [ Ty.path "core::net::socket_addr::SocketAddrV6" ]),
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "core::net::socket_addr::SocketAddrV6" ],
                             M.alloc (|
                               Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ],
                               α0
@@ -6823,7 +6628,7 @@ Module net.
                 [],
                 [
                   Ty.function
-                    [ Ty.tuple [] ]
+                    []
                     (Ty.apply
                       (Ty.path "core::option::Option")
                       []
@@ -6874,12 +6679,10 @@ Module net.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [ Ty.tuple [] ]
-                              (Ty.apply
-                                (Ty.path "core::option::Option")
-                                []
-                                [ Ty.path "core::net::socket_addr::SocketAddr" ]),
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "core::net::socket_addr::SocketAddr" ],
                             M.alloc (| Ty.tuple [], α0 |),
                             [
                               fun γ =>
@@ -6973,10 +6776,7 @@ Module net.
                 [
                   Ty.path "core::net::ip_addr::IpAddr";
                   Ty.function
-                    [
-                      Ty.tuple
-                        [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
-                    ]
+                    [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
                     (Ty.apply
                       (Ty.path "core::option::Option")
                       []
@@ -7007,20 +6807,10 @@ Module net.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&mut")
-                                      []
-                                      [ Ty.path "core::net::parser::Parser" ]
-                                  ]
-                              ]
-                              (Ty.apply
-                                (Ty.path "core::option::Option")
-                                []
-                                [ Ty.path "core::net::ip_addr::IpAddr" ]),
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "core::net::ip_addr::IpAddr" ],
                             M.alloc (|
                               Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ],
                               α0
@@ -7212,15 +7002,7 @@ Module net.
                         [
                           Ty.path "core::net::ip_addr::Ipv4Addr";
                           Ty.function
-                            [
-                              Ty.tuple
-                                [
-                                  Ty.apply
-                                    (Ty.path "&mut")
-                                    []
-                                    [ Ty.path "core::net::parser::Parser" ]
-                                ]
-                            ]
+                            [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
                             (Ty.apply
                               (Ty.path "core::option::Option")
                               []
@@ -7251,20 +7033,10 @@ Module net.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
-                                    Ty.function
-                                      [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&mut")
-                                              []
-                                              [ Ty.path "core::net::parser::Parser" ]
-                                          ]
-                                      ]
-                                      (Ty.apply
-                                        (Ty.path "core::option::Option")
-                                        []
-                                        [ Ty.path "core::net::ip_addr::Ipv4Addr" ]),
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.path "core::net::ip_addr::Ipv4Addr" ],
                                     M.alloc (|
                                       Ty.apply
                                         (Ty.path "&mut")
@@ -7407,10 +7179,7 @@ Module net.
                 [
                   Ty.path "core::net::ip_addr::Ipv6Addr";
                   Ty.function
-                    [
-                      Ty.tuple
-                        [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
-                    ]
+                    [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
                     (Ty.apply
                       (Ty.path "core::option::Option")
                       []
@@ -7441,20 +7210,10 @@ Module net.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&mut")
-                                      []
-                                      [ Ty.path "core::net::parser::Parser" ]
-                                  ]
-                              ]
-                              (Ty.apply
-                                (Ty.path "core::option::Option")
-                                []
-                                [ Ty.path "core::net::ip_addr::Ipv6Addr" ]),
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "core::net::ip_addr::Ipv6Addr" ],
                             M.alloc (|
                               Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ],
                               α0
@@ -7592,10 +7351,7 @@ Module net.
                 [
                   Ty.path "core::net::socket_addr::SocketAddrV4";
                   Ty.function
-                    [
-                      Ty.tuple
-                        [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
-                    ]
+                    [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
                     (Ty.apply
                       (Ty.path "core::option::Option")
                       []
@@ -7626,20 +7382,10 @@ Module net.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&mut")
-                                      []
-                                      [ Ty.path "core::net::parser::Parser" ]
-                                  ]
-                              ]
-                              (Ty.apply
-                                (Ty.path "core::option::Option")
-                                []
-                                [ Ty.path "core::net::socket_addr::SocketAddrV4" ]),
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "core::net::socket_addr::SocketAddrV4" ],
                             M.alloc (|
                               Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ],
                               α0
@@ -7777,10 +7523,7 @@ Module net.
                 [
                   Ty.path "core::net::socket_addr::SocketAddrV6";
                   Ty.function
-                    [
-                      Ty.tuple
-                        [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
-                    ]
+                    [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
                     (Ty.apply
                       (Ty.path "core::option::Option")
                       []
@@ -7811,20 +7554,10 @@ Module net.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&mut")
-                                      []
-                                      [ Ty.path "core::net::parser::Parser" ]
-                                  ]
-                              ]
-                              (Ty.apply
-                                (Ty.path "core::option::Option")
-                                []
-                                [ Ty.path "core::net::socket_addr::SocketAddrV6" ]),
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "core::net::socket_addr::SocketAddrV6" ],
                             M.alloc (|
                               Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ],
                               α0
@@ -7962,10 +7695,7 @@ Module net.
                 [
                   Ty.path "core::net::socket_addr::SocketAddr";
                   Ty.function
-                    [
-                      Ty.tuple
-                        [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
-                    ]
+                    [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
                     (Ty.apply
                       (Ty.path "core::option::Option")
                       []
@@ -7996,20 +7726,10 @@ Module net.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&mut")
-                                      []
-                                      [ Ty.path "core::net::parser::Parser" ]
-                                  ]
-                              ]
-                              (Ty.apply
-                                (Ty.path "core::option::Option")
-                                []
-                                [ Ty.path "core::net::socket_addr::SocketAddr" ]),
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "core::net::socket_addr::SocketAddr" ],
                             M.alloc (|
                               Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ],
                               α0

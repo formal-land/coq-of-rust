@@ -1128,7 +1128,7 @@ Module utils.
                 [
                   Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ];
                   Ty.function
-                    [ Ty.tuple [ Ty.tuple [] ] ]
+                    [ Ty.tuple [] ]
                     (Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ])
                 ]
               |),
@@ -1153,12 +1153,10 @@ Module utils.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [ Ty.tuple [ Ty.tuple [] ] ]
-                              (Ty.apply
-                                (Ty.path "alloc::vec::Vec")
-                                []
-                                [ T; Ty.path "alloc::alloc::Global" ]),
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [ T; Ty.path "alloc::alloc::Global" ],
                             M.alloc (| Ty.tuple [], α0 |),
                             [ fun γ => ltac:(M.monadic (M.read (| vec |))) ]
                           |)))

@@ -312,23 +312,20 @@ Module table.
                       [
                         Ty.function
                           [
-                            Ty.tuple
+                            Ty.function
                               [
-                                Ty.function
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
                                   [
                                     Ty.apply
-                                      (Ty.path "&mut")
+                                      (Ty.path "revm_interpreter::interpreter::Interpreter")
                                       []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "revm_interpreter::interpreter::Interpreter")
-                                          []
-                                          [ WIRE ]
-                                      ];
-                                    Ty.apply (Ty.path "&mut") [] [ H ]
-                                  ]
-                                  (Ty.tuple [])
+                                      [ WIRE ]
+                                  ];
+                                Ty.apply (Ty.path "&mut") [] [ H ]
                               ]
+                              (Ty.tuple [])
                           ]
                           CI
                       ]
@@ -342,28 +339,7 @@ Module table.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.function
-                                            [
-                                              Ty.apply
-                                                (Ty.path "&mut")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path
-                                                      "revm_interpreter::interpreter::Interpreter")
-                                                    []
-                                                    [ WIRE ]
-                                                ];
-                                              Ty.apply (Ty.path "&mut") [] [ H ]
-                                            ]
-                                            (Ty.tuple [])
-                                        ]
-                                    ]
-                                    CI,
+                                  CI,
                                   M.alloc (|
                                     Ty.function
                                       [
@@ -1084,7 +1060,7 @@ Module table.
           M.get_function (|
             "core::array::from_fn",
             [ Value.Integer IntegerKind.Usize 256 ],
-            [ CI; Ty.function [ Ty.tuple [ Ty.path "usize" ] ] CI ]
+            [ CI; Ty.function [ Ty.path "usize" ] CI ]
           |),
           [
             M.closure
@@ -1094,7 +1070,7 @@ Module table.
                   | [ α0 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.function [ Ty.tuple [ Ty.path "usize" ] ] CI,
+                        CI,
                         M.alloc (| Ty.path "usize", α0 |),
                         [
                           fun γ =>

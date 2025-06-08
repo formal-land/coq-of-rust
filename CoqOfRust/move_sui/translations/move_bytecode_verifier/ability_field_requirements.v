@@ -31,7 +31,7 @@ Module ability_field_requirements.
             [
               Ty.path "move_binary_format::errors::VMError";
               Ty.function
-                [ Ty.tuple [ Ty.path "move_binary_format::errors::PartialVMError" ] ]
+                [ Ty.path "move_binary_format::errors::PartialVMError" ]
                 (Ty.path "move_binary_format::errors::VMError")
             ]
           |),
@@ -55,9 +55,7 @@ Module ability_field_requirements.
                   | [ α0 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.function
-                          [ Ty.tuple [ Ty.path "move_binary_format::errors::PartialVMError" ] ]
-                          (Ty.path "move_binary_format::errors::VMError"),
+                        Ty.path "move_binary_format::errors::VMError",
                         M.alloc (| Ty.path "move_binary_format::errors::PartialVMError", α0 |),
                         [
                           fun γ =>
@@ -558,11 +556,8 @@ Module ability_field_requirements.
                                                             "move_binary_format::file_format::AbilitySetIterator";
                                                           Ty.function
                                                             [
-                                                              Ty.tuple
-                                                                [
-                                                                  Ty.path
-                                                                    "move_binary_format::file_format::Ability"
-                                                                ]
+                                                              Ty.path
+                                                                "move_binary_format::file_format::Ability"
                                                             ]
                                                             (Ty.path
                                                               "move_binary_format::file_format::Ability")
@@ -576,13 +571,10 @@ Module ability_field_requirements.
                                                           "move_binary_format::file_format::AbilitySet";
                                                         Ty.function
                                                           [
-                                                            Ty.tuple
-                                                              [
-                                                                Ty.path
-                                                                  "move_binary_format::file_format::AbilitySet";
-                                                                Ty.path
-                                                                  "move_binary_format::file_format::Ability"
-                                                              ]
+                                                            Ty.path
+                                                              "move_binary_format::file_format::AbilitySet";
+                                                            Ty.path
+                                                              "move_binary_format::file_format::Ability"
                                                           ]
                                                           (Ty.path
                                                             "move_binary_format::file_format::AbilitySet")
@@ -598,11 +590,8 @@ Module ability_field_requirements.
                                                               "move_binary_format::file_format::AbilitySetIterator";
                                                             Ty.function
                                                               [
-                                                                Ty.tuple
-                                                                  [
-                                                                    Ty.path
-                                                                      "move_binary_format::file_format::Ability"
-                                                                  ]
+                                                                Ty.path
+                                                                  "move_binary_format::file_format::Ability"
                                                               ]
                                                               (Ty.path
                                                                 "move_binary_format::file_format::Ability")
@@ -620,11 +609,8 @@ Module ability_field_requirements.
                                                               "move_binary_format::file_format::Ability";
                                                             Ty.function
                                                               [
-                                                                Ty.tuple
-                                                                  [
-                                                                    Ty.path
-                                                                      "move_binary_format::file_format::Ability"
-                                                                  ]
+                                                                Ty.path
+                                                                  "move_binary_format::file_format::Ability"
                                                               ]
                                                               (Ty.path
                                                                 "move_binary_format::file_format::Ability")
@@ -661,16 +647,8 @@ Module ability_field_requirements.
                                                                 | [ α0 ] =>
                                                                   ltac:(M.monadic
                                                                     (M.match_operator (|
-                                                                      Ty.function
-                                                                        [
-                                                                          Ty.tuple
-                                                                            [
-                                                                              Ty.path
-                                                                                "move_binary_format::file_format::Ability"
-                                                                            ]
-                                                                        ]
-                                                                        (Ty.path
-                                                                          "move_binary_format::file_format::Ability"),
+                                                                      Ty.path
+                                                                        "move_binary_format::file_format::Ability",
                                                                       M.alloc (|
                                                                         Ty.path
                                                                           "move_binary_format::file_format::Ability",
@@ -721,18 +699,8 @@ Module ability_field_requirements.
                                                             | [ α0; α1 ] =>
                                                               ltac:(M.monadic
                                                                 (M.match_operator (|
-                                                                  Ty.function
-                                                                    [
-                                                                      Ty.tuple
-                                                                        [
-                                                                          Ty.path
-                                                                            "move_binary_format::file_format::AbilitySet";
-                                                                          Ty.path
-                                                                            "move_binary_format::file_format::Ability"
-                                                                        ]
-                                                                    ]
-                                                                    (Ty.path
-                                                                      "move_binary_format::file_format::AbilitySet"),
+                                                                  Ty.path
+                                                                    "move_binary_format::file_format::AbilitySet",
                                                                   M.alloc (|
                                                                     Ty.path
                                                                       "move_binary_format::file_format::AbilitySet",
@@ -748,18 +716,8 @@ Module ability_field_requirements.
                                                                             γ
                                                                           |) in
                                                                         M.match_operator (|
-                                                                          Ty.function
-                                                                            [
-                                                                              Ty.tuple
-                                                                                [
-                                                                                  Ty.path
-                                                                                    "move_binary_format::file_format::AbilitySet";
-                                                                                  Ty.path
-                                                                                    "move_binary_format::file_format::Ability"
-                                                                                ]
-                                                                            ]
-                                                                            (Ty.path
-                                                                              "move_binary_format::file_format::AbilitySet"),
+                                                                          Ty.path
+                                                                            "move_binary_format::file_format::AbilitySet",
                                                                           M.alloc (|
                                                                             Ty.path
                                                                               "move_binary_format::file_format::Ability",
@@ -842,15 +800,12 @@ Module ability_field_requirements.
                                                             ];
                                                           Ty.function
                                                             [
-                                                              Ty.tuple
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
                                                                 [
-                                                                  Ty.apply
-                                                                    (Ty.path "&")
-                                                                    []
-                                                                    [
-                                                                      Ty.path
-                                                                        "move_binary_format::file_format::StructTypeParameter"
-                                                                    ]
+                                                                  Ty.path
+                                                                    "move_binary_format::file_format::StructTypeParameter"
                                                                 ]
                                                             ]
                                                             (Ty.path
@@ -886,15 +841,12 @@ Module ability_field_requirements.
                                                               ];
                                                             Ty.function
                                                               [
-                                                                Ty.tuple
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
                                                                   [
-                                                                    Ty.apply
-                                                                      (Ty.path "&")
-                                                                      []
-                                                                      [
-                                                                        Ty.path
-                                                                          "move_binary_format::file_format::StructTypeParameter"
-                                                                      ]
+                                                                    Ty.path
+                                                                      "move_binary_format::file_format::StructTypeParameter"
                                                                   ]
                                                               ]
                                                               (Ty.path
@@ -918,15 +870,12 @@ Module ability_field_requirements.
                                                               "move_binary_format::file_format::AbilitySet";
                                                             Ty.function
                                                               [
-                                                                Ty.tuple
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
                                                                   [
-                                                                    Ty.apply
-                                                                      (Ty.path "&")
-                                                                      []
-                                                                      [
-                                                                        Ty.path
-                                                                          "move_binary_format::file_format::StructTypeParameter"
-                                                                      ]
+                                                                    Ty.path
+                                                                      "move_binary_format::file_format::StructTypeParameter"
                                                                   ]
                                                               ]
                                                               (Ty.path
@@ -1012,21 +961,8 @@ Module ability_field_requirements.
                                                                 | [ α0 ] =>
                                                                   ltac:(M.monadic
                                                                     (M.match_operator (|
-                                                                      Ty.function
-                                                                        [
-                                                                          Ty.tuple
-                                                                            [
-                                                                              Ty.apply
-                                                                                (Ty.path "&")
-                                                                                []
-                                                                                [
-                                                                                  Ty.path
-                                                                                    "move_binary_format::file_format::StructTypeParameter"
-                                                                                ]
-                                                                            ]
-                                                                        ]
-                                                                        (Ty.path
-                                                                          "move_binary_format::file_format::AbilitySet"),
+                                                                      Ty.path
+                                                                        "move_binary_format::file_format::AbilitySet",
                                                                       M.alloc (|
                                                                         Ty.apply
                                                                           (Ty.path "&")

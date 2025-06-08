@@ -859,8 +859,7 @@ Module collections.
                                                       []
                                                       [ T ];
                                                     Ty.function
-                                                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ]
-                                                      ]
+                                                      [ Ty.apply (Ty.path "&") [] [ T ] ]
                                                       T
                                                   ],
                                                 [],
@@ -882,10 +881,7 @@ Module collections.
                                                           []
                                                           [ T ];
                                                         Ty.function
-                                                          [
-                                                            Ty.tuple
-                                                              [ Ty.apply (Ty.path "&") [] [ T ] ]
-                                                          ]
+                                                          [ Ty.apply (Ty.path "&") [] [ T ] ]
                                                           T
                                                       ],
                                                     M.call_closure (|
@@ -898,10 +894,7 @@ Module collections.
                                                             []
                                                             [ T ];
                                                           Ty.function
-                                                            [
-                                                              Ty.tuple
-                                                                [ Ty.apply (Ty.path "&") [] [ T ] ]
-                                                            ]
+                                                            [ Ty.apply (Ty.path "&") [] [ T ] ]
                                                             T
                                                         ],
                                                       M.get_trait_method (|
@@ -917,10 +910,7 @@ Module collections.
                                                         [
                                                           T;
                                                           Ty.function
-                                                            [
-                                                              Ty.tuple
-                                                                [ Ty.apply (Ty.path "&") [] [ T ] ]
-                                                            ]
+                                                            [ Ty.apply (Ty.path "&") [] [ T ] ]
                                                             T
                                                         ]
                                                       |),
@@ -950,17 +940,7 @@ Module collections.
                                                               | [ α0 ] =>
                                                                 ltac:(M.monadic
                                                                   (M.match_operator (|
-                                                                    Ty.function
-                                                                      [
-                                                                        Ty.tuple
-                                                                          [
-                                                                            Ty.apply
-                                                                              (Ty.path "&")
-                                                                              []
-                                                                              [ T ]
-                                                                          ]
-                                                                      ]
-                                                                      T,
+                                                                    T,
                                                                     M.alloc (|
                                                                       Ty.apply
                                                                         (Ty.path "&")
@@ -1108,9 +1088,7 @@ Module collections.
                                         []
                                         [
                                           Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ];
-                                          Ty.function
-                                            [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
-                                            T
+                                          Ty.function [ Ty.apply (Ty.path "&") [] [ T ] ] T
                                         ],
                                       [],
                                       [],
@@ -1127,9 +1105,7 @@ Module collections.
                                             []
                                             [
                                               Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ];
-                                              Ty.function
-                                                [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
-                                                T
+                                              Ty.function [ Ty.apply (Ty.path "&") [] [ T ] ] T
                                             ],
                                           M.call_closure (|
                                             Ty.apply
@@ -1140,9 +1116,7 @@ Module collections.
                                                   (Ty.path "core::slice::iter::Iter")
                                                   []
                                                   [ T ];
-                                                Ty.function
-                                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
-                                                  T
+                                                Ty.function [ Ty.apply (Ty.path "&") [] [ T ] ] T
                                               ],
                                             M.get_trait_method (|
                                               "core::iter::traits::iterator::Iterator",
@@ -1151,11 +1125,7 @@ Module collections.
                                               [],
                                               "map",
                                               [],
-                                              [
-                                                T;
-                                                Ty.function
-                                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
-                                                  T
+                                              [ T; Ty.function [ Ty.apply (Ty.path "&") [] [ T ] ] T
                                               ]
                                             |),
                                             [
@@ -1184,12 +1154,7 @@ Module collections.
                                                     | [ α0 ] =>
                                                       ltac:(M.monadic
                                                         (M.match_operator (|
-                                                          Ty.function
-                                                            [
-                                                              Ty.tuple
-                                                                [ Ty.apply (Ty.path "&") [] [ T ] ]
-                                                            ]
-                                                            T,
+                                                          T,
                                                           M.alloc (|
                                                             Ty.apply (Ty.path "&") [] [ T ],
                                                             α0
@@ -1309,7 +1274,7 @@ Module collections.
                       [
                         B;
                         Ty.function
-                          [ Ty.tuple [ B; T ] ]
+                          [ B; T ]
                           (Ty.apply (Ty.path "core::result::Result") [] [ B; Ty.path "never" ]);
                         Ty.apply (Ty.path "core::result::Result") [] [ B; Ty.path "never" ]
                       ]
@@ -1324,24 +1289,20 @@ Module collections.
                             | [ α0; α1 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [ Ty.tuple [ B; T ] ]
-                                    (Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [ B; Ty.path "never" ]),
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ B; Ty.path "never" ],
                                   M.alloc (| B, α0 |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let b := M.copy (| B, γ |) in
                                         M.match_operator (|
-                                          Ty.function
-                                            [ Ty.tuple [ B; T ] ]
-                                            (Ty.apply
-                                              (Ty.path "core::result::Result")
-                                              []
-                                              [ B; Ty.path "never" ]),
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [ B; Ty.path "never" ],
                                           M.alloc (| T, α1 |),
                                           [
                                             fun γ =>
@@ -2827,8 +2788,7 @@ Module collections.
                                                       []
                                                       [ T ];
                                                     Ty.function
-                                                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ]
-                                                      ]
+                                                      [ Ty.apply (Ty.path "&") [] [ T ] ]
                                                       T
                                                   ],
                                                 [],
@@ -2850,10 +2810,7 @@ Module collections.
                                                           []
                                                           [ T ];
                                                         Ty.function
-                                                          [
-                                                            Ty.tuple
-                                                              [ Ty.apply (Ty.path "&") [] [ T ] ]
-                                                          ]
+                                                          [ Ty.apply (Ty.path "&") [] [ T ] ]
                                                           T
                                                       ],
                                                     M.call_closure (|
@@ -2866,10 +2823,7 @@ Module collections.
                                                             []
                                                             [ T ];
                                                           Ty.function
-                                                            [
-                                                              Ty.tuple
-                                                                [ Ty.apply (Ty.path "&") [] [ T ] ]
-                                                            ]
+                                                            [ Ty.apply (Ty.path "&") [] [ T ] ]
                                                             T
                                                         ],
                                                       M.get_trait_method (|
@@ -2885,10 +2839,7 @@ Module collections.
                                                         [
                                                           T;
                                                           Ty.function
-                                                            [
-                                                              Ty.tuple
-                                                                [ Ty.apply (Ty.path "&") [] [ T ] ]
-                                                            ]
+                                                            [ Ty.apply (Ty.path "&") [] [ T ] ]
                                                             T
                                                         ]
                                                       |),
@@ -2918,17 +2869,7 @@ Module collections.
                                                               | [ α0 ] =>
                                                                 ltac:(M.monadic
                                                                   (M.match_operator (|
-                                                                    Ty.function
-                                                                      [
-                                                                        Ty.tuple
-                                                                          [
-                                                                            Ty.apply
-                                                                              (Ty.path "&")
-                                                                              []
-                                                                              [ T ]
-                                                                          ]
-                                                                      ]
-                                                                      T,
+                                                                    T,
                                                                     M.alloc (|
                                                                       Ty.apply
                                                                         (Ty.path "&")
@@ -3076,9 +3017,7 @@ Module collections.
                                         []
                                         [
                                           Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ];
-                                          Ty.function
-                                            [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
-                                            T
+                                          Ty.function [ Ty.apply (Ty.path "&") [] [ T ] ] T
                                         ],
                                       [],
                                       [],
@@ -3095,9 +3034,7 @@ Module collections.
                                             []
                                             [
                                               Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ];
-                                              Ty.function
-                                                [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
-                                                T
+                                              Ty.function [ Ty.apply (Ty.path "&") [] [ T ] ] T
                                             ],
                                           M.call_closure (|
                                             Ty.apply
@@ -3108,9 +3045,7 @@ Module collections.
                                                   (Ty.path "core::slice::iter::Iter")
                                                   []
                                                   [ T ];
-                                                Ty.function
-                                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
-                                                  T
+                                                Ty.function [ Ty.apply (Ty.path "&") [] [ T ] ] T
                                               ],
                                             M.get_trait_method (|
                                               "core::iter::traits::iterator::Iterator",
@@ -3119,11 +3054,7 @@ Module collections.
                                               [],
                                               "map",
                                               [],
-                                              [
-                                                T;
-                                                Ty.function
-                                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
-                                                  T
+                                              [ T; Ty.function [ Ty.apply (Ty.path "&") [] [ T ] ] T
                                               ]
                                             |),
                                             [
@@ -3152,12 +3083,7 @@ Module collections.
                                                     | [ α0 ] =>
                                                       ltac:(M.monadic
                                                         (M.match_operator (|
-                                                          Ty.function
-                                                            [
-                                                              Ty.tuple
-                                                                [ Ty.apply (Ty.path "&") [] [ T ] ]
-                                                            ]
-                                                            T,
+                                                          T,
                                                           M.alloc (|
                                                             Ty.apply (Ty.path "&") [] [ T ],
                                                             α0
@@ -3277,7 +3203,7 @@ Module collections.
                       [
                         B;
                         Ty.function
-                          [ Ty.tuple [ B; T ] ]
+                          [ B; T ]
                           (Ty.apply (Ty.path "core::result::Result") [] [ B; Ty.path "never" ]);
                         Ty.apply (Ty.path "core::result::Result") [] [ B; Ty.path "never" ]
                       ]
@@ -3292,24 +3218,20 @@ Module collections.
                             | [ α0; α1 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [ Ty.tuple [ B; T ] ]
-                                    (Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [ B; Ty.path "never" ]),
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ B; Ty.path "never" ],
                                   M.alloc (| B, α0 |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let b := M.copy (| B, γ |) in
                                         M.match_operator (|
-                                          Ty.function
-                                            [ Ty.tuple [ B; T ] ]
-                                            (Ty.apply
-                                              (Ty.path "core::result::Result")
-                                              []
-                                              [ B; Ty.path "never" ]),
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [ B; Ty.path "never" ],
                                           M.alloc (| T, α1 |),
                                           [
                                             fun γ =>

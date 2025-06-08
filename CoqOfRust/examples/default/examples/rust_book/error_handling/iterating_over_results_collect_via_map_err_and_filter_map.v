@@ -134,7 +134,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           Ty.path "alloc::alloc::Global"
                         ];
                       Ty.function
-                        [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] ]
+                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                         (Ty.apply
                           (Ty.path "core::result::Result")
                           []
@@ -142,13 +142,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ];
                   Ty.function
                     [
-                      Ty.tuple
-                        [
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [ Ty.path "u8"; Ty.path "core::num::error::ParseIntError" ]
-                        ]
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "u8"; Ty.path "core::num::error::ParseIntError" ]
                     ]
                     (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ])
                 ],
@@ -181,7 +178,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Ty.path "alloc::alloc::Global"
                           ];
                         Ty.function
-                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                           (Ty.apply
                             (Ty.path "core::result::Result")
                             []
@@ -189,13 +186,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       ];
                     Ty.function
                       [
-                        Ty.tuple
-                          [
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.path "u8"; Ty.path "core::num::error::ParseIntError" ]
-                          ]
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u8"; Ty.path "core::num::error::ParseIntError" ]
                       ]
                       (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ])
                   ],
@@ -213,7 +207,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           Ty.path "alloc::alloc::Global"
                         ];
                       Ty.function
-                        [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] ]
+                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                         (Ty.apply
                           (Ty.path "core::result::Result")
                           []
@@ -227,13 +221,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     Ty.path "u8";
                     Ty.function
                       [
-                        Ty.tuple
-                          [
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.path "u8"; Ty.path "core::num::error::ParseIntError" ]
-                          ]
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u8"; Ty.path "core::num::error::ParseIntError" ]
                       ]
                       (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ])
                   ]
@@ -252,7 +243,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Ty.path "alloc::alloc::Global"
                           ];
                         Ty.function
-                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                           (Ty.apply
                             (Ty.path "core::result::Result")
                             []
@@ -277,7 +268,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           []
                           [ Ty.path "u8"; Ty.path "core::num::error::ParseIntError" ];
                         Ty.function
-                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                           (Ty.apply
                             (Ty.path "core::result::Result")
                             []
@@ -317,12 +308,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] ]
-                                    (Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [ Ty.path "u8"; Ty.path "core::num::error::ParseIntError" ]),
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.path "u8"; Ty.path "core::num::error::ParseIntError" ],
                                   M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], α0 |),
                                   [
                                     fun γ =>
@@ -366,17 +355,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [ Ty.path "u8"; Ty.path "core::num::error::ParseIntError" ]
-                                    ]
-                                ]
-                                (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ]),
+                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
                               M.alloc (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
@@ -426,10 +405,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             [
                                               Ty.tuple [];
                                               Ty.function
-                                                [
-                                                  Ty.tuple
-                                                    [ Ty.path "core::num::error::ParseIntError" ]
-                                                ]
+                                                [ Ty.path "core::num::error::ParseIntError" ]
                                                 (Ty.tuple [])
                                             ]
                                           |),
@@ -442,15 +418,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                   | [ α0 ] =>
                                                     ltac:(M.monadic
                                                       (M.match_operator (|
-                                                        Ty.function
-                                                          [
-                                                            Ty.tuple
-                                                              [
-                                                                Ty.path
-                                                                  "core::num::error::ParseIntError"
-                                                              ]
-                                                          ]
-                                                          (Ty.tuple []),
+                                                        Ty.tuple [],
                                                         M.alloc (|
                                                           Ty.path "core::num::error::ParseIntError",
                                                           α0

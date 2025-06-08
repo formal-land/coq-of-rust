@@ -973,7 +973,7 @@ Module string.
                       [
                         Ty.path "core::str::iter::Chars";
                         Ty.function
-                          [ Ty.tuple [ Ty.path "char" ] ]
+                          [ Ty.path "char" ]
                           (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ])
                       ] :=
                   M.call_closure (|
@@ -983,7 +983,7 @@ Module string.
                       [
                         Ty.path "core::str::iter::Chars";
                         Ty.function
-                          [ Ty.tuple [ Ty.path "char" ] ]
+                          [ Ty.path "char" ]
                           (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ])
                       ],
                     M.get_trait_method (|
@@ -996,7 +996,7 @@ Module string.
                       [
                         Ty.path "u64";
                         Ty.function
-                          [ Ty.tuple [ Ty.path "char" ] ]
+                          [ Ty.path "char" ]
                           (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ])
                       ]
                     |),
@@ -1013,12 +1013,7 @@ Module string.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.path "char" ] ]
-                                    (Ty.apply
-                                      (Ty.path "core::option::Option")
-                                      []
-                                      [ Ty.path "u64" ]),
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                                   M.alloc (| Ty.path "char", α0 |),
                                   [
                                     fun γ =>
@@ -1638,7 +1633,7 @@ Module string.
                                   [
                                     Ty.path "core::str::iter::Chars";
                                     Ty.function
-                                      [ Ty.tuple [ Ty.path "char" ] ]
+                                      [ Ty.path "char" ]
                                       (Ty.apply
                                         (Ty.path "core::option::Option")
                                         []

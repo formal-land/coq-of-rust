@@ -1721,7 +1721,7 @@ Module option.
                   []
                   [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] T "Target" ];
                 Ty.function
-                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
+                  [ Ty.apply (Ty.path "&") [] [ T ] ]
                   (Ty.apply
                     (Ty.path "&")
                     []
@@ -1746,13 +1746,10 @@ Module option.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
-                            (Ty.apply
-                              (Ty.path "&")
-                              []
-                              [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] T "Target"
-                              ]),
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] T "Target" ],
                           M.alloc (| Ty.apply (Ty.path "&") [] [ T ], α0 |),
                           [
                             fun γ =>
@@ -1834,7 +1831,7 @@ Module option.
                   []
                   [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] T "Target" ];
                 Ty.function
-                  [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ]
+                  [ Ty.apply (Ty.path "&mut") [] [ T ] ]
                   (Ty.apply
                     (Ty.path "&mut")
                     []
@@ -1859,13 +1856,10 @@ Module option.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ]
-                            (Ty.apply
-                              (Ty.path "&mut")
-                              []
-                              [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] T "Target"
-                              ]),
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] T "Target" ],
                           M.alloc (| Ty.apply (Ty.path "&mut") [] [ T ], α0 |),
                           [
                             fun γ =>
@@ -2487,7 +2481,7 @@ Module option.
                       Ty.apply (Ty.path "core::option::Option") [] [ T ],
                       "get_or_insert_with",
                       [],
-                      [ Ty.function [ Ty.tuple [] ] T ]
+                      [ Ty.function [] T ]
                     |),
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
@@ -2498,7 +2492,7 @@ Module option.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function [ Ty.tuple [] ] T,
+                                  T,
                                   M.alloc (| Ty.tuple [], α0 |),
                                   [ fun γ => ltac:(M.monadic (M.read (| value |))) ]
                                 |)))
@@ -5643,23 +5637,20 @@ Module option.
                   [ Ty.path "core::convert::Infallible" ];
                 Ty.function
                   [
-                    Ty.tuple
+                    Ty.apply
+                      (Ty.path "core::iter::adapters::GenericShunt")
+                      []
                       [
-                        Ty.apply
-                          (Ty.path "core::iter::adapters::GenericShunt")
+                        Ty.associated_in_trait
+                          "core::iter::traits::collect::IntoIterator"
                           []
-                          [
-                            Ty.associated_in_trait
-                              "core::iter::traits::collect::IntoIterator"
-                              []
-                              []
-                              I
-                              "IntoIter";
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [ Ty.path "core::convert::Infallible" ]
-                          ]
+                          []
+                          I
+                          "IntoIter";
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::convert::Infallible" ]
                       ]
                   ]
                   V;
@@ -5692,28 +5683,7 @@ Module option.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [
-                              Ty.tuple
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::iter::adapters::GenericShunt")
-                                    []
-                                    [
-                                      Ty.associated_in_trait
-                                        "core::iter::traits::collect::IntoIterator"
-                                        []
-                                        []
-                                        I
-                                        "IntoIter";
-                                      Ty.apply
-                                        (Ty.path "core::option::Option")
-                                        []
-                                        [ Ty.path "core::convert::Infallible" ]
-                                    ]
-                                ]
-                            ]
-                            V,
+                          V,
                           M.alloc (|
                             Ty.apply
                               (Ty.path "core::iter::adapters::GenericShunt")

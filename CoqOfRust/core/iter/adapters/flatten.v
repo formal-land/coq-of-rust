@@ -6788,7 +6788,7 @@ Module iter.
                                                 U
                                                 "Item";
                                               Ty.function
-                                                [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ U ] ] ]
+                                                [ Ty.apply (Ty.path "&mut") [] [ U ] ]
                                                 (Ty.apply
                                                   (Ty.path "core::option::Option")
                                                   []
@@ -6823,22 +6823,17 @@ Module iter.
                                                   | [ α0 ] =>
                                                     ltac:(M.monadic
                                                       (M.match_operator (|
-                                                        Ty.function
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
                                                           [
-                                                            Ty.tuple
-                                                              [ Ty.apply (Ty.path "&mut") [] [ U ] ]
-                                                          ]
-                                                          (Ty.apply
-                                                            (Ty.path "core::option::Option")
-                                                            []
-                                                            [
-                                                              Ty.associated_in_trait
-                                                                "core::iter::traits::iterator::Iterator"
-                                                                []
-                                                                []
-                                                                U
-                                                                "Item"
-                                                            ]),
+                                                            Ty.associated_in_trait
+                                                              "core::iter::traits::iterator::Iterator"
+                                                              []
+                                                              []
+                                                              U
+                                                              "Item"
+                                                          ],
                                                         M.alloc (|
                                                           Ty.apply (Ty.path "&mut") [] [ U ],
                                                           α0
@@ -6997,8 +6992,7 @@ Module iter.
                                                   U
                                                   "Item";
                                                 Ty.function
-                                                  [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ U ] ]
-                                                  ]
+                                                  [ Ty.apply (Ty.path "&mut") [] [ U ] ]
                                                   (Ty.apply
                                                     (Ty.path "core::option::Option")
                                                     []
@@ -7033,23 +7027,17 @@ Module iter.
                                                     | [ α0 ] =>
                                                       ltac:(M.monadic
                                                         (M.match_operator (|
-                                                          Ty.function
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
                                                             [
-                                                              Ty.tuple
-                                                                [ Ty.apply (Ty.path "&mut") [] [ U ]
-                                                                ]
-                                                            ]
-                                                            (Ty.apply
-                                                              (Ty.path "core::option::Option")
-                                                              []
-                                                              [
-                                                                Ty.associated_in_trait
-                                                                  "core::iter::traits::iterator::Iterator"
-                                                                  []
-                                                                  []
-                                                                  U
-                                                                  "Item"
-                                                              ]),
+                                                              Ty.associated_in_trait
+                                                                "core::iter::traits::iterator::Iterator"
+                                                                []
+                                                                []
+                                                                U
+                                                                "Item"
+                                                            ],
                                                           M.alloc (|
                                                             Ty.apply (Ty.path "&mut") [] [ U ],
                                                             α0
@@ -8235,14 +8223,14 @@ Module iter.
                   | [ α0; α1 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.function [ Ty.tuple [ Acc; I ] ] Acc,
+                        Acc,
                         M.alloc (| Acc, α0 |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let acc := M.copy (| Acc, γ |) in
                               M.match_operator (|
-                                Ty.function [ Ty.tuple [ Acc; I ] ] Acc,
+                                Acc,
                                 M.alloc (| I, α1 |),
                                 [
                                   fun γ =>
@@ -8414,14 +8402,14 @@ Module iter.
                   | [ α0; α1 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.function [ Ty.tuple [ Acc; I ] ] R,
+                        R,
                         M.alloc (| Acc, α0 |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let acc := M.copy (| Acc, γ |) in
                               M.match_operator (|
-                                Ty.function [ Ty.tuple [ Acc; I ] ] R,
+                                R,
                                 M.alloc (| I, α1 |),
                                 [
                                   fun γ =>

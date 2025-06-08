@@ -6076,7 +6076,7 @@ Module bytes.
                                 M.get_function (|
                                   "bytes::bytes::ptr_map",
                                   [],
-                                  [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.path "usize") ]
+                                  [ Ty.function [ Ty.path "usize" ] (Ty.path "usize") ]
                                 |),
                                 [
                                   M.read (| ptr |);
@@ -6087,9 +6087,7 @@ Module bytes.
                                         | [ α0 ] =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
-                                              Ty.function
-                                                [ Ty.tuple [ Ty.path "usize" ] ]
-                                                (Ty.path "usize"),
+                                              Ty.path "usize",
                                               M.alloc (| Ty.path "usize", α0 |),
                                               [
                                                 fun γ =>
@@ -7453,7 +7451,7 @@ Module bytes.
                           M.get_function (|
                             "bytes::bytes::ptr_map",
                             [],
-                            [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.path "usize") ]
+                            [ Ty.function [ Ty.path "usize" ] (Ty.path "usize") ]
                           |),
                           [
                             M.call_closure (|
@@ -7473,9 +7471,7 @@ Module bytes.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Ty.function
-                                          [ Ty.tuple [ Ty.path "usize" ] ]
-                                          (Ty.path "usize"),
+                                        Ty.path "usize",
                                         M.alloc (| Ty.path "usize", α0 |),
                                         [
                                           fun γ =>
@@ -8245,9 +8241,7 @@ Module bytes.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [ Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ] ]
-                            (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ]),
+                          Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                           M.alloc (| Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ], α0 |),
                           [
                             fun γ =>
@@ -8259,8 +8253,7 @@ Module bytes.
                                   M.get_function (|
                                     "bytes::bytes::ptr_map",
                                     [],
-                                    [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.path "usize")
-                                    ]
+                                    [ Ty.function [ Ty.path "usize" ] (Ty.path "usize") ]
                                   |),
                                   [
                                     M.call_closure (|
@@ -8280,9 +8273,7 @@ Module bytes.
                                           | [ α0 ] =>
                                             ltac:(M.monadic
                                               (M.match_operator (|
-                                                Ty.function
-                                                  [ Ty.tuple [ Ty.path "usize" ] ]
-                                                  (Ty.path "usize"),
+                                                Ty.path "usize",
                                                 M.alloc (| Ty.path "usize", α0 |),
                                                 [
                                                   fun γ =>
@@ -8361,9 +8352,7 @@ Module bytes.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [ Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ] ]
-                            (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ]),
+                          Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                           M.alloc (| Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ], α0 |),
                           [
                             fun γ =>
@@ -8375,8 +8364,7 @@ Module bytes.
                                   M.get_function (|
                                     "bytes::bytes::ptr_map",
                                     [],
-                                    [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.path "usize")
-                                    ]
+                                    [ Ty.function [ Ty.path "usize" ] (Ty.path "usize") ]
                                   |),
                                   [
                                     M.call_closure (|
@@ -8396,9 +8384,7 @@ Module bytes.
                                           | [ α0 ] =>
                                             ltac:(M.monadic
                                               (M.match_operator (|
-                                                Ty.function
-                                                  [ Ty.tuple [ Ty.path "usize" ] ]
-                                                  (Ty.path "usize"),
+                                                Ty.path "usize",
                                                 M.alloc (| Ty.path "usize", α0 |),
                                                 [
                                                   fun γ =>
@@ -8483,14 +8469,7 @@ Module bytes.
                 [],
                 [
                   Ty.function
-                    [
-                      Ty.tuple
-                        [
-                          Ty.apply
-                            (Ty.path "&mut")
-                            []
-                            [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ]
-                        ]
+                    [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ]
                     ]
                     (Ty.tuple []);
                   Ty.tuple []
@@ -8505,17 +8484,7 @@ Module bytes.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&mut")
-                                      []
-                                      [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ]
-                                  ]
-                              ]
-                              (Ty.tuple []),
+                            Ty.tuple [],
                             M.alloc (|
                               Ty.apply
                                 (Ty.path "&mut")
@@ -8827,7 +8796,7 @@ Module bytes.
                                                       [],
                                                       [
                                                         Ty.function
-                                                          [ Ty.tuple [ Ty.path "usize" ] ]
+                                                          [ Ty.path "usize" ]
                                                           (Ty.path "usize")
                                                       ]
                                                     |),
@@ -8855,9 +8824,7 @@ Module bytes.
                                                             | [ α0 ] =>
                                                               ltac:(M.monadic
                                                                 (M.match_operator (|
-                                                                  Ty.function
-                                                                    [ Ty.tuple [ Ty.path "usize" ] ]
-                                                                    (Ty.path "usize"),
+                                                                  Ty.path "usize",
                                                                   M.alloc (| Ty.path "usize", α0 |),
                                                                   [
                                                                     fun γ =>
@@ -9232,9 +9199,7 @@ Module bytes.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [ Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ] ]
-                            (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ]),
+                          Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                           M.alloc (| Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ], α0 |),
                           [
                             fun γ =>
@@ -9300,9 +9265,7 @@ Module bytes.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [ Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ] ]
-                            (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ]),
+                          Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                           M.alloc (| Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ], α0 |),
                           [
                             fun γ =>
@@ -9376,14 +9339,7 @@ Module bytes.
                 [],
                 [
                   Ty.function
-                    [
-                      Ty.tuple
-                        [
-                          Ty.apply
-                            (Ty.path "&mut")
-                            []
-                            [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ]
-                        ]
+                    [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ]
                     ]
                     (Ty.tuple []);
                   Ty.tuple []
@@ -9398,17 +9354,7 @@ Module bytes.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&mut")
-                                      []
-                                      [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ]
-                                  ]
-                              ]
-                              (Ty.tuple []),
+                            Ty.tuple [],
                             M.alloc (|
                               Ty.apply
                                 (Ty.path "&mut")
@@ -11003,14 +10949,7 @@ Module bytes.
                 [],
                 [
                   Ty.function
-                    [
-                      Ty.tuple
-                        [
-                          Ty.apply
-                            (Ty.path "&mut")
-                            []
-                            [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ]
-                        ]
+                    [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ]
                     ]
                     (Ty.tuple []);
                   Ty.tuple []
@@ -11025,17 +10964,7 @@ Module bytes.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&mut")
-                                      []
-                                      [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ]
-                                  ]
-                              ]
-                              (Ty.tuple []),
+                            Ty.tuple [],
                             M.alloc (|
                               Ty.apply
                                 (Ty.path "&mut")

@@ -823,15 +823,13 @@ Module iter.
                     | [ α0; α1 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function [ Ty.tuple [ Ty.tuple []; Ty.tuple [ A; B ] ] ] (Ty.tuple []),
+                          Ty.tuple [],
                           M.alloc (| Ty.tuple [], α0 |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.tuple []; Ty.tuple [ A; B ] ] ]
-                                    (Ty.tuple []),
+                                  Ty.tuple [],
                                   M.alloc (| Ty.tuple [ A; B ], α1 |),
                                   [
                                     fun γ =>

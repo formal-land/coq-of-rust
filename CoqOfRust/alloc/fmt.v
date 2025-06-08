@@ -32,7 +32,7 @@ Module fmt.
             [],
             [
               Ty.path "alloc::string::String";
-              Ty.function [ Ty.tuple [] ] (Ty.path "alloc::string::String");
+              Ty.function [] (Ty.path "alloc::string::String");
               Ty.function
                 [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                 (Ty.associated_in_trait "alloc::borrow::ToOwned" [] [] (Ty.path "str") "Owned")
@@ -54,7 +54,7 @@ Module fmt.
                   | [ α0 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.function [ Ty.tuple [] ] (Ty.path "alloc::string::String"),
+                        Ty.path "alloc::string::String",
                         M.alloc (| Ty.tuple [], α0 |),
                         [
                           fun γ =>

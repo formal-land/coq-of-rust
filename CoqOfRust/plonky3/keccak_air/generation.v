@@ -1422,28 +1422,24 @@ Module generation.
                                     [
                                       Ty.tuple
                                         [
-                                          Ty.tuple
+                                          Ty.apply
+                                            (Ty.path "&mut")
+                                            []
                                             [
                                               Ty.apply
-                                                (Ty.path "&mut")
+                                                (Ty.path "slice")
                                                 []
                                                 [
                                                   Ty.apply
-                                                    (Ty.path "slice")
+                                                    (Ty.path "p3_keccak_air::columns::KeccakCols")
                                                     []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path
-                                                          "p3_keccak_air::columns::KeccakCols")
-                                                        []
-                                                        [ F ]
-                                                    ]
-                                                ];
-                                              Ty.apply
-                                                (Ty.path "array")
-                                                [ Value.Integer IntegerKind.Usize 25 ]
-                                                [ Ty.path "u64" ]
-                                            ]
+                                                    [ F ]
+                                                ]
+                                            ];
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 25 ]
+                                            [ Ty.path "u64" ]
                                         ]
                                     ]
                                     (Ty.tuple [])
@@ -1587,35 +1583,7 @@ Module generation.
                                       | [ α0 ] =>
                                         ltac:(M.monadic
                                           (M.match_operator (|
-                                            Ty.function
-                                              [
-                                                Ty.tuple
-                                                  [
-                                                    Ty.tuple
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "&mut")
-                                                          []
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "slice")
-                                                              []
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "p3_keccak_air::columns::KeccakCols")
-                                                                  []
-                                                                  [ F ]
-                                                              ]
-                                                          ];
-                                                        Ty.apply
-                                                          (Ty.path "array")
-                                                          [ Value.Integer IntegerKind.Usize 25 ]
-                                                          [ Ty.path "u64" ]
-                                                      ]
-                                                  ]
-                                              ]
-                                              (Ty.tuple []),
+                                            Ty.tuple [],
                                             M.alloc (|
                                               Ty.tuple
                                                 [
@@ -1833,7 +1801,7 @@ Module generation.
                     [ Value.Integer IntegerKind.Usize 5 ]
                     [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ F ] ];
                   Ty.function
-                    [ Ty.tuple [ Ty.path "usize" ] ]
+                    [ Ty.path "usize" ]
                     (Ty.apply
                       (Ty.path "array")
                       [ Value.Integer IntegerKind.Usize 5 ]
@@ -1848,17 +1816,15 @@ Module generation.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [ Ty.tuple [ Ty.path "usize" ] ]
-                              (Ty.apply
-                                (Ty.path "array")
-                                [ Value.Integer IntegerKind.Usize 5 ]
-                                [
-                                  Ty.apply
-                                    (Ty.path "array")
-                                    [ Value.Integer IntegerKind.Usize 4 ]
-                                    [ F ]
-                                ]),
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 5 ]
+                              [
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 4 ]
+                                  [ F ]
+                              ],
                             M.alloc (| Ty.path "usize", α0 |),
                             [
                               fun γ =>
@@ -1883,7 +1849,7 @@ Module generation.
                                           [ Value.Integer IntegerKind.Usize 4 ]
                                           [ F ];
                                         Ty.function
-                                          [ Ty.tuple [ Ty.path "usize" ] ]
+                                          [ Ty.path "usize" ]
                                           (Ty.apply
                                             (Ty.path "array")
                                             [ Value.Integer IntegerKind.Usize 4 ]
@@ -1898,12 +1864,10 @@ Module generation.
                                             | [ α0 ] =>
                                               ltac:(M.monadic
                                                 (M.match_operator (|
-                                                  Ty.function
-                                                    [ Ty.tuple [ Ty.path "usize" ] ]
-                                                    (Ty.apply
-                                                      (Ty.path "array")
-                                                      [ Value.Integer IntegerKind.Usize 4 ]
-                                                      [ F ]),
+                                                  Ty.apply
+                                                    (Ty.path "array")
+                                                    [ Value.Integer IntegerKind.Usize 4 ]
+                                                    [ F ],
                                                   M.alloc (| Ty.path "usize", α0 |),
                                                   [
                                                     fun γ =>
@@ -2887,13 +2851,10 @@ Module generation.
                 [
                   Ty.function
                     [
-                      Ty.tuple
-                        [
-                          Ty.apply
-                            (Ty.path "array")
-                            [ Value.Integer IntegerKind.Usize 5 ]
-                            [ Ty.path "u64" ]
-                        ]
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 5 ]
+                        [ Ty.path "u64" ]
                     ]
                     (Ty.path "u64");
                   Ty.path "u64"
@@ -2908,17 +2869,7 @@ Module generation.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "array")
-                                      [ Value.Integer IntegerKind.Usize 5 ]
-                                      [ Ty.path "u64" ]
-                                  ]
-                              ]
-                              (Ty.path "u64"),
+                            Ty.path "u64",
                             M.alloc (|
                               Ty.apply
                                 (Ty.path "array")
@@ -2953,11 +2904,8 @@ Module generation.
                                         Ty.path "u64";
                                         Ty.function
                                           [
-                                            Ty.tuple
-                                              [
-                                                Ty.path "u64";
-                                                Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
-                                              ]
+                                            Ty.path "u64";
+                                            Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
                                           ]
                                           (Ty.path "u64")
                                       ]
@@ -2987,36 +2935,14 @@ Module generation.
                                             | [ α0; α1 ] =>
                                               ltac:(M.monadic
                                                 (M.match_operator (|
-                                                  Ty.function
-                                                    [
-                                                      Ty.tuple
-                                                        [
-                                                          Ty.path "u64";
-                                                          Ty.apply
-                                                            (Ty.path "&")
-                                                            []
-                                                            [ Ty.path "u64" ]
-                                                        ]
-                                                    ]
-                                                    (Ty.path "u64"),
+                                                  Ty.path "u64",
                                                   M.alloc (| Ty.path "u64", α0 |),
                                                   [
                                                     fun γ =>
                                                       ltac:(M.monadic
                                                         (let acc := M.copy (| Ty.path "u64", γ |) in
                                                         M.match_operator (|
-                                                          Ty.function
-                                                            [
-                                                              Ty.tuple
-                                                                [
-                                                                  Ty.path "u64";
-                                                                  Ty.apply
-                                                                    (Ty.path "&")
-                                                                    []
-                                                                    [ Ty.path "u64" ]
-                                                                ]
-                                                            ]
-                                                            (Ty.path "u64"),
+                                                          Ty.path "u64",
                                                           M.alloc (|
                                                             Ty.apply
                                                               (Ty.path "&")
@@ -3264,7 +3190,7 @@ Module generation.
               M.get_function (|
                 "core::array::from_fn",
                 [ Value.Integer IntegerKind.Usize 5 ],
-                [ Ty.path "u64"; Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.path "u64") ]
+                [ Ty.path "u64"; Ty.function [ Ty.path "usize" ] (Ty.path "u64") ]
               |),
               [
                 M.closure
@@ -3274,7 +3200,7 @@ Module generation.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.path "u64"),
+                            Ty.path "u64",
                             M.alloc (| Ty.path "usize", α0 |),
                             [
                               fun γ =>
@@ -3568,7 +3494,7 @@ Module generation.
                       [ Value.Integer IntegerKind.Usize 5 ]
                       [ Ty.path "u64" ];
                     Ty.function
-                      [ Ty.tuple [ Ty.path "usize" ] ]
+                      [ Ty.path "usize" ]
                       (Ty.apply
                         (Ty.path "array")
                         [ Value.Integer IntegerKind.Usize 5 ]
@@ -3583,12 +3509,10 @@ Module generation.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [ Ty.tuple [ Ty.path "usize" ] ]
-                                (Ty.apply
-                                  (Ty.path "array")
-                                  [ Value.Integer IntegerKind.Usize 5 ]
-                                  [ Ty.path "u64" ]),
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 5 ]
+                                [ Ty.path "u64" ],
                               M.alloc (| Ty.path "usize", α0 |),
                               [
                                 fun γ =>
@@ -3604,9 +3528,7 @@ Module generation.
                                         [ Value.Integer IntegerKind.Usize 5 ],
                                         [
                                           Ty.path "u64";
-                                          Ty.function
-                                            [ Ty.tuple [ Ty.path "usize" ] ]
-                                            (Ty.path "u64")
+                                          Ty.function [ Ty.path "usize" ] (Ty.path "u64")
                                         ]
                                       |),
                                       [
@@ -3617,9 +3539,7 @@ Module generation.
                                               | [ α0 ] =>
                                                 ltac:(M.monadic
                                                   (M.match_operator (|
-                                                    Ty.function
-                                                      [ Ty.tuple [ Ty.path "usize" ] ]
-                                                      (Ty.path "u64"),
+                                                    Ty.path "u64",
                                                     M.alloc (| Ty.path "usize", α0 |),
                                                     [
                                                       fun γ =>
@@ -4253,7 +4173,7 @@ Module generation.
                       [ Value.Integer IntegerKind.Usize 5 ]
                       [ Ty.path "u64" ];
                     Ty.function
-                      [ Ty.tuple [ Ty.path "usize" ] ]
+                      [ Ty.path "usize" ]
                       (Ty.apply
                         (Ty.path "array")
                         [ Value.Integer IntegerKind.Usize 5 ]
@@ -4268,12 +4188,10 @@ Module generation.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [ Ty.tuple [ Ty.path "usize" ] ]
-                                (Ty.apply
-                                  (Ty.path "array")
-                                  [ Value.Integer IntegerKind.Usize 5 ]
-                                  [ Ty.path "u64" ]),
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 5 ]
+                                [ Ty.path "u64" ],
                               M.alloc (| Ty.path "usize", α0 |),
                               [
                                 fun γ =>
@@ -4289,9 +4207,7 @@ Module generation.
                                         [ Value.Integer IntegerKind.Usize 5 ],
                                         [
                                           Ty.path "u64";
-                                          Ty.function
-                                            [ Ty.tuple [ Ty.path "usize" ] ]
-                                            (Ty.path "u64")
+                                          Ty.function [ Ty.path "usize" ] (Ty.path "u64")
                                         ]
                                       |),
                                       [
@@ -4302,9 +4218,7 @@ Module generation.
                                               | [ α0 ] =>
                                                 ltac:(M.monadic
                                                   (M.match_operator (|
-                                                    Ty.function
-                                                      [ Ty.tuple [ Ty.path "usize" ] ]
-                                                      (Ty.path "u64"),
+                                                    Ty.path "u64",
                                                     M.alloc (| Ty.path "usize", α0 |),
                                                     [
                                                       fun γ =>
@@ -4430,7 +4344,7 @@ Module generation.
                       [ Value.Integer IntegerKind.Usize 5 ]
                       [ Ty.path "u64" ];
                     Ty.function
-                      [ Ty.tuple [ Ty.path "usize" ] ]
+                      [ Ty.path "usize" ]
                       (Ty.apply
                         (Ty.path "array")
                         [ Value.Integer IntegerKind.Usize 5 ]
@@ -4445,12 +4359,10 @@ Module generation.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [ Ty.tuple [ Ty.path "usize" ] ]
-                                (Ty.apply
-                                  (Ty.path "array")
-                                  [ Value.Integer IntegerKind.Usize 5 ]
-                                  [ Ty.path "u64" ]),
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 5 ]
+                                [ Ty.path "u64" ],
                               M.alloc (| Ty.path "usize", α0 |),
                               [
                                 fun γ =>
@@ -4466,9 +4378,7 @@ Module generation.
                                         [ Value.Integer IntegerKind.Usize 5 ],
                                         [
                                           Ty.path "u64";
-                                          Ty.function
-                                            [ Ty.tuple [ Ty.path "usize" ] ]
-                                            (Ty.path "u64")
+                                          Ty.function [ Ty.path "usize" ] (Ty.path "u64")
                                         ]
                                       |),
                                       [
@@ -4479,9 +4389,7 @@ Module generation.
                                               | [ α0 ] =>
                                                 ltac:(M.monadic
                                                   (M.match_operator (|
-                                                    Ty.function
-                                                      [ Ty.tuple [ Ty.path "usize" ] ]
-                                                      (Ty.path "u64"),
+                                                    Ty.path "u64",
                                                     M.alloc (| Ty.path "usize", α0 |),
                                                     [
                                                       fun γ =>

@@ -868,8 +868,7 @@ Module secp256k1.
                                       [],
                                       [
                                         Ty.function
-                                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
-                                          ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
                                           (Ty.path "bool")
                                       ]
                                     |),
@@ -992,13 +991,7 @@ Module secp256k1.
                                             | [ α0 ] =>
                                               ltac:(M.monadic
                                                 (M.match_operator (|
-                                                  Ty.function
-                                                    [
-                                                      Ty.tuple
-                                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ]
-                                                        ]
-                                                    ]
-                                                    (Ty.path "bool"),
+                                                  Ty.path "bool",
                                                   M.alloc (|
                                                     Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
                                                     α0
@@ -1532,13 +1525,10 @@ Module secp256k1.
                           Ty.path "alloy_primitives::bytes_::Bytes";
                           Ty.function
                             [
-                              Ty.tuple
-                                [
-                                  Ty.apply
-                                    (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                    [ Value.Integer IntegerKind.Usize 32 ]
-                                    []
-                                ]
+                              Ty.apply
+                                (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                [ Value.Integer IntegerKind.Usize 32 ]
+                                []
                             ]
                             (Ty.path "alloy_primitives::bytes_::Bytes")
                         ]
@@ -1573,17 +1563,7 @@ Module secp256k1.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
-                                    Ty.function
-                                      [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply
-                                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                              [ Value.Integer IntegerKind.Usize 32 ]
-                                              []
-                                          ]
-                                      ]
-                                      (Ty.path "alloy_primitives::bytes_::Bytes"),
+                                    Ty.path "alloy_primitives::bytes_::Bytes",
                                     M.alloc (|
                                       Ty.apply
                                         (Ty.path "alloy_primitives::bits::fixed::FixedBytes")

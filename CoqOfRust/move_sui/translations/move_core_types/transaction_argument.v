@@ -3210,11 +3210,8 @@ Module transaction_argument.
                                                 ];
                                               Ty.function
                                                 [
-                                                  Ty.tuple
-                                                    [
-                                                      Ty.path
-                                                        "move_core_types::runtime_value::MoveValue"
-                                                    ]
+                                                  Ty.path
+                                                    "move_core_types::runtime_value::MoveValue"
                                                 ]
                                                 (Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -3254,11 +3251,8 @@ Module transaction_argument.
                                                   ];
                                                 Ty.function
                                                   [
-                                                    Ty.tuple
-                                                      [
-                                                        Ty.path
-                                                          "move_core_types::runtime_value::MoveValue"
-                                                      ]
+                                                    Ty.path
+                                                      "move_core_types::runtime_value::MoveValue"
                                                   ]
                                                   (Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -3286,11 +3280,8 @@ Module transaction_argument.
                                                   [ Ty.path "u8"; Ty.path "anyhow::Error" ];
                                                 Ty.function
                                                   [
-                                                    Ty.tuple
-                                                      [
-                                                        Ty.path
-                                                          "move_core_types::runtime_value::MoveValue"
-                                                      ]
+                                                    Ty.path
+                                                      "move_core_types::runtime_value::MoveValue"
                                                   ]
                                                   (Ty.apply
                                                     (Ty.path "core::result::Result")
@@ -3333,21 +3324,11 @@ Module transaction_argument.
                                                     | [ α0 ] =>
                                                       ltac:(M.monadic
                                                         (M.match_operator (|
-                                                          Ty.function
-                                                            [
-                                                              Ty.tuple
-                                                                [
-                                                                  Ty.path
-                                                                    "move_core_types::runtime_value::MoveValue"
-                                                                ]
-                                                            ]
-                                                            (Ty.apply
-                                                              (Ty.path "core::result::Result")
-                                                              []
-                                                              [
-                                                                Ty.path "u8";
-                                                                Ty.path "anyhow::Error"
-                                                              ]),
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [ Ty.path "u8"; Ty.path "anyhow::Error"
+                                                            ],
                                                           M.alloc (|
                                                             Ty.path
                                                               "move_core_types::runtime_value::MoveValue",
@@ -3943,13 +3924,10 @@ Module transaction_argument.
                   [ Ty.path "move_core_types::transaction_argument::TransactionArgument" ];
                 Ty.function
                   [
-                    Ty.tuple
-                      [
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [ Ty.path "move_core_types::transaction_argument::TransactionArgument" ]
-                      ]
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.path "move_core_types::transaction_argument::TransactionArgument" ]
                   ]
                   (Ty.apply
                     (Ty.path "alloc::vec::Vec")
@@ -3985,13 +3963,10 @@ Module transaction_argument.
                     [ Ty.path "move_core_types::transaction_argument::TransactionArgument" ];
                   Ty.function
                     [
-                      Ty.tuple
-                        [
-                          Ty.apply
-                            (Ty.path "&")
-                            []
-                            [ Ty.path "move_core_types::transaction_argument::TransactionArgument" ]
-                        ]
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.path "move_core_types::transaction_argument::TransactionArgument" ]
                     ]
                     (Ty.apply
                       (Ty.path "alloc::vec::Vec")
@@ -4015,13 +3990,10 @@ Module transaction_argument.
                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ];
                   Ty.function
                     [
-                      Ty.tuple
-                        [
-                          Ty.apply
-                            (Ty.path "&")
-                            []
-                            [ Ty.path "move_core_types::transaction_argument::TransactionArgument" ]
-                        ]
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.path "move_core_types::transaction_argument::TransactionArgument" ]
                     ]
                     (Ty.apply
                       (Ty.path "alloc::vec::Vec")
@@ -4053,23 +4025,10 @@ Module transaction_argument.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [
-                                        Ty.path
-                                          "move_core_types::transaction_argument::TransactionArgument"
-                                      ]
-                                  ]
-                              ]
-                              (Ty.apply
-                                (Ty.path "alloc::vec::Vec")
-                                []
-                                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]),
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                             M.alloc (|
                               Ty.apply
                                 (Ty.path "&")
@@ -4688,7 +4647,7 @@ Module transaction_argument.
                     []
                     [ Ty.path "serde_bytes::bytebuf::ByteBuf"; Ty.path "alloc::alloc::Global" ];
                   Ty.function
-                    [ Ty.tuple [ Ty.path "serde_bytes::bytebuf::ByteBuf" ] ]
+                    [ Ty.path "serde_bytes::bytebuf::ByteBuf" ]
                     (Ty.apply
                       (Ty.path "alloc::vec::Vec")
                       []
@@ -4722,7 +4681,7 @@ Module transaction_argument.
                       []
                       [ Ty.path "serde_bytes::bytebuf::ByteBuf"; Ty.path "alloc::alloc::Global" ];
                     Ty.function
-                      [ Ty.tuple [ Ty.path "serde_bytes::bytebuf::ByteBuf" ] ]
+                      [ Ty.path "serde_bytes::bytebuf::ByteBuf" ]
                       (Ty.apply
                         (Ty.path "alloc::vec::Vec")
                         []
@@ -4744,7 +4703,7 @@ Module transaction_argument.
                       []
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ];
                     Ty.function
-                      [ Ty.tuple [ Ty.path "serde_bytes::bytebuf::ByteBuf" ] ]
+                      [ Ty.path "serde_bytes::bytebuf::ByteBuf" ]
                       (Ty.apply
                         (Ty.path "alloc::vec::Vec")
                         []
@@ -4786,12 +4745,10 @@ Module transaction_argument.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [ Ty.tuple [ Ty.path "serde_bytes::bytebuf::ByteBuf" ] ]
-                                (Ty.apply
-                                  (Ty.path "alloc::vec::Vec")
-                                  []
-                                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]),
+                              Ty.apply
+                                (Ty.path "alloc::vec::Vec")
+                                []
+                                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                               M.alloc (| Ty.path "serde_bytes::bytebuf::ByteBuf", α0 |),
                               [
                                 fun γ =>

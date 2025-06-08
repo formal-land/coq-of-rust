@@ -622,7 +622,7 @@ Module array.
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                 "map",
                 [],
-                [ T; Ty.function [ Ty.tuple [ Ty.path "usize" ] ] T ]
+                [ T; Ty.function [ Ty.path "usize" ] T ]
               |),
               [
                 M.call_closure (|
@@ -654,7 +654,7 @@ Module array.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function [ Ty.tuple [ Ty.path "usize" ] ] T,
+                            T,
                             M.alloc (| Ty.path "usize", α0 |),
                             [
                               fun γ =>
@@ -848,7 +848,7 @@ Module array.
                     [],
                     "fold",
                     [],
-                    [ Acc; Ty.function [ Ty.tuple [ Acc; Ty.path "usize" ] ] Acc ]
+                    [ Acc; Ty.function [ Acc; Ty.path "usize" ] Acc ]
                   |),
                   [
                     Value.StructTuple
@@ -878,14 +878,14 @@ Module array.
                           | [ α0; α1 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function [ Ty.tuple [ Acc; Ty.path "usize" ] ] Acc,
+                                Acc,
                                 M.alloc (| Acc, α0 |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let acc := M.copy (| Acc, γ |) in
                                       M.match_operator (|
-                                        Ty.function [ Ty.tuple [ Acc; Ty.path "usize" ] ] Acc,
+                                        Acc,
                                         M.alloc (| Ty.path "usize", α1 |),
                                         [
                                           fun γ =>
@@ -1481,7 +1481,7 @@ Module array.
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                 "map",
                 [],
-                [ T; Ty.function [ Ty.tuple [ Ty.path "usize" ] ] T ]
+                [ T; Ty.function [ Ty.path "usize" ] T ]
               |),
               [
                 M.call_closure (|
@@ -1513,7 +1513,7 @@ Module array.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function [ Ty.tuple [ Ty.path "usize" ] ] T,
+                            T,
                             M.alloc (| Ty.path "usize", α0 |),
                             [
                               fun γ =>
@@ -1647,7 +1647,7 @@ Module array.
                     [],
                     "rfold",
                     [],
-                    [ Acc; Ty.function [ Ty.tuple [ Acc; Ty.path "usize" ] ] Acc ]
+                    [ Acc; Ty.function [ Acc; Ty.path "usize" ] Acc ]
                   |),
                   [
                     Value.StructTuple
@@ -1677,14 +1677,14 @@ Module array.
                           | [ α0; α1 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function [ Ty.tuple [ Acc; Ty.path "usize" ] ] Acc,
+                                Acc,
                                 M.alloc (| Acc, α0 |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let acc := M.copy (| Acc, γ |) in
                                       M.match_operator (|
-                                        Ty.function [ Ty.tuple [ Acc; Ty.path "usize" ] ] Acc,
+                                        Acc,
                                         M.alloc (| Ty.path "usize", α1 |),
                                         [
                                           fun γ =>

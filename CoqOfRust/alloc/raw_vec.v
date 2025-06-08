@@ -6158,10 +6158,7 @@ Module raw_vec.
                                                         Ty.path
                                                           "alloc::collections::TryReserveErrorKind";
                                                         Ty.function
-                                                          [
-                                                            Ty.tuple
-                                                              [ Ty.path "core::alloc::AllocError" ]
-                                                          ]
+                                                          [ Ty.path "core::alloc::AllocError" ]
                                                           (Ty.path
                                                             "alloc::collections::TryReserveErrorKind")
                                                       ]
@@ -6214,16 +6211,8 @@ Module raw_vec.
                                                             | [ α0 ] =>
                                                               ltac:(M.monadic
                                                                 (M.match_operator (|
-                                                                  Ty.function
-                                                                    [
-                                                                      Ty.tuple
-                                                                        [
-                                                                          Ty.path
-                                                                            "core::alloc::AllocError"
-                                                                        ]
-                                                                    ]
-                                                                    (Ty.path
-                                                                      "alloc::collections::TryReserveErrorKind"),
+                                                                  Ty.path
+                                                                    "alloc::collections::TryReserveErrorKind",
                                                                   M.alloc (|
                                                                     Ty.path
                                                                       "core::alloc::AllocError",
@@ -7071,7 +7060,7 @@ Module raw_vec.
                     [
                       Ty.path "alloc::collections::TryReserveError";
                       Ty.function
-                        [ Ty.tuple [ Ty.path "core::alloc::AllocError" ] ]
+                        [ Ty.path "core::alloc::AllocError" ]
                         (Ty.path "alloc::collections::TryReserveError")
                     ]
                   |),
@@ -7084,9 +7073,7 @@ Module raw_vec.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function
-                                  [ Ty.tuple [ Ty.path "core::alloc::AllocError" ] ]
-                                  (Ty.path "alloc::collections::TryReserveError"),
+                                Ty.path "alloc::collections::TryReserveError",
                                 M.alloc (| Ty.path "core::alloc::AllocError", α0 |),
                                 [
                                   fun γ =>
@@ -7322,7 +7309,7 @@ Module raw_vec.
             [
               Ty.path "alloc::collections::TryReserveError";
               Ty.function
-                [ Ty.tuple [ Ty.path "core::alloc::layout::LayoutError" ] ]
+                [ Ty.path "core::alloc::layout::LayoutError" ]
                 (Ty.path "alloc::collections::TryReserveError")
             ]
           |),
@@ -7346,10 +7333,7 @@ Module raw_vec.
                 [
                   Ty.path "core::alloc::layout::Layout";
                   Ty.function
-                    [
-                      Ty.tuple
-                        [ Ty.tuple [ Ty.path "core::alloc::layout::Layout"; Ty.path "usize" ] ]
-                    ]
+                    [ Ty.tuple [ Ty.path "core::alloc::layout::Layout"; Ty.path "usize" ] ]
                     (Ty.path "core::alloc::layout::Layout")
                 ]
               |),
@@ -7377,15 +7361,7 @@ Module raw_vec.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.tuple
-                                      [ Ty.path "core::alloc::layout::Layout"; Ty.path "usize" ]
-                                  ]
-                              ]
-                              (Ty.path "core::alloc::layout::Layout"),
+                            Ty.path "core::alloc::layout::Layout",
                             M.alloc (|
                               Ty.tuple [ Ty.path "core::alloc::layout::Layout"; Ty.path "usize" ],
                               α0
@@ -7412,9 +7388,7 @@ Module raw_vec.
                   | [ α0 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.function
-                          [ Ty.tuple [ Ty.path "core::alloc::layout::LayoutError" ] ]
-                          (Ty.path "alloc::collections::TryReserveError"),
+                        Ty.path "alloc::collections::TryReserveError",
                         M.alloc (| Ty.path "core::alloc::layout::LayoutError", α0 |),
                         [
                           fun γ =>

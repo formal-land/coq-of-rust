@@ -31,7 +31,7 @@ Module friends.
             [
               Ty.path "move_binary_format::errors::VMError";
               Ty.function
-                [ Ty.tuple [ Ty.path "move_binary_format::errors::PartialVMError" ] ]
+                [ Ty.path "move_binary_format::errors::PartialVMError" ]
                 (Ty.path "move_binary_format::errors::VMError")
             ]
           |),
@@ -51,9 +51,7 @@ Module friends.
                   | [ α0 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.function
-                          [ Ty.tuple [ Ty.path "move_binary_format::errors::PartialVMError" ] ]
-                          (Ty.path "move_binary_format::errors::VMError"),
+                        Ty.path "move_binary_format::errors::VMError",
                         M.alloc (| Ty.path "move_binary_format::errors::PartialVMError", α0 |),
                         [
                           fun γ =>
@@ -342,13 +340,10 @@ Module friends.
                     [
                       Ty.function
                         [
-                          Ty.tuple
-                            [
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.path "move_binary_format::file_format::ModuleHandle" ]
-                            ]
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_binary_format::file_format::ModuleHandle" ]
                         ]
                         (Ty.path "bool")
                     ]
@@ -415,18 +410,7 @@ Module friends.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function
-                                  [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.path "move_binary_format::file_format::ModuleHandle"
-                                          ]
-                                      ]
-                                  ]
-                                  (Ty.path "bool"),
+                                Ty.path "bool",
                                 M.alloc (|
                                   Ty.apply
                                     (Ty.path "&")

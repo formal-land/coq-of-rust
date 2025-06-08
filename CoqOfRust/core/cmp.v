@@ -1960,7 +1960,7 @@ Module cmp.
             [
               T;
               Ty.function
-                [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ]; Ty.apply (Ty.path "&") [] [ T ] ] ]
+                [ Ty.apply (Ty.path "&") [] [ T ]; Ty.apply (Ty.path "&") [] [ T ] ]
                 (Ty.path "core::cmp::Ordering")
             ]
           |),
@@ -1974,27 +1974,14 @@ Module cmp.
                   | [ α0; α1 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.function
-                          [
-                            Ty.tuple
-                              [ Ty.apply (Ty.path "&") [] [ T ]; Ty.apply (Ty.path "&") [] [ T ] ]
-                          ]
-                          (Ty.path "core::cmp::Ordering"),
+                        Ty.path "core::cmp::Ordering",
                         M.alloc (| Ty.apply (Ty.path "&") [] [ T ], α0 |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let v1 := M.copy (| Ty.apply (Ty.path "&") [] [ T ], γ |) in
                               M.match_operator (|
-                                Ty.function
-                                  [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply (Ty.path "&") [] [ T ];
-                                        Ty.apply (Ty.path "&") [] [ T ]
-                                      ]
-                                  ]
-                                  (Ty.path "core::cmp::Ordering"),
+                                Ty.path "core::cmp::Ordering",
                                 M.alloc (| Ty.apply (Ty.path "&") [] [ T ], α1 |),
                                 [
                                   fun γ =>
@@ -2216,7 +2203,7 @@ Module cmp.
             [
               T;
               Ty.function
-                [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ]; Ty.apply (Ty.path "&") [] [ T ] ] ]
+                [ Ty.apply (Ty.path "&") [] [ T ]; Ty.apply (Ty.path "&") [] [ T ] ]
                 (Ty.path "core::cmp::Ordering")
             ]
           |),
@@ -2230,27 +2217,14 @@ Module cmp.
                   | [ α0; α1 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.function
-                          [
-                            Ty.tuple
-                              [ Ty.apply (Ty.path "&") [] [ T ]; Ty.apply (Ty.path "&") [] [ T ] ]
-                          ]
-                          (Ty.path "core::cmp::Ordering"),
+                        Ty.path "core::cmp::Ordering",
                         M.alloc (| Ty.apply (Ty.path "&") [] [ T ], α0 |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let v1 := M.copy (| Ty.apply (Ty.path "&") [] [ T ], γ |) in
                               M.match_operator (|
-                                Ty.function
-                                  [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply (Ty.path "&") [] [ T ];
-                                        Ty.apply (Ty.path "&") [] [ T ]
-                                      ]
-                                  ]
-                                  (Ty.path "core::cmp::Ordering"),
+                                Ty.path "core::cmp::Ordering",
                                 M.alloc (| Ty.apply (Ty.path "&") [] [ T ], α1 |),
                                 [
                                   fun γ =>
@@ -2501,7 +2475,7 @@ Module cmp.
             [
               T;
               Ty.function
-                [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ]; Ty.apply (Ty.path "&") [] [ T ] ] ]
+                [ Ty.apply (Ty.path "&") [] [ T ]; Ty.apply (Ty.path "&") [] [ T ] ]
                 (Ty.path "core::cmp::Ordering")
             ]
           |),
@@ -2515,27 +2489,14 @@ Module cmp.
                   | [ α0; α1 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.function
-                          [
-                            Ty.tuple
-                              [ Ty.apply (Ty.path "&") [] [ T ]; Ty.apply (Ty.path "&") [] [ T ] ]
-                          ]
-                          (Ty.path "core::cmp::Ordering"),
+                        Ty.path "core::cmp::Ordering",
                         M.alloc (| Ty.apply (Ty.path "&") [] [ T ], α0 |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let v1 := M.copy (| Ty.apply (Ty.path "&") [] [ T ], γ |) in
                               M.match_operator (|
-                                Ty.function
-                                  [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply (Ty.path "&") [] [ T ];
-                                        Ty.apply (Ty.path "&") [] [ T ]
-                                      ]
-                                  ]
-                                  (Ty.path "core::cmp::Ordering"),
+                                Ty.path "core::cmp::Ordering",
                                 M.alloc (| Ty.apply (Ty.path "&") [] [ T ], α1 |),
                                 [
                                   fun γ =>

@@ -3056,19 +3056,16 @@ Module eof.
                                       [
                                         Ty.function
                                           [
-                                            Ty.tuple
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
                                               [
                                                 Ty.apply
-                                                  (Ty.path "&")
+                                                  (Ty.path "core::option::Option")
                                                   []
                                                   [
-                                                    Ty.apply
-                                                      (Ty.path "core::option::Option")
-                                                      []
-                                                      [
-                                                        Ty.path
-                                                          "revm_bytecode::eof::verification::CodeType"
-                                                      ]
+                                                    Ty.path
+                                                      "revm_bytecode::eof::verification::CodeType"
                                                   ]
                                               ]
                                           ]
@@ -3188,25 +3185,7 @@ Module eof.
                                             | [ α0 ] =>
                                               ltac:(M.monadic
                                                 (M.match_operator (|
-                                                  Ty.function
-                                                    [
-                                                      Ty.tuple
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "&")
-                                                            []
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "core::option::Option")
-                                                                []
-                                                                [
-                                                                  Ty.path
-                                                                    "revm_bytecode::eof::verification::CodeType"
-                                                                ]
-                                                            ]
-                                                        ]
-                                                    ]
-                                                    (Ty.path "bool"),
+                                                  Ty.path "bool",
                                                   M.alloc (|
                                                     Ty.apply
                                                       (Ty.path "&")
@@ -3465,13 +3444,10 @@ Module eof.
                                 ];
                               Ty.function
                                 [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::option::Option")
-                                        []
-                                        [ Ty.path "revm_bytecode::eof::verification::CodeType" ]
-                                    ]
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "revm_bytecode::eof::verification::CodeType" ]
                                 ]
                                 (Ty.path "revm_bytecode::eof::verification::CodeType")
                             ],
@@ -3507,13 +3483,10 @@ Module eof.
                                   ];
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::option::Option")
-                                          []
-                                          [ Ty.path "revm_bytecode::eof::verification::CodeType" ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.path "revm_bytecode::eof::verification::CodeType" ]
                                   ]
                                   (Ty.path "revm_bytecode::eof::verification::CodeType")
                               ],
@@ -3537,13 +3510,10 @@ Module eof.
                                 Ty.path "revm_bytecode::eof::verification::CodeType";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::option::Option")
-                                          []
-                                          [ Ty.path "revm_bytecode::eof::verification::CodeType" ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.path "revm_bytecode::eof::verification::CodeType" ]
                                   ]
                                   (Ty.path "revm_bytecode::eof::verification::CodeType")
                               ]
@@ -3595,20 +3565,7 @@ Module eof.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::option::Option")
-                                                    []
-                                                    [
-                                                      Ty.path
-                                                        "revm_bytecode::eof::verification::CodeType"
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "revm_bytecode::eof::verification::CodeType"),
+                                          Ty.path "revm_bytecode::eof::verification::CodeType",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")

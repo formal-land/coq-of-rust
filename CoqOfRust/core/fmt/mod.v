@@ -9921,14 +9921,7 @@ Module fmt.
                         []
                         [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
                       Ty.function
-                        [
-                          Ty.tuple
-                            [
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                            ]
+                        [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                         ]
                         (Ty.path "usize")
                     ],
@@ -9950,13 +9943,10 @@ Module fmt.
                           [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
                         Ty.function
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                              ]
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                           ]
                           (Ty.path "usize")
                       ],
@@ -9974,13 +9964,10 @@ Module fmt.
                         Ty.path "usize";
                         Ty.function
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                              ]
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                           ]
                           (Ty.path "usize")
                       ]
@@ -10022,17 +10009,7 @@ Module fmt.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                        ]
-                                    ]
-                                    (Ty.path "usize"),
+                                  Ty.path "usize",
                                   M.alloc (|
                                     Ty.apply
                                       (Ty.path "&")
@@ -14608,10 +14585,7 @@ Module fmt.
                                           [],
                                           [
                                             Ty.function
-                                              [
-                                                Ty.tuple
-                                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
-                                              ]
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
                                               (Ty.path "bool")
                                           ]
                                         |),
@@ -14674,17 +14648,7 @@ Module fmt.
                                                 | [ α0 ] =>
                                                   ltac:(M.monadic
                                                     (M.match_operator (|
-                                                      Ty.function
-                                                        [
-                                                          Ty.tuple
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "&")
-                                                                []
-                                                                [ Ty.path "u8" ]
-                                                            ]
-                                                        ]
-                                                        (Ty.path "bool"),
+                                                      Ty.path "bool",
                                                       M.alloc (|
                                                         Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
                                                         α0

@@ -132,7 +132,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             |),
             [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "goodbye" |) |) |) ]
           |) in
-        let~ diary : Ty.function [ Ty.tuple [] ] (Ty.tuple []) :=
+        let~ diary : Ty.function [] (Ty.tuple []) :=
           M.closure
             (fun γ =>
               ltac:(M.monadic
@@ -140,7 +140,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 | [ α0 ] =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Ty.function [ Ty.tuple [] ] (Ty.tuple []),
+                      Ty.tuple [],
                       M.alloc (| Ty.tuple [], α0 |),
                       [
                         fun γ =>
@@ -393,11 +393,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.get_function (|
               "functions_closures_as_input_parameters::apply",
               [],
-              [ Ty.function [ Ty.tuple [] ] (Ty.tuple []) ]
+              [ Ty.function [] (Ty.tuple []) ]
             |),
             [ M.read (| diary |) ]
           |) in
-        let~ double : Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32") :=
+        let~ double : Ty.function [ Ty.path "i32" ] (Ty.path "i32") :=
           M.closure
             (fun γ =>
               ltac:(M.monadic
@@ -405,7 +405,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 | [ α0 ] =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32"),
+                      Ty.path "i32",
                       M.alloc (| Ty.path "i32", α0 |),
                       [
                         fun γ =>
@@ -485,11 +485,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                 M.get_function (|
                                                   "functions_closures_as_input_parameters::apply_to_3",
                                                   [],
-                                                  [
-                                                    Ty.function
-                                                      [ Ty.tuple [ Ty.path "i32" ] ]
-                                                      (Ty.path "i32")
-                                                  ]
+                                                  [ Ty.function [ Ty.path "i32" ] (Ty.path "i32") ]
                                                 |),
                                                 [ M.read (| double |) ]
                                               |)

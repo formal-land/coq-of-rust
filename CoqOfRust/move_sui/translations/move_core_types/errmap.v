@@ -2925,20 +2925,17 @@ Module errmap.
                 Ty.path "move_core_types::errmap::ErrorDescription";
                 Ty.function
                   [
-                    Ty.tuple
+                    Ty.apply
+                      (Ty.path "&")
+                      []
                       [
                         Ty.apply
-                          (Ty.path "&")
+                          (Ty.path "alloc::collections::btree::map::BTreeMap")
                           []
                           [
-                            Ty.apply
-                              (Ty.path "alloc::collections::btree::map::BTreeMap")
-                              []
-                              [
-                                Ty.path "u64";
-                                Ty.path "move_core_types::errmap::ErrorDescription";
-                                Ty.path "alloc::alloc::Global"
-                              ]
+                            Ty.path "u64";
+                            Ty.path "move_core_types::errmap::ErrorDescription";
+                            Ty.path "alloc::alloc::Global"
                           ]
                       ]
                   ]
@@ -3007,29 +3004,10 @@ Module errmap.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [
-                              Ty.tuple
-                                [
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "alloc::collections::btree::map::BTreeMap")
-                                        []
-                                        [
-                                          Ty.path "u64";
-                                          Ty.path "move_core_types::errmap::ErrorDescription";
-                                          Ty.path "alloc::alloc::Global"
-                                        ]
-                                    ]
-                                ]
-                            ]
-                            (Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [ Ty.path "move_core_types::errmap::ErrorDescription" ]),
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "move_core_types::errmap::ErrorDescription" ],
                           M.alloc (|
                             Ty.apply
                               (Ty.path "&")

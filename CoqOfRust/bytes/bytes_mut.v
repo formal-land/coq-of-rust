@@ -14789,14 +14789,7 @@ Module bytes_mut.
                 [],
                 [
                   Ty.function
-                    [
-                      Ty.tuple
-                        [
-                          Ty.apply
-                            (Ty.path "&mut")
-                            []
-                            [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ]
-                        ]
+                    [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ]
                     ]
                     (Ty.tuple []);
                   Ty.tuple []
@@ -14811,17 +14804,7 @@ Module bytes_mut.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&mut")
-                                      []
-                                      [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ]
-                                  ]
-                              ]
-                              (Ty.tuple []),
+                            Ty.tuple [],
                             M.alloc (|
                               Ty.apply
                                 (Ty.path "&mut")

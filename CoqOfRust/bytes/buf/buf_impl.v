@@ -857,13 +857,10 @@ Module buf.
                                 Ty.path "u16";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "u16")
                               ]
@@ -934,18 +931,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "u16"),
+                                          Ty.path "u16",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -1239,13 +1225,10 @@ Module buf.
                                 Ty.path "u16";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "u16")
                               ]
@@ -1316,18 +1299,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "u16"),
+                                          Ty.path "u16",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -1621,13 +1593,10 @@ Module buf.
                                 Ty.path "u16";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "u16")
                               ]
@@ -1698,18 +1667,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "u16"),
+                                          Ty.path "u16",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -1998,13 +1956,10 @@ Module buf.
                                 Ty.path "i16";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "i16")
                               ]
@@ -2075,18 +2030,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "i16"),
+                                          Ty.path "i16",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -2380,13 +2324,10 @@ Module buf.
                                 Ty.path "i16";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "i16")
                               ]
@@ -2457,18 +2398,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "i16"),
+                                          Ty.path "i16",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -2762,13 +2692,10 @@ Module buf.
                                 Ty.path "i16";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "i16")
                               ]
@@ -2839,18 +2766,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "i16"),
+                                          Ty.path "i16",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -3139,13 +3055,10 @@ Module buf.
                                 Ty.path "u32";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "u32")
                               ]
@@ -3216,18 +3129,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "u32"),
+                                          Ty.path "u32",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -3521,13 +3423,10 @@ Module buf.
                                 Ty.path "u32";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "u32")
                               ]
@@ -3598,18 +3497,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "u32"),
+                                          Ty.path "u32",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -3903,13 +3791,10 @@ Module buf.
                                 Ty.path "u32";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "u32")
                               ]
@@ -3980,18 +3865,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "u32"),
+                                          Ty.path "u32",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -4280,13 +4154,10 @@ Module buf.
                                 Ty.path "i32";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "i32")
                               ]
@@ -4357,18 +4228,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "i32"),
+                                          Ty.path "i32",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -4662,13 +4522,10 @@ Module buf.
                                 Ty.path "i32";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "i32")
                               ]
@@ -4739,18 +4596,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "i32"),
+                                          Ty.path "i32",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -5044,13 +4890,10 @@ Module buf.
                                 Ty.path "i32";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "i32")
                               ]
@@ -5121,18 +4964,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "i32"),
+                                          Ty.path "i32",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -5421,13 +5253,10 @@ Module buf.
                                 Ty.path "u64";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "u64")
                               ]
@@ -5498,18 +5327,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "u64"),
+                                          Ty.path "u64",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -5803,13 +5621,10 @@ Module buf.
                                 Ty.path "u64";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "u64")
                               ]
@@ -5880,18 +5695,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "u64"),
+                                          Ty.path "u64",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -6185,13 +5989,10 @@ Module buf.
                                 Ty.path "u64";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "u64")
                               ]
@@ -6262,18 +6063,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "u64"),
+                                          Ty.path "u64",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -6562,13 +6352,10 @@ Module buf.
                                 Ty.path "i64";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "i64")
                               ]
@@ -6639,18 +6426,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "i64"),
+                                          Ty.path "i64",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -6944,13 +6720,10 @@ Module buf.
                                 Ty.path "i64";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "i64")
                               ]
@@ -7021,18 +6794,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "i64"),
+                                          Ty.path "i64",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -7326,13 +7088,10 @@ Module buf.
                                 Ty.path "i64";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "i64")
                               ]
@@ -7403,18 +7162,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "i64"),
+                                          Ty.path "i64",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -7704,13 +7452,10 @@ Module buf.
                                 Ty.path "u128";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "u128")
                               ]
@@ -7781,18 +7526,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "u128"),
+                                          Ty.path "u128",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -8087,13 +7821,10 @@ Module buf.
                                 Ty.path "u128";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "u128")
                               ]
@@ -8164,18 +7895,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "u128"),
+                                          Ty.path "u128",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -8470,13 +8190,10 @@ Module buf.
                                 Ty.path "u128";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "u128")
                               ]
@@ -8547,18 +8264,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "u128"),
+                                          Ty.path "u128",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -8848,13 +8554,10 @@ Module buf.
                                 Ty.path "i128";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "i128")
                               ]
@@ -8925,18 +8628,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "i128"),
+                                          Ty.path "i128",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -9231,13 +8923,10 @@ Module buf.
                                 Ty.path "i128";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "i128")
                               ]
@@ -9308,18 +8997,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "i128"),
+                                          Ty.path "i128",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")
@@ -9614,13 +9292,10 @@ Module buf.
                                 Ty.path "i128";
                                 Ty.function
                                   [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                   ]
                                   (Ty.path "i128")
                               ]
@@ -9691,18 +9366,7 @@ Module buf.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "i128"),
+                                          Ty.path "i128",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "&")

@@ -839,7 +839,7 @@ Module deserializer.
                             [
                               Ty.path "move_binary_format::errors::PartialVMError";
                               Ty.function
-                                [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
+                                [ Ty.path "std::io::error::Error" ]
                                 (Ty.path "move_binary_format::errors::PartialVMError")
                             ]
                           |),
@@ -878,9 +878,7 @@ Module deserializer.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Ty.function
-                                          [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
-                                          (Ty.path "move_binary_format::errors::PartialVMError"),
+                                        Ty.path "move_binary_format::errors::PartialVMError",
                                         M.alloc (| Ty.path "std::io::error::Error", α0 |),
                                         [
                                           fun γ =>
@@ -1106,7 +1104,7 @@ Module deserializer.
                             [
                               Ty.path "move_binary_format::errors::PartialVMError";
                               Ty.function
-                                [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
+                                [ Ty.path "std::io::error::Error" ]
                                 (Ty.path "move_binary_format::errors::PartialVMError")
                             ]
                           |),
@@ -1145,9 +1143,7 @@ Module deserializer.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Ty.function
-                                          [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
-                                          (Ty.path "move_binary_format::errors::PartialVMError"),
+                                        Ty.path "move_binary_format::errors::PartialVMError",
                                         M.alloc (| Ty.path "std::io::error::Error", α0 |),
                                         [
                                           fun γ =>
@@ -1373,7 +1369,7 @@ Module deserializer.
                             [
                               Ty.path "move_binary_format::errors::PartialVMError";
                               Ty.function
-                                [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
+                                [ Ty.path "std::io::error::Error" ]
                                 (Ty.path "move_binary_format::errors::PartialVMError")
                             ]
                           |),
@@ -1412,9 +1408,7 @@ Module deserializer.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Ty.function
-                                          [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
-                                          (Ty.path "move_binary_format::errors::PartialVMError"),
+                                        Ty.path "move_binary_format::errors::PartialVMError",
                                         M.alloc (| Ty.path "std::io::error::Error", α0 |),
                                         [
                                           fun γ =>
@@ -1640,7 +1634,7 @@ Module deserializer.
                             [
                               Ty.path "move_binary_format::errors::PartialVMError";
                               Ty.function
-                                [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
+                                [ Ty.path "std::io::error::Error" ]
                                 (Ty.path "move_binary_format::errors::PartialVMError")
                             ]
                           |),
@@ -1679,9 +1673,7 @@ Module deserializer.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Ty.function
-                                          [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
-                                          (Ty.path "move_binary_format::errors::PartialVMError"),
+                                        Ty.path "move_binary_format::errors::PartialVMError",
                                         M.alloc (| Ty.path "std::io::error::Error", α0 |),
                                         [
                                           fun γ =>
@@ -1912,7 +1904,7 @@ Module deserializer.
                             [
                               Ty.path "move_binary_format::errors::PartialVMError";
                               Ty.function
-                                [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
+                                [ Ty.path "std::io::error::Error" ]
                                 (Ty.path "move_binary_format::errors::PartialVMError")
                             ]
                           |),
@@ -1951,9 +1943,7 @@ Module deserializer.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Ty.function
-                                          [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
-                                          (Ty.path "move_binary_format::errors::PartialVMError"),
+                                        Ty.path "move_binary_format::errors::PartialVMError",
                                         M.alloc (| Ty.path "std::io::error::Error", α0 |),
                                         [
                                           fun γ =>
@@ -2198,7 +2188,7 @@ Module deserializer.
                             [
                               Ty.path "move_binary_format::errors::PartialVMError";
                               Ty.function
-                                [ Ty.tuple [ Ty.path "anyhow::Error" ] ]
+                                [ Ty.path "anyhow::Error" ]
                                 (Ty.path "move_binary_format::errors::PartialVMError")
                             ]
                           |),
@@ -2228,9 +2218,7 @@ Module deserializer.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Ty.function
-                                          [ Ty.tuple [ Ty.path "anyhow::Error" ] ]
-                                          (Ty.path "move_binary_format::errors::PartialVMError"),
+                                        Ty.path "move_binary_format::errors::PartialVMError",
                                         M.alloc (| Ty.path "anyhow::Error", α0 |),
                                         [
                                           fun γ =>
@@ -2467,15 +2455,12 @@ Module deserializer.
                       Ty.path "move_binary_format::errors::PartialVMError";
                       Ty.function
                         [
-                          Ty.tuple
-                            [
-                              Ty.associated_in_trait
-                                "core::convert::TryInto"
-                                []
-                                [ T ]
-                                (Ty.path "u64")
-                                "Error"
-                            ]
+                          Ty.associated_in_trait
+                            "core::convert::TryInto"
+                            []
+                            [ T ]
+                            (Ty.path "u64")
+                            "Error"
                         ]
                         (Ty.path "move_binary_format::errors::PartialVMError")
                     ]
@@ -2512,19 +2497,7 @@ Module deserializer.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function
-                                  [
-                                    Ty.tuple
-                                      [
-                                        Ty.associated_in_trait
-                                          "core::convert::TryInto"
-                                          []
-                                          [ T ]
-                                          (Ty.path "u64")
-                                          "Error"
-                                      ]
-                                  ]
-                                  (Ty.path "move_binary_format::errors::PartialVMError"),
+                                Ty.path "move_binary_format::errors::PartialVMError",
                                 M.alloc (|
                                   Ty.associated_in_trait
                                     "core::convert::TryInto"
@@ -7317,17 +7290,14 @@ Module deserializer.
                     [
                       Ty.function
                         [
-                          Ty.tuple
-                            [
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.path "move_binary_format::deserializer::Table" ];
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.path "move_binary_format::deserializer::Table" ]
-                            ]
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_binary_format::deserializer::Table" ];
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_binary_format::deserializer::Table" ]
                         ]
                         (Ty.path "core::cmp::Ordering")
                     ]
@@ -7372,21 +7342,7 @@ Module deserializer.
                           | [ α0; α1 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function
-                                  [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.path "move_binary_format::deserializer::Table" ];
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.path "move_binary_format::deserializer::Table" ]
-                                      ]
-                                  ]
-                                  (Ty.path "core::cmp::Ordering"),
+                                Ty.path "core::cmp::Ordering",
                                 M.alloc (|
                                   Ty.apply
                                     (Ty.path "&")
@@ -7406,27 +7362,7 @@ Module deserializer.
                                           γ
                                         |) in
                                       M.match_operator (|
-                                        Ty.function
-                                          [
-                                            Ty.tuple
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_binary_format::deserializer::Table"
-                                                  ];
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_binary_format::deserializer::Table"
-                                                  ]
-                                              ]
-                                          ]
-                                          (Ty.path "core::cmp::Ordering"),
+                                        Ty.path "core::cmp::Ordering",
                                         M.alloc (|
                                           Ty.apply
                                             (Ty.path "&")
@@ -23004,10 +22940,7 @@ Module deserializer.
                                                               Ty.path
                                                                 "move_binary_format::errors::PartialVMError";
                                                               Ty.function
-                                                                [
-                                                                  Ty.tuple
-                                                                    [ Ty.path "anyhow::Error" ]
-                                                                ]
+                                                                [ Ty.path "anyhow::Error" ]
                                                                 (Ty.path
                                                                   "move_binary_format::errors::PartialVMError")
                                                             ]
@@ -23038,16 +22971,8 @@ Module deserializer.
                                                                   | [ α0 ] =>
                                                                     ltac:(M.monadic
                                                                       (M.match_operator (|
-                                                                        Ty.function
-                                                                          [
-                                                                            Ty.tuple
-                                                                              [
-                                                                                Ty.path
-                                                                                  "anyhow::Error"
-                                                                              ]
-                                                                          ]
-                                                                          (Ty.path
-                                                                            "move_binary_format::errors::PartialVMError"),
+                                                                        Ty.path
+                                                                          "move_binary_format::errors::PartialVMError",
                                                                         M.alloc (|
                                                                           Ty.path "anyhow::Error",
                                                                           α0
@@ -25682,7 +25607,7 @@ Module deserializer.
                             [
                               Ty.path "move_binary_format::errors::PartialVMError";
                               Ty.function
-                                [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
+                                [ Ty.path "std::io::error::Error" ]
                                 (Ty.path "move_binary_format::errors::PartialVMError")
                             ]
                           |),
@@ -25744,9 +25669,7 @@ Module deserializer.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Ty.function
-                                          [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
-                                          (Ty.path "move_binary_format::errors::PartialVMError"),
+                                        Ty.path "move_binary_format::errors::PartialVMError",
                                         M.alloc (| Ty.path "std::io::error::Error", α0 |),
                                         [
                                           fun γ =>
@@ -27177,7 +27100,7 @@ Module deserializer.
             (M.read (|
               let~ read_next :
                   Ty.function
-                    [ Ty.tuple [] ]
+                    []
                     (Ty.apply
                       (Ty.path "core::result::Result")
                       []
@@ -27193,16 +27116,14 @@ Module deserializer.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [ Ty.tuple [] ]
-                              (Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [
-                                  Ty.path
-                                    "move_binary_format::deserializer::load_signature_token::TypeBuilder";
-                                  Ty.path "move_binary_format::errors::PartialVMError"
-                                ]),
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path
+                                  "move_binary_format::deserializer::load_signature_token::TypeBuilder";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ],
                             M.alloc (| Ty.tuple [], α0 |),
                             [
                               fun γ =>
@@ -29177,7 +29098,7 @@ Module deserializer.
                               M.get_trait_method (|
                                 "core::ops::function::FnMut",
                                 Ty.function
-                                  [ Ty.tuple [] ]
+                                  []
                                   (Ty.apply
                                     (Ty.path "core::result::Result")
                                     []
@@ -29897,7 +29818,7 @@ Module deserializer.
                                                 M.get_trait_method (|
                                                   "core::ops::function::FnMut",
                                                   Ty.function
-                                                    [ Ty.tuple [] ]
+                                                    []
                                                     (Ty.apply
                                                       (Ty.path "core::result::Result")
                                                       []
@@ -37142,7 +37063,7 @@ Module deserializer.
                             [
                               Ty.path "move_binary_format::errors::PartialVMError";
                               Ty.function
-                                [ Ty.tuple [ Ty.path "anyhow::Error" ] ]
+                                [ Ty.path "anyhow::Error" ]
                                 (Ty.path "move_binary_format::errors::PartialVMError")
                             ]
                           |),
@@ -37172,9 +37093,7 @@ Module deserializer.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Ty.function
-                                          [ Ty.tuple [ Ty.path "anyhow::Error" ] ]
-                                          (Ty.path "move_binary_format::errors::PartialVMError"),
+                                        Ty.path "move_binary_format::errors::PartialVMError",
                                         M.alloc (| Ty.path "anyhow::Error", α0 |),
                                         [
                                           fun γ =>
@@ -37662,7 +37581,7 @@ Module deserializer.
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError";
                                                                   Ty.function
-                                                                    [ Ty.tuple [ Ty.tuple [] ] ]
+                                                                    [ Ty.tuple [] ]
                                                                     (Ty.path
                                                                       "move_binary_format::errors::PartialVMError")
                                                                 ]
@@ -37698,13 +37617,8 @@ Module deserializer.
                                                                       | [ α0 ] =>
                                                                         ltac:(M.monadic
                                                                           (M.match_operator (|
-                                                                            Ty.function
-                                                                              [
-                                                                                Ty.tuple
-                                                                                  [ Ty.tuple [] ]
-                                                                              ]
-                                                                              (Ty.path
-                                                                                "move_binary_format::errors::PartialVMError"),
+                                                                            Ty.path
+                                                                              "move_binary_format::errors::PartialVMError",
                                                                             M.alloc (|
                                                                               Ty.tuple [],
                                                                               α0
@@ -37967,10 +37881,7 @@ Module deserializer.
                                                               Ty.path
                                                                 "move_binary_format::errors::PartialVMError";
                                                               Ty.function
-                                                                [
-                                                                  Ty.tuple
-                                                                    [ Ty.path "anyhow::Error" ]
-                                                                ]
+                                                                [ Ty.path "anyhow::Error" ]
                                                                 (Ty.path
                                                                   "move_binary_format::errors::PartialVMError")
                                                             ]
@@ -38005,16 +37916,8 @@ Module deserializer.
                                                                   | [ α0 ] =>
                                                                     ltac:(M.monadic
                                                                       (M.match_operator (|
-                                                                        Ty.function
-                                                                          [
-                                                                            Ty.tuple
-                                                                              [
-                                                                                Ty.path
-                                                                                  "anyhow::Error"
-                                                                              ]
-                                                                          ]
-                                                                          (Ty.path
-                                                                            "move_binary_format::errors::PartialVMError"),
+                                                                        Ty.path
+                                                                          "move_binary_format::errors::PartialVMError",
                                                                         M.alloc (|
                                                                           Ty.path "anyhow::Error",
                                                                           α0
@@ -38267,7 +38170,7 @@ Module deserializer.
                                                       Ty.path
                                                         "move_binary_format::errors::PartialVMError";
                                                       Ty.function
-                                                        [ Ty.tuple [ Ty.tuple [] ] ]
+                                                        [ Ty.tuple [] ]
                                                         (Ty.path
                                                           "move_binary_format::errors::PartialVMError")
                                                     ]
@@ -38303,10 +38206,8 @@ Module deserializer.
                                                           | [ α0 ] =>
                                                             ltac:(M.monadic
                                                               (M.match_operator (|
-                                                                Ty.function
-                                                                  [ Ty.tuple [ Ty.tuple [] ] ]
-                                                                  (Ty.path
-                                                                    "move_binary_format::errors::PartialVMError"),
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError",
                                                                 M.alloc (| Ty.tuple [], α0 |),
                                                                 [
                                                                   fun γ =>
@@ -38527,7 +38428,7 @@ Module deserializer.
                                                       Ty.path
                                                         "move_binary_format::errors::PartialVMError";
                                                       Ty.function
-                                                        [ Ty.tuple [ Ty.path "anyhow::Error" ] ]
+                                                        [ Ty.path "anyhow::Error" ]
                                                         (Ty.path
                                                           "move_binary_format::errors::PartialVMError")
                                                     ]
@@ -38559,13 +38460,8 @@ Module deserializer.
                                                           | [ α0 ] =>
                                                             ltac:(M.monadic
                                                               (M.match_operator (|
-                                                                Ty.function
-                                                                  [
-                                                                    Ty.tuple
-                                                                      [ Ty.path "anyhow::Error" ]
-                                                                  ]
-                                                                  (Ty.path
-                                                                    "move_binary_format::errors::PartialVMError"),
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError",
                                                                 M.alloc (|
                                                                   Ty.path "anyhow::Error",
                                                                   α0
@@ -40784,7 +40680,7 @@ Module deserializer.
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError";
                                                   Ty.function
-                                                    [ Ty.tuple [ Ty.path "anyhow::Error" ] ]
+                                                    [ Ty.path "anyhow::Error" ]
                                                     (Ty.path
                                                       "move_binary_format::errors::PartialVMError")
                                                 ]
@@ -40816,11 +40712,8 @@ Module deserializer.
                                                       | [ α0 ] =>
                                                         ltac:(M.monadic
                                                           (M.match_operator (|
-                                                            Ty.function
-                                                              [ Ty.tuple [ Ty.path "anyhow::Error" ]
-                                                              ]
-                                                              (Ty.path
-                                                                "move_binary_format::errors::PartialVMError"),
+                                                            Ty.path
+                                                              "move_binary_format::errors::PartialVMError",
                                                             M.alloc (|
                                                               Ty.path "anyhow::Error",
                                                               α0
@@ -42368,10 +42261,7 @@ Module deserializer.
                                                               Ty.path
                                                                 "move_binary_format::errors::PartialVMError";
                                                               Ty.function
-                                                                [
-                                                                  Ty.tuple
-                                                                    [ Ty.path "anyhow::Error" ]
-                                                                ]
+                                                                [ Ty.path "anyhow::Error" ]
                                                                 (Ty.path
                                                                   "move_binary_format::errors::PartialVMError")
                                                             ]
@@ -42406,16 +42296,8 @@ Module deserializer.
                                                                   | [ α0 ] =>
                                                                     ltac:(M.monadic
                                                                       (M.match_operator (|
-                                                                        Ty.function
-                                                                          [
-                                                                            Ty.tuple
-                                                                              [
-                                                                                Ty.path
-                                                                                  "anyhow::Error"
-                                                                              ]
-                                                                          ]
-                                                                          (Ty.path
-                                                                            "move_binary_format::errors::PartialVMError"),
+                                                                        Ty.path
+                                                                          "move_binary_format::errors::PartialVMError",
                                                                         M.alloc (|
                                                                           Ty.path "anyhow::Error",
                                                                           α0

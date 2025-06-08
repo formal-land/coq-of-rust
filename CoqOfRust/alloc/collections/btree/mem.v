@@ -20,7 +20,7 @@ Module collections.
               M.get_function (|
                 "alloc::collections::btree::mem::replace",
                 [],
-                [ T; Ty.tuple []; Ty.function [ Ty.tuple [ T ] ] (Ty.tuple [ T; Ty.tuple [] ]) ]
+                [ T; Ty.tuple []; Ty.function [ T ] (Ty.tuple [ T; Ty.tuple [] ]) ]
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| v |) |) |);
@@ -31,7 +31,7 @@ Module collections.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function [ Ty.tuple [ T ] ] (Ty.tuple [ T; Ty.tuple [] ]),
+                            Ty.tuple [ T; Ty.tuple [] ],
                             M.alloc (| T, α0 |),
                             [
                               fun γ =>

@@ -58,7 +58,7 @@ Module instruction_consistency.
               [
                 Ty.path "move_binary_format::errors::VMError";
                 Ty.function
-                  [ Ty.tuple [ Ty.path "move_binary_format::errors::PartialVMError" ] ]
+                  [ Ty.path "move_binary_format::errors::PartialVMError" ]
                   (Ty.path "move_binary_format::errors::VMError")
               ]
             |),
@@ -83,9 +83,7 @@ Module instruction_consistency.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [ Ty.tuple [ Ty.path "move_binary_format::errors::PartialVMError" ] ]
-                            (Ty.path "move_binary_format::errors::VMError"),
+                          Ty.path "move_binary_format::errors::VMError",
                           M.alloc (| Ty.path "move_binary_format::errors::PartialVMError", α0 |),
                           [
                             fun γ =>

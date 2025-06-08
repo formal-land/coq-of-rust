@@ -474,7 +474,7 @@ Module coset.
               [
                 Ty.apply (Ty.path "p3_field::coset::TwoAdicMultiplicativeCoset") [] [ F ];
                 Ty.function
-                  [ Ty.tuple [ Ty.path "usize" ] ]
+                  [ Ty.path "usize" ]
                   (Ty.apply (Ty.path "p3_field::coset::TwoAdicMultiplicativeCoset") [] [ F ])
               ]
             |),
@@ -500,12 +500,7 @@ Module coset.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [ Ty.tuple [ Ty.path "usize" ] ]
-                            (Ty.apply
-                              (Ty.path "p3_field::coset::TwoAdicMultiplicativeCoset")
-                              []
-                              [ F ]),
+                          Ty.apply (Ty.path "p3_field::coset::TwoAdicMultiplicativeCoset") [] [ F ],
                           M.alloc (| Ty.path "usize", α0 |),
                           [
                             fun γ =>
@@ -583,10 +578,7 @@ Module coset.
               [
                 Ty.apply (Ty.path "p3_field::coset::TwoAdicMultiplicativeCoset") [] [ F ];
                 Ty.function
-                  [
-                    Ty.tuple
-                      [ Ty.apply (Ty.path "p3_field::coset::TwoAdicMultiplicativeCoset") [] [ F ] ]
-                  ]
+                  [ Ty.apply (Ty.path "p3_field::coset::TwoAdicMultiplicativeCoset") [] [ F ] ]
                   (Ty.apply (Ty.path "p3_field::coset::TwoAdicMultiplicativeCoset") [] [ F ])
               ]
             |),
@@ -614,20 +606,7 @@ Module coset.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [
-                              Ty.tuple
-                                [
-                                  Ty.apply
-                                    (Ty.path "p3_field::coset::TwoAdicMultiplicativeCoset")
-                                    []
-                                    [ F ]
-                                ]
-                            ]
-                            (Ty.apply
-                              (Ty.path "p3_field::coset::TwoAdicMultiplicativeCoset")
-                              []
-                              [ F ]),
+                          Ty.apply (Ty.path "p3_field::coset::TwoAdicMultiplicativeCoset") [] [ F ],
                           M.alloc (|
                             Ty.apply
                               (Ty.path "p3_field::coset::TwoAdicMultiplicativeCoset")

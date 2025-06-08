@@ -55,7 +55,7 @@ Module limits.
               [
                 Ty.path "move_binary_format::errors::VMError";
                 Ty.function
-                  [ Ty.tuple [ Ty.path "move_binary_format::errors::PartialVMError" ] ]
+                  [ Ty.path "move_binary_format::errors::PartialVMError" ]
                   (Ty.path "move_binary_format::errors::VMError")
               ]
             |),
@@ -83,9 +83,7 @@ Module limits.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [ Ty.tuple [ Ty.path "move_binary_format::errors::PartialVMError" ] ]
-                            (Ty.path "move_binary_format::errors::VMError"),
+                          Ty.path "move_binary_format::errors::VMError",
                           M.alloc (| Ty.path "move_binary_format::errors::PartialVMError", α0 |),
                           [
                             fun γ =>
@@ -5188,7 +5186,7 @@ Module limits.
                                                                                   Ty.path
                                                                                     "move_binary_format::errors::PartialVMError";
                                                                                   Ty.function
-                                                                                    [ Ty.tuple [] ]
+                                                                                    []
                                                                                     (Ty.path
                                                                                       "move_binary_format::errors::PartialVMError")
                                                                                 ]
@@ -5228,13 +5226,8 @@ Module limits.
                                                                                       | [ α0 ] =>
                                                                                         ltac:(M.monadic
                                                                                           (M.match_operator (|
-                                                                                            Ty.function
-                                                                                              [
-                                                                                                Ty.tuple
-                                                                                                  []
-                                                                                              ]
-                                                                                              (Ty.path
-                                                                                                "move_binary_format::errors::PartialVMError"),
+                                                                                            Ty.path
+                                                                                              "move_binary_format::errors::PartialVMError",
                                                                                             M.alloc (|
                                                                                               Ty.tuple
                                                                                                 [],

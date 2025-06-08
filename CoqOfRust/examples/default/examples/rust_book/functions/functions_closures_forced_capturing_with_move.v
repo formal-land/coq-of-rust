@@ -91,9 +91,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             ]
           |) in
         let~ contains :
-            Ty.function
-              [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ] ]
-              (Ty.path "bool") :=
+            Ty.function [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ] (Ty.path "bool") :=
           M.closure
             (fun γ =>
               ltac:(M.monadic
@@ -101,9 +99,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 | [ α0 ] =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Ty.function
-                        [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ] ]
-                        (Ty.path "bool"),
+                      Ty.path "bool",
                       M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i32" ], α0 |),
                       [
                         fun γ =>
@@ -215,15 +211,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                 M.get_trait_method (|
                                                   "core::ops::function::Fn",
                                                   Ty.function
-                                                    [
-                                                      Ty.tuple
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "&")
-                                                            []
-                                                            [ Ty.path "i32" ]
-                                                        ]
-                                                    ]
+                                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
                                                     (Ty.path "bool"),
                                                   [],
                                                   [
@@ -336,15 +324,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                 M.get_trait_method (|
                                                   "core::ops::function::Fn",
                                                   Ty.function
-                                                    [
-                                                      Ty.tuple
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "&")
-                                                            []
-                                                            [ Ty.path "i32" ]
-                                                        ]
-                                                    ]
+                                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
                                                     (Ty.path "bool"),
                                                   [],
                                                   [

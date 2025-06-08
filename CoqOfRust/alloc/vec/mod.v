@@ -3005,8 +3005,7 @@ Module vec.
                   Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                   "retain_mut",
                   [],
-                  [ Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ] (Ty.path "bool")
-                  ]
+                  [ Ty.function [ Ty.apply (Ty.path "&mut") [] [ T ] ] (Ty.path "bool") ]
                 |),
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
@@ -3017,9 +3016,7 @@ Module vec.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ]
-                                (Ty.path "bool"),
+                              Ty.path "bool",
                               M.alloc (| Ty.apply (Ty.path "&mut") [] [ T ], α0 |),
                               [
                                 fun γ =>
@@ -3325,10 +3322,7 @@ Module vec.
               [],
               [
                 Ty.function
-                  [
-                    Ty.tuple
-                      [ Ty.apply (Ty.path "&mut") [] [ T ]; Ty.apply (Ty.path "&mut") [] [ T ] ]
-                  ]
+                  [ Ty.apply (Ty.path "&mut") [] [ T ]; Ty.apply (Ty.path "&mut") [] [ T ] ]
                   (Ty.path "bool")
               ]
             |),
@@ -3341,30 +3335,14 @@ Module vec.
                     | [ α0; α1 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [
-                              Ty.tuple
-                                [
-                                  Ty.apply (Ty.path "&mut") [] [ T ];
-                                  Ty.apply (Ty.path "&mut") [] [ T ]
-                                ]
-                            ]
-                            (Ty.path "bool"),
+                          Ty.path "bool",
                           M.alloc (| Ty.apply (Ty.path "&mut") [] [ T ], α0 |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let a := M.copy (| Ty.apply (Ty.path "&mut") [] [ T ], γ |) in
                                 M.match_operator (|
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply (Ty.path "&mut") [] [ T ];
-                                          Ty.apply (Ty.path "&mut") [] [ T ]
-                                        ]
-                                    ]
-                                    (Ty.path "bool"),
+                                  Ty.path "bool",
                                   M.alloc (| Ty.apply (Ty.path "&mut") [] [ T ], α1 |),
                                   [
                                     fun γ =>
@@ -7063,10 +7041,7 @@ Module vec.
               [],
               [
                 Ty.function
-                  [
-                    Ty.tuple
-                      [ Ty.apply (Ty.path "&mut") [] [ T ]; Ty.apply (Ty.path "&mut") [] [ T ] ]
-                  ]
+                  [ Ty.apply (Ty.path "&mut") [] [ T ]; Ty.apply (Ty.path "&mut") [] [ T ] ]
                   (Ty.path "bool")
               ]
             |),
@@ -7079,30 +7054,14 @@ Module vec.
                     | [ α0; α1 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [
-                              Ty.tuple
-                                [
-                                  Ty.apply (Ty.path "&mut") [] [ T ];
-                                  Ty.apply (Ty.path "&mut") [] [ T ]
-                                ]
-                            ]
-                            (Ty.path "bool"),
+                          Ty.path "bool",
                           M.alloc (| Ty.apply (Ty.path "&mut") [] [ T ], α0 |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let a := M.copy (| Ty.apply (Ty.path "&mut") [] [ T ], γ |) in
                                 M.match_operator (|
-                                  Ty.function
-                                    [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply (Ty.path "&mut") [] [ T ];
-                                          Ty.apply (Ty.path "&mut") [] [ T ]
-                                        ]
-                                    ]
-                                    (Ty.path "bool"),
+                                  Ty.path "bool",
                                   M.alloc (| Ty.apply (Ty.path "&mut") [] [ T ], α1 |),
                                   [
                                     fun γ =>
@@ -7887,7 +7846,7 @@ Module vec.
                                   [],
                                   "for_each",
                                   [],
-                                  [ Ty.function [ Ty.tuple [ T ] ] (Ty.tuple []) ]
+                                  [ Ty.function [ T ] (Ty.tuple []) ]
                                 |),
                                 [
                                   M.read (| iterator |);
@@ -7898,7 +7857,7 @@ Module vec.
                                         | [ α0 ] =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
-                                              Ty.function [ Ty.tuple [ T ] ] (Ty.tuple []),
+                                              Ty.tuple [],
                                               M.alloc (| T, α0 |),
                                               [
                                                 fun γ =>
@@ -8618,18 +8577,15 @@ Module vec.
                                 [
                                   Ty.tuple
                                     [
-                                      Ty.tuple
+                                      Ty.apply (Ty.path "&") [] [ T ];
+                                      Ty.apply
+                                        (Ty.path "&mut")
+                                        []
                                         [
-                                          Ty.apply (Ty.path "&") [] [ T ];
                                           Ty.apply
-                                            (Ty.path "&mut")
+                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                                             []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                                []
-                                                [ T ]
-                                            ]
+                                            [ T ]
                                         ]
                                     ]
                                 ]
@@ -8639,11 +8595,7 @@ Module vec.
                           [],
                           "for_each",
                           [],
-                          [
-                            Ty.function
-                              [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ]
-                              (Ty.tuple [])
-                          ]
+                          [ Ty.function [ Ty.apply (Ty.path "&mut") [] [ T ] ] (Ty.tuple []) ]
                         |),
                         [
                           M.call_closure (|
@@ -8670,18 +8622,15 @@ Module vec.
                                   [
                                     Ty.tuple
                                       [
-                                        Ty.tuple
+                                        Ty.apply (Ty.path "&") [] [ T ];
+                                        Ty.apply
+                                          (Ty.path "&mut")
+                                          []
                                           [
-                                            Ty.apply (Ty.path "&") [] [ T ];
                                             Ty.apply
-                                              (Ty.path "&mut")
+                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                                               []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                                  []
-                                                  [ T ]
-                                              ]
+                                              [ T ]
                                           ]
                                       ]
                                   ]
@@ -8714,18 +8663,15 @@ Module vec.
                                   [
                                     Ty.tuple
                                       [
-                                        Ty.tuple
+                                        Ty.apply (Ty.path "&") [] [ T ];
+                                        Ty.apply
+                                          (Ty.path "&mut")
+                                          []
                                           [
-                                            Ty.apply (Ty.path "&") [] [ T ];
                                             Ty.apply
-                                              (Ty.path "&mut")
+                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                                               []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                                  []
-                                                  [ T ]
-                                              ]
+                                              [ T ]
                                           ]
                                       ]
                                   ]
@@ -8782,27 +8728,7 @@ Module vec.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.tuple
-                                                    [
-                                                      Ty.apply (Ty.path "&") [] [ T ];
-                                                      Ty.apply
-                                                        (Ty.path "&mut")
-                                                        []
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path
-                                                              "core::mem::maybe_uninit::MaybeUninit")
-                                                            []
-                                                            [ T ]
-                                                        ]
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.apply (Ty.path "&mut") [] [ T ]),
+                                          Ty.apply (Ty.path "&mut") [] [ T ],
                                           M.alloc (|
                                             Ty.tuple
                                               [
@@ -8896,9 +8822,7 @@ Module vec.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Ty.function
-                                        [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ]
-                                        (Ty.tuple []),
+                                      Ty.tuple [],
                                       M.alloc (| Ty.apply (Ty.path "&mut") [] [ T ], α0 |),
                                       [
                                         fun γ =>

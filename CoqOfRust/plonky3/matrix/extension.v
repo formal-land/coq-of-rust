@@ -416,7 +416,7 @@ Module extension.
                       Ty.apply (Ty.path "core::slice::iter::Iter") [] [ EF ];
                       Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ F ] ];
                       Ty.function
-                        [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ EF ] ] ]
+                        [ Ty.apply (Ty.path "&") [] [ EF ] ]
                         (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ F ] ])
                     ]
                 ],
@@ -439,7 +439,7 @@ Module extension.
                         Ty.apply (Ty.path "core::slice::iter::Iter") [] [ EF ];
                         Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ F ] ];
                         Ty.function
-                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ EF ] ] ]
+                          [ Ty.apply (Ty.path "&") [] [ EF ] ]
                           (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ F ] ])
                       ]
                   ],
@@ -452,7 +452,7 @@ Module extension.
                       Ty.apply (Ty.path "core::slice::iter::Iter") [] [ EF ];
                       Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ F ] ];
                       Ty.function
-                        [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ EF ] ] ]
+                        [ Ty.apply (Ty.path "&") [] [ EF ] ]
                         (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ F ] ])
                     ],
                   [],
@@ -470,7 +470,7 @@ Module extension.
                         Ty.apply (Ty.path "core::slice::iter::Iter") [] [ EF ];
                         Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ F ] ];
                         Ty.function
-                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ EF ] ] ]
+                          [ Ty.apply (Ty.path "&") [] [ EF ] ]
                           (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ F ] ])
                       ],
                     M.get_trait_method (|
@@ -483,7 +483,7 @@ Module extension.
                       [
                         Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ F ] ];
                         Ty.function
-                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ EF ] ] ]
+                          [ Ty.apply (Ty.path "&") [] [ EF ] ]
                           (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ F ] ])
                       ]
                     |),
@@ -569,12 +569,7 @@ Module extension.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ EF ] ] ]
-                                    (Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [ Ty.apply (Ty.path "slice") [] [ F ] ]),
+                                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ F ] ],
                                   M.alloc (| Ty.apply (Ty.path "&") [] [ EF ], α0 |),
                                   [
                                     fun γ =>

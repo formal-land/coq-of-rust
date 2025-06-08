@@ -59,11 +59,7 @@ Module num.
                   [],
                   "rposition",
                   [],
-                  [
-                    Ty.function
-                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ] ]
-                      (Ty.path "bool")
-                  ]
+                  [ Ty.function [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ] (Ty.path "bool") ]
                 |),
                 [
                   M.borrow (|
@@ -89,9 +85,7 @@ Module num.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ] ]
-                                (Ty.path "bool"),
+                              Ty.path "bool",
                               M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u8" ], α0 |),
                               [
                                 fun γ =>

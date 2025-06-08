@@ -514,7 +514,7 @@ Module cell.
                     [],
                     [
                       Ty.function
-                        [ Ty.tuple [] ]
+                        []
                         (Ty.apply (Ty.path "core::result::Result") [] [ T; Ty.path "never" ]);
                       Ty.path "never"
                     ]
@@ -528,12 +528,7 @@ Module cell.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function
-                                  [ Ty.tuple [] ]
-                                  (Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [ T; Ty.path "never" ]),
+                                Ty.apply (Ty.path "core::result::Result") [] [ T; Ty.path "never" ],
                                 M.alloc (| Ty.tuple [], α0 |),
                                 [
                                   fun γ =>
@@ -635,7 +630,7 @@ Module cell.
                             [],
                             [
                               Ty.function
-                                [ Ty.tuple [] ]
+                                []
                                 (Ty.apply
                                   (Ty.path "core::result::Result")
                                   []
@@ -652,12 +647,10 @@ Module cell.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Ty.function
-                                          [ Ty.tuple [] ]
-                                          (Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            []
-                                            [ T; Ty.path "never" ]),
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [ T; Ty.path "never" ],
                                         M.alloc (| Ty.tuple [], α0 |),
                                         [
                                           fun γ =>

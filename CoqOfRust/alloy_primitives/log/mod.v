@@ -2019,7 +2019,7 @@ Module log.
                   []
                   [ Ty.path "alloy_primitives::log::LogData" ];
                 Ty.function
-                  [ Ty.tuple [ Ty.path "alloy_primitives::log::LogData" ] ]
+                  [ Ty.path "alloy_primitives::log::LogData" ]
                   (Ty.apply
                     (Ty.path "alloy_primitives::log::Log")
                     []
@@ -2047,12 +2047,10 @@ Module log.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [ Ty.tuple [ Ty.path "alloy_primitives::log::LogData" ] ]
-                            (Ty.apply
-                              (Ty.path "alloy_primitives::log::Log")
-                              []
-                              [ Ty.path "alloy_primitives::log::LogData" ]),
+                          Ty.apply
+                            (Ty.path "alloy_primitives::log::Log")
+                            []
+                            [ Ty.path "alloy_primitives::log::LogData" ],
                           M.alloc (| Ty.path "alloy_primitives::log::LogData", α0 |),
                           [
                             fun γ =>

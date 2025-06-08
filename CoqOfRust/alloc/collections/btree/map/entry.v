@@ -2800,17 +2800,14 @@ Module collections.
                                   A;
                                   Ty.function
                                     [
-                                      Ty.tuple
+                                      Ty.apply
+                                        (Ty.path "alloc::collections::btree::node::SplitResult")
+                                        []
                                         [
-                                          Ty.apply
-                                            (Ty.path "alloc::collections::btree::node::SplitResult")
-                                            []
-                                            [
-                                              K;
-                                              V;
-                                              Ty.path
-                                                "alloc::collections::btree::node::marker::LeafOrInternal"
-                                            ]
+                                          K;
+                                          V;
+                                          Ty.path
+                                            "alloc::collections::btree::node::marker::LeafOrInternal"
                                         ]
                                     ]
                                     (Ty.tuple [])
@@ -2855,23 +2852,7 @@ Module collections.
                                       | [ α0 ] =>
                                         ltac:(M.monadic
                                           (M.match_operator (|
-                                            Ty.function
-                                              [
-                                                Ty.tuple
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path
-                                                        "alloc::collections::btree::node::SplitResult")
-                                                      []
-                                                      [
-                                                        K;
-                                                        V;
-                                                        Ty.path
-                                                          "alloc::collections::btree::node::marker::LeafOrInternal"
-                                                      ]
-                                                  ]
-                                              ]
-                                              (Ty.tuple []),
+                                            Ty.tuple [],
                                             M.alloc (|
                                               Ty.apply
                                                 (Ty.path
@@ -4149,7 +4130,7 @@ Module collections.
                               ],
                             "remove_kv_tracking",
                             [],
-                            [ Ty.function [ Ty.tuple [] ] (Ty.tuple []); A ]
+                            [ Ty.function [] (Ty.tuple []); A ]
                           |),
                           [
                             M.read (|
@@ -4166,7 +4147,7 @@ Module collections.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Ty.function [ Ty.tuple [] ] (Ty.tuple []),
+                                        Ty.tuple [],
                                         M.alloc (| Ty.tuple [], α0 |),
                                         [
                                           fun γ =>

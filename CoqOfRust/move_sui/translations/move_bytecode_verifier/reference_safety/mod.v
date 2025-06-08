@@ -1234,13 +1234,10 @@ Module reference_safety.
                               [ Ty.path "move_binary_format::file_format::SignatureToken" ];
                             Ty.function
                               [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [ Ty.path "move_binary_format::file_format::SignatureToken" ]
-                                  ]
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                               ]
                               (Ty.path
                                 "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue")
@@ -1277,14 +1274,10 @@ Module reference_safety.
                                 [ Ty.path "move_binary_format::file_format::SignatureToken" ];
                               Ty.function
                                 [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
-                                        ]
-                                    ]
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                                 ]
                                 (Ty.path
                                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue")
@@ -1302,13 +1295,10 @@ Module reference_safety.
                               [ Ty.path "move_binary_format::file_format::SignatureToken" ];
                             Ty.function
                               [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [ Ty.path "move_binary_format::file_format::SignatureToken" ]
-                                  ]
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                               ]
                               (Ty.path
                                 "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue")
@@ -1331,14 +1321,10 @@ Module reference_safety.
                                 [ Ty.path "move_binary_format::file_format::SignatureToken" ];
                               Ty.function
                                 [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
-                                        ]
-                                    ]
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                                 ]
                                 (Ty.path
                                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue")
@@ -1358,14 +1344,10 @@ Module reference_safety.
                                 "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue";
                               Ty.function
                                 [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
-                                        ]
-                                    ]
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::SignatureToken" ]
                                 ]
                                 (Ty.path
                                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue")
@@ -1441,21 +1423,8 @@ Module reference_safety.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Ty.function
-                                          [
-                                            Ty.tuple
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_binary_format::file_format::SignatureToken"
-                                                  ]
-                                              ]
-                                          ]
-                                          (Ty.path
-                                            "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue"),
+                                        Ty.path
+                                          "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue",
                                         M.alloc (|
                                           Ty.apply
                                             (Ty.path "&")

@@ -101,7 +101,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     []
                     [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ];
                   Ty.function
-                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] ]
+                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                     (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ])
                 ],
               [],
@@ -127,7 +127,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "alloc::alloc::Global"
                       ];
                     Ty.function
-                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] ]
+                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                       (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ])
                   ],
                 M.get_trait_method (|
@@ -143,7 +143,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   [
                     Ty.path "i32";
                     Ty.function
-                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] ]
+                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                       (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ])
                   ]
                 |),
@@ -178,9 +178,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] ]
-                                (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ]),
+                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
                               M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], α0 |),
                               [
                                 fun γ =>

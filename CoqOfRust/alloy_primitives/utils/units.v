@@ -379,7 +379,7 @@ Module utils.
                   [
                     Ty.path "alloc::string::String";
                     Ty.function
-                      [ Ty.tuple [ Ty.path "alloy_primitives::utils::units::Unit" ] ]
+                      [ Ty.path "alloy_primitives::utils::units::Unit" ]
                       (Ty.path "alloc::string::String")
                   ]
                 |),
@@ -407,9 +407,7 @@ Module utils.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [ Ty.tuple [ Ty.path "alloy_primitives::utils::units::Unit" ] ]
-                                (Ty.path "alloc::string::String"),
+                              Ty.path "alloc::string::String",
                               M.alloc (| Ty.path "alloy_primitives::utils::units::Unit", α0 |),
                               [
                                 fun γ =>
@@ -8055,7 +8053,7 @@ Module utils.
                 [],
                 [
                   Ty.path "alloy_primitives::utils::units::UnitsError";
-                  Ty.function [ Ty.tuple [] ] (Ty.path "alloy_primitives::utils::units::UnitsError")
+                  Ty.function [] (Ty.path "alloy_primitives::utils::units::UnitsError")
                 ]
               |),
               [
@@ -8079,9 +8077,7 @@ Module utils.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [ Ty.tuple [] ]
-                              (Ty.path "alloy_primitives::utils::units::UnitsError"),
+                            Ty.path "alloy_primitives::utils::units::UnitsError",
                             M.alloc (| Ty.tuple [], α0 |),
                             [
                               fun γ =>
@@ -8435,7 +8431,7 @@ Module utils.
                                       [
                                         Ty.path "alloy_primitives::utils::units::UnitsError";
                                         Ty.function
-                                          [ Ty.tuple [] ]
+                                          []
                                           (Ty.path "alloy_primitives::utils::units::UnitsError")
                                       ]
                                     |),
@@ -8477,10 +8473,8 @@ Module utils.
                                             | [ α0 ] =>
                                               ltac:(M.monadic
                                                 (M.match_operator (|
-                                                  Ty.function
-                                                    [ Ty.tuple [] ]
-                                                    (Ty.path
-                                                      "alloy_primitives::utils::units::UnitsError"),
+                                                  Ty.path
+                                                    "alloy_primitives::utils::units::UnitsError",
                                                   M.alloc (| Ty.tuple [], α0 |),
                                                   [
                                                     fun γ =>

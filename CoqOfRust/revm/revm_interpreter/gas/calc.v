@@ -3646,14 +3646,7 @@ Module gas.
                       [
                         Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ];
                         Ty.function
-                          [
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
-                              ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
                           ]
                           (Ty.path "bool")
                       ],
@@ -3672,13 +3665,10 @@ Module gas.
                           Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ];
                           Ty.function
                             [
-                              Ty.tuple
-                                [
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
-                                ]
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
                             ]
                             (Ty.path "bool")
                         ],
@@ -3692,13 +3682,10 @@ Module gas.
                         [
                           Ty.function
                             [
-                              Ty.tuple
-                                [
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
-                                ]
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
                             ]
                             (Ty.path "bool")
                         ]
@@ -3721,17 +3708,7 @@ Module gas.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
-                                    Ty.function
-                                      [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
-                                          ]
-                                      ]
-                                      (Ty.path "bool"),
+                                    Ty.path "bool",
                                     M.alloc (|
                                       Ty.apply
                                         (Ty.path "&")

@@ -1924,7 +1924,7 @@ Module task.
                     []
                     [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ];
                   Ty.function
-                    [ Ty.tuple [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ] ]
+                    [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
                     (Ty.apply
                       (Ty.path "core::option::Option")
                       []
@@ -1940,12 +1940,10 @@ Module task.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [ Ty.tuple [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ] ]
-                              (Ty.apply
-                                (Ty.path "core::option::Option")
-                                []
-                                [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ]),
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ],
                             M.alloc (| Ty.apply (Ty.path "core::option::Option") [] [ T ], α0 |),
                             [
                               fun γ =>

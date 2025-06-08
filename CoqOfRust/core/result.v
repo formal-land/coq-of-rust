@@ -1624,7 +1624,7 @@ Module result.
                   []
                   [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] T "Target" ];
                 Ty.function
-                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
+                  [ Ty.apply (Ty.path "&") [] [ T ] ]
                   (Ty.apply
                     (Ty.path "&")
                     []
@@ -1652,13 +1652,10 @@ Module result.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
-                            (Ty.apply
-                              (Ty.path "&")
-                              []
-                              [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] T "Target"
-                              ]),
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] T "Target" ],
                           M.alloc (| Ty.apply (Ty.path "&") [] [ T ], α0 |),
                           [
                             fun γ =>
@@ -1752,7 +1749,7 @@ Module result.
                   []
                   [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] T "Target" ];
                 Ty.function
-                  [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ]
+                  [ Ty.apply (Ty.path "&mut") [] [ T ] ]
                   (Ty.apply
                     (Ty.path "&mut")
                     []
@@ -1780,13 +1777,10 @@ Module result.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ]
-                            (Ty.apply
-                              (Ty.path "&mut")
-                              []
-                              [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] T "Target"
-                              ]),
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] T "Target" ],
                           M.alloc (| Ty.apply (Ty.path "&mut") [] [ T ], α0 |),
                           [
                             fun γ =>
@@ -2837,7 +2831,7 @@ Module result.
               Ty.apply (Ty.path "core::result::Result") [] [ Ty.apply (Ty.path "&") [] [ T ]; E ],
               "map",
               [],
-              [ T; Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ] T ]
+              [ T; Ty.function [ Ty.apply (Ty.path "&") [] [ T ] ] T ]
             |),
             [
               M.read (| self |);
@@ -2848,7 +2842,7 @@ Module result.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ] T,
+                          T,
                           M.alloc (| Ty.apply (Ty.path "&") [] [ T ], α0 |),
                           [
                             fun γ =>
@@ -2971,7 +2965,7 @@ Module result.
                 [ Ty.apply (Ty.path "&mut") [] [ T ]; E ],
               "map",
               [],
-              [ T; Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ] T ]
+              [ T; Ty.function [ Ty.apply (Ty.path "&mut") [] [ T ] ] T ]
             |),
             [
               M.read (| self |);
@@ -2982,7 +2976,7 @@ Module result.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ] T,
+                          T,
                           M.alloc (| Ty.apply (Ty.path "&mut") [] [ T ], α0 |),
                           [
                             fun γ =>
@@ -4695,23 +4689,20 @@ Module result.
                   [ Ty.path "core::convert::Infallible"; E ];
                 Ty.function
                   [
-                    Ty.tuple
+                    Ty.apply
+                      (Ty.path "core::iter::adapters::GenericShunt")
+                      []
                       [
-                        Ty.apply
-                          (Ty.path "core::iter::adapters::GenericShunt")
+                        Ty.associated_in_trait
+                          "core::iter::traits::collect::IntoIterator"
                           []
-                          [
-                            Ty.associated_in_trait
-                              "core::iter::traits::collect::IntoIterator"
-                              []
-                              []
-                              I
-                              "IntoIter";
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.path "core::convert::Infallible"; E ]
-                          ]
+                          []
+                          I
+                          "IntoIter";
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "core::convert::Infallible"; E ]
                       ]
                   ]
                   V;
@@ -4744,28 +4735,7 @@ Module result.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [
-                              Ty.tuple
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::iter::adapters::GenericShunt")
-                                    []
-                                    [
-                                      Ty.associated_in_trait
-                                        "core::iter::traits::collect::IntoIterator"
-                                        []
-                                        []
-                                        I
-                                        "IntoIter";
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [ Ty.path "core::convert::Infallible"; E ]
-                                    ]
-                                ]
-                            ]
-                            V,
+                          V,
                           M.alloc (|
                             Ty.apply
                               (Ty.path "core::iter::adapters::GenericShunt")

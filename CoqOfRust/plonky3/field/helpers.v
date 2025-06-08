@@ -250,7 +250,7 @@ Module helpers.
                   (Ty.path "alloc::vec::into_iter::IntoIter")
                   []
                   [ F; Ty.path "alloc::alloc::Global" ];
-                Ty.function [ Ty.tuple [ F ] ] F
+                Ty.function [ F ] F
               ],
             [],
             [],
@@ -268,7 +268,7 @@ Module helpers.
                     (Ty.path "alloc::vec::into_iter::IntoIter")
                     []
                     [ F; Ty.path "alloc::alloc::Global" ];
-                  Ty.function [ Ty.tuple [ F ] ] F
+                  Ty.function [ F ] F
                 ],
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
@@ -280,7 +280,7 @@ Module helpers.
                 [],
                 "map",
                 [],
-                [ F; Ty.function [ Ty.tuple [ F ] ] F ]
+                [ F; Ty.function [ F ] F ]
               |),
               [
                 M.call_closure (|
@@ -306,7 +306,7 @@ Module helpers.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function [ Ty.tuple [ F ] ] F,
+                            F,
                             M.alloc (| F, α0 |),
                             [
                               fun γ =>
@@ -456,19 +456,10 @@ Module helpers.
                         [
                           Ty.function
                             [
-                              Ty.tuple
-                                [
-                                  Ty.apply
-                                    (Ty.path "&mut")
-                                    []
-                                    [
-                                      Ty.associated_in_trait
-                                        "p3_field::field::Field"
-                                        []
-                                        []
-                                        F
-                                        "Packing"
-                                    ]
+                              Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [ Ty.associated_in_trait "p3_field::field::Field" [] [] F "Packing"
                                 ]
                             ]
                             (Ty.tuple [])
@@ -501,24 +492,7 @@ Module helpers.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
-                                    Ty.function
-                                      [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&mut")
-                                              []
-                                              [
-                                                Ty.associated_in_trait
-                                                  "p3_field::field::Field"
-                                                  []
-                                                  []
-                                                  F
-                                                  "Packing"
-                                              ]
-                                          ]
-                                      ]
-                                      (Ty.tuple []),
+                                    Ty.tuple [],
                                     M.alloc (|
                                       Ty.apply
                                         (Ty.path "&mut")
@@ -598,11 +572,7 @@ Module helpers.
                         [],
                         "for_each",
                         [],
-                        [
-                          Ty.function
-                            [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ] ] ]
-                            (Ty.tuple [])
-                        ]
+                        [ Ty.function [ Ty.apply (Ty.path "&mut") [] [ F ] ] (Ty.tuple []) ]
                       |),
                       [
                         M.call_closure (|
@@ -622,9 +592,7 @@ Module helpers.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
-                                    Ty.function
-                                      [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ] ] ]
-                                      (Ty.tuple []),
+                                    Ty.tuple [],
                                     M.alloc (| Ty.apply (Ty.path "&mut") [] [ F ], α0 |),
                                     [
                                       fun γ =>
@@ -700,11 +668,7 @@ Module helpers.
                 [],
                 "for_each",
                 [],
-                [
-                  Ty.function
-                    [ Ty.tuple [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ]; F ] ] ]
-                    (Ty.tuple [])
-                ]
+                [ Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ]; F ] ] (Ty.tuple []) ]
               |),
               [
                 M.call_closure (|
@@ -742,9 +706,7 @@ Module helpers.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [ Ty.tuple [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ]; F ] ] ]
-                              (Ty.tuple []),
+                            Ty.tuple [],
                             M.alloc (| Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ]; F ], α0 |),
                             [
                               fun γ =>
@@ -1161,7 +1123,7 @@ Module helpers.
                 [],
                 "fold",
                 [],
-                [ TF; Ty.function [ Ty.tuple [ TF; Ty.apply (Ty.path "&") [] [ SF ] ] ] TF ]
+                [ TF; Ty.function [ TF; Ty.apply (Ty.path "&") [] [ SF ] ] TF ]
               |),
               [
                 M.call_closure (|
@@ -1201,16 +1163,14 @@ Module helpers.
                       | [ α0; α1 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function [ Ty.tuple [ TF; Ty.apply (Ty.path "&") [] [ SF ] ] ] TF,
+                            TF,
                             M.alloc (| TF, α0 |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
                                   (let acc := M.copy (| TF, γ |) in
                                   M.match_operator (|
-                                    Ty.function
-                                      [ Ty.tuple [ TF; Ty.apply (Ty.path "&") [] [ SF ] ] ]
-                                      TF,
+                                    TF,
                                     M.alloc (| Ty.apply (Ty.path "&") [] [ SF ], α1 |),
                                     [
                                       fun γ =>
@@ -1330,7 +1290,7 @@ Module helpers.
                       (Ty.path "core::iter::adapters::take::Take")
                       []
                       [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u64" ] ];
-                    Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ] ] TF
+                    Ty.function [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ] TF
                   ],
                 [],
                 [],
@@ -1348,7 +1308,7 @@ Module helpers.
                         (Ty.path "core::iter::adapters::take::Take")
                         []
                         [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u64" ] ];
-                      Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ] ] TF
+                      Ty.function [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ] TF
                     ],
                   M.get_trait_method (|
                     "core::iter::traits::iterator::Iterator",
@@ -1360,10 +1320,7 @@ Module helpers.
                     [],
                     "map",
                     [],
-                    [
-                      TF;
-                      Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ] ] TF
-                    ]
+                    [ TF; Ty.function [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ] TF ]
                   |),
                   [
                     M.call_closure (|
@@ -1469,9 +1426,7 @@ Module helpers.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function
-                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ] ]
-                                  TF,
+                                TF,
                                 M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], α0 |),
                                 [
                                   fun γ =>
@@ -1509,7 +1464,7 @@ Module helpers.
                 Ty.apply (Ty.path "alloc::vec::Vec") [] [ TF; Ty.path "alloc::alloc::Global" ],
                 "resize_with",
                 [],
-                [ Ty.function [ Ty.tuple [] ] TF ]
+                [ Ty.function [] TF ]
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, result |);
@@ -1521,7 +1476,7 @@ Module helpers.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function [ Ty.tuple [] ] TF,
+                            TF,
                             M.alloc (| Ty.tuple [], α0 |),
                             [
                               fun γ =>
@@ -1578,21 +1533,18 @@ Module helpers.
                   [
                     Ty.tuple
                       [
-                        Ty.tuple
-                          [
-                            Ty.associated_in_trait
-                              "core::iter::traits::iterator::Iterator"
-                              []
-                              []
-                              LI
-                              "Item";
-                            Ty.associated_in_trait
-                              "core::iter::traits::iterator::Iterator"
-                              []
-                              []
-                              RI
-                              "Item"
-                          ]
+                        Ty.associated_in_trait
+                          "core::iter::traits::iterator::Iterator"
+                          []
+                          []
+                          LI
+                          "Item";
+                        Ty.associated_in_trait
+                          "core::iter::traits::iterator::Iterator"
+                          []
+                          []
+                          RI
+                          "Item"
                       ]
                   ]
                   (Ty.associated_in_trait
@@ -1631,21 +1583,18 @@ Module helpers.
                     [
                       Ty.tuple
                         [
-                          Ty.tuple
-                            [
-                              Ty.associated_in_trait
-                                "core::iter::traits::iterator::Iterator"
-                                []
-                                []
-                                LI
-                                "Item";
-                              Ty.associated_in_trait
-                                "core::iter::traits::iterator::Iterator"
-                                []
-                                []
-                                RI
-                                "Item"
-                            ]
+                          Ty.associated_in_trait
+                            "core::iter::traits::iterator::Iterator"
+                            []
+                            []
+                            LI
+                            "Item";
+                          Ty.associated_in_trait
+                            "core::iter::traits::iterator::Iterator"
+                            []
+                            []
+                            RI
+                            "Item"
                         ]
                     ]
                     (Ty.associated_in_trait
@@ -1697,21 +1646,18 @@ Module helpers.
                     [
                       Ty.tuple
                         [
-                          Ty.tuple
-                            [
-                              Ty.associated_in_trait
-                                "core::iter::traits::iterator::Iterator"
-                                []
-                                []
-                                LI
-                                "Item";
-                              Ty.associated_in_trait
-                                "core::iter::traits::iterator::Iterator"
-                                []
-                                []
-                                RI
-                                "Item"
-                            ]
+                          Ty.associated_in_trait
+                            "core::iter::traits::iterator::Iterator"
+                            []
+                            []
+                            LI
+                            "Item";
+                          Ty.associated_in_trait
+                            "core::iter::traits::iterator::Iterator"
+                            []
+                            []
+                            RI
+                            "Item"
                         ]
                     ]
                     (Ty.associated_in_trait
@@ -1755,45 +1701,24 @@ Module helpers.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
+                            Ty.associated_in_trait
+                              "core::ops::arith::Mul"
+                              []
                               [
-                                Ty.tuple
-                                  [
-                                    Ty.tuple
-                                      [
-                                        Ty.associated_in_trait
-                                          "core::iter::traits::iterator::Iterator"
-                                          []
-                                          []
-                                          LI
-                                          "Item";
-                                        Ty.associated_in_trait
-                                          "core::iter::traits::iterator::Iterator"
-                                          []
-                                          []
-                                          RI
-                                          "Item"
-                                      ]
-                                  ]
-                              ]
-                              (Ty.associated_in_trait
-                                "core::ops::arith::Mul"
-                                []
-                                [
-                                  Ty.associated_in_trait
-                                    "core::iter::traits::iterator::Iterator"
-                                    []
-                                    []
-                                    RI
-                                    "Item"
-                                ]
-                                (Ty.associated_in_trait
+                                Ty.associated_in_trait
                                   "core::iter::traits::iterator::Iterator"
                                   []
                                   []
-                                  LI
-                                  "Item")
-                                "Output"),
+                                  RI
+                                  "Item"
+                              ]
+                              (Ty.associated_in_trait
+                                "core::iter::traits::iterator::Iterator"
+                                []
+                                []
+                                LI
+                                "Item")
+                              "Output",
                             M.alloc (|
                               Ty.tuple
                                 [

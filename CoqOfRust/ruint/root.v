@@ -346,7 +346,7 @@ Module root.
                           [
                             Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
                             Ty.function
-                              [ Ty.tuple [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ] ]
+                              [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
                               (Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [])
                           ]
                         |),
@@ -378,12 +378,7 @@ Module root.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Ty.function
-                                        [
-                                          Ty.tuple
-                                            [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
-                                        ]
-                                        (Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []),
+                                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
                                       M.alloc (|
                                         Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
                                         α0

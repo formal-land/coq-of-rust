@@ -730,7 +730,7 @@ Module util.
                     [],
                     "for_each",
                     [],
-                    [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.tuple []) ]
+                    [ Ty.function [ Ty.path "usize" ] (Ty.tuple []) ]
                   |),
                   [
                     M.call_closure (|
@@ -759,7 +759,7 @@ Module util.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.tuple []),
+                                Ty.tuple [],
                                 M.alloc (| Ty.path "usize", α0 |),
                                 [
                                   fun γ =>

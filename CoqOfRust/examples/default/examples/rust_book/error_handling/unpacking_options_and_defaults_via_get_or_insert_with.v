@@ -171,7 +171,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             [] in
         let~ get_lemon_as_fallback :
             Ty.function
-              [ Ty.tuple [] ]
+              []
               (Ty.path "unpacking_options_and_defaults_via_get_or_insert_with::Fruit") :=
           M.closure
             (fun γ =>
@@ -180,9 +180,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 | [ α0 ] =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Ty.function
-                        [ Ty.tuple [] ]
-                        (Ty.path "unpacking_options_and_defaults_via_get_or_insert_with::Fruit"),
+                      Ty.path "unpacking_options_and_defaults_via_get_or_insert_with::Fruit",
                       M.alloc (| Ty.tuple [], α0 |),
                       [
                         fun γ =>
@@ -262,7 +260,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [],
               [
                 Ty.function
-                  [ Ty.tuple [] ]
+                  []
                   (Ty.path "unpacking_options_and_defaults_via_get_or_insert_with::Fruit")
               ]
             |),
@@ -464,7 +462,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [],
               [
                 Ty.function
-                  [ Ty.tuple [] ]
+                  []
                   (Ty.path "unpacking_options_and_defaults_via_get_or_insert_with::Fruit")
               ]
             |),

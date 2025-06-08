@@ -157,7 +157,7 @@ Module boxed.
                     [
                       Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ];
                       Ty.function
-                        [ Ty.tuple [ Ty.path "alloc::boxed::thin::WithOpaqueHeader" ] ]
+                        [ Ty.path "alloc::boxed::thin::WithOpaqueHeader" ]
                         (Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ])
                     ]
                   |),
@@ -185,9 +185,7 @@ Module boxed.
                           | [ α0 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function
-                                  [ Ty.tuple [ Ty.path "alloc::boxed::thin::WithOpaqueHeader" ] ]
-                                  (Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ]),
+                                Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
                                 M.alloc (| Ty.path "alloc::boxed::thin::WithOpaqueHeader", α0 |),
                                 [
                                   fun γ =>
@@ -1188,7 +1186,7 @@ Module boxed.
                 [
                   Ty.path "alloc::boxed::thin::WithOpaqueHeader";
                   Ty.function
-                    [ Ty.tuple [ Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ H ] ] ]
+                    [ Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ H ] ]
                     (Ty.path "alloc::boxed::thin::WithOpaqueHeader")
                 ]
               |),
@@ -1216,12 +1214,7 @@ Module boxed.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [ Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ H ] ]
-                              ]
-                              (Ty.path "alloc::boxed::thin::WithOpaqueHeader"),
+                            Ty.path "alloc::boxed::thin::WithOpaqueHeader",
                             M.alloc (|
                               Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ H ],
                               α0

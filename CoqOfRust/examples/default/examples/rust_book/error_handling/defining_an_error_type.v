@@ -183,10 +183,7 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
           [
             Ty.path "i32";
             Ty.function
-              [
-                Ty.tuple
-                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] ]
-              ]
+              [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] ]
               (Ty.apply
                 (Ty.path "core::result::Result")
                 []
@@ -268,20 +265,10 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                 | [ α0 ] =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Ty.function
-                        [
-                          Ty.tuple
-                            [
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                            ]
-                        ]
-                        (Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.path "i32"; Ty.path "defining_an_error_type::DoubleError" ]),
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "i32"; Ty.path "defining_an_error_type::DoubleError" ],
                       M.alloc (|
                         Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                         α0
@@ -309,10 +296,7 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                   [ Ty.path "i32"; Ty.path "defining_an_error_type::DoubleError" ],
                                 "map",
                                 [],
-                                [
-                                  Ty.path "i32";
-                                  Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32")
-                                ]
+                                [ Ty.path "i32"; Ty.function [ Ty.path "i32" ] (Ty.path "i32") ]
                               |),
                               [
                                 M.call_closure (|
@@ -331,7 +315,7 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                     [
                                       Ty.path "defining_an_error_type::DoubleError";
                                       Ty.function
-                                        [ Ty.tuple [ Ty.path "core::num::error::ParseIntError" ] ]
+                                        [ Ty.path "core::num::error::ParseIntError" ]
                                         (Ty.path "defining_an_error_type::DoubleError")
                                     ]
                                   |),
@@ -362,12 +346,7 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                           | [ α0 ] =>
                                             ltac:(M.monadic
                                               (M.match_operator (|
-                                                Ty.function
-                                                  [
-                                                    Ty.tuple
-                                                      [ Ty.path "core::num::error::ParseIntError" ]
-                                                  ]
-                                                  (Ty.path "defining_an_error_type::DoubleError"),
+                                                Ty.path "defining_an_error_type::DoubleError",
                                                 M.alloc (|
                                                   Ty.path "core::num::error::ParseIntError",
                                                   α0
@@ -393,9 +372,7 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                       | [ α0 ] =>
                                         ltac:(M.monadic
                                           (M.match_operator (|
-                                            Ty.function
-                                              [ Ty.tuple [ Ty.path "i32" ] ]
-                                              (Ty.path "i32"),
+                                            Ty.path "i32",
                                             M.alloc (| Ty.path "i32", α0 |),
                                             [
                                               fun γ =>

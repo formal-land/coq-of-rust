@@ -933,7 +933,7 @@ pub(crate) fn compile_expr<'a>(
         }
         thir::ExprKind::Closure(closure) => {
             let rustc_middle::thir::ClosureExpr { closure_id, .. } = closure.as_ref();
-            let result = apply_on_thir(env, closure_id, |thir, expr_id| {
+            let result = apply_on_thir(env, closure_id, |thir, body_id| {
                 let args: Vec<(Rc<Pattern>, Rc<CoqType>)> = thir
                     .params
                     .iter()
@@ -955,13 +955,15 @@ pub(crate) fn compile_expr<'a>(
                 } else {
                     args
                 };
-                let body = compile_expr(env, generics, thir, expr_id).read();
+                let body = compile_expr(env, generics, thir, body_id).read();
+                let body_expr = thir.exprs.get(*body_id).unwrap();
+                let body_ty = compile_type(env, &body_expr.span, generics, &body_expr.ty);
                 let body =
                     args.iter()
                         .enumerate()
                         .rfold(body, |body, (index, (pattern, pattern_ty))| {
                             build_match(
-                                ty.clone(),
+                                body_ty.clone(),
                                 Expr::local_var(&format!("α{index}")).alloc(pattern_ty.clone()),
                                 vec![MatchArm {
                                     pattern: pattern.clone(),

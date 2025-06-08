@@ -97,15 +97,7 @@ Module fmt.
                 [],
                 [
                   Ty.function
-                    [
-                      Ty.tuple
-                        [
-                          Ty.apply
-                            (Ty.path "&mut")
-                            []
-                            [ Ty.dyn [ ("core::fmt::Write::Trait", []) ] ]
-                        ]
-                    ]
+                    [ Ty.apply (Ty.path "&mut") [] [ Ty.dyn [ ("core::fmt::Write::Trait", []) ] ] ]
                     (Ty.apply (Ty.path "&mut") [] [ Ty.dyn [ ("core::fmt::Write::Trait", []) ] ])
                 ]
               |),
@@ -118,20 +110,10 @@ Module fmt.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&mut")
-                                      []
-                                      [ Ty.dyn [ ("core::fmt::Write::Trait", []) ] ]
-                                  ]
-                              ]
-                              (Ty.apply
-                                (Ty.path "&mut")
-                                []
-                                [ Ty.dyn [ ("core::fmt::Write::Trait", []) ] ]),
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Write::Trait", []) ] ],
                             M.alloc (|
                               Ty.apply
                                 (Ty.path "&mut")
@@ -1221,10 +1203,7 @@ Module fmt.
                         [],
                         [
                           Ty.function
-                            [
-                              Ty.tuple
-                                [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ] ]
-                            ]
+                            [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ] ]
                             (Ty.apply
                               (Ty.path "core::result::Result")
                               []
@@ -1241,20 +1220,10 @@ Module fmt.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
-                                    Ty.function
-                                      [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&mut")
-                                              []
-                                              [ Ty.path "core::fmt::Formatter" ]
-                                          ]
-                                      ]
-                                      (Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                     M.alloc (|
                                       Ty.apply
                                         (Ty.path "&mut")
@@ -1382,7 +1351,7 @@ Module fmt.
                           [
                             Ty.tuple [];
                             Ty.function
-                              [ Ty.tuple [ Ty.tuple [] ] ]
+                              [ Ty.tuple [] ]
                               (Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
@@ -1404,12 +1373,10 @@ Module fmt.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Ty.function
-                                        [ Ty.tuple [ Ty.tuple [] ] ]
-                                        (Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                       M.alloc (| Ty.tuple [], α0 |),
                                       [
                                         fun γ =>
@@ -2994,7 +2961,7 @@ Module fmt.
                       [
                         Ty.tuple [];
                         Ty.function
-                          [ Ty.tuple [ Ty.tuple [] ] ]
+                          [ Ty.tuple [] ]
                           (Ty.apply
                             (Ty.path "core::result::Result")
                             []
@@ -3016,12 +2983,10 @@ Module fmt.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.tuple [] ] ]
-                                    (Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                   M.alloc (| Ty.tuple [], α0 |),
                                   [
                                     fun γ =>
@@ -3531,7 +3496,7 @@ Module fmt.
                                   [
                                     Ty.tuple [];
                                     Ty.function
-                                      [ Ty.tuple [ Ty.tuple [] ] ]
+                                      [ Ty.tuple [] ]
                                       (Ty.apply
                                         (Ty.path "core::result::Result")
                                         []
@@ -3553,12 +3518,10 @@ Module fmt.
                                         | [ α0 ] =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
-                                              Ty.function
-                                                [ Ty.tuple [ Ty.tuple [] ] ]
-                                                (Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                               M.alloc (| Ty.tuple [], α0 |),
                                               [
                                                 fun γ =>
@@ -3854,10 +3817,7 @@ Module fmt.
                         [],
                         [
                           Ty.function
-                            [
-                              Ty.tuple
-                                [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ] ]
-                            ]
+                            [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ] ]
                             (Ty.apply
                               (Ty.path "core::result::Result")
                               []
@@ -3873,20 +3833,10 @@ Module fmt.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
-                                    Ty.function
-                                      [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&mut")
-                                              []
-                                              [ Ty.path "core::fmt::Formatter" ]
-                                          ]
-                                      ]
-                                      (Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                     M.alloc (|
                                       Ty.apply
                                         (Ty.path "&mut")
@@ -4009,7 +3959,7 @@ Module fmt.
                           [
                             Ty.tuple [];
                             Ty.function
-                              [ Ty.tuple [ Ty.tuple [] ] ]
+                              [ Ty.tuple [] ]
                               (Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
@@ -4031,12 +3981,10 @@ Module fmt.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Ty.function
-                                        [ Ty.tuple [ Ty.tuple [] ] ]
-                                        (Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                       M.alloc (| Ty.tuple [], α0 |),
                                       [
                                         fun γ =>
@@ -4980,7 +4928,7 @@ Module fmt.
                       [
                         Ty.tuple [];
                         Ty.function
-                          [ Ty.tuple [ Ty.tuple [] ] ]
+                          [ Ty.tuple [] ]
                           (Ty.apply
                             (Ty.path "core::result::Result")
                             []
@@ -5002,12 +4950,10 @@ Module fmt.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.tuple [] ] ]
-                                    (Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                   M.alloc (| Ty.tuple [], α0 |),
                                   [
                                     fun γ =>
@@ -5544,7 +5490,7 @@ Module fmt.
                                   [
                                     Ty.tuple [];
                                     Ty.function
-                                      [ Ty.tuple [ Ty.tuple [] ] ]
+                                      [ Ty.tuple [] ]
                                       (Ty.apply
                                         (Ty.path "core::result::Result")
                                         []
@@ -5566,12 +5512,10 @@ Module fmt.
                                         | [ α0 ] =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
-                                              Ty.function
-                                                [ Ty.tuple [ Ty.tuple [] ] ]
-                                                (Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                               M.alloc (| Ty.tuple [], α0 |),
                                               [
                                                 fun γ =>
@@ -6039,7 +5983,7 @@ Module fmt.
                       [
                         Ty.tuple [];
                         Ty.function
-                          [ Ty.tuple [ Ty.tuple [] ] ]
+                          [ Ty.tuple [] ]
                           (Ty.apply
                             (Ty.path "core::result::Result")
                             []
@@ -6061,12 +6005,10 @@ Module fmt.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.tuple [] ] ]
-                                    (Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                   M.alloc (| Ty.tuple [], α0 |),
                                   [
                                     fun γ =>
@@ -7029,10 +6971,7 @@ Module fmt.
                         [],
                         [
                           Ty.function
-                            [
-                              Ty.tuple
-                                [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ] ]
-                            ]
+                            [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ] ]
                             (Ty.apply
                               (Ty.path "core::result::Result")
                               []
@@ -7055,20 +6994,10 @@ Module fmt.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
-                                    Ty.function
-                                      [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&mut")
-                                              []
-                                              [ Ty.path "core::fmt::Formatter" ]
-                                          ]
-                                      ]
-                                      (Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                     M.alloc (|
                                       Ty.apply
                                         (Ty.path "&mut")
@@ -7434,7 +7363,7 @@ Module fmt.
                       [
                         Ty.tuple [];
                         Ty.function
-                          [ Ty.tuple [ Ty.tuple [] ] ]
+                          [ Ty.tuple [] ]
                           (Ty.apply
                             (Ty.path "core::result::Result")
                             []
@@ -7460,12 +7389,10 @@ Module fmt.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.tuple [] ] ]
-                                    (Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                   M.alloc (| Ty.tuple [], α0 |),
                                   [
                                     fun γ =>
@@ -7991,7 +7918,7 @@ Module fmt.
                       [
                         Ty.tuple [];
                         Ty.function
-                          [ Ty.tuple [ Ty.tuple [] ] ]
+                          [ Ty.tuple [] ]
                           (Ty.apply
                             (Ty.path "core::result::Result")
                             []
@@ -8017,12 +7944,10 @@ Module fmt.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.tuple [] ] ]
-                                    (Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                   M.alloc (| Ty.tuple [], α0 |),
                                   [
                                     fun γ =>
@@ -8187,10 +8112,7 @@ Module fmt.
                         [],
                         [
                           Ty.function
-                            [
-                              Ty.tuple
-                                [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ] ]
-                            ]
+                            [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ] ]
                             (Ty.apply
                               (Ty.path "core::result::Result")
                               []
@@ -8213,20 +8135,10 @@ Module fmt.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
-                                    Ty.function
-                                      [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&mut")
-                                              []
-                                              [ Ty.path "core::fmt::Formatter" ]
-                                          ]
-                                      ]
-                                      (Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                     M.alloc (|
                                       Ty.apply
                                         (Ty.path "&mut")
@@ -8579,7 +8491,7 @@ Module fmt.
                 [
                   Ty.tuple [];
                   Ty.function
-                    [ Ty.tuple [ Ty.tuple [] ] ]
+                    [ Ty.tuple [] ]
                     (Ty.apply
                       (Ty.path "core::result::Result")
                       []
@@ -8605,12 +8517,10 @@ Module fmt.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [ Ty.tuple [ Ty.tuple [] ] ]
-                              (Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             M.alloc (| Ty.tuple [], α0 |),
                             [
                               fun γ =>
@@ -9091,7 +9001,7 @@ Module fmt.
                       [
                         Ty.tuple [];
                         Ty.function
-                          [ Ty.tuple [ Ty.tuple [] ] ]
+                          [ Ty.tuple [] ]
                           (Ty.apply
                             (Ty.path "core::result::Result")
                             []
@@ -9117,12 +9027,10 @@ Module fmt.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.tuple [] ] ]
-                                    (Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                   M.alloc (| Ty.tuple [], α0 |),
                                   [
                                     fun γ =>
@@ -9384,10 +9292,7 @@ Module fmt.
                         [],
                         [
                           Ty.function
-                            [
-                              Ty.tuple
-                                [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ] ]
-                            ]
+                            [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ] ]
                             (Ty.apply
                               (Ty.path "core::result::Result")
                               []
@@ -9403,20 +9308,10 @@ Module fmt.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
-                                    Ty.function
-                                      [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&mut")
-                                              []
-                                              [ Ty.path "core::fmt::Formatter" ]
-                                          ]
-                                      ]
-                                      (Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                     M.alloc (|
                                       Ty.apply
                                         (Ty.path "&mut")
@@ -9549,7 +9444,7 @@ Module fmt.
                           [
                             Ty.tuple [];
                             Ty.function
-                              [ Ty.tuple [ Ty.tuple [] ] ]
+                              [ Ty.tuple [] ]
                               (Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
@@ -9571,12 +9466,10 @@ Module fmt.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Ty.function
-                                        [ Ty.tuple [ Ty.tuple [] ] ]
-                                        (Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                       M.alloc (| Ty.tuple [], α0 |),
                                       [
                                         fun γ =>
@@ -11076,10 +10969,7 @@ Module fmt.
                         [],
                         [
                           Ty.function
-                            [
-                              Ty.tuple
-                                [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ] ]
-                            ]
+                            [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ] ]
                             (Ty.apply
                               (Ty.path "core::result::Result")
                               []
@@ -11095,20 +10985,10 @@ Module fmt.
                               | [ α0 ] =>
                                 ltac:(M.monadic
                                   (M.match_operator (|
-                                    Ty.function
-                                      [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&mut")
-                                              []
-                                              [ Ty.path "core::fmt::Formatter" ]
-                                          ]
-                                      ]
-                                      (Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                     M.alloc (|
                                       Ty.apply
                                         (Ty.path "&mut")
@@ -11230,7 +11110,7 @@ Module fmt.
                           [
                             Ty.tuple [];
                             Ty.function
-                              [ Ty.tuple [ Ty.tuple [] ] ]
+                              [ Ty.tuple [] ]
                               (Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
@@ -11252,12 +11132,10 @@ Module fmt.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Ty.function
-                                        [ Ty.tuple [ Ty.tuple [] ] ]
-                                        (Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                       M.alloc (| Ty.tuple [], α0 |),
                                       [
                                         fun γ =>
@@ -12325,7 +12203,7 @@ Module fmt.
                       [
                         Ty.tuple [];
                         Ty.function
-                          [ Ty.tuple [ Ty.tuple [] ] ]
+                          [ Ty.tuple [] ]
                           (Ty.apply
                             (Ty.path "core::result::Result")
                             []
@@ -12347,12 +12225,10 @@ Module fmt.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.tuple [] ] ]
-                                    (Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                   M.alloc (| Ty.tuple [], α0 |),
                                   [
                                     fun γ =>
@@ -12948,7 +12824,7 @@ Module fmt.
                       [
                         Ty.tuple [];
                         Ty.function
-                          [ Ty.tuple [ Ty.tuple [] ] ]
+                          [ Ty.tuple [] ]
                           (Ty.apply
                             (Ty.path "core::result::Result")
                             []
@@ -12970,12 +12846,10 @@ Module fmt.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.tuple [] ] ]
-                                    (Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                   M.alloc (| Ty.tuple [], α0 |),
                                   [
                                     fun γ =>

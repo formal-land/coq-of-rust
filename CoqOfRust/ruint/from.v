@@ -4003,10 +4003,7 @@ Module from.
                                     [
                                       Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
                                       Ty.function
-                                        [
-                                          Ty.tuple
-                                            [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
-                                        ]
+                                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]
                                         (Ty.apply
                                           (Ty.path "core::result::Result")
                                           []
@@ -4050,34 +4047,24 @@ Module from.
                                           | [ α0 ] =>
                                             ltac:(M.monadic
                                               (M.match_operator (|
-                                                Ty.function
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
                                                   [
-                                                    Ty.tuple
+                                                    Ty.apply
+                                                      (Ty.path "ruint::Uint")
+                                                      [ BITS; LIMBS ]
+                                                      [];
+                                                    Ty.apply
+                                                      (Ty.path "ruint::from::ToUintError")
+                                                      []
                                                       [
                                                         Ty.apply
                                                           (Ty.path "ruint::Uint")
                                                           [ BITS; LIMBS ]
                                                           []
                                                       ]
-                                                  ]
-                                                  (Ty.apply
-                                                    (Ty.path "core::result::Result")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "ruint::Uint")
-                                                        [ BITS; LIMBS ]
-                                                        [];
-                                                      Ty.apply
-                                                        (Ty.path "ruint::from::ToUintError")
-                                                        []
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "ruint::Uint")
-                                                            [ BITS; LIMBS ]
-                                                            []
-                                                        ]
-                                                    ]),
+                                                  ],
                                                 M.alloc (|
                                                   Ty.apply
                                                     (Ty.path "ruint::Uint")

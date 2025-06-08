@@ -44,7 +44,7 @@ Module utils.
                 [],
                 "reduce",
                 [],
-                [ Ty.function [ Ty.tuple [ R; R ] ] R ]
+                [ Ty.function [ R; R ] R ]
               |),
               [
                 M.call_closure (|
@@ -88,14 +88,14 @@ Module utils.
                       | [ α0; α1 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function [ Ty.tuple [ R; R ] ] R,
+                            R,
                             M.alloc (| R, α0 |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
                                   (let acc := M.copy (| R, γ |) in
                                   M.match_operator (|
-                                    Ty.function [ Ty.tuple [ R; R ] ] R,
+                                    R,
                                     M.alloc (| R, α1 |),
                                     [
                                       fun γ =>
@@ -171,7 +171,7 @@ Module utils.
             [],
             "fold",
             [],
-            [ F; Ty.function [ Ty.tuple [ F; Ty.apply (Ty.path "&") [] [ F ] ] ] F ]
+            [ F; Ty.function [ F; Ty.apply (Ty.path "&") [] [ F ] ] F ]
           |),
           [
             M.call_closure (|
@@ -187,14 +187,14 @@ Module utils.
                   | [ α0; α1 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.function [ Ty.tuple [ F; Ty.apply (Ty.path "&") [] [ F ] ] ] F,
+                        F,
                         M.alloc (| F, α0 |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let acc := M.copy (| F, γ |) in
                               M.match_operator (|
-                                Ty.function [ Ty.tuple [ F; Ty.apply (Ty.path "&") [] [ F ] ] ] F,
+                                F,
                                 M.alloc (| Ty.apply (Ty.path "&") [] [ F ], α1 |),
                                 [
                                   fun γ =>
@@ -547,7 +547,7 @@ Module utils.
           M.get_function (|
             "core::array::from_fn",
             [ Value.Integer IntegerKind.Usize 32 ],
-            [ R; Ty.function [ Ty.tuple [ Ty.path "usize" ] ] R ]
+            [ R; Ty.function [ Ty.path "usize" ] R ]
           |),
           [
             M.closure
@@ -557,7 +557,7 @@ Module utils.
                   | [ α0 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.function [ Ty.tuple [ Ty.path "usize" ] ] R,
+                        R,
                         M.alloc (| Ty.path "usize", α0 |),
                         [
                           fun γ =>
@@ -625,7 +625,7 @@ Module utils.
           M.get_function (|
             "core::array::from_fn",
             [ Value.Integer IntegerKind.Usize 64 ],
-            [ R; Ty.function [ Ty.tuple [ Ty.path "usize" ] ] R ]
+            [ R; Ty.function [ Ty.path "usize" ] R ]
           |),
           [
             M.closure
@@ -635,7 +635,7 @@ Module utils.
                   | [ α0 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.function [ Ty.tuple [ Ty.path "usize" ] ] R,
+                        R,
                         M.alloc (| Ty.path "usize", α0 |),
                         [
                           fun γ =>
@@ -703,7 +703,7 @@ Module utils.
           M.get_function (|
             "core::array::from_fn",
             [ Value.Integer IntegerKind.Usize 4 ],
-            [ R; Ty.function [ Ty.tuple [ Ty.path "usize" ] ] R ]
+            [ R; Ty.function [ Ty.path "usize" ] R ]
           |),
           [
             M.closure
@@ -713,7 +713,7 @@ Module utils.
                   | [ α0 ] =>
                     ltac:(M.monadic
                       (M.match_operator (|
-                        Ty.function [ Ty.tuple [ Ty.path "usize" ] ] R,
+                        R,
                         M.alloc (| Ty.path "usize", α0 |),
                         [
                           fun γ =>
@@ -2147,14 +2147,11 @@ Module utils.
                     [
                       Ty.tuple
                         [
-                          Ty.tuple
-                            [
-                              Ty.path "usize";
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
-                            ]
+                          Ty.path "usize";
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
                         ]
                     ]
                     (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
@@ -2177,14 +2174,11 @@ Module utils.
                     [
                       Ty.tuple
                         [
-                          Ty.tuple
-                            [
-                              Ty.path "usize";
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
-                            ]
+                          Ty.path "usize";
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
                         ]
                     ]
                     (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
@@ -2210,14 +2204,11 @@ Module utils.
                     [
                       Ty.tuple
                         [
-                          Ty.tuple
-                            [
-                              Ty.path "usize";
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
-                            ]
+                          Ty.path "usize";
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
                         ]
                     ]
                     (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
@@ -2322,28 +2313,7 @@ Module utils.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.tuple
-                                      [
-                                        Ty.path "usize";
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [
-                                            Ty.associated_in_trait
-                                              "p3_air::air::AirBuilder"
-                                              []
-                                              []
-                                              AB
-                                              "Var"
-                                          ]
-                                      ]
-                                  ]
-                              ]
-                              (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr"),
+                            Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
                             M.alloc (|
                               Ty.tuple
                                 [
@@ -2556,21 +2526,11 @@ Module utils.
                         [
                           Ty.tuple
                             [
-                              Ty.tuple
-                                [
-                                  Ty.path "usize";
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [
-                                      Ty.associated_in_trait
-                                        "p3_air::air::AirBuilder"
-                                        []
-                                        []
-                                        AB
-                                        "Var"
-                                    ]
-                                ]
+                              Ty.path "usize";
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
                             ]
                         ]
                         (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
@@ -2597,14 +2557,11 @@ Module utils.
                     [
                       Ty.tuple
                         [
-                          Ty.tuple
-                            [
-                              Ty.path "usize";
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
-                            ]
+                          Ty.path "usize";
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
                         ]
                     ]
                     (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
@@ -2627,14 +2584,11 @@ Module utils.
                     [
                       Ty.tuple
                         [
-                          Ty.tuple
-                            [
-                              Ty.path "usize";
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
-                            ]
+                          Ty.path "usize";
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
                         ]
                     ]
                     (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
@@ -2660,14 +2614,11 @@ Module utils.
                     [
                       Ty.tuple
                         [
-                          Ty.tuple
-                            [
-                              Ty.path "usize";
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
-                            ]
+                          Ty.path "usize";
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
                         ]
                     ]
                     (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
@@ -2772,28 +2723,7 @@ Module utils.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [
-                                Ty.tuple
-                                  [
-                                    Ty.tuple
-                                      [
-                                        Ty.path "usize";
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [
-                                            Ty.associated_in_trait
-                                              "p3_air::air::AirBuilder"
-                                              []
-                                              []
-                                              AB
-                                              "Var"
-                                          ]
-                                      ]
-                                  ]
-                              ]
-                              (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr"),
+                            Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
                             M.alloc (|
                               Ty.tuple
                                 [
@@ -3015,21 +2945,11 @@ Module utils.
                         [
                           Ty.tuple
                             [
-                              Ty.tuple
-                                [
-                                  Ty.path "usize";
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [
-                                      Ty.associated_in_trait
-                                        "p3_air::air::AirBuilder"
-                                        []
-                                        []
-                                        AB
-                                        "Var"
-                                    ]
-                                ]
+                              Ty.path "usize";
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
                             ]
                         ]
                         (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")

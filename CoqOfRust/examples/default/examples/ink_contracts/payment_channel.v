@@ -1171,7 +1171,7 @@ Module Impl_payment_channel_PaymentChannel.
                   [ Ty.tuple []; Ty.path "payment_channel::Error" ],
                 "unwrap_or_else",
                 [],
-                [ Ty.function [ Ty.tuple [ Ty.path "payment_channel::Error" ] ] (Ty.tuple []) ]
+                [ Ty.function [ Ty.path "payment_channel::Error" ] (Ty.tuple []) ]
               |),
               [
                 M.call_closure (|
@@ -1202,9 +1202,7 @@ Module Impl_payment_channel_PaymentChannel.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [ Ty.tuple [ Ty.path "payment_channel::Error" ] ]
-                              (Ty.tuple []),
+                            Ty.tuple [],
                             M.alloc (| Ty.path "payment_channel::Error", α0 |),
                             [
                               fun γ =>
@@ -1658,7 +1656,7 @@ Module Impl_payment_channel_PaymentChannel.
                             [
                               Ty.path "payment_channel::Error";
                               Ty.function
-                                [ Ty.tuple [ Ty.path "payment_channel::Error" ] ]
+                                [ Ty.path "payment_channel::Error" ]
                                 (Ty.path "payment_channel::Error")
                             ]
                           |),
@@ -1726,9 +1724,7 @@ Module Impl_payment_channel_PaymentChannel.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Ty.function
-                                          [ Ty.tuple [ Ty.path "payment_channel::Error" ] ]
-                                          (Ty.path "payment_channel::Error"),
+                                        Ty.path "payment_channel::Error",
                                         M.alloc (| Ty.path "payment_channel::Error", α0 |),
                                         [
                                           fun γ =>
@@ -2815,7 +2811,7 @@ Module Impl_payment_channel_PaymentChannel.
                             [
                               Ty.path "payment_channel::Error";
                               Ty.function
-                                [ Ty.tuple [ Ty.path "payment_channel::Error" ] ]
+                                [ Ty.path "payment_channel::Error" ]
                                 (Ty.path "payment_channel::Error")
                             ]
                           |),
@@ -2870,9 +2866,7 @@ Module Impl_payment_channel_PaymentChannel.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Ty.function
-                                          [ Ty.tuple [ Ty.path "payment_channel::Error" ] ]
-                                          (Ty.path "payment_channel::Error"),
+                                        Ty.path "payment_channel::Error",
                                         M.alloc (| Ty.path "payment_channel::Error", α0 |),
                                         [
                                           fun γ =>

@@ -39630,11 +39630,8 @@ Module type_safety.
                                                   Ty.path "bool";
                                                   Ty.function
                                                     [
-                                                      Ty.tuple
-                                                        [
-                                                          Ty.path
-                                                            "move_binary_format::file_format::SignatureToken"
-                                                        ]
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureToken"
                                                     ]
                                                     (Ty.path "bool")
                                                 ]
@@ -39680,15 +39677,7 @@ Module type_safety.
                                                       | [ α0 ] =>
                                                         ltac:(M.monadic
                                                           (M.match_operator (|
-                                                            Ty.function
-                                                              [
-                                                                Ty.tuple
-                                                                  [
-                                                                    Ty.path
-                                                                      "move_binary_format::file_format::SignatureToken"
-                                                                  ]
-                                                              ]
-                                                              (Ty.path "bool"),
+                                                            Ty.path "bool",
                                                             M.alloc (|
                                                               Ty.path
                                                                 "move_binary_format::file_format::SignatureToken",
@@ -48469,15 +48458,12 @@ Module type_safety.
                                                       ];
                                                     Ty.function
                                                       [
-                                                        Ty.tuple
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
                                                           [
-                                                            Ty.apply
-                                                              (Ty.path "&")
-                                                              []
-                                                              [
-                                                                Ty.path
-                                                                  "move_binary_format::file_format::SignatureToken"
-                                                              ]
+                                                            Ty.path
+                                                              "move_binary_format::file_format::SignatureToken"
                                                           ]
                                                       ]
                                                       (Ty.path
@@ -48513,15 +48499,12 @@ Module type_safety.
                                                         ];
                                                       Ty.function
                                                         [
-                                                          Ty.tuple
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
                                                             [
-                                                              Ty.apply
-                                                                (Ty.path "&")
-                                                                []
-                                                                [
-                                                                  Ty.path
-                                                                    "move_binary_format::file_format::SignatureToken"
-                                                                ]
+                                                              Ty.path
+                                                                "move_binary_format::file_format::SignatureToken"
                                                             ]
                                                         ]
                                                         (Ty.path
@@ -48545,15 +48528,12 @@ Module type_safety.
                                                         "move_binary_format::file_format::SignatureToken";
                                                       Ty.function
                                                         [
-                                                          Ty.tuple
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
                                                             [
-                                                              Ty.apply
-                                                                (Ty.path "&")
-                                                                []
-                                                                [
-                                                                  Ty.path
-                                                                    "move_binary_format::file_format::SignatureToken"
-                                                                ]
+                                                              Ty.path
+                                                                "move_binary_format::file_format::SignatureToken"
                                                             ]
                                                         ]
                                                         (Ty.path
@@ -48634,21 +48614,8 @@ Module type_safety.
                                                           | [ α0 ] =>
                                                             ltac:(M.monadic
                                                               (M.match_operator (|
-                                                                Ty.function
-                                                                  [
-                                                                    Ty.tuple
-                                                                      [
-                                                                        Ty.apply
-                                                                          (Ty.path "&")
-                                                                          []
-                                                                          [
-                                                                            Ty.path
-                                                                              "move_binary_format::file_format::SignatureToken"
-                                                                          ]
-                                                                      ]
-                                                                  ]
-                                                                  (Ty.path
-                                                                    "move_binary_format::file_format::SignatureToken"),
+                                                                Ty.path
+                                                                  "move_binary_format::file_format::SignatureToken",
                                                                 M.alloc (|
                                                                   Ty.apply
                                                                     (Ty.path "&")

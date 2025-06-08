@@ -645,7 +645,7 @@ Module round_flags.
                                 [
                                   Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr";
                                   Ty.function
-                                    [ Ty.tuple [ Ty.path "usize" ] ]
+                                    [ Ty.path "usize" ]
                                     (Ty.associated_in_trait
                                       "p3_air::air::AirBuilder"
                                       []
@@ -662,14 +662,12 @@ Module round_flags.
                                       | [ α0 ] =>
                                         ltac:(M.monadic
                                           (M.match_operator (|
-                                            Ty.function
-                                              [ Ty.tuple [ Ty.path "usize" ] ]
-                                              (Ty.associated_in_trait
-                                                "p3_air::air::AirBuilder"
-                                                []
-                                                []
-                                                AB
-                                                "Expr"),
+                                            Ty.associated_in_trait
+                                              "p3_air::air::AirBuilder"
+                                              []
+                                              []
+                                              AB
+                                              "Expr",
                                             M.alloc (| Ty.path "usize", α0 |),
                                             [
                                               fun γ =>

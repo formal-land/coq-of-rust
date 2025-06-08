@@ -2350,13 +2350,10 @@ Module string.
                     ];
                   Ty.function
                     [
-                      Ty.tuple
-                        [
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [ Ty.path "char"; Ty.path "core::char::decode::DecodeUtf16Error" ]
-                        ]
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "char"; Ty.path "core::char::decode::DecodeUtf16Error" ]
                     ]
                     (Ty.path "char")
                 ],
@@ -2383,13 +2380,10 @@ Module string.
                       ];
                     Ty.function
                       [
-                        Ty.tuple
-                          [
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.path "char"; Ty.path "core::char::decode::DecodeUtf16Error" ]
-                          ]
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "char"; Ty.path "core::char::decode::DecodeUtf16Error" ]
                       ]
                       (Ty.path "char")
                   ],
@@ -2412,13 +2406,10 @@ Module string.
                     Ty.path "char";
                     Ty.function
                       [
-                        Ty.tuple
-                          [
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.path "char"; Ty.path "core::char::decode::DecodeUtf16Error" ]
-                          ]
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "char"; Ty.path "core::char::decode::DecodeUtf16Error" ]
                       ]
                       (Ty.path "char")
                   ]
@@ -2482,20 +2473,7 @@ Module string.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [
-                                          Ty.path "char";
-                                          Ty.path "core::char::decode::DecodeUtf16Error"
-                                        ]
-                                    ]
-                                ]
-                                (Ty.path "char"),
+                              Ty.path "char",
                               M.alloc (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
@@ -2772,7 +2750,7 @@ Module string.
                               [
                                 Ty.path "alloc::string::FromUtf16Error";
                                 Ty.function
-                                  [ Ty.tuple [ Ty.path "core::char::decode::DecodeUtf16Error" ] ]
+                                  [ Ty.path "core::char::decode::DecodeUtf16Error" ]
                                   (Ty.path "alloc::string::FromUtf16Error")
                               ]
                             |),
@@ -3030,12 +3008,7 @@ Module string.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [ Ty.path "core::char::decode::DecodeUtf16Error" ]
-                                            ]
-                                            (Ty.path "alloc::string::FromUtf16Error"),
+                                          Ty.path "alloc::string::FromUtf16Error",
                                           M.alloc (|
                                             Ty.path "core::char::decode::DecodeUtf16Error",
                                             α0
@@ -3271,15 +3244,10 @@ Module string.
                                 ];
                               Ty.function
                                 [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [
-                                          Ty.path "char";
-                                          Ty.path "core::char::decode::DecodeUtf16Error"
-                                        ]
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.path "char"; Ty.path "core::char::decode::DecodeUtf16Error"
                                     ]
                                 ]
                                 (Ty.path "char")
@@ -3335,15 +3303,12 @@ Module string.
                                   ];
                                 Ty.function
                                   [
-                                    Ty.tuple
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
                                       [
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [
-                                            Ty.path "char";
-                                            Ty.path "core::char::decode::DecodeUtf16Error"
-                                          ]
+                                        Ty.path "char";
+                                        Ty.path "core::char::decode::DecodeUtf16Error"
                                       ]
                                   ]
                                   (Ty.path "char")
@@ -3393,15 +3358,12 @@ Module string.
                                 Ty.path "char";
                                 Ty.function
                                   [
-                                    Ty.tuple
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
                                       [
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [
-                                            Ty.path "char";
-                                            Ty.path "core::char::decode::DecodeUtf16Error"
-                                          ]
+                                        Ty.path "char";
+                                        Ty.path "core::char::decode::DecodeUtf16Error"
                                       ]
                                   ]
                                   (Ty.path "char")
@@ -3643,20 +3605,7 @@ Module string.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::result::Result")
-                                                    []
-                                                    [
-                                                      Ty.path "char";
-                                                      Ty.path "core::char::decode::DecodeUtf16Error"
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "char"),
+                                          Ty.path "char",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "core::result::Result")
@@ -4016,7 +3965,7 @@ Module string.
                               [
                                 Ty.path "alloc::string::FromUtf16Error";
                                 Ty.function
-                                  [ Ty.tuple [ Ty.path "core::char::decode::DecodeUtf16Error" ] ]
+                                  [ Ty.path "core::char::decode::DecodeUtf16Error" ]
                                   (Ty.path "alloc::string::FromUtf16Error")
                               ]
                             |),
@@ -4274,12 +4223,7 @@ Module string.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [ Ty.path "core::char::decode::DecodeUtf16Error" ]
-                                            ]
-                                            (Ty.path "alloc::string::FromUtf16Error"),
+                                          Ty.path "alloc::string::FromUtf16Error",
                                           M.alloc (|
                                             Ty.path "core::char::decode::DecodeUtf16Error",
                                             α0
@@ -4515,15 +4459,10 @@ Module string.
                                 ];
                               Ty.function
                                 [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [
-                                          Ty.path "char";
-                                          Ty.path "core::char::decode::DecodeUtf16Error"
-                                        ]
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.path "char"; Ty.path "core::char::decode::DecodeUtf16Error"
                                     ]
                                 ]
                                 (Ty.path "char")
@@ -4579,15 +4518,12 @@ Module string.
                                   ];
                                 Ty.function
                                   [
-                                    Ty.tuple
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
                                       [
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [
-                                            Ty.path "char";
-                                            Ty.path "core::char::decode::DecodeUtf16Error"
-                                          ]
+                                        Ty.path "char";
+                                        Ty.path "core::char::decode::DecodeUtf16Error"
                                       ]
                                   ]
                                   (Ty.path "char")
@@ -4637,15 +4573,12 @@ Module string.
                                 Ty.path "char";
                                 Ty.function
                                   [
-                                    Ty.tuple
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
                                       [
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [
-                                            Ty.path "char";
-                                            Ty.path "core::char::decode::DecodeUtf16Error"
-                                          ]
+                                        Ty.path "char";
+                                        Ty.path "core::char::decode::DecodeUtf16Error"
                                       ]
                                   ]
                                   (Ty.path "char")
@@ -4887,20 +4820,7 @@ Module string.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::result::Result")
-                                                    []
-                                                    [
-                                                      Ty.path "char";
-                                                      Ty.path "core::char::decode::DecodeUtf16Error"
-                                                    ]
-                                                ]
-                                            ]
-                                            (Ty.path "char"),
+                                          Ty.path "char",
                                           M.alloc (|
                                             Ty.apply
                                               (Ty.path "core::result::Result")
@@ -6897,7 +6817,7 @@ Module string.
                         []
                         [
                           Ty.function
-                            [ Ty.tuple [] ]
+                            []
                             (Ty.apply
                               (Ty.path "core::option::Option")
                               []
@@ -6924,7 +6844,7 @@ Module string.
                           []
                           [
                             Ty.function
-                              [ Ty.tuple [] ]
+                              []
                               (Ty.apply
                                 (Ty.path "core::option::Option")
                                 []
@@ -6936,7 +6856,7 @@ Module string.
                           [
                             Ty.tuple [ Ty.path "usize"; Ty.path "usize" ];
                             Ty.function
-                              [ Ty.tuple [] ]
+                              []
                               (Ty.apply
                                 (Ty.path "core::option::Option")
                                 []
@@ -6951,12 +6871,10 @@ Module string.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Ty.function
-                                        [ Ty.tuple [] ]
-                                        (Ty.apply
-                                          (Ty.path "core::option::Option")
-                                          []
-                                          [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ]),
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ],
                                       M.alloc (| Ty.tuple [], α0 |),
                                       [
                                         fun γ =>
@@ -11311,7 +11229,7 @@ Module string.
                               [],
                               "for_each",
                               [],
-                              [ Ty.function [ Ty.tuple [ Ty.path "char" ] ] (Ty.tuple []) ]
+                              [ Ty.function [ Ty.path "char" ] (Ty.tuple []) ]
                             |),
                             [
                               M.read (| iterator |);
@@ -11322,7 +11240,7 @@ Module string.
                                     | [ α0 ] =>
                                       ltac:(M.monadic
                                         (M.match_operator (|
-                                          Ty.function [ Ty.tuple [ Ty.path "char" ] ] (Ty.tuple []),
+                                          Ty.tuple [],
                                           M.alloc (| Ty.path "char", α0 |),
                                           [
                                             fun γ =>
@@ -11642,11 +11560,7 @@ Module string.
                   [],
                   "for_each",
                   [],
-                  [
-                    Ty.function
-                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] ]
-                      (Ty.tuple [])
-                  ]
+                  [ Ty.function [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] (Ty.tuple []) ]
                 |),
                 [
                   M.call_closure (|
@@ -11674,9 +11588,7 @@ Module string.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] ]
-                                (Ty.tuple []),
+                              Ty.tuple [],
                               M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], α0 |),
                               [
                                 fun γ =>
@@ -11785,8 +11697,7 @@ Module string.
                   [],
                   [
                     Ty.function
-                      [ Ty.tuple [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "str"; A ] ]
-                      ]
+                      [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "str"; A ] ]
                       (Ty.tuple [])
                   ]
                 |),
@@ -11816,13 +11727,7 @@ Module string.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "str"; A ]
-                                    ]
-                                ]
-                                (Ty.tuple []),
+                              Ty.tuple [],
                               M.alloc (|
                                 Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "str"; A ],
                                 α0
@@ -11914,7 +11819,7 @@ Module string.
                   [],
                   "for_each",
                   [],
-                  [ Ty.function [ Ty.tuple [ Ty.path "alloc::string::String" ] ] (Ty.tuple []) ]
+                  [ Ty.function [ Ty.path "alloc::string::String" ] (Ty.tuple []) ]
                 |),
                 [
                   M.call_closure (|
@@ -11942,9 +11847,7 @@ Module string.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [ Ty.tuple [ Ty.path "alloc::string::String" ] ]
-                                (Ty.tuple []),
+                              Ty.tuple [],
                               M.alloc (| Ty.path "alloc::string::String", α0 |),
                               [
                                 fun γ =>
@@ -12092,7 +11995,7 @@ Module string.
                   [],
                   [
                     Ty.function
-                      [ Ty.tuple [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ] ]
+                      [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ]
                       (Ty.tuple [])
                   ]
                 |),
@@ -12122,12 +12025,7 @@ Module string.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ]
-                                ]
-                                (Ty.tuple []),
+                              Ty.tuple [],
                               M.alloc (|
                                 Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ],
                                 α0

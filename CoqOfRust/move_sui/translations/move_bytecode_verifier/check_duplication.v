@@ -50,7 +50,7 @@ Module check_duplication.
               [
                 Ty.path "move_binary_format::errors::VMError";
                 Ty.function
-                  [ Ty.tuple [ Ty.path "move_binary_format::errors::PartialVMError" ] ]
+                  [ Ty.path "move_binary_format::errors::PartialVMError" ]
                   (Ty.path "move_binary_format::errors::VMError")
               ]
             |),
@@ -75,9 +75,7 @@ Module check_duplication.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [ Ty.tuple [ Ty.path "move_binary_format::errors::PartialVMError" ] ]
-                            (Ty.path "move_binary_format::errors::VMError"),
+                          Ty.path "move_binary_format::errors::VMError",
                           M.alloc (| Ty.path "move_binary_format::errors::PartialVMError", α0 |),
                           [
                             fun γ =>
@@ -2780,13 +2778,10 @@ Module check_duplication.
                           [ Ty.path "move_binary_format::file_format::StructHandle" ];
                         Ty.function
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "move_binary_format::file_format::StructHandle" ]
-                              ]
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::StructHandle" ]
                           ]
                           (Ty.tuple
                             [
@@ -2808,13 +2803,10 @@ Module check_duplication.
                           [ Ty.path "move_binary_format::file_format::StructHandle" ];
                         Ty.function
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "move_binary_format::file_format::StructHandle" ]
-                              ]
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::StructHandle" ]
                           ]
                           (Ty.tuple
                             [
@@ -2840,13 +2832,10 @@ Module check_duplication.
                           ];
                         Ty.function
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "move_binary_format::file_format::StructHandle" ]
-                              ]
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::StructHandle" ]
                           ]
                           (Ty.tuple
                             [
@@ -2880,25 +2869,11 @@ Module check_duplication.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.path
-                                                "move_binary_format::file_format::StructHandle"
-                                            ]
-                                        ]
-                                    ]
-                                    (Ty.tuple
-                                      [
-                                        Ty.path
-                                          "move_binary_format::file_format::ModuleHandleIndex";
-                                        Ty.path "move_binary_format::file_format::IdentifierIndex"
-                                      ]),
+                                      Ty.path "move_binary_format::file_format::ModuleHandleIndex";
+                                      Ty.path "move_binary_format::file_format::IdentifierIndex"
+                                    ],
                                   M.alloc (|
                                     Ty.apply
                                       (Ty.path "&")
@@ -3160,13 +3135,10 @@ Module check_duplication.
                           [ Ty.path "move_binary_format::file_format::FunctionHandle" ];
                         Ty.function
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "move_binary_format::file_format::FunctionHandle" ]
-                              ]
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::FunctionHandle" ]
                           ]
                           (Ty.tuple
                             [
@@ -3188,13 +3160,10 @@ Module check_duplication.
                           [ Ty.path "move_binary_format::file_format::FunctionHandle" ];
                         Ty.function
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "move_binary_format::file_format::FunctionHandle" ]
-                              ]
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::FunctionHandle" ]
                           ]
                           (Ty.tuple
                             [
@@ -3220,13 +3189,10 @@ Module check_duplication.
                           ];
                         Ty.function
                           [
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "move_binary_format::file_format::FunctionHandle" ]
-                              ]
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::FunctionHandle" ]
                           ]
                           (Ty.tuple
                             [
@@ -3264,25 +3230,11 @@ Module check_duplication.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.path
-                                                "move_binary_format::file_format::FunctionHandle"
-                                            ]
-                                        ]
-                                    ]
-                                    (Ty.tuple
-                                      [
-                                        Ty.path
-                                          "move_binary_format::file_format::ModuleHandleIndex";
-                                        Ty.path "move_binary_format::file_format::IdentifierIndex"
-                                      ]),
+                                      Ty.path "move_binary_format::file_format::ModuleHandleIndex";
+                                      Ty.path "move_binary_format::file_format::IdentifierIndex"
+                                    ],
                                   M.alloc (|
                                     Ty.apply
                                       (Ty.path "&")
@@ -3937,15 +3889,12 @@ Module check_duplication.
                                           ];
                                         Ty.function
                                           [
-                                            Ty.tuple
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
                                               [
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_binary_format::file_format::StructDefinition"
-                                                  ]
+                                                Ty.path
+                                                  "move_binary_format::file_format::StructDefinition"
                                               ]
                                           ]
                                           (Ty.path
@@ -3968,15 +3917,12 @@ Module check_duplication.
                                           ];
                                         Ty.function
                                           [
-                                            Ty.tuple
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
                                               [
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_binary_format::file_format::StructDefinition"
-                                                  ]
+                                                Ty.path
+                                                  "move_binary_format::file_format::StructDefinition"
                                               ]
                                           ]
                                           (Ty.path
@@ -4000,15 +3946,12 @@ Module check_duplication.
                                           "move_binary_format::file_format::StructHandleIndex";
                                         Ty.function
                                           [
-                                            Ty.tuple
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
                                               [
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_binary_format::file_format::StructDefinition"
-                                                  ]
+                                                Ty.path
+                                                  "move_binary_format::file_format::StructDefinition"
                                               ]
                                           ]
                                           (Ty.path
@@ -4086,21 +4029,8 @@ Module check_duplication.
                                             | [ α0 ] =>
                                               ltac:(M.monadic
                                                 (M.match_operator (|
-                                                  Ty.function
-                                                    [
-                                                      Ty.tuple
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "&")
-                                                            []
-                                                            [
-                                                              Ty.path
-                                                                "move_binary_format::file_format::StructDefinition"
-                                                            ]
-                                                        ]
-                                                    ]
-                                                    (Ty.path
-                                                      "move_binary_format::file_format::StructHandleIndex"),
+                                                  Ty.path
+                                                    "move_binary_format::file_format::StructHandleIndex",
                                                   M.alloc (|
                                                     Ty.apply
                                                       (Ty.path "&")
@@ -4668,15 +4598,12 @@ Module check_duplication.
                                                                             ];
                                                                           Ty.function
                                                                             [
-                                                                              Ty.tuple
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
                                                                                 [
-                                                                                  Ty.apply
-                                                                                    (Ty.path "&")
-                                                                                    []
-                                                                                    [
-                                                                                      Ty.path
-                                                                                        "move_binary_format::file_format::FieldDefinition"
-                                                                                    ]
+                                                                                  Ty.path
+                                                                                    "move_binary_format::file_format::FieldDefinition"
                                                                                 ]
                                                                             ]
                                                                             (Ty.path
@@ -4701,15 +4628,12 @@ Module check_duplication.
                                                                             ];
                                                                           Ty.function
                                                                             [
-                                                                              Ty.tuple
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
                                                                                 [
-                                                                                  Ty.apply
-                                                                                    (Ty.path "&")
-                                                                                    []
-                                                                                    [
-                                                                                      Ty.path
-                                                                                        "move_binary_format::file_format::FieldDefinition"
-                                                                                    ]
+                                                                                  Ty.path
+                                                                                    "move_binary_format::file_format::FieldDefinition"
                                                                                 ]
                                                                             ]
                                                                             (Ty.path
@@ -4734,15 +4658,12 @@ Module check_duplication.
                                                                             "move_binary_format::file_format::IdentifierIndex";
                                                                           Ty.function
                                                                             [
-                                                                              Ty.tuple
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
                                                                                 [
-                                                                                  Ty.apply
-                                                                                    (Ty.path "&")
-                                                                                    []
-                                                                                    [
-                                                                                      Ty.path
-                                                                                        "move_binary_format::file_format::FieldDefinition"
-                                                                                    ]
+                                                                                  Ty.path
+                                                                                    "move_binary_format::file_format::FieldDefinition"
                                                                                 ]
                                                                             ]
                                                                             (Ty.path
@@ -4829,22 +4750,8 @@ Module check_duplication.
                                                                               | [ α0 ] =>
                                                                                 ltac:(M.monadic
                                                                                   (M.match_operator (|
-                                                                                    Ty.function
-                                                                                      [
-                                                                                        Ty.tuple
-                                                                                          [
-                                                                                            Ty.apply
-                                                                                              (Ty.path
-                                                                                                "&")
-                                                                                              []
-                                                                                              [
-                                                                                                Ty.path
-                                                                                                  "move_binary_format::file_format::FieldDefinition"
-                                                                                              ]
-                                                                                          ]
-                                                                                      ]
-                                                                                      (Ty.path
-                                                                                        "move_binary_format::file_format::IdentifierIndex"),
+                                                                                    Ty.path
+                                                                                      "move_binary_format::file_format::IdentifierIndex",
                                                                                     M.alloc (|
                                                                                       Ty.apply
                                                                                         (Ty.path
@@ -4978,15 +4885,12 @@ Module check_duplication.
                                   [
                                     Ty.function
                                       [
-                                        Ty.tuple
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
                                           [
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [
-                                                Ty.path
-                                                  "move_binary_format::file_format::StructDefinition"
-                                              ]
+                                            Ty.path
+                                              "move_binary_format::file_format::StructDefinition"
                                           ]
                                       ]
                                       (Ty.path "bool")
@@ -5075,20 +4979,7 @@ Module check_duplication.
                                         | [ α0 ] =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
-                                              Ty.function
-                                                [
-                                                  Ty.tuple
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "&")
-                                                        []
-                                                        [
-                                                          Ty.path
-                                                            "move_binary_format::file_format::StructDefinition"
-                                                        ]
-                                                    ]
-                                                ]
-                                                (Ty.path "bool"),
+                                              Ty.path "bool",
                                               M.alloc (|
                                                 Ty.apply
                                                   (Ty.path "&")
@@ -5294,13 +5185,10 @@ Module check_duplication.
                             [ Ty.path "move_binary_format::file_format::StructDefinition" ];
                           Ty.function
                             [
-                              Ty.tuple
-                                [
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [ Ty.path "move_binary_format::file_format::StructDefinition" ]
-                                ]
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::StructDefinition" ]
                             ]
                             (Ty.path "move_binary_format::file_format::StructHandleIndex")
                         ],
@@ -5330,14 +5218,10 @@ Module check_duplication.
                               [ Ty.path "move_binary_format::file_format::StructDefinition" ];
                             Ty.function
                               [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [ Ty.path "move_binary_format::file_format::StructDefinition"
-                                      ]
-                                  ]
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::StructDefinition" ]
                               ]
                               (Ty.path "move_binary_format::file_format::StructHandleIndex")
                           ],
@@ -5355,14 +5239,10 @@ Module check_duplication.
                             Ty.path "move_binary_format::file_format::StructHandleIndex";
                             Ty.function
                               [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [ Ty.path "move_binary_format::file_format::StructDefinition"
-                                      ]
-                                  ]
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::StructDefinition" ]
                               ]
                               (Ty.path "move_binary_format::file_format::StructHandleIndex")
                           ]
@@ -5431,21 +5311,7 @@ Module check_duplication.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Ty.function
-                                        [
-                                          Ty.tuple
-                                            [
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "move_binary_format::file_format::StructDefinition"
-                                                ]
-                                            ]
-                                        ]
-                                        (Ty.path
-                                          "move_binary_format::file_format::StructHandleIndex"),
+                                      Ty.path "move_binary_format::file_format::StructHandleIndex",
                                       M.alloc (|
                                         Ty.apply
                                           (Ty.path "&")
@@ -5507,7 +5373,7 @@ Module check_duplication.
                                   [],
                                   "position",
                                   [],
-                                  [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.path "bool") ]
+                                  [ Ty.function [ Ty.path "usize" ] (Ty.path "bool") ]
                                 |),
                                 [
                                   M.borrow (|
@@ -5591,9 +5457,7 @@ Module check_duplication.
                                         | [ α0 ] =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
-                                              Ty.function
-                                                [ Ty.tuple [ Ty.path "usize" ] ]
-                                                (Ty.path "bool"),
+                                              Ty.path "bool",
                                               M.alloc (| Ty.path "usize", α0 |),
                                               [
                                                 fun γ =>
@@ -5937,15 +5801,12 @@ Module check_duplication.
                                           ];
                                         Ty.function
                                           [
-                                            Ty.tuple
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
                                               [
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_binary_format::file_format::FunctionDefinition"
-                                                  ]
+                                                Ty.path
+                                                  "move_binary_format::file_format::FunctionDefinition"
                                               ]
                                           ]
                                           (Ty.path
@@ -5968,15 +5829,12 @@ Module check_duplication.
                                           ];
                                         Ty.function
                                           [
-                                            Ty.tuple
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
                                               [
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_binary_format::file_format::FunctionDefinition"
-                                                  ]
+                                                Ty.path
+                                                  "move_binary_format::file_format::FunctionDefinition"
                                               ]
                                           ]
                                           (Ty.path
@@ -6000,15 +5858,12 @@ Module check_duplication.
                                           "move_binary_format::file_format::FunctionHandleIndex";
                                         Ty.function
                                           [
-                                            Ty.tuple
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
                                               [
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_binary_format::file_format::FunctionDefinition"
-                                                  ]
+                                                Ty.path
+                                                  "move_binary_format::file_format::FunctionDefinition"
                                               ]
                                           ]
                                           (Ty.path
@@ -6086,21 +5941,8 @@ Module check_duplication.
                                             | [ α0 ] =>
                                               ltac:(M.monadic
                                                 (M.match_operator (|
-                                                  Ty.function
-                                                    [
-                                                      Ty.tuple
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "&")
-                                                            []
-                                                            [
-                                                              Ty.path
-                                                                "move_binary_format::file_format::FunctionDefinition"
-                                                            ]
-                                                        ]
-                                                    ]
-                                                    (Ty.path
-                                                      "move_binary_format::file_format::FunctionHandleIndex"),
+                                                  Ty.path
+                                                    "move_binary_format::file_format::FunctionHandleIndex",
                                                   M.alloc (|
                                                     Ty.apply
                                                       (Ty.path "&")
@@ -6684,15 +6526,12 @@ Module check_duplication.
                                   [
                                     Ty.function
                                       [
-                                        Ty.tuple
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
                                           [
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [
-                                                Ty.path
-                                                  "move_binary_format::file_format::FunctionDefinition"
-                                              ]
+                                            Ty.path
+                                              "move_binary_format::file_format::FunctionDefinition"
                                           ]
                                       ]
                                       (Ty.path "bool")
@@ -6781,20 +6620,7 @@ Module check_duplication.
                                         | [ α0 ] =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
-                                              Ty.function
-                                                [
-                                                  Ty.tuple
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "&")
-                                                        []
-                                                        [
-                                                          Ty.path
-                                                            "move_binary_format::file_format::FunctionDefinition"
-                                                        ]
-                                                    ]
-                                                ]
-                                                (Ty.path "bool"),
+                                              Ty.path "bool",
                                               M.alloc (|
                                                 Ty.apply
                                                   (Ty.path "&")
@@ -7000,14 +6826,10 @@ Module check_duplication.
                             [ Ty.path "move_binary_format::file_format::FunctionDefinition" ];
                           Ty.function
                             [
-                              Ty.tuple
-                                [
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [ Ty.path "move_binary_format::file_format::FunctionDefinition"
-                                    ]
-                                ]
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
                             ]
                             (Ty.path "move_binary_format::file_format::FunctionHandleIndex")
                         ],
@@ -7037,16 +6859,10 @@ Module check_duplication.
                               [ Ty.path "move_binary_format::file_format::FunctionDefinition" ];
                             Ty.function
                               [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [
-                                        Ty.path
-                                          "move_binary_format::file_format::FunctionDefinition"
-                                      ]
-                                  ]
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
                               ]
                               (Ty.path "move_binary_format::file_format::FunctionHandleIndex")
                           ],
@@ -7064,16 +6880,10 @@ Module check_duplication.
                             Ty.path "move_binary_format::file_format::FunctionHandleIndex";
                             Ty.function
                               [
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [
-                                        Ty.path
-                                          "move_binary_format::file_format::FunctionDefinition"
-                                      ]
-                                  ]
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
                               ]
                               (Ty.path "move_binary_format::file_format::FunctionHandleIndex")
                           ]
@@ -7142,21 +6952,8 @@ Module check_duplication.
                                 | [ α0 ] =>
                                   ltac:(M.monadic
                                     (M.match_operator (|
-                                      Ty.function
-                                        [
-                                          Ty.tuple
-                                            [
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "move_binary_format::file_format::FunctionDefinition"
-                                                ]
-                                            ]
-                                        ]
-                                        (Ty.path
-                                          "move_binary_format::file_format::FunctionHandleIndex"),
+                                      Ty.path
+                                        "move_binary_format::file_format::FunctionHandleIndex",
                                       M.alloc (|
                                         Ty.apply
                                           (Ty.path "&")
@@ -7218,7 +7015,7 @@ Module check_duplication.
                                   [],
                                   "position",
                                   [],
-                                  [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.path "bool") ]
+                                  [ Ty.function [ Ty.path "usize" ] (Ty.path "bool") ]
                                 |),
                                 [
                                   M.borrow (|
@@ -7302,9 +7099,7 @@ Module check_duplication.
                                         | [ α0 ] =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
-                                              Ty.function
-                                                [ Ty.tuple [ Ty.path "usize" ] ]
-                                                (Ty.path "bool"),
+                                              Ty.path "bool",
                                               M.alloc (| Ty.path "usize", α0 |),
                                               [
                                                 fun γ =>

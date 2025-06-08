@@ -930,7 +930,7 @@ Module vec.
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
                 "map",
                 [],
-                [ T; Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ] T ]
+                [ T; Ty.function [ Ty.apply (Ty.path "&") [] [ T ] ] T ]
               |),
               [
                 M.call_closure (|
@@ -962,7 +962,7 @@ Module vec.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ] T,
+                            T,
                             M.alloc (| Ty.apply (Ty.path "&") [] [ T ], α0 |),
                             [
                               fun γ =>
@@ -1081,7 +1081,7 @@ Module vec.
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
                 "map",
                 [],
-                [ T; Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ] T ]
+                [ T; Ty.function [ Ty.apply (Ty.path "&") [] [ T ] ] T ]
               |),
               [
                 M.call_closure (|
@@ -1113,7 +1113,7 @@ Module vec.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ] T,
+                            T,
                             M.alloc (| Ty.apply (Ty.path "&") [] [ T ], α0 |),
                             [
                               fun γ =>

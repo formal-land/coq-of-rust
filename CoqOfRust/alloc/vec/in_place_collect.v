@@ -2496,21 +2496,13 @@ Module vec.
                 | [ α0; α1 ] =>
                   ltac:(M.monadic
                     (M.match_operator (|
-                      Ty.function
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
                         [
-                          Ty.tuple
-                            [
-                              Ty.apply (Ty.path "alloc::vec::in_place_drop::InPlaceDrop") [] [ T ];
-                              T
-                            ]
-                        ]
-                        (Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [
-                            Ty.apply (Ty.path "alloc::vec::in_place_drop::InPlaceDrop") [] [ T ];
-                            Ty.path "never"
-                          ]),
+                          Ty.apply (Ty.path "alloc::vec::in_place_drop::InPlaceDrop") [] [ T ];
+                          Ty.path "never"
+                        ],
                       M.alloc (|
                         Ty.apply (Ty.path "alloc::vec::in_place_drop::InPlaceDrop") [] [ T ],
                         α0
@@ -2527,27 +2519,16 @@ Module vec.
                                 γ
                               |) in
                             M.match_operator (|
-                              Ty.function
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
                                 [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "alloc::vec::in_place_drop::InPlaceDrop")
-                                        []
-                                        [ T ];
-                                      T
-                                    ]
-                                ]
-                                (Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "alloc::vec::in_place_drop::InPlaceDrop")
-                                      []
-                                      [ T ];
-                                    Ty.path "never"
-                                  ]),
+                                  Ty.apply
+                                    (Ty.path "alloc::vec::in_place_drop::InPlaceDrop")
+                                    []
+                                    [ T ];
+                                  Ty.path "never"
+                                ],
                               M.alloc (| T, α1 |),
                               [
                                 fun γ =>

@@ -246,7 +246,7 @@ Module char.
                 [
                   Ty.path "core::char::TryFromCharError";
                   Ty.function
-                    [ Ty.tuple [ Ty.path "core::num::error::TryFromIntError" ] ]
+                    [ Ty.path "core::num::error::TryFromIntError" ]
                     (Ty.path "core::char::TryFromCharError")
                 ]
               |),
@@ -288,9 +288,7 @@ Module char.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [ Ty.tuple [ Ty.path "core::num::error::TryFromIntError" ] ]
-                              (Ty.path "core::char::TryFromCharError"),
+                            Ty.path "core::char::TryFromCharError",
                             M.alloc (| Ty.path "core::num::error::TryFromIntError", α0 |),
                             [
                               fun γ =>
@@ -350,7 +348,7 @@ Module char.
                 [
                   Ty.path "core::char::TryFromCharError";
                   Ty.function
-                    [ Ty.tuple [ Ty.path "core::num::error::TryFromIntError" ] ]
+                    [ Ty.path "core::num::error::TryFromIntError" ]
                     (Ty.path "core::char::TryFromCharError")
                 ]
               |),
@@ -392,9 +390,7 @@ Module char.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [ Ty.tuple [ Ty.path "core::num::error::TryFromIntError" ] ]
-                              (Ty.path "core::char::TryFromCharError"),
+                            Ty.path "core::char::TryFromCharError",
                             M.alloc (| Ty.path "core::num::error::TryFromIntError", α0 |),
                             [
                               fun γ =>

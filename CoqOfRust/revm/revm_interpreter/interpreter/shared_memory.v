@@ -1485,7 +1485,7 @@ Module interpreter.
                 [
                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ];
                   Ty.function
-                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
+                    [ Ty.apply (Ty.path "&") [] [ T ] ]
                     (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ])
                 ]
               |),
@@ -1535,12 +1535,10 @@ Module interpreter.
                       | [ α0 ] =>
                         ltac:(M.monadic
                           (M.match_operator (|
-                            Ty.function
-                              [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
-                              (Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                             M.alloc (| Ty.apply (Ty.path "&") [] [ T ], α0 |),
                             [
                               fun γ =>

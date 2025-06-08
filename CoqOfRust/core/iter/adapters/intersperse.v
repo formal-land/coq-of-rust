@@ -964,7 +964,7 @@ Module iter.
                         B;
                         F;
                         Ty.function
-                          [ Ty.tuple [] ]
+                          []
                           (Ty.associated_in_trait
                             "core::iter::traits::iterator::Iterator"
                             []
@@ -990,14 +990,12 @@ Module iter.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
-                                    [ Ty.tuple [] ]
-                                    (Ty.associated_in_trait
-                                      "core::iter::traits::iterator::Iterator"
-                                      []
-                                      []
-                                      I
-                                      "Item"),
+                                  Ty.associated_in_trait
+                                    "core::iter::traits::iterator::Iterator"
+                                    []
+                                    []
+                                    I
+                                    "Item",
                                   M.alloc (| Ty.tuple [], α0 |),
                                   [
                                     fun γ =>
@@ -2235,7 +2233,7 @@ Module iter.
                             [
                               Ty.path "usize";
                               Ty.function
-                                [ Ty.tuple [ Ty.path "usize" ] ]
+                                [ Ty.path "usize" ]
                                 (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ])
                             ]
                           |),
@@ -2248,12 +2246,10 @@ Module iter.
                                   | [ α0 ] =>
                                     ltac:(M.monadic
                                       (M.match_operator (|
-                                        Ty.function
-                                          [ Ty.tuple [ Ty.path "usize" ] ]
-                                          (Ty.apply
-                                            (Ty.path "core::option::Option")
-                                            []
-                                            [ Ty.path "usize" ]),
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "usize" ],
                                         M.alloc (| Ty.path "usize", α0 |),
                                         [
                                           fun γ =>
@@ -2521,16 +2517,13 @@ Module iter.
                       B;
                       Ty.function
                         [
-                          Ty.tuple
-                            [
-                              B;
-                              Ty.associated_in_trait
-                                "core::iter::traits::iterator::Iterator"
-                                []
-                                []
-                                I
-                                "Item"
-                            ]
+                          B;
+                          Ty.associated_in_trait
+                            "core::iter::traits::iterator::Iterator"
+                            []
+                            []
+                            I
+                            "Item"
                         ]
                         B
                     ]
@@ -2545,40 +2538,14 @@ Module iter.
                           | [ α0; α1 ] =>
                             ltac:(M.monadic
                               (M.match_operator (|
-                                Ty.function
-                                  [
-                                    Ty.tuple
-                                      [
-                                        B;
-                                        Ty.associated_in_trait
-                                          "core::iter::traits::iterator::Iterator"
-                                          []
-                                          []
-                                          I
-                                          "Item"
-                                      ]
-                                  ]
-                                  B,
+                                B,
                                 M.alloc (| B, α0 |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let accum := M.copy (| B, γ |) in
                                       M.match_operator (|
-                                        Ty.function
-                                          [
-                                            Ty.tuple
-                                              [
-                                                B;
-                                                Ty.associated_in_trait
-                                                  "core::iter::traits::iterator::Iterator"
-                                                  []
-                                                  []
-                                                  I
-                                                  "Item"
-                                              ]
-                                          ]
-                                          B,
+                                        B,
                                         M.alloc (|
                                           Ty.associated_in_trait
                                             "core::iter::traits::iterator::Iterator"

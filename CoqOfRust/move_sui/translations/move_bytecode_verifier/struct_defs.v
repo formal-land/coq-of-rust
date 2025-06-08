@@ -50,7 +50,7 @@ Module struct_defs.
               [
                 Ty.path "move_binary_format::errors::VMError";
                 Ty.function
-                  [ Ty.tuple [ Ty.path "move_binary_format::errors::PartialVMError" ] ]
+                  [ Ty.path "move_binary_format::errors::PartialVMError" ]
                   (Ty.path "move_binary_format::errors::VMError")
               ]
             |),
@@ -75,9 +75,7 @@ Module struct_defs.
                     | [ α0 ] =>
                       ltac:(M.monadic
                         (M.match_operator (|
-                          Ty.function
-                            [ Ty.tuple [ Ty.path "move_binary_format::errors::PartialVMError" ] ]
-                            (Ty.path "move_binary_format::errors::VMError"),
+                          Ty.path "move_binary_format::errors::VMError",
                           M.alloc (| Ty.path "move_binary_format::errors::PartialVMError", α0 |),
                           [
                             fun γ =>
@@ -1507,11 +1505,7 @@ Module struct_defs.
                                 Ty.path "alloc::alloc::Global"
                               ];
                             Ty.function
-                              [
-                                Ty.tuple
-                                  [ Ty.path "move_binary_format::file_format::StructDefinitionIndex"
-                                  ]
-                              ]
+                              [ Ty.path "move_binary_format::file_format::StructDefinitionIndex" ]
                               (Ty.tuple
                                 [
                                   Ty.path "move_binary_format::file_format::StructDefinitionIndex";
@@ -1522,18 +1516,14 @@ Module struct_defs.
                           [
                             Ty.tuple
                               [
-                                Ty.tuple
+                                Ty.path "move_binary_format::file_format::StructDefinitionIndex";
+                                Ty.apply
+                                  (Ty.path "alloc::collections::btree::set::BTreeSet")
+                                  []
                                   [
                                     Ty.path
                                       "move_binary_format::file_format::StructDefinitionIndex";
-                                    Ty.apply
-                                      (Ty.path "alloc::collections::btree::set::BTreeSet")
-                                      []
-                                      [
-                                        Ty.path
-                                          "move_binary_format::file_format::StructDefinitionIndex";
-                                        Ty.path "alloc::alloc::Global"
-                                      ]
+                                    Ty.path "alloc::alloc::Global"
                                   ]
                               ]
                           ]
@@ -1549,13 +1539,7 @@ Module struct_defs.
                                   Ty.path "alloc::alloc::Global"
                                 ];
                               Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.path
-                                        "move_binary_format::file_format::StructDefinitionIndex"
-                                    ]
-                                ]
+                                [ Ty.path "move_binary_format::file_format::StructDefinitionIndex" ]
                                 (Ty.tuple
                                   [
                                     Ty.path
@@ -1595,11 +1579,7 @@ Module struct_defs.
                                 Ty.path "alloc::alloc::Global"
                               ];
                             Ty.function
-                              [
-                                Ty.tuple
-                                  [ Ty.path "move_binary_format::file_format::StructDefinitionIndex"
-                                  ]
-                              ]
+                              [ Ty.path "move_binary_format::file_format::StructDefinitionIndex" ]
                               (Ty.tuple
                                 [
                                   Ty.path "move_binary_format::file_format::StructDefinitionIndex";
@@ -1610,18 +1590,14 @@ Module struct_defs.
                           [
                             Ty.tuple
                               [
-                                Ty.tuple
+                                Ty.path "move_binary_format::file_format::StructDefinitionIndex";
+                                Ty.apply
+                                  (Ty.path "alloc::collections::btree::set::BTreeSet")
+                                  []
                                   [
                                     Ty.path
                                       "move_binary_format::file_format::StructDefinitionIndex";
-                                    Ty.apply
-                                      (Ty.path "alloc::collections::btree::set::BTreeSet")
-                                      []
-                                      [
-                                        Ty.path
-                                          "move_binary_format::file_format::StructDefinitionIndex";
-                                        Ty.path "alloc::alloc::Global"
-                                      ]
+                                    Ty.path "alloc::alloc::Global"
                                   ]
                               ]
                           ]
@@ -1637,13 +1613,7 @@ Module struct_defs.
                                   Ty.path "alloc::alloc::Global"
                                 ];
                               Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.path
-                                        "move_binary_format::file_format::StructDefinitionIndex"
-                                    ]
-                                ]
+                                [ Ty.path "move_binary_format::file_format::StructDefinitionIndex" ]
                                 (Ty.tuple
                                   [
                                     Ty.path
@@ -1685,11 +1655,7 @@ Module struct_defs.
                                 Ty.path "alloc::alloc::Global"
                               ];
                             Ty.function
-                              [
-                                Ty.tuple
-                                  [ Ty.path "move_binary_format::file_format::StructDefinitionIndex"
-                                  ]
-                              ]
+                              [ Ty.path "move_binary_format::file_format::StructDefinitionIndex" ]
                               (Ty.tuple
                                 [
                                   Ty.path "move_binary_format::file_format::StructDefinitionIndex";
@@ -1700,18 +1666,14 @@ Module struct_defs.
                           [
                             Ty.tuple
                               [
-                                Ty.tuple
+                                Ty.path "move_binary_format::file_format::StructDefinitionIndex";
+                                Ty.apply
+                                  (Ty.path "alloc::collections::btree::set::BTreeSet")
+                                  []
                                   [
                                     Ty.path
                                       "move_binary_format::file_format::StructDefinitionIndex";
-                                    Ty.apply
-                                      (Ty.path "alloc::collections::btree::set::BTreeSet")
-                                      []
-                                      [
-                                        Ty.path
-                                          "move_binary_format::file_format::StructDefinitionIndex";
-                                        Ty.path "alloc::alloc::Global"
-                                      ]
+                                    Ty.path "alloc::alloc::Global"
                                   ]
                               ]
                           ]
@@ -1727,13 +1689,7 @@ Module struct_defs.
                                   Ty.path "alloc::alloc::Global"
                                 ];
                               Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.path
-                                        "move_binary_format::file_format::StructDefinitionIndex"
-                                    ]
-                                ]
+                                [ Ty.path "move_binary_format::file_format::StructDefinitionIndex" ]
                                 (Ty.tuple
                                   [
                                     Ty.path
@@ -1790,53 +1746,31 @@ Module struct_defs.
                             | [ α0 ] =>
                               ltac:(M.monadic
                                 (M.match_operator (|
-                                  Ty.function
+                                  Ty.apply
+                                    (Ty.path "core::iter::adapters::map::Map")
+                                    []
                                     [
-                                      Ty.tuple
+                                      Ty.apply
+                                        (Ty.path "alloc::collections::btree::set::IntoIter")
+                                        []
                                         [
-                                          Ty.tuple
-                                            [
-                                              Ty.path
-                                                "move_binary_format::file_format::StructDefinitionIndex";
-                                              Ty.apply
-                                                (Ty.path "alloc::collections::btree::set::BTreeSet")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "move_binary_format::file_format::StructDefinitionIndex";
-                                                  Ty.path "alloc::alloc::Global"
-                                                ]
-                                            ]
+                                          Ty.path
+                                            "move_binary_format::file_format::StructDefinitionIndex";
+                                          Ty.path "alloc::alloc::Global"
+                                        ];
+                                      Ty.function
+                                        [
+                                          Ty.path
+                                            "move_binary_format::file_format::StructDefinitionIndex"
                                         ]
-                                    ]
-                                    (Ty.apply
-                                      (Ty.path "core::iter::adapters::map::Map")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloc::collections::btree::set::IntoIter")
-                                          []
+                                        (Ty.tuple
                                           [
                                             Ty.path
                                               "move_binary_format::file_format::StructDefinitionIndex";
-                                            Ty.path "alloc::alloc::Global"
-                                          ];
-                                        Ty.function
-                                          [
-                                            Ty.tuple
-                                              [
-                                                Ty.path
-                                                  "move_binary_format::file_format::StructDefinitionIndex"
-                                              ]
-                                          ]
-                                          (Ty.tuple
-                                            [
-                                              Ty.path
-                                                "move_binary_format::file_format::StructDefinitionIndex";
-                                              Ty.path
-                                                "move_binary_format::file_format::StructDefinitionIndex"
-                                            ])
-                                      ]),
+                                            Ty.path
+                                              "move_binary_format::file_format::StructDefinitionIndex"
+                                          ])
+                                    ],
                                   M.alloc (|
                                     Ty.tuple
                                       [
@@ -1891,11 +1825,8 @@ Module struct_defs.
                                                 ];
                                               Ty.function
                                                 [
-                                                  Ty.tuple
-                                                    [
-                                                      Ty.path
-                                                        "move_binary_format::file_format::StructDefinitionIndex"
-                                                    ]
+                                                  Ty.path
+                                                    "move_binary_format::file_format::StructDefinitionIndex"
                                                 ]
                                                 (Ty.tuple
                                                   [
@@ -1929,11 +1860,8 @@ Module struct_defs.
                                                 ];
                                               Ty.function
                                                 [
-                                                  Ty.tuple
-                                                    [
-                                                      Ty.path
-                                                        "move_binary_format::file_format::StructDefinitionIndex"
-                                                    ]
+                                                  Ty.path
+                                                    "move_binary_format::file_format::StructDefinitionIndex"
                                                 ]
                                                 (Ty.tuple
                                                   [
@@ -1980,21 +1908,13 @@ Module struct_defs.
                                                   | [ α0 ] =>
                                                     ltac:(M.monadic
                                                       (M.match_operator (|
-                                                        Ty.function
+                                                        Ty.tuple
                                                           [
-                                                            Ty.tuple
-                                                              [
-                                                                Ty.path
-                                                                  "move_binary_format::file_format::StructDefinitionIndex"
-                                                              ]
-                                                          ]
-                                                          (Ty.tuple
-                                                            [
-                                                              Ty.path
-                                                                "move_binary_format::file_format::StructDefinitionIndex";
-                                                              Ty.path
-                                                                "move_binary_format::file_format::StructDefinitionIndex"
-                                                            ]),
+                                                            Ty.path
+                                                              "move_binary_format::file_format::StructDefinitionIndex";
+                                                            Ty.path
+                                                              "move_binary_format::file_format::StructDefinitionIndex"
+                                                          ],
                                                         M.alloc (|
                                                           Ty.path
                                                             "move_binary_format::file_format::StructDefinitionIndex",
@@ -2111,11 +2031,8 @@ Module struct_defs.
                                       ];
                                     Ty.function
                                       [
-                                        Ty.tuple
-                                          [
-                                            Ty.path
-                                              "move_binary_format::file_format::StructDefinitionIndex"
-                                          ]
+                                        Ty.path
+                                          "move_binary_format::file_format::StructDefinitionIndex"
                                       ]
                                       (Ty.tuple
                                         [
@@ -2129,18 +2046,15 @@ Module struct_defs.
                                   [
                                     Ty.tuple
                                       [
-                                        Ty.tuple
+                                        Ty.path
+                                          "move_binary_format::file_format::StructDefinitionIndex";
+                                        Ty.apply
+                                          (Ty.path "alloc::collections::btree::set::BTreeSet")
+                                          []
                                           [
                                             Ty.path
                                               "move_binary_format::file_format::StructDefinitionIndex";
-                                            Ty.apply
-                                              (Ty.path "alloc::collections::btree::set::BTreeSet")
-                                              []
-                                              [
-                                                Ty.path
-                                                  "move_binary_format::file_format::StructDefinitionIndex";
-                                                Ty.path "alloc::alloc::Global"
-                                              ]
+                                            Ty.path "alloc::alloc::Global"
                                           ]
                                       ]
                                   ]
@@ -2158,11 +2072,8 @@ Module struct_defs.
                                         ];
                                       Ty.function
                                         [
-                                          Ty.tuple
-                                            [
-                                              Ty.path
-                                                "move_binary_format::file_format::StructDefinitionIndex"
-                                            ]
+                                          Ty.path
+                                            "move_binary_format::file_format::StructDefinitionIndex"
                                         ]
                                         (Ty.tuple
                                           [

@@ -1706,7 +1706,7 @@ Module account_address.
                   [
                     Ty.path "move_core_types::account_address::AccountAddressParseError";
                     Ty.function
-                      [ Ty.tuple [ Ty.path "hex::error::FromHexError" ] ]
+                      [ Ty.path "hex::error::FromHexError" ]
                       (Ty.path "move_core_types::account_address::AccountAddressParseError")
                   ]
                 |),
@@ -1743,10 +1743,7 @@ Module account_address.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [ Ty.tuple [ Ty.path "hex::error::FromHexError" ] ]
-                                (Ty.path
-                                  "move_core_types::account_address::AccountAddressParseError"),
+                              Ty.path "move_core_types::account_address::AccountAddressParseError",
                               M.alloc (| Ty.path "hex::error::FromHexError", α0 |),
                               [
                                 fun γ =>
@@ -1956,7 +1953,7 @@ Module account_address.
                   [
                     Ty.path "move_core_types::account_address::AccountAddressParseError";
                     Ty.function
-                      [ Ty.tuple [ Ty.path "core::array::TryFromSliceError" ] ]
+                      [ Ty.path "core::array::TryFromSliceError" ]
                       (Ty.path "move_core_types::account_address::AccountAddressParseError")
                   ]
                 |),
@@ -2011,10 +2008,7 @@ Module account_address.
                         | [ α0 ] =>
                           ltac:(M.monadic
                             (M.match_operator (|
-                              Ty.function
-                                [ Ty.tuple [ Ty.path "core::array::TryFromSliceError" ] ]
-                                (Ty.path
-                                  "move_core_types::account_address::AccountAddressParseError"),
+                              Ty.path "move_core_types::account_address::AccountAddressParseError",
                               M.alloc (| Ty.path "core::array::TryFromSliceError", α0 |),
                               [
                                 fun γ =>
