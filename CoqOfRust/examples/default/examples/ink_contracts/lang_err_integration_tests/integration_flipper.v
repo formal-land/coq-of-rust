@@ -126,68 +126,47 @@ Module Impl_integration_flipper_Flipper.
     | [], [], [ succeed ] =>
       ltac:(M.monadic
         (let succeed := M.alloc (| Ty.path "bool", succeed |) in
-        M.read (|
-          M.match_operator (|
-            Ty.apply
-              (Ty.path "core::result::Result")
-              []
-              [ Ty.path "integration_flipper::Flipper"; Ty.path "integration_flipper::FlipperError"
-              ],
-            M.alloc (| Ty.tuple [], Value.Tuple [] |),
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ := M.use succeed in
-                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  M.alloc (|
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [
-                        Ty.path "integration_flipper::Flipper";
-                        Ty.path "integration_flipper::FlipperError"
-                      ],
-                    Value.StructTuple
-                      "core::result::Result::Ok"
-                      []
-                      [
-                        Ty.path "integration_flipper::Flipper";
-                        Ty.path "integration_flipper::FlipperError"
-                      ]
-                      [
-                        M.call_closure (|
-                          Ty.path "integration_flipper::Flipper",
-                          M.get_associated_function (|
-                            Ty.path "integration_flipper::Flipper",
-                            "new",
-                            [],
-                            []
-                          |),
-                          [ Value.Bool true ]
-                        |)
-                      ]
-                  |)));
-              fun γ =>
-                ltac:(M.monadic
-                  (M.alloc (|
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [
-                        Ty.path "integration_flipper::Flipper";
-                        Ty.path "integration_flipper::FlipperError"
-                      ],
-                    Value.StructTuple
-                      "core::result::Result::Err"
-                      []
-                      [
-                        Ty.path "integration_flipper::Flipper";
-                        Ty.path "integration_flipper::FlipperError"
-                      ]
-                      [ Value.StructTuple "integration_flipper::FlipperError" [] [] [] ]
-                  |)))
-            ]
-          |)
+        M.match_operator (|
+          Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.path "integration_flipper::Flipper"; Ty.path "integration_flipper::FlipperError" ],
+          M.alloc (| Ty.tuple [], Value.Tuple [] |),
+          [
+            fun γ =>
+              ltac:(M.monadic
+                (let γ := M.use succeed in
+                let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.path "integration_flipper::Flipper";
+                    Ty.path "integration_flipper::FlipperError"
+                  ]
+                  [
+                    M.call_closure (|
+                      Ty.path "integration_flipper::Flipper",
+                      M.get_associated_function (|
+                        Ty.path "integration_flipper::Flipper",
+                        "new",
+                        [],
+                        []
+                      |),
+                      [ Value.Bool true ]
+                    |)
+                  ]));
+            fun γ =>
+              ltac:(M.monadic
+                (Value.StructTuple
+                  "core::result::Result::Err"
+                  []
+                  [
+                    Ty.path "integration_flipper::Flipper";
+                    Ty.path "integration_flipper::FlipperError"
+                  ]
+                  [ Value.StructTuple "integration_flipper::FlipperError" [] [] [] ]))
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

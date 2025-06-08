@@ -58,12 +58,10 @@ Module Impl_core_clone_Clone_for_call_runtime_AccountId.
       ltac:(M.monadic
         (let self :=
           M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "call_runtime::AccountId" ], self |) in
-        M.read (|
-          M.match_operator (|
-            Ty.path "call_runtime::AccountId",
-            Value.DeclaredButUndefined,
-            [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
-          |)
+        M.match_operator (|
+          Ty.path "call_runtime::AccountId",
+          Value.DeclaredButUndefined,
+          [ fun γ => ltac:(M.monadic (M.read (| M.deref (| M.read (| self |) |) |))) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -371,37 +369,28 @@ Module Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeErro
     | [], [], [ e ] =>
       ltac:(M.monadic
         (let e := M.alloc (| Ty.path "call_runtime::EnvError", e |) in
-        M.read (|
-          M.match_operator (|
-            Ty.path "call_runtime::RuntimeError",
-            e,
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let _ :=
-                    M.is_struct_tuple (| γ, "call_runtime::EnvError::CallRuntimeFailed" |) in
-                  M.alloc (|
-                    Ty.path "call_runtime::RuntimeError",
-                    Value.StructTuple "call_runtime::RuntimeError::CallRuntimeFailed" [] [] []
-                  |)));
-              fun γ =>
-                ltac:(M.monadic
-                  (M.alloc (|
-                    Ty.path "call_runtime::RuntimeError",
-                    M.never_to_any (|
-                      M.call_closure (|
-                        Ty.path "never",
-                        M.get_function (|
-                          "std::panicking::begin_panic",
-                          [],
-                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                        |),
-                        [ mk_str (| "Unexpected error from `pallet-contracts`." |) ]
-                      |)
-                    |)
-                  |)))
-            ]
-          |)
+        M.match_operator (|
+          Ty.path "call_runtime::RuntimeError",
+          e,
+          [
+            fun γ =>
+              ltac:(M.monadic
+                (let _ := M.is_struct_tuple (| γ, "call_runtime::EnvError::CallRuntimeFailed" |) in
+                Value.StructTuple "call_runtime::RuntimeError::CallRuntimeFailed" [] [] []));
+            fun γ =>
+              ltac:(M.monadic
+                (M.never_to_any (|
+                  M.call_closure (|
+                    Ty.path "never",
+                    M.get_function (|
+                      "std::panicking::begin_panic",
+                      [],
+                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                    |),
+                    [ mk_str (| "Unexpected error from `pallet-contracts`." |) ]
+                  |)
+                |)))
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

@@ -424,132 +424,105 @@ Module Impl_revm_precompile_Precompiles.
     | [], [], [ spec ] =>
       ltac:(M.monadic
         (let spec := M.alloc (| Ty.path "revm_precompile::PrecompileSpecId", spec |) in
-        M.read (|
-          M.match_operator (|
-            Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
-            spec,
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let _ :=
-                    M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::HOMESTEAD" |) in
-                  M.alloc (|
-                    Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
-                    M.call_closure (|
-                      Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
-                      M.get_associated_function (|
-                        Ty.path "revm_precompile::Precompiles",
-                        "homestead",
-                        [],
-                        []
-                      |),
-                      []
-                    |)
-                  |)));
-              fun γ =>
-                ltac:(M.monadic
-                  (let _ :=
-                    M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::BYZANTIUM" |) in
-                  M.alloc (|
-                    Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
-                    M.call_closure (|
-                      Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
-                      M.get_associated_function (|
-                        Ty.path "revm_precompile::Precompiles",
-                        "byzantium",
-                        [],
-                        []
-                      |),
-                      []
-                    |)
-                  |)));
-              fun γ =>
-                ltac:(M.monadic
-                  (let _ :=
-                    M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::ISTANBUL" |) in
-                  M.alloc (|
-                    Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
-                    M.call_closure (|
-                      Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
-                      M.get_associated_function (|
-                        Ty.path "revm_precompile::Precompiles",
-                        "istanbul",
-                        [],
-                        []
-                      |),
-                      []
-                    |)
-                  |)));
-              fun γ =>
-                ltac:(M.monadic
-                  (let _ :=
-                    M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::BERLIN" |) in
-                  M.alloc (|
-                    Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
-                    M.call_closure (|
-                      Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
-                      M.get_associated_function (|
-                        Ty.path "revm_precompile::Precompiles",
-                        "berlin",
-                        [],
-                        []
-                      |),
-                      []
-                    |)
-                  |)));
-              fun γ =>
-                ltac:(M.monadic
-                  (let _ :=
-                    M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::CANCUN" |) in
-                  M.alloc (|
-                    Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
-                    M.call_closure (|
-                      Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
-                      M.get_associated_function (|
-                        Ty.path "revm_precompile::Precompiles",
-                        "cancun",
-                        [],
-                        []
-                      |),
-                      []
-                    |)
-                  |)));
-              fun γ =>
-                ltac:(M.monadic
-                  (let _ :=
-                    M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::PRAGUE" |) in
-                  M.alloc (|
-                    Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
-                    M.call_closure (|
-                      Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
-                      M.get_associated_function (|
-                        Ty.path "revm_precompile::Precompiles",
-                        "prague",
-                        [],
-                        []
-                      |),
-                      []
-                    |)
-                  |)));
-              fun γ =>
-                ltac:(M.monadic
-                  (let _ :=
-                    M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::LATEST" |) in
-                  M.alloc (|
-                    Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
-                    M.call_closure (|
-                      Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
-                      M.get_associated_function (|
-                        Ty.path "revm_precompile::Precompiles",
-                        "latest",
-                        [],
-                        []
-                      |),
-                      []
-                    |)
-                  |)))
-            ]
-          |)
+        M.match_operator (|
+          Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
+          spec,
+          [
+            fun γ =>
+              ltac:(M.monadic
+                (let _ :=
+                  M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::HOMESTEAD" |) in
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
+                  M.get_associated_function (|
+                    Ty.path "revm_precompile::Precompiles",
+                    "homestead",
+                    [],
+                    []
+                  |),
+                  []
+                |)));
+            fun γ =>
+              ltac:(M.monadic
+                (let _ :=
+                  M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::BYZANTIUM" |) in
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
+                  M.get_associated_function (|
+                    Ty.path "revm_precompile::Precompiles",
+                    "byzantium",
+                    [],
+                    []
+                  |),
+                  []
+                |)));
+            fun γ =>
+              ltac:(M.monadic
+                (let _ :=
+                  M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::ISTANBUL" |) in
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
+                  M.get_associated_function (|
+                    Ty.path "revm_precompile::Precompiles",
+                    "istanbul",
+                    [],
+                    []
+                  |),
+                  []
+                |)));
+            fun γ =>
+              ltac:(M.monadic
+                (let _ := M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::BERLIN" |) in
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
+                  M.get_associated_function (|
+                    Ty.path "revm_precompile::Precompiles",
+                    "berlin",
+                    [],
+                    []
+                  |),
+                  []
+                |)));
+            fun γ =>
+              ltac:(M.monadic
+                (let _ := M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::CANCUN" |) in
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
+                  M.get_associated_function (|
+                    Ty.path "revm_precompile::Precompiles",
+                    "cancun",
+                    [],
+                    []
+                  |),
+                  []
+                |)));
+            fun γ =>
+              ltac:(M.monadic
+                (let _ := M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::PRAGUE" |) in
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
+                  M.get_associated_function (|
+                    Ty.path "revm_precompile::Precompiles",
+                    "prague",
+                    [],
+                    []
+                  |),
+                  []
+                |)));
+            fun γ =>
+              ltac:(M.monadic
+                (let _ := M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::LATEST" |) in
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
+                  M.get_associated_function (|
+                    Ty.path "revm_precompile::Precompiles",
+                    "latest",
+                    [],
+                    []
+                  |),
+                  []
+                |)))
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -3440,76 +3413,53 @@ Module Impl_core_fmt_Debug_for_revm_precompile_PrecompileSpecId.
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-            M.read (|
-              M.match_operator (|
-                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                self,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let _ :=
-                        M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::HOMESTEAD" |) in
-                      M.alloc (|
-                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "HOMESTEAD" |) |) |)
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let _ :=
-                        M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::BYZANTIUM" |) in
-                      M.alloc (|
-                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BYZANTIUM" |) |) |)
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let _ :=
-                        M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::ISTANBUL" |) in
-                      M.alloc (|
-                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ISTANBUL" |) |) |)
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let _ :=
-                        M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::BERLIN" |) in
-                      M.alloc (|
-                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BERLIN" |) |) |)
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let _ :=
-                        M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::CANCUN" |) in
-                      M.alloc (|
-                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CANCUN" |) |) |)
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let _ :=
-                        M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::PRAGUE" |) in
-                      M.alloc (|
-                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "PRAGUE" |) |) |)
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let _ :=
-                        M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::LATEST" |) in
-                      M.alloc (|
-                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LATEST" |) |) |)
-                      |)))
-                ]
-              |)
+            M.match_operator (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+              self,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let _ :=
+                      M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::HOMESTEAD" |) in
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "HOMESTEAD" |) |) |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let _ :=
+                      M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::BYZANTIUM" |) in
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BYZANTIUM" |) |) |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let _ :=
+                      M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::ISTANBUL" |) in
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ISTANBUL" |) |) |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let _ :=
+                      M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::BERLIN" |) in
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BERLIN" |) |) |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let _ :=
+                      M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::CANCUN" |) in
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CANCUN" |) |) |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let _ :=
+                      M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::PRAGUE" |) in
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "PRAGUE" |) |) |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let _ :=
+                      M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::LATEST" |) in
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LATEST" |) |) |)))
+              ]
             |)
           ]
         |)))
@@ -3893,283 +3843,260 @@ Module Impl_revm_precompile_PrecompileSpecId.
     | [], [], [ spec_id ] =>
       ltac:(M.monadic
         (let spec_id := M.alloc (| Ty.path "revm_specification::hardfork::SpecId", spec_id |) in
-        M.read (|
-          M.match_operator (|
-            Ty.path "revm_precompile::PrecompileSpecId",
-            spec_id,
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (M.find_or_pattern (Ty.tuple []) (|
-                    γ,
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let _ :=
-                            M.is_struct_tuple (|
-                              γ,
-                              "revm_specification::hardfork::SpecId::FRONTIER"
-                            |) in
-                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let _ :=
-                            M.is_struct_tuple (|
-                              γ,
-                              "revm_specification::hardfork::SpecId::FRONTIER_THAWING"
-                            |) in
-                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let _ :=
-                            M.is_struct_tuple (|
-                              γ,
-                              "revm_specification::hardfork::SpecId::HOMESTEAD"
-                            |) in
-                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let _ :=
-                            M.is_struct_tuple (|
-                              γ,
-                              "revm_specification::hardfork::SpecId::DAO_FORK"
-                            |) in
-                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let _ :=
-                            M.is_struct_tuple (|
-                              γ,
-                              "revm_specification::hardfork::SpecId::TANGERINE"
-                            |) in
-                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let _ :=
-                            M.is_struct_tuple (|
-                              γ,
-                              "revm_specification::hardfork::SpecId::SPURIOUS_DRAGON"
-                            |) in
-                          M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                    ],
+        M.match_operator (|
+          Ty.path "revm_precompile::PrecompileSpecId",
+          spec_id,
+          [
+            fun γ =>
+              ltac:(M.monadic
+                (M.find_or_pattern (Ty.tuple []) (|
+                  γ,
+                  [
                     fun γ =>
                       ltac:(M.monadic
-                        match γ with
-                        | [] =>
-                          ltac:(M.monadic
-                            (M.alloc (|
-                              Ty.path "revm_precompile::PrecompileSpecId",
-                              Value.StructTuple
-                                "revm_precompile::PrecompileSpecId::HOMESTEAD"
-                                []
-                                []
-                                []
-                            |)))
-                        | _ => M.impossible "wrong number of arguments"
-                        end)
-                  |)));
-              fun γ =>
-                ltac:(M.monadic
-                  (M.find_or_pattern (Ty.tuple []) (|
-                    γ,
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let _ :=
-                            M.is_struct_tuple (|
-                              γ,
-                              "revm_specification::hardfork::SpecId::BYZANTIUM"
-                            |) in
-                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let _ :=
-                            M.is_struct_tuple (|
-                              γ,
-                              "revm_specification::hardfork::SpecId::CONSTANTINOPLE"
-                            |) in
-                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let _ :=
-                            M.is_struct_tuple (|
-                              γ,
-                              "revm_specification::hardfork::SpecId::PETERSBURG"
-                            |) in
-                          M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                    ],
+                        (let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_specification::hardfork::SpecId::FRONTIER"
+                          |) in
+                        Value.Tuple []));
                     fun γ =>
                       ltac:(M.monadic
-                        match γ with
-                        | [] =>
-                          ltac:(M.monadic
-                            (M.alloc (|
-                              Ty.path "revm_precompile::PrecompileSpecId",
-                              Value.StructTuple
-                                "revm_precompile::PrecompileSpecId::BYZANTIUM"
-                                []
-                                []
-                                []
-                            |)))
-                        | _ => M.impossible "wrong number of arguments"
-                        end)
-                  |)));
-              fun γ =>
-                ltac:(M.monadic
-                  (M.find_or_pattern (Ty.tuple []) (|
-                    γ,
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let _ :=
-                            M.is_struct_tuple (|
-                              γ,
-                              "revm_specification::hardfork::SpecId::ISTANBUL"
-                            |) in
-                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let _ :=
-                            M.is_struct_tuple (|
-                              γ,
-                              "revm_specification::hardfork::SpecId::MUIR_GLACIER"
-                            |) in
-                          M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                    ],
+                        (let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_specification::hardfork::SpecId::FRONTIER_THAWING"
+                          |) in
+                        Value.Tuple []));
                     fun γ =>
                       ltac:(M.monadic
-                        match γ with
-                        | [] =>
-                          ltac:(M.monadic
-                            (M.alloc (|
-                              Ty.path "revm_precompile::PrecompileSpecId",
-                              Value.StructTuple
-                                "revm_precompile::PrecompileSpecId::ISTANBUL"
-                                []
-                                []
-                                []
-                            |)))
-                        | _ => M.impossible "wrong number of arguments"
-                        end)
-                  |)));
-              fun γ =>
-                ltac:(M.monadic
-                  (M.find_or_pattern (Ty.tuple []) (|
-                    γ,
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let _ :=
-                            M.is_struct_tuple (|
-                              γ,
-                              "revm_specification::hardfork::SpecId::BERLIN"
-                            |) in
-                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let _ :=
-                            M.is_struct_tuple (|
-                              γ,
-                              "revm_specification::hardfork::SpecId::LONDON"
-                            |) in
-                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let _ :=
-                            M.is_struct_tuple (|
-                              γ,
-                              "revm_specification::hardfork::SpecId::ARROW_GLACIER"
-                            |) in
-                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let _ :=
-                            M.is_struct_tuple (|
-                              γ,
-                              "revm_specification::hardfork::SpecId::GRAY_GLACIER"
-                            |) in
-                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let _ :=
-                            M.is_struct_tuple (|
-                              γ,
-                              "revm_specification::hardfork::SpecId::MERGE"
-                            |) in
-                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let _ :=
-                            M.is_struct_tuple (|
-                              γ,
-                              "revm_specification::hardfork::SpecId::SHANGHAI"
-                            |) in
-                          M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                    ],
+                        (let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_specification::hardfork::SpecId::HOMESTEAD"
+                          |) in
+                        Value.Tuple []));
                     fun γ =>
                       ltac:(M.monadic
-                        match γ with
-                        | [] =>
-                          ltac:(M.monadic
-                            (M.alloc (|
-                              Ty.path "revm_precompile::PrecompileSpecId",
-                              Value.StructTuple "revm_precompile::PrecompileSpecId::BERLIN" [] [] []
-                            |)))
-                        | _ => M.impossible "wrong number of arguments"
-                        end)
-                  |)));
-              fun γ =>
-                ltac:(M.monadic
-                  (let _ :=
-                    M.is_struct_tuple (| γ, "revm_specification::hardfork::SpecId::CANCUN" |) in
-                  M.alloc (|
-                    Ty.path "revm_precompile::PrecompileSpecId",
-                    Value.StructTuple "revm_precompile::PrecompileSpecId::CANCUN" [] [] []
-                  |)));
-              fun γ =>
-                ltac:(M.monadic
-                  (M.find_or_pattern (Ty.tuple []) (|
-                    γ,
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let _ :=
-                            M.is_struct_tuple (|
-                              γ,
-                              "revm_specification::hardfork::SpecId::PRAGUE"
-                            |) in
-                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let _ :=
-                            M.is_struct_tuple (|
-                              γ,
-                              "revm_specification::hardfork::SpecId::OSAKA"
-                            |) in
-                          M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                    ],
+                        (let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_specification::hardfork::SpecId::DAO_FORK"
+                          |) in
+                        Value.Tuple []));
                     fun γ =>
                       ltac:(M.monadic
-                        match γ with
-                        | [] =>
-                          ltac:(M.monadic
-                            (M.alloc (|
-                              Ty.path "revm_precompile::PrecompileSpecId",
-                              Value.StructTuple "revm_precompile::PrecompileSpecId::PRAGUE" [] [] []
-                            |)))
-                        | _ => M.impossible "wrong number of arguments"
-                        end)
-                  |)));
-              fun γ =>
-                ltac:(M.monadic
-                  (let _ :=
-                    M.is_struct_tuple (| γ, "revm_specification::hardfork::SpecId::LATEST" |) in
-                  M.alloc (|
-                    Ty.path "revm_precompile::PrecompileSpecId",
-                    Value.StructTuple "revm_precompile::PrecompileSpecId::LATEST" [] [] []
-                  |)))
-            ]
-          |)
+                        (let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_specification::hardfork::SpecId::TANGERINE"
+                          |) in
+                        Value.Tuple []));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_specification::hardfork::SpecId::SPURIOUS_DRAGON"
+                          |) in
+                        Value.Tuple []))
+                  ],
+                  fun γ =>
+                    ltac:(M.monadic
+                      match γ with
+                      | [] =>
+                        ltac:(M.monadic
+                          (Value.StructTuple
+                            "revm_precompile::PrecompileSpecId::HOMESTEAD"
+                            []
+                            []
+                            []))
+                      | _ => M.impossible "wrong number of arguments"
+                      end)
+                |)));
+            fun γ =>
+              ltac:(M.monadic
+                (M.find_or_pattern (Ty.tuple []) (|
+                  γ,
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_specification::hardfork::SpecId::BYZANTIUM"
+                          |) in
+                        Value.Tuple []));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_specification::hardfork::SpecId::CONSTANTINOPLE"
+                          |) in
+                        Value.Tuple []));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_specification::hardfork::SpecId::PETERSBURG"
+                          |) in
+                        Value.Tuple []))
+                  ],
+                  fun γ =>
+                    ltac:(M.monadic
+                      match γ with
+                      | [] =>
+                        ltac:(M.monadic
+                          (Value.StructTuple
+                            "revm_precompile::PrecompileSpecId::BYZANTIUM"
+                            []
+                            []
+                            []))
+                      | _ => M.impossible "wrong number of arguments"
+                      end)
+                |)));
+            fun γ =>
+              ltac:(M.monadic
+                (M.find_or_pattern (Ty.tuple []) (|
+                  γ,
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_specification::hardfork::SpecId::ISTANBUL"
+                          |) in
+                        Value.Tuple []));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_specification::hardfork::SpecId::MUIR_GLACIER"
+                          |) in
+                        Value.Tuple []))
+                  ],
+                  fun γ =>
+                    ltac:(M.monadic
+                      match γ with
+                      | [] =>
+                        ltac:(M.monadic
+                          (Value.StructTuple
+                            "revm_precompile::PrecompileSpecId::ISTANBUL"
+                            []
+                            []
+                            []))
+                      | _ => M.impossible "wrong number of arguments"
+                      end)
+                |)));
+            fun γ =>
+              ltac:(M.monadic
+                (M.find_or_pattern (Ty.tuple []) (|
+                  γ,
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_specification::hardfork::SpecId::BERLIN"
+                          |) in
+                        Value.Tuple []));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_specification::hardfork::SpecId::LONDON"
+                          |) in
+                        Value.Tuple []));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_specification::hardfork::SpecId::ARROW_GLACIER"
+                          |) in
+                        Value.Tuple []));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_specification::hardfork::SpecId::GRAY_GLACIER"
+                          |) in
+                        Value.Tuple []));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_specification::hardfork::SpecId::MERGE"
+                          |) in
+                        Value.Tuple []));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_specification::hardfork::SpecId::SHANGHAI"
+                          |) in
+                        Value.Tuple []))
+                  ],
+                  fun γ =>
+                    ltac:(M.monadic
+                      match γ with
+                      | [] =>
+                        ltac:(M.monadic
+                          (Value.StructTuple "revm_precompile::PrecompileSpecId::BERLIN" [] [] []))
+                      | _ => M.impossible "wrong number of arguments"
+                      end)
+                |)));
+            fun γ =>
+              ltac:(M.monadic
+                (let _ :=
+                  M.is_struct_tuple (| γ, "revm_specification::hardfork::SpecId::CANCUN" |) in
+                Value.StructTuple "revm_precompile::PrecompileSpecId::CANCUN" [] [] []));
+            fun γ =>
+              ltac:(M.monadic
+                (M.find_or_pattern (Ty.tuple []) (|
+                  γ,
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_specification::hardfork::SpecId::PRAGUE"
+                          |) in
+                        Value.Tuple []));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_specification::hardfork::SpecId::OSAKA"
+                          |) in
+                        Value.Tuple []))
+                  ],
+                  fun γ =>
+                    ltac:(M.monadic
+                      match γ with
+                      | [] =>
+                        ltac:(M.monadic
+                          (Value.StructTuple "revm_precompile::PrecompileSpecId::PRAGUE" [] [] []))
+                      | _ => M.impossible "wrong number of arguments"
+                      end)
+                |)));
+            fun γ =>
+              ltac:(M.monadic
+                (let _ :=
+                  M.is_struct_tuple (| γ, "revm_specification::hardfork::SpecId::LATEST" |) in
+                Value.StructTuple "revm_precompile::PrecompileSpecId::LATEST" [] [] []))
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

@@ -395,31 +395,26 @@ Module legacy.
                   [ Ty.path "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode" ],
                 self
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.tuple [],
-                Value.DeclaredButUndefined,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.match_operator (|
-                        Ty.tuple [],
-                        Value.DeclaredButUndefined,
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (M.match_operator (|
-                                Ty.tuple [],
-                                Value.DeclaredButUndefined,
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                                ]
-                              |)))
-                        ]
-                      |)))
-                ]
-              |)
+            M.match_operator (|
+              Ty.tuple [],
+              Value.DeclaredButUndefined,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                      Ty.tuple [],
+                      Value.DeclaredButUndefined,
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              Ty.tuple [],
+                              Value.DeclaredButUndefined,
+                              [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
+                            |)))
+                      ]
+                    |)))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -578,160 +573,155 @@ Module legacy.
                   [ Ty.path "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode" ],
                 other
               |) in
-            M.read (|
-              M.match_operator (|
+            M.match_operator (|
+              Ty.path "core::cmp::Ordering",
+              M.alloc (|
                 Ty.path "core::cmp::Ordering",
-                M.alloc (|
+                M.call_closure (|
                   Ty.path "core::cmp::Ordering",
-                  M.call_closure (|
-                    Ty.path "core::cmp::Ordering",
-                    M.get_trait_method (|
-                      "core::cmp::Ord",
-                      Ty.path "alloy_primitives::bytes_::Bytes",
-                      [],
-                      [],
-                      "cmp",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode",
-                              "bytecode"
-                            |)
-                          |)
-                        |)
-                      |);
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| other |) |),
-                              "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode",
-                              "bytecode"
-                            |)
+                  M.get_trait_method (|
+                    "core::cmp::Ord",
+                    Ty.path "alloy_primitives::bytes_::Bytes",
+                    [],
+                    [],
+                    "cmp",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode",
+                            "bytecode"
                           |)
                         |)
                       |)
-                    ]
-                  |)
-                |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
-                      M.match_operator (|
+                    |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| other |) |),
+                            "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode",
+                            "bytecode"
+                          |)
+                        |)
+                      |)
+                    |)
+                  ]
+                |)
+              |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
+                    M.match_operator (|
+                      Ty.path "core::cmp::Ordering",
+                      M.alloc (|
                         Ty.path "core::cmp::Ordering",
-                        M.alloc (|
+                        M.call_closure (|
                           Ty.path "core::cmp::Ordering",
-                          M.call_closure (|
-                            Ty.path "core::cmp::Ordering",
-                            M.get_trait_method (|
-                              "core::cmp::Ord",
-                              Ty.path "usize",
-                              [],
-                              [],
-                              "cmp",
-                              [],
-                              []
-                            |),
-                            [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode",
-                                      "original_len"
-                                    |)
-                                  |)
-                                |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| other |) |),
-                                      "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode",
-                                      "original_len"
-                                    |)
+                          M.get_trait_method (|
+                            "core::cmp::Ord",
+                            Ty.path "usize",
+                            [],
+                            [],
+                            "cmp",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode",
+                                    "original_len"
                                   |)
                                 |)
                               |)
-                            ]
-                          |)
-                        |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
-                              M.alloc (|
-                                Ty.path "core::cmp::Ordering",
-                                M.call_closure (|
-                                  Ty.path "core::cmp::Ordering",
-                                  M.get_trait_method (|
-                                    "core::cmp::Ord",
-                                    Ty.path "revm_bytecode::legacy::jump_map::JumpTable",
-                                    [],
-                                    [],
-                                    "cmp",
-                                    [],
-                                    []
-                                  |),
-                                  [
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| other |) |),
+                                    "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode",
+                                    "original_len"
+                                  |)
+                                |)
+                              |)
+                            |)
+                          ]
+                        |)
+                      |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
+                            M.call_closure (|
+                              Ty.path "core::cmp::Ordering",
+                              M.get_trait_method (|
+                                "core::cmp::Ord",
+                                Ty.path "revm_bytecode::legacy::jump_map::JumpTable",
+                                [],
+                                [],
+                                "cmp",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.deref (|
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode",
-                                            "jump_table"
-                                          |)
-                                        |)
-                                      |)
-                                    |);
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (|
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| other |) |),
-                                            "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode",
-                                            "jump_table"
-                                          |)
-                                        |)
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode",
+                                        "jump_table"
                                       |)
                                     |)
-                                  ]
+                                  |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| other |) |),
+                                        "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode",
+                                        "jump_table"
+                                      |)
+                                    |)
+                                  |)
                                 |)
-                              |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let cmp := M.copy (| Ty.path "core::cmp::Ordering", γ |) in
-                              cmp))
-                        ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let cmp := M.copy (| Ty.path "core::cmp::Ordering", γ |) in
-                      cmp))
-                ]
-              |)
+                              ]
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let cmp := M.copy (| Ty.path "core::cmp::Ordering", γ |) in
+                            M.read (| cmp |)))
+                      ]
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let cmp := M.copy (| Ty.path "core::cmp::Ordering", γ |) in
+                    M.read (| cmp |)))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -769,201 +759,193 @@ Module legacy.
                   [ Ty.path "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode" ],
                 other
               |) in
-            M.read (|
-              M.match_operator (|
+            M.match_operator (|
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
+              M.alloc (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
-                M.alloc (|
+                M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
-                  M.call_closure (|
-                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
-                    M.get_trait_method (|
-                      "core::cmp::PartialOrd",
-                      Ty.path "alloy_primitives::bytes_::Bytes",
-                      [],
-                      [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-                      "partial_cmp",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode",
-                              "bytecode"
-                            |)
-                          |)
-                        |)
-                      |);
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| other |) |),
-                              "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode",
-                              "bytecode"
-                            |)
+                  M.get_trait_method (|
+                    "core::cmp::PartialOrd",
+                    Ty.path "alloy_primitives::bytes_::Bytes",
+                    [],
+                    [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                    "partial_cmp",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode",
+                            "bytecode"
                           |)
                         |)
                       |)
-                    ]
-                  |)
-                |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::option::Option::Some",
-                          0
-                        |) in
-                      let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
-                      M.match_operator (|
+                    |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| other |) |),
+                            "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode",
+                            "bytecode"
+                          |)
+                        |)
+                      |)
+                    |)
+                  ]
+                |)
+              |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::option::Option::Some",
+                        0
+                      |) in
+                    let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
+                    M.match_operator (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "core::cmp::Ordering" ],
+                      M.alloc (|
                         Ty.apply
                           (Ty.path "core::option::Option")
                           []
                           [ Ty.path "core::cmp::Ordering" ],
-                        M.alloc (|
+                        M.call_closure (|
                           Ty.apply
                             (Ty.path "core::option::Option")
                             []
                             [ Ty.path "core::cmp::Ordering" ],
-                          M.call_closure (|
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [ Ty.path "core::cmp::Ordering" ],
-                            M.get_trait_method (|
-                              "core::cmp::PartialOrd",
-                              Ty.path "usize",
-                              [],
-                              [ Ty.path "usize" ],
-                              "partial_cmp",
-                              [],
-                              []
-                            |),
-                            [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode",
-                                      "original_len"
-                                    |)
-                                  |)
-                                |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| other |) |),
-                                      "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode",
-                                      "original_len"
-                                    |)
+                          M.get_trait_method (|
+                            "core::cmp::PartialOrd",
+                            Ty.path "usize",
+                            [],
+                            [ Ty.path "usize" ],
+                            "partial_cmp",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode",
+                                    "original_len"
                                   |)
                                 |)
                               |)
-                            ]
-                          |)
-                        |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::option::Option::Some",
-                                  0
-                                |) in
-                              let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
-                              M.alloc (|
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| other |) |),
+                                    "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode",
+                                    "original_len"
+                                  |)
+                                |)
+                              |)
+                            |)
+                          ]
+                        |)
+                      |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "core::option::Option::Some",
+                                0
+                              |) in
+                            let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [ Ty.path "core::cmp::Ordering" ],
+                              M.get_trait_method (|
+                                "core::cmp::PartialOrd",
+                                Ty.path "revm_bytecode::legacy::jump_map::JumpTable",
+                                [],
+                                [ Ty.path "revm_bytecode::legacy::jump_map::JumpTable" ],
+                                "partial_cmp",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode",
+                                        "jump_table"
+                                      |)
+                                    |)
+                                  |)
+                                |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| other |) |),
+                                        "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode",
+                                        "jump_table"
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              ]
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let cmp :=
+                              M.copy (|
                                 Ty.apply
                                   (Ty.path "core::option::Option")
                                   []
                                   [ Ty.path "core::cmp::Ordering" ],
-                                M.call_closure (|
-                                  Ty.apply
-                                    (Ty.path "core::option::Option")
-                                    []
-                                    [ Ty.path "core::cmp::Ordering" ],
-                                  M.get_trait_method (|
-                                    "core::cmp::PartialOrd",
-                                    Ty.path "revm_bytecode::legacy::jump_map::JumpTable",
-                                    [],
-                                    [ Ty.path "revm_bytecode::legacy::jump_map::JumpTable" ],
-                                    "partial_cmp",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (|
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode",
-                                            "jump_table"
-                                          |)
-                                        |)
-                                      |)
-                                    |);
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (|
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| other |) |),
-                                            "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode",
-                                            "jump_table"
-                                          |)
-                                        |)
-                                      |)
-                                    |)
-                                  ]
-                                |)
-                              |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let cmp :=
-                                M.copy (|
-                                  Ty.apply
-                                    (Ty.path "core::option::Option")
-                                    []
-                                    [ Ty.path "core::cmp::Ordering" ],
-                                  γ
-                                |) in
-                              cmp))
-                        ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let cmp :=
-                        M.copy (|
-                          Ty.apply
-                            (Ty.path "core::option::Option")
-                            []
-                            [ Ty.path "core::cmp::Ordering" ],
-                          γ
-                        |) in
-                      cmp))
-                ]
-              |)
+                                γ
+                              |) in
+                            M.read (| cmp |)))
+                      ]
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let cmp :=
+                      M.copy (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
+                        γ
+                      |) in
+                    M.read (| cmp |)))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

@@ -36,55 +36,60 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ a : Ty.path "if_let_challenge::Foo" :=
           Value.StructTuple "if_let_challenge::Foo::Bar" [] [] [] in
-        M.match_operator (|
+        M.alloc (|
           Ty.tuple [],
-          M.alloc (| Ty.tuple [], Value.Tuple [] |),
-          [
-            fun γ =>
-              ltac:(M.monadic
-                (let γ := a in
-                let _ := M.is_struct_tuple (| γ, "if_let_challenge::Foo::Bar" |) in
-                let~ _ : Ty.tuple [] :=
+          M.match_operator (|
+            Ty.tuple [],
+            M.alloc (| Ty.tuple [], Value.Tuple [] |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := a in
+                  let _ := M.is_struct_tuple (| γ, "if_let_challenge::Foo::Bar" |) in
                   M.read (|
                     let~ _ : Ty.tuple [] :=
-                      M.call_closure (|
-                        Ty.tuple [],
-                        M.get_function (| "std::io::stdio::_print", [], [] |),
-                        [
+                      M.read (|
+                        let~ _ : Ty.tuple [] :=
                           M.call_closure (|
-                            Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_const",
-                              [ Value.Integer IntegerKind.Usize 1 ],
-                              []
-                            |),
+                            Ty.tuple [],
+                            M.get_function (| "std::io::stdio::_print", [], [] |),
                             [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
+                              M.call_closure (|
+                                Ty.path "core::fmt::Arguments",
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::Arguments",
+                                  "new_const",
+                                  [ Value.Integer IntegerKind.Usize 1 ],
+                                  []
+                                |),
+                                [
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 1 ]
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                      Value.Array [ mk_str (| "a is foobar
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 1 ]
+                                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                          Value.Array [ mk_str (| "a is foobar
 " |) ]
+                                        |)
+                                      |)
                                     |)
                                   |)
-                                |)
+                                ]
                               |)
                             ]
-                          |)
-                        ]
+                          |) in
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |)
                       |) in
                     M.alloc (| Ty.tuple [], Value.Tuple [] |)
-                  |) in
-                M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-          ]
+                  |)));
+              fun γ => ltac:(M.monadic (Value.Tuple []))
+            ]
+          |)
         |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"

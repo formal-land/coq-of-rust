@@ -17,313 +17,291 @@ Definition multiply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
         M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], first_number_str |) in
       let second_number_str :=
         M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], second_number_str |) in
-      M.read (|
-        M.catch_return
-          (Ty.apply
-            (Ty.path "core::result::Result")
-            []
-            [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]) (|
-          ltac:(M.monadic
-            (M.alloc (|
+      M.catch_return
+        (Ty.apply
+          (Ty.path "core::result::Result")
+          []
+          [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]) (|
+        ltac:(M.monadic
+          (M.read (|
+            let~ first_number : Ty.path "i32" :=
+              M.match_operator (|
+                Ty.path "i32",
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::ops::control_flow::ControlFlow")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "core::convert::Infallible";
+                          Ty.path "core::num::error::ParseIntError"
+                        ];
+                      Ty.path "i32"
+                    ],
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::ops::control_flow::ControlFlow")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.path "core::convert::Infallible";
+                            Ty.path "core::num::error::ParseIntError"
+                          ];
+                        Ty.path "i32"
+                      ],
+                    M.get_trait_method (|
+                      "core::ops::try_trait::Try",
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
+                      [],
+                      [],
+                      "branch",
+                      [],
+                      []
+                    |),
+                    [
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
+                        M.get_associated_function (|
+                          Ty.path "str",
+                          "parse",
+                          [],
+                          [ Ty.path "i32" ]
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| first_number_str |) |)
+                          |)
+                        ]
+                      |)
+                    ]
+                  |)
+                |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 :=
+                        M.SubPointer.get_struct_tuple_field (|
+                          γ,
+                          "core::ops::control_flow::ControlFlow::Break",
+                          0
+                        |) in
+                      let residual :=
+                        M.copy (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.path "core::convert::Infallible";
+                              Ty.path "core::num::error::ParseIntError"
+                            ],
+                          γ0_0
+                        |) in
+                      M.never_to_any (|
+                        M.read (|
+                          M.return_ (|
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
+                              M.get_trait_method (|
+                                "core::ops::try_trait::FromResidual",
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
+                                [],
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "core::num::error::ParseIntError"
+                                    ]
+                                ],
+                                "from_residual",
+                                [],
+                                []
+                              |),
+                              [ M.read (| residual |) ]
+                            |)
+                          |)
+                        |)
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 :=
+                        M.SubPointer.get_struct_tuple_field (|
+                          γ,
+                          "core::ops::control_flow::ControlFlow::Continue",
+                          0
+                        |) in
+                      let val := M.copy (| Ty.path "i32", γ0_0 |) in
+                      M.read (| val |)))
+                ]
+              |) in
+            let~ second_number : Ty.path "i32" :=
+              M.match_operator (|
+                Ty.path "i32",
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::ops::control_flow::ControlFlow")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "core::convert::Infallible";
+                          Ty.path "core::num::error::ParseIntError"
+                        ];
+                      Ty.path "i32"
+                    ],
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::ops::control_flow::ControlFlow")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.path "core::convert::Infallible";
+                            Ty.path "core::num::error::ParseIntError"
+                          ];
+                        Ty.path "i32"
+                      ],
+                    M.get_trait_method (|
+                      "core::ops::try_trait::Try",
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
+                      [],
+                      [],
+                      "branch",
+                      [],
+                      []
+                    |),
+                    [
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
+                        M.get_associated_function (|
+                          Ty.path "str",
+                          "parse",
+                          [],
+                          [ Ty.path "i32" ]
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| second_number_str |) |)
+                          |)
+                        ]
+                      |)
+                    ]
+                  |)
+                |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 :=
+                        M.SubPointer.get_struct_tuple_field (|
+                          γ,
+                          "core::ops::control_flow::ControlFlow::Break",
+                          0
+                        |) in
+                      let residual :=
+                        M.copy (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.path "core::convert::Infallible";
+                              Ty.path "core::num::error::ParseIntError"
+                            ],
+                          γ0_0
+                        |) in
+                      M.never_to_any (|
+                        M.read (|
+                          M.return_ (|
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
+                              M.get_trait_method (|
+                                "core::ops::try_trait::FromResidual",
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
+                                [],
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "core::num::error::ParseIntError"
+                                    ]
+                                ],
+                                "from_residual",
+                                [],
+                                []
+                              |),
+                              [ M.read (| residual |) ]
+                            |)
+                          |)
+                        |)
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 :=
+                        M.SubPointer.get_struct_tuple_field (|
+                          γ,
+                          "core::ops::control_flow::ControlFlow::Continue",
+                          0
+                        |) in
+                      let val := M.copy (| Ty.path "i32", γ0_0 |) in
+                      M.read (| val |)))
+                ]
+              |) in
+            M.alloc (|
               Ty.apply
                 (Ty.path "core::result::Result")
                 []
                 [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
-              M.read (|
-                let~ first_number : Ty.path "i32" :=
-                  M.read (|
-                    M.match_operator (|
-                      Ty.path "i32",
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::ops::control_flow::ControlFlow")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [
-                                Ty.path "core::convert::Infallible";
-                                Ty.path "core::num::error::ParseIntError"
-                              ];
-                            Ty.path "i32"
-                          ],
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::ops::control_flow::ControlFlow")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [
-                                  Ty.path "core::convert::Infallible";
-                                  Ty.path "core::num::error::ParseIntError"
-                                ];
-                              Ty.path "i32"
-                            ],
-                          M.get_trait_method (|
-                            "core::ops::try_trait::Try",
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
-                            [],
-                            [],
-                            "branch",
-                            [],
-                            []
-                          |),
-                          [
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
-                              M.get_associated_function (|
-                                Ty.path "str",
-                                "parse",
-                                [],
-                                [ Ty.path "i32" ]
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (| M.read (| first_number_str |) |)
-                                |)
-                              ]
-                            |)
-                          ]
-                        |)
-                      |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::ops::control_flow::ControlFlow::Break",
-                                0
-                              |) in
-                            let residual :=
-                              M.copy (|
-                                Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  []
-                                  [
-                                    Ty.path "core::convert::Infallible";
-                                    Ty.path "core::num::error::ParseIntError"
-                                  ],
-                                γ0_0
-                              |) in
-                            M.alloc (|
-                              Ty.path "i32",
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    M.call_closure (|
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError"
-                                        ],
-                                      M.get_trait_method (|
-                                        "core::ops::try_trait::FromResidual",
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError"
-                                          ],
-                                        [],
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            []
-                                            [
-                                              Ty.path "core::convert::Infallible";
-                                              Ty.path "core::num::error::ParseIntError"
-                                            ]
-                                        ],
-                                        "from_residual",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| residual |) ]
-                                    |)
-                                  |)
-                                |)
-                              |)
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::ops::control_flow::ControlFlow::Continue",
-                                0
-                              |) in
-                            let val := M.copy (| Ty.path "i32", γ0_0 |) in
-                            val))
-                      ]
-                    |)
-                  |) in
-                let~ second_number : Ty.path "i32" :=
-                  M.read (|
-                    M.match_operator (|
-                      Ty.path "i32",
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::ops::control_flow::ControlFlow")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [
-                                Ty.path "core::convert::Infallible";
-                                Ty.path "core::num::error::ParseIntError"
-                              ];
-                            Ty.path "i32"
-                          ],
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::ops::control_flow::ControlFlow")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [
-                                  Ty.path "core::convert::Infallible";
-                                  Ty.path "core::num::error::ParseIntError"
-                                ];
-                              Ty.path "i32"
-                            ],
-                          M.get_trait_method (|
-                            "core::ops::try_trait::Try",
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
-                            [],
-                            [],
-                            "branch",
-                            [],
-                            []
-                          |),
-                          [
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
-                              M.get_associated_function (|
-                                Ty.path "str",
-                                "parse",
-                                [],
-                                [ Ty.path "i32" ]
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (| M.read (| second_number_str |) |)
-                                |)
-                              ]
-                            |)
-                          ]
-                        |)
-                      |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::ops::control_flow::ControlFlow::Break",
-                                0
-                              |) in
-                            let residual :=
-                              M.copy (|
-                                Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  []
-                                  [
-                                    Ty.path "core::convert::Infallible";
-                                    Ty.path "core::num::error::ParseIntError"
-                                  ],
-                                γ0_0
-                              |) in
-                            M.alloc (|
-                              Ty.path "i32",
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    M.call_closure (|
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError"
-                                        ],
-                                      M.get_trait_method (|
-                                        "core::ops::try_trait::FromResidual",
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError"
-                                          ],
-                                        [],
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            []
-                                            [
-                                              Ty.path "core::convert::Infallible";
-                                              Ty.path "core::num::error::ParseIntError"
-                                            ]
-                                        ],
-                                        "from_residual",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| residual |) ]
-                                    |)
-                                  |)
-                                |)
-                              |)
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::ops::control_flow::ControlFlow::Continue",
-                                0
-                              |) in
-                            let val := M.copy (| Ty.path "i32", γ0_0 |) in
-                            val))
-                      ]
-                    |)
-                  |) in
-                M.alloc (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
-                  Value.StructTuple
-                    "core::result::Result::Ok"
-                    []
-                    [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
-                    [
-                      M.call_closure (|
-                        Ty.path "i32",
-                        BinOp.Wrap.mul,
-                        [ M.read (| first_number |); M.read (| second_number |) ]
-                      |)
-                    ]
-                |)
-              |)
-            |)))
-        |)
+              Value.StructTuple
+                "core::result::Result::Ok"
+                []
+                [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
+                [
+                  M.call_closure (|
+                    Ty.path "i32",
+                    BinOp.Wrap.mul,
+                    [ M.read (| first_number |); M.read (| second_number |) ]
+                  |)
+                ]
+            |)
+          |)))
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
@@ -353,16 +331,16 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
           result
         |) in
-      M.read (|
-        M.match_operator (|
-          Ty.tuple [],
-          result,
-          [
-            fun γ =>
-              ltac:(M.monadic
-                (let γ0_0 :=
-                  M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                let n := M.copy (| Ty.path "i32", γ0_0 |) in
+      M.match_operator (|
+        Ty.tuple [],
+        result,
+        [
+          fun γ =>
+            ltac:(M.monadic
+              (let γ0_0 :=
+                M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
+              let n := M.copy (| Ty.path "i32", γ0_0 |) in
+              M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.call_closure (|
                     Ty.tuple [],
@@ -429,12 +407,14 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       |)
                     ]
                   |) in
-                M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-            fun γ =>
-              ltac:(M.monadic
-                (let γ0_0 :=
-                  M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                let e := M.copy (| Ty.path "core::num::error::ParseIntError", γ0_0 |) in
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)
+              |)));
+          fun γ =>
+            ltac:(M.monadic
+              (let γ0_0 :=
+                M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
+              let e := M.copy (| Ty.path "core::num::error::ParseIntError", γ0_0 |) in
+              M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.call_closure (|
                     Ty.tuple [],
@@ -501,9 +481,9 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       |)
                     ]
                   |) in
-                M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-          ]
-        |)
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)
+              |)))
+        ]
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

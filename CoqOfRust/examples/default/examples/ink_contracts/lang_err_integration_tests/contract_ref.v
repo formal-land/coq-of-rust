@@ -58,12 +58,10 @@ Module Impl_core_clone_Clone_for_contract_ref_AccountId.
       ltac:(M.monadic
         (let self :=
           M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "contract_ref::AccountId" ], self |) in
-        M.read (|
-          M.match_operator (|
-            Ty.path "contract_ref::AccountId",
-            Value.DeclaredButUndefined,
-            [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
-          |)
+        M.match_operator (|
+          Ty.path "contract_ref::AccountId",
+          Value.DeclaredButUndefined,
+          [ fun γ => ltac:(M.monadic (M.read (| M.deref (| M.read (| self |) |) |))) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -271,55 +269,41 @@ Module Impl_contract_ref_FlipperRef.
     | [], [], [ succeed ] =>
       ltac:(M.monadic
         (let succeed := M.alloc (| Ty.path "bool", succeed |) in
-        M.read (|
-          M.match_operator (|
-            Ty.apply
-              (Ty.path "core::result::Result")
-              []
-              [ Ty.path "contract_ref::FlipperRef"; Ty.path "contract_ref::FlipperError" ],
-            M.alloc (| Ty.tuple [], Value.Tuple [] |),
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ := M.use succeed in
-                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  M.alloc (|
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.path "contract_ref::FlipperRef"; Ty.path "contract_ref::FlipperError" ],
-                    Value.StructTuple
-                      "core::result::Result::Ok"
-                      []
-                      [ Ty.path "contract_ref::FlipperRef"; Ty.path "contract_ref::FlipperError" ]
-                      [
-                        M.call_closure (|
-                          Ty.path "contract_ref::FlipperRef",
-                          M.get_associated_function (|
-                            Ty.path "contract_ref::FlipperRef",
-                            "new",
-                            [],
-                            []
-                          |),
-                          [ Value.Bool true ]
-                        |)
-                      ]
-                  |)));
-              fun γ =>
-                ltac:(M.monadic
-                  (M.alloc (|
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.path "contract_ref::FlipperRef"; Ty.path "contract_ref::FlipperError" ],
-                    Value.StructTuple
-                      "core::result::Result::Err"
-                      []
-                      [ Ty.path "contract_ref::FlipperRef"; Ty.path "contract_ref::FlipperError" ]
-                      [ Value.StructTuple "contract_ref::FlipperError" [] [] [] ]
-                  |)))
-            ]
-          |)
+        M.match_operator (|
+          Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.path "contract_ref::FlipperRef"; Ty.path "contract_ref::FlipperError" ],
+          M.alloc (| Ty.tuple [], Value.Tuple [] |),
+          [
+            fun γ =>
+              ltac:(M.monadic
+                (let γ := M.use succeed in
+                let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.path "contract_ref::FlipperRef"; Ty.path "contract_ref::FlipperError" ]
+                  [
+                    M.call_closure (|
+                      Ty.path "contract_ref::FlipperRef",
+                      M.get_associated_function (|
+                        Ty.path "contract_ref::FlipperRef",
+                        "new",
+                        [],
+                        []
+                      |),
+                      [ Value.Bool true ]
+                    |)
+                  ]));
+            fun γ =>
+              ltac:(M.monadic
+                (Value.StructTuple
+                  "core::result::Result::Err"
+                  []
+                  [ Ty.path "contract_ref::FlipperRef"; Ty.path "contract_ref::FlipperError" ]
+                  [ Value.StructTuple "contract_ref::FlipperError" [] [] [] ]))
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

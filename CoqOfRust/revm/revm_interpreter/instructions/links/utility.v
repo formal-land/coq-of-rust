@@ -34,12 +34,12 @@ Proof.
   ).
   (* Pointer cast and closures *)
   run_symbolic.
-  4: {
+  (* 4: {
     eapply Run.Rewrite. {
       exact (array.repeat_φ_eq 8 (Integer.Build_t IntegerKind.U8 0)).
     }
     run_symbolic.
-  }
+  } *)
 Admitted.
 
 (*

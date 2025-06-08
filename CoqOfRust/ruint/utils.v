@@ -25,26 +25,29 @@ Module utils.
               BinOp.Wrap.rem,
               [ M.read (| a |); M.read (| b |) ]
             |) in
-          M.match_operator (|
+          M.alloc (|
             Ty.path "usize",
-            M.alloc (| Ty.tuple [], Value.Tuple [] |),
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ :=
-                    M.use
-                      (M.alloc (|
-                        Ty.path "bool",
-                        M.call_closure (|
+            M.match_operator (|
+              Ty.path "usize",
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
                           Ty.path "bool",
-                          BinOp.gt,
-                          [ M.read (| rem |); Value.Integer IntegerKind.Usize 0 ]
-                        |)
-                      |)) in
-                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  rem));
-              fun γ => ltac:(M.monadic b)
-            ]
+                          M.call_closure (|
+                            Ty.path "bool",
+                            BinOp.gt,
+                            [ M.read (| rem |); Value.Integer IntegerKind.Usize 0 ]
+                          |)
+                        |)) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.read (| rem |)));
+                fun γ => ltac:(M.monadic (M.read (| b |)))
+              ]
+            |)
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"

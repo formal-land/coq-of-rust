@@ -73,3 +73,10 @@ Module FnMut.
     call_mut : Run_call_mut Self Args Output;
   }.
 End FnMut.
+
+Module Impl_FnMut_for_Function1.
+  Instance run (A Output : Set) `{Link A} `{Link Output} :
+      FnMut.Run (Function1.t A Output) A Output.
+  Admitted.
+End Impl_FnMut_for_Function1.
+Export Impl_FnMut_for_Function1.

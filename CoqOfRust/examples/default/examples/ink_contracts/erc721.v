@@ -323,12 +323,10 @@ Module Impl_core_clone_Clone_for_erc721_AccountId.
       ltac:(M.monadic
         (let self :=
           M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "erc721::AccountId" ], self |) in
-        M.read (|
-          M.match_operator (|
-            Ty.path "erc721::AccountId",
-            Value.DeclaredButUndefined,
-            [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
-          |)
+        M.match_operator (|
+          Ty.path "erc721::AccountId",
+          Value.DeclaredButUndefined,
+          [ fun γ => ltac:(M.monadic (M.read (| M.deref (| M.read (| self |) |) |))) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -1554,221 +1552,192 @@ Module Impl_erc721_Erc721.
           M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "erc721::Erc721" ], self |) in
         let to := M.alloc (| Ty.path "erc721::AccountId", to |) in
         let approved := M.alloc (| Ty.path "bool", approved |) in
-        M.read (|
-          M.catch_return
-            (Ty.apply
-              (Ty.path "core::result::Result")
-              []
-              [ Ty.tuple []; Ty.path "erc721::Error" ]) (|
-            ltac:(M.monadic
-              (M.alloc (|
+        M.catch_return
+          (Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "erc721::Error" ]) (|
+          ltac:(M.monadic
+            (M.read (|
+              let~ caller : Ty.path "erc721::AccountId" :=
+                M.call_closure (|
+                  Ty.path "erc721::AccountId",
+                  M.get_associated_function (| Ty.path "erc721::Env", "caller", [], [] |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        Ty.path "erc721::Env",
+                        M.call_closure (|
+                          Ty.path "erc721::Env",
+                          M.get_associated_function (| Ty.path "erc721::Erc721", "env", [], [] |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                        |)
+                      |)
+                    |)
+                  ]
+                |) in
+              let~ _ : Ty.tuple [] :=
+                M.match_operator (|
+                  Ty.tuple [],
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              Ty.path "bool",
+                              M.call_closure (|
+                                Ty.path "bool",
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.path "erc721::AccountId",
+                                  [],
+                                  [ Ty.path "erc721::AccountId" ],
+                                  "eq",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, to |);
+                                  M.borrow (| Pointer.Kind.Ref, caller |)
+                                ]
+                              |)
+                            |)) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.never_to_any (|
+                          M.read (|
+                            M.return_ (|
+                              Value.StructTuple
+                                "core::result::Result::Err"
+                                []
+                                [ Ty.tuple []; Ty.path "erc721::Error" ]
+                                [ Value.StructTuple "erc721::Error::NotAllowed" [] [] [] ]
+                            |)
+                          |)
+                        |)));
+                    fun γ => ltac:(M.monadic (Value.Tuple []))
+                  ]
+                |) in
+              let~ _ : Ty.tuple [] :=
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.get_associated_function (| Ty.path "erc721::Env", "emit_event", [], [] |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        Ty.path "erc721::Env",
+                        M.call_closure (|
+                          Ty.path "erc721::Env",
+                          M.get_associated_function (| Ty.path "erc721::Erc721", "env", [], [] |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                        |)
+                      |)
+                    |);
+                    Value.StructTuple
+                      "erc721::Event::ApprovalForAll"
+                      []
+                      []
+                      [
+                        Value.mkStructRecord
+                          "erc721::ApprovalForAll"
+                          []
+                          []
+                          [
+                            ("owner", M.read (| caller |));
+                            ("operator", M.read (| to |));
+                            ("approved", M.read (| approved |))
+                          ]
+                      ]
+                  ]
+                |) in
+              let~ _ : Ty.tuple [] :=
+                M.match_operator (|
+                  Ty.tuple [],
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.use approved in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.read (|
+                          let~ _ : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ] :=
+                            M.call_closure (|
+                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "erc721::Mapping")
+                                  []
+                                  [
+                                    Ty.tuple
+                                      [ Ty.path "erc721::AccountId"; Ty.path "erc721::AccountId" ];
+                                    Ty.tuple []
+                                  ],
+                                "insert",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "erc721::Erc721",
+                                    "operator_approvals"
+                                  |)
+                                |);
+                                Value.Tuple [ M.read (| caller |); M.read (| to |) ];
+                                Value.Tuple []
+                              ]
+                            |) in
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (M.read (|
+                          let~ _ : Ty.tuple [] :=
+                            M.call_closure (|
+                              Ty.tuple [],
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "erc721::Mapping")
+                                  []
+                                  [
+                                    Ty.tuple
+                                      [ Ty.path "erc721::AccountId"; Ty.path "erc721::AccountId" ];
+                                    Ty.tuple []
+                                  ],
+                                "remove",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "erc721::Erc721",
+                                    "operator_approvals"
+                                  |)
+                                |);
+                                Value.Tuple [ M.read (| caller |); M.read (| to |) ]
+                              ]
+                            |) in
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                        |)))
+                  ]
+                |) in
+              M.alloc (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.tuple []; Ty.path "erc721::Error" ],
-                M.read (|
-                  let~ caller : Ty.path "erc721::AccountId" :=
-                    M.call_closure (|
-                      Ty.path "erc721::AccountId",
-                      M.get_associated_function (| Ty.path "erc721::Env", "caller", [], [] |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.alloc (|
-                            Ty.path "erc721::Env",
-                            M.call_closure (|
-                              Ty.path "erc721::Env",
-                              M.get_associated_function (|
-                                Ty.path "erc721::Erc721",
-                                "env",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                            |)
-                          |)
-                        |)
-                      ]
-                    |) in
-                  let~ _ : Ty.tuple [] :=
-                    M.read (|
-                      M.match_operator (|
-                        Ty.tuple [],
-                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ :=
-                                M.use
-                                  (M.alloc (|
-                                    Ty.path "bool",
-                                    M.call_closure (|
-                                      Ty.path "bool",
-                                      M.get_trait_method (|
-                                        "core::cmp::PartialEq",
-                                        Ty.path "erc721::AccountId",
-                                        [],
-                                        [ Ty.path "erc721::AccountId" ],
-                                        "eq",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (| Pointer.Kind.Ref, to |);
-                                        M.borrow (| Pointer.Kind.Ref, caller |)
-                                      ]
-                                    |)
-                                  |)) in
-                              let _ :=
-                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                              M.alloc (|
-                                Ty.tuple [],
-                                M.never_to_any (|
-                                  M.read (|
-                                    M.return_ (|
-                                      Value.StructTuple
-                                        "core::result::Result::Err"
-                                        []
-                                        [ Ty.tuple []; Ty.path "erc721::Error" ]
-                                        [ Value.StructTuple "erc721::Error::NotAllowed" [] [] [] ]
-                                    |)
-                                  |)
-                                |)
-                              |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                        ]
-                      |)
-                    |) in
-                  let~ _ : Ty.tuple [] :=
-                    M.call_closure (|
-                      Ty.tuple [],
-                      M.get_associated_function (| Ty.path "erc721::Env", "emit_event", [], [] |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.alloc (|
-                            Ty.path "erc721::Env",
-                            M.call_closure (|
-                              Ty.path "erc721::Env",
-                              M.get_associated_function (|
-                                Ty.path "erc721::Erc721",
-                                "env",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                            |)
-                          |)
-                        |);
-                        Value.StructTuple
-                          "erc721::Event::ApprovalForAll"
-                          []
-                          []
-                          [
-                            Value.mkStructRecord
-                              "erc721::ApprovalForAll"
-                              []
-                              []
-                              [
-                                ("owner", M.read (| caller |));
-                                ("operator", M.read (| to |));
-                                ("approved", M.read (| approved |))
-                              ]
-                          ]
-                      ]
-                    |) in
-                  let~ _ : Ty.tuple [] :=
-                    M.read (|
-                      M.match_operator (|
-                        Ty.tuple [],
-                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ := M.use approved in
-                              let _ :=
-                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                              let~ _ :
-                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ] :=
-                                M.call_closure (|
-                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "erc721::Mapping")
-                                      []
-                                      [
-                                        Ty.tuple
-                                          [ Ty.path "erc721::AccountId"; Ty.path "erc721::AccountId"
-                                          ];
-                                        Ty.tuple []
-                                      ],
-                                    "insert",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.MutRef,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "erc721::Erc721",
-                                        "operator_approvals"
-                                      |)
-                                    |);
-                                    Value.Tuple [ M.read (| caller |); M.read (| to |) ];
-                                    Value.Tuple []
-                                  ]
-                                |) in
-                              M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let~ _ : Ty.tuple [] :=
-                                M.call_closure (|
-                                  Ty.tuple [],
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "erc721::Mapping")
-                                      []
-                                      [
-                                        Ty.tuple
-                                          [ Ty.path "erc721::AccountId"; Ty.path "erc721::AccountId"
-                                          ];
-                                        Ty.tuple []
-                                      ],
-                                    "remove",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "erc721::Erc721",
-                                        "operator_approvals"
-                                      |)
-                                    |);
-                                    Value.Tuple [ M.read (| caller |); M.read (| to |) ]
-                                  ]
-                                |) in
-                              M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                        ]
-                      |)
-                    |) in
-                  M.alloc (|
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.tuple []; Ty.path "erc721::Error" ],
-                    Value.StructTuple
-                      "core::result::Result::Ok"
-                      []
-                      [ Ty.tuple []; Ty.path "erc721::Error" ]
-                      [ Value.Tuple [] ]
-                  |)
-                |)
-              |)))
-          |)
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "erc721::Error" ]
+                  [ Value.Tuple [] ]
+              |)
+            |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -1792,162 +1761,140 @@ Module Impl_erc721_Erc721.
           M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "erc721::Erc721" ], self |) in
         let to := M.alloc (| Ty.path "erc721::AccountId", to |) in
         let approved := M.alloc (| Ty.path "bool", approved |) in
-        M.read (|
-          M.catch_return
-            (Ty.apply
-              (Ty.path "core::result::Result")
-              []
-              [ Ty.tuple []; Ty.path "erc721::Error" ]) (|
-            ltac:(M.monadic
-              (M.alloc (|
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.tuple []; Ty.path "erc721::Error" ],
-                M.read (|
-                  let~ _ : Ty.tuple [] :=
-                    M.read (|
-                      M.match_operator (|
-                        Ty.tuple [],
-                        M.alloc (|
+        M.catch_return
+          (Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "erc721::Error" ]) (|
+          ltac:(M.monadic
+            (M.read (|
+              let~ _ : Ty.tuple [] :=
+                M.match_operator (|
+                  Ty.tuple [],
+                  M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::ops::control_flow::ControlFlow")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "core::convert::Infallible"; Ty.path "erc721::Error" ];
+                        Ty.tuple []
+                      ],
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::ops::control_flow::ControlFlow")
+                        []
+                        [
                           Ty.apply
-                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            (Ty.path "core::result::Result")
                             []
-                            [
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [ Ty.path "core::convert::Infallible"; Ty.path "erc721::Error" ];
-                              Ty.tuple []
-                            ],
-                          M.call_closure (|
+                            [ Ty.path "core::convert::Infallible"; Ty.path "erc721::Error" ];
+                          Ty.tuple []
+                        ],
+                      M.get_trait_method (|
+                        "core::ops::try_trait::Try",
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "erc721::Error" ],
+                        [],
+                        [],
+                        "branch",
+                        [],
+                        []
+                      |),
+                      [
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "erc721::Error" ],
+                          M.get_associated_function (|
+                            Ty.path "erc721::Erc721",
+                            "approve_for_all",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                            M.read (| to |);
+                            M.read (| approved |)
+                          ]
+                        |)
+                      ]
+                    |)
+                  |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "core::ops::control_flow::ControlFlow::Break",
+                            0
+                          |) in
+                        let residual :=
+                          M.copy (|
                             Ty.apply
-                              (Ty.path "core::ops::control_flow::ControlFlow")
+                              (Ty.path "core::result::Result")
                               []
-                              [
-                                Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  []
-                                  [ Ty.path "core::convert::Infallible"; Ty.path "erc721::Error" ];
-                                Ty.tuple []
-                              ],
-                            M.get_trait_method (|
-                              "core::ops::try_trait::Try",
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [ Ty.tuple []; Ty.path "erc721::Error" ],
-                              [],
-                              [],
-                              "branch",
-                              [],
-                              []
-                            |),
-                            [
+                              [ Ty.path "core::convert::Infallible"; Ty.path "erc721::Error" ],
+                            γ0_0
+                          |) in
+                        M.never_to_any (|
+                          M.read (|
+                            M.return_ (|
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
                                   []
                                   [ Ty.tuple []; Ty.path "erc721::Error" ],
-                                M.get_associated_function (|
-                                  Ty.path "erc721::Erc721",
-                                  "approve_for_all",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.MutRef,
-                                    M.deref (| M.read (| self |) |)
-                                  |);
-                                  M.read (| to |);
-                                  M.read (| approved |)
-                                ]
-                              |)
-                            ]
-                          |)
-                        |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::ops::control_flow::ControlFlow::Break",
-                                  0
-                                |) in
-                              let residual :=
-                                M.copy (|
+                                M.get_trait_method (|
+                                  "core::ops::try_trait::FromResidual",
                                   Ty.apply
                                     (Ty.path "core::result::Result")
                                     []
-                                    [ Ty.path "core::convert::Infallible"; Ty.path "erc721::Error"
-                                    ],
-                                  γ0_0
-                                |) in
-                              M.alloc (|
-                                Ty.tuple [],
-                                M.never_to_any (|
-                                  M.read (|
-                                    M.return_ (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [ Ty.tuple []; Ty.path "erc721::Error" ],
-                                        M.get_trait_method (|
-                                          "core::ops::try_trait::FromResidual",
-                                          Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            []
-                                            [ Ty.tuple []; Ty.path "erc721::Error" ],
-                                          [],
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::result::Result")
-                                              []
-                                              [
-                                                Ty.path "core::convert::Infallible";
-                                                Ty.path "erc721::Error"
-                                              ]
-                                          ],
-                                          "from_residual",
-                                          [],
-                                          []
-                                        |),
-                                        [ M.read (| residual |) ]
-                                      |)
-                                    |)
-                                  |)
-                                |)
-                              |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::ops::control_flow::ControlFlow::Continue",
-                                  0
-                                |) in
-                              let val := M.copy (| Ty.tuple [], γ0_0 |) in
-                              val))
-                        ]
-                      |)
-                    |) in
-                  M.alloc (|
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.tuple []; Ty.path "erc721::Error" ],
-                    Value.StructTuple
-                      "core::result::Result::Ok"
-                      []
-                      [ Ty.tuple []; Ty.path "erc721::Error" ]
-                      [ Value.Tuple [] ]
-                  |)
-                |)
-              |)))
-          |)
+                                    [ Ty.tuple []; Ty.path "erc721::Error" ],
+                                  [],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "core::convert::Infallible"; Ty.path "erc721::Error"
+                                      ]
+                                  ],
+                                  "from_residual",
+                                  [],
+                                  []
+                                |),
+                                [ M.read (| residual |) ]
+                              |)
+                            |)
+                          |)
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "core::ops::control_flow::ControlFlow::Continue",
+                            0
+                          |) in
+                        let val := M.copy (| Ty.tuple [], γ0_0 |) in
+                        M.read (| val |)))
+                  ]
+                |) in
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "erc721::Error" ],
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "erc721::Error" ]
+                  [ Value.Tuple [] ]
+              |)
+            |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -1994,386 +1941,340 @@ Module Impl_erc721_Erc721.
           M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "erc721::Erc721" ], self |) in
         let to := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "erc721::AccountId" ], to |) in
         let id := M.alloc (| Ty.path "u32", id |) in
-        M.read (|
-          M.catch_return
-            (Ty.apply
-              (Ty.path "core::result::Result")
-              []
-              [ Ty.tuple []; Ty.path "erc721::Error" ]) (|
-            ltac:(M.monadic
-              (M.alloc (|
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.tuple []; Ty.path "erc721::Error" ],
-                M.read (|
-                  let~ caller : Ty.path "erc721::AccountId" :=
-                    M.call_closure (|
-                      Ty.path "erc721::AccountId",
-                      M.get_associated_function (| Ty.path "erc721::Env", "caller", [], [] |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.alloc (|
-                            Ty.path "erc721::Env",
-                            M.call_closure (|
-                              Ty.path "erc721::Env",
-                              M.get_associated_function (|
-                                Ty.path "erc721::Erc721",
-                                "env",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                            |)
-                          |)
+        M.catch_return
+          (Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "erc721::Error" ]) (|
+          ltac:(M.monadic
+            (M.read (|
+              let~ caller : Ty.path "erc721::AccountId" :=
+                M.call_closure (|
+                  Ty.path "erc721::AccountId",
+                  M.get_associated_function (| Ty.path "erc721::Env", "caller", [], [] |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        Ty.path "erc721::Env",
+                        M.call_closure (|
+                          Ty.path "erc721::Env",
+                          M.get_associated_function (| Ty.path "erc721::Erc721", "env", [], [] |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                         |)
-                      ]
-                    |) in
-                  let~ owner :
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        []
-                        [ Ty.path "erc721::AccountId" ] :=
-                    M.call_closure (|
-                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "erc721::AccountId" ],
-                      M.get_associated_function (| Ty.path "erc721::Erc721", "owner_of", [], [] |),
-                      [
-                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                        M.read (| id |)
-                      ]
-                    |) in
-                  let~ _ : Ty.tuple [] :=
-                    M.read (|
-                      M.match_operator (|
-                        Ty.tuple [],
-                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ :=
-                                M.use
-                                  (M.alloc (|
+                      |)
+                    |)
+                  ]
+                |) in
+              let~ owner :
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "erc721::AccountId" ] :=
+                M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "erc721::AccountId" ],
+                  M.get_associated_function (| Ty.path "erc721::Erc721", "owner_of", [], [] |),
+                  [
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                    M.read (| id |)
+                  ]
+                |) in
+              let~ _ : Ty.tuple [] :=
+                M.match_operator (|
+                  Ty.tuple [],
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              Ty.path "bool",
+                              UnOp.not (|
+                                LogicalOp.or (|
+                                  M.call_closure (|
                                     Ty.path "bool",
-                                    UnOp.not (|
-                                      LogicalOp.or (|
+                                    M.get_trait_method (|
+                                      "core::cmp::PartialEq",
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "erc721::AccountId" ],
+                                      [],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "erc721::AccountId" ]
+                                      ],
+                                      "eq",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (| Pointer.Kind.Ref, owner |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "erc721::AccountId" ],
+                                          Value.StructTuple
+                                            "core::option::Option::Some"
+                                            []
+                                            [ Ty.path "erc721::AccountId" ]
+                                            [ M.read (| caller |) ]
+                                        |)
+                                      |)
+                                    ]
+                                  |),
+                                  ltac:(M.monadic
+                                    (M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_associated_function (|
+                                        Ty.path "erc721::Erc721",
+                                        "approved_for_all",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |);
                                         M.call_closure (|
-                                          Ty.path "bool",
-                                          M.get_trait_method (|
-                                            "core::cmp::PartialEq",
+                                          Ty.path "erc721::AccountId",
+                                          M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
                                               []
                                               [ Ty.path "erc721::AccountId" ],
-                                            [],
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::option::Option")
-                                                []
-                                                [ Ty.path "erc721::AccountId" ]
-                                            ],
-                                            "eq",
+                                            "expect",
                                             [],
                                             []
                                           |),
                                           [
-                                            M.borrow (| Pointer.Kind.Ref, owner |);
+                                            M.read (| owner |);
                                             M.borrow (|
                                               Pointer.Kind.Ref,
-                                              M.alloc (|
-                                                Ty.apply
-                                                  (Ty.path "core::option::Option")
-                                                  []
-                                                  [ Ty.path "erc721::AccountId" ],
-                                                Value.StructTuple
-                                                  "core::option::Option::Some"
-                                                  []
-                                                  [ Ty.path "erc721::AccountId" ]
-                                                  [ M.read (| caller |) ]
-                                              |)
+                                              M.deref (| mk_str (| "Error with AccountId" |) |)
                                             |)
                                           ]
-                                        |),
-                                        ltac:(M.monadic
-                                          (M.call_closure (|
-                                            Ty.path "bool",
-                                            M.get_associated_function (|
-                                              Ty.path "erc721::Erc721",
-                                              "approved_for_all",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| M.read (| self |) |)
-                                              |);
-                                              M.call_closure (|
-                                                Ty.path "erc721::AccountId",
-                                                M.get_associated_function (|
-                                                  Ty.apply
-                                                    (Ty.path "core::option::Option")
-                                                    []
-                                                    [ Ty.path "erc721::AccountId" ],
-                                                  "expect",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
-                                                  M.read (| owner |);
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (|
-                                                      mk_str (| "Error with AccountId" |)
-                                                    |)
-                                                  |)
-                                                ]
-                                              |);
-                                              M.read (| caller |)
-                                            ]
-                                          |)))
-                                      |)
-                                    |)
-                                  |)) in
-                              let _ :=
-                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                              M.alloc (|
-                                Ty.tuple [],
-                                M.never_to_any (|
-                                  M.read (|
-                                    M.return_ (|
-                                      Value.StructTuple
-                                        "core::result::Result::Err"
-                                        []
-                                        [ Ty.tuple []; Ty.path "erc721::Error" ]
-                                        [ Value.StructTuple "erc721::Error::NotAllowed" [] [] [] ]
-                                    |)
-                                  |)
+                                        |);
+                                        M.read (| caller |)
+                                      ]
+                                    |)))
                                 |)
-                              |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                        ]
-                      |)
-                    |) in
-                  let~ _ : Ty.tuple [] :=
-                    M.read (|
-                      M.match_operator (|
-                        Ty.tuple [],
-                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ :=
-                                M.use
-                                  (M.alloc (|
-                                    Ty.path "bool",
-                                    M.call_closure (|
-                                      Ty.path "bool",
-                                      M.get_trait_method (|
-                                        "core::cmp::PartialEq",
+                              |)
+                            |)) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.never_to_any (|
+                          M.read (|
+                            M.return_ (|
+                              Value.StructTuple
+                                "core::result::Result::Err"
+                                []
+                                [ Ty.tuple []; Ty.path "erc721::Error" ]
+                                [ Value.StructTuple "erc721::Error::NotAllowed" [] [] [] ]
+                            |)
+                          |)
+                        |)));
+                    fun γ => ltac:(M.monadic (Value.Tuple []))
+                  ]
+                |) in
+              let~ _ : Ty.tuple [] :=
+                M.match_operator (|
+                  Ty.tuple [],
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              Ty.path "bool",
+                              M.call_closure (|
+                                Ty.path "bool",
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.path "erc721::AccountId",
+                                  [],
+                                  [ Ty.path "erc721::AccountId" ],
+                                  "eq",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| to |) |) |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Ty.path "erc721::AccountId",
+                                      M.call_closure (|
                                         Ty.path "erc721::AccountId",
-                                        [],
-                                        [ Ty.path "erc721::AccountId" ],
-                                        "eq",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (| M.read (| to |) |)
-                                        |);
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.alloc (|
-                                            Ty.path "erc721::AccountId",
-                                            M.call_closure (|
-                                              Ty.path "erc721::AccountId",
-                                              M.get_trait_method (|
-                                                "core::convert::From",
-                                                Ty.path "erc721::AccountId",
-                                                [],
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "array")
-                                                    [ Value.Integer IntegerKind.Usize 32 ]
-                                                    [ Ty.path "u8" ]
-                                                ],
-                                                "from",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                lib.repeat (|
-                                                  Value.Integer IntegerKind.U8 0,
-                                                  Value.Integer IntegerKind.Usize 32
-                                                |)
-                                              ]
-                                            |)
-                                          |)
-                                        |)
-                                      ]
-                                    |)
-                                  |)) in
-                              let _ :=
-                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                              M.alloc (|
-                                Ty.tuple [],
-                                M.never_to_any (|
-                                  M.read (|
-                                    M.return_ (|
-                                      Value.StructTuple
-                                        "core::result::Result::Err"
-                                        []
-                                        [ Ty.tuple []; Ty.path "erc721::Error" ]
-                                        [ Value.StructTuple "erc721::Error::NotAllowed" [] [] [] ]
-                                    |)
-                                  |)
-                                |)
-                              |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                        ]
-                      |)
-                    |) in
-                  let~ _ : Ty.tuple [] :=
-                    M.read (|
-                      M.match_operator (|
-                        Ty.tuple [],
-                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ :=
-                                M.use
-                                  (M.alloc (|
-                                    Ty.path "bool",
-                                    M.call_closure (|
-                                      Ty.path "bool",
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "erc721::Mapping")
+                                        M.get_trait_method (|
+                                          "core::convert::From",
+                                          Ty.path "erc721::AccountId",
+                                          [],
+                                          [
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 32 ]
+                                              [ Ty.path "u8" ]
+                                          ],
+                                          "from",
+                                          [],
                                           []
-                                          [ Ty.path "u32"; Ty.path "erc721::AccountId" ],
-                                        "contains",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "erc721::Erc721",
-                                            "token_approvals"
+                                        |),
+                                        [
+                                          lib.repeat (|
+                                            Value.Integer IntegerKind.U8 0,
+                                            Value.Integer IntegerKind.Usize 32
                                           |)
-                                        |);
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (| M.borrow (| Pointer.Kind.Ref, id |) |)
-                                        |)
-                                      ]
-                                    |)
-                                  |)) in
-                              let _ :=
-                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                              M.alloc (|
-                                Ty.tuple [],
-                                M.never_to_any (|
-                                  M.read (|
-                                    M.return_ (|
-                                      Value.StructTuple
-                                        "core::result::Result::Err"
-                                        []
-                                        [ Ty.tuple []; Ty.path "erc721::Error" ]
-                                        [ Value.StructTuple "erc721::Error::CannotInsert" [] [] [] ]
+                                        ]
+                                      |)
                                     |)
                                   |)
-                                |)
-                              |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let~ _ :
-                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ] :=
-                                M.call_closure (|
-                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "erc721::Mapping")
-                                      []
-                                      [ Ty.path "u32"; Ty.path "erc721::AccountId" ],
-                                    "insert",
-                                    [],
+                                ]
+                              |)
+                            |)) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.never_to_any (|
+                          M.read (|
+                            M.return_ (|
+                              Value.StructTuple
+                                "core::result::Result::Err"
+                                []
+                                [ Ty.tuple []; Ty.path "erc721::Error" ]
+                                [ Value.StructTuple "erc721::Error::NotAllowed" [] [] [] ]
+                            |)
+                          |)
+                        |)));
+                    fun γ => ltac:(M.monadic (Value.Tuple []))
+                  ]
+                |) in
+              let~ _ : Ty.tuple [] :=
+                M.match_operator (|
+                  Ty.tuple [],
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              Ty.path "bool",
+                              M.call_closure (|
+                                Ty.path "bool",
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "erc721::Mapping")
                                     []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.MutRef,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "erc721::Erc721",
-                                        "token_approvals"
-                                      |)
-                                    |);
-                                    M.read (| id |);
-                                    M.read (| M.deref (| M.read (| to |) |) |)
-                                  ]
-                                |) in
-                              M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                        ]
-                      |)
-                    |) in
-                  let~ _ : Ty.tuple [] :=
-                    M.call_closure (|
-                      Ty.tuple [],
-                      M.get_associated_function (| Ty.path "erc721::Env", "emit_event", [], [] |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.alloc (|
-                            Ty.path "erc721::Env",
+                                    [ Ty.path "u32"; Ty.path "erc721::AccountId" ],
+                                  "contains",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "erc721::Erc721",
+                                      "token_approvals"
+                                    |)
+                                  |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.borrow (| Pointer.Kind.Ref, id |) |)
+                                  |)
+                                ]
+                              |)
+                            |)) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.never_to_any (|
+                          M.read (|
+                            M.return_ (|
+                              Value.StructTuple
+                                "core::result::Result::Err"
+                                []
+                                [ Ty.tuple []; Ty.path "erc721::Error" ]
+                                [ Value.StructTuple "erc721::Error::CannotInsert" [] [] [] ]
+                            |)
+                          |)
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (M.read (|
+                          let~ _ : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ] :=
                             M.call_closure (|
-                              Ty.path "erc721::Env",
+                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                               M.get_associated_function (|
-                                Ty.path "erc721::Erc721",
-                                "env",
+                                Ty.apply
+                                  (Ty.path "erc721::Mapping")
+                                  []
+                                  [ Ty.path "u32"; Ty.path "erc721::AccountId" ],
+                                "insert",
                                 [],
                                 []
                               |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                            |)
-                          |)
-                        |);
-                        Value.StructTuple
-                          "erc721::Event::Approval"
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "erc721::Erc721",
+                                    "token_approvals"
+                                  |)
+                                |);
+                                M.read (| id |);
+                                M.read (| M.deref (| M.read (| to |) |) |)
+                              ]
+                            |) in
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                        |)))
+                  ]
+                |) in
+              let~ _ : Ty.tuple [] :=
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.get_associated_function (| Ty.path "erc721::Env", "emit_event", [], [] |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        Ty.path "erc721::Env",
+                        M.call_closure (|
+                          Ty.path "erc721::Env",
+                          M.get_associated_function (| Ty.path "erc721::Erc721", "env", [], [] |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                        |)
+                      |)
+                    |);
+                    Value.StructTuple
+                      "erc721::Event::Approval"
+                      []
+                      []
+                      [
+                        Value.mkStructRecord
+                          "erc721::Approval"
                           []
                           []
                           [
-                            Value.mkStructRecord
-                              "erc721::Approval"
-                              []
-                              []
-                              [
-                                ("from", M.read (| caller |));
-                                ("to", M.read (| M.deref (| M.read (| to |) |) |));
-                                ("id", M.read (| id |))
-                              ]
+                            ("from", M.read (| caller |));
+                            ("to", M.read (| M.deref (| M.read (| to |) |) |));
+                            ("id", M.read (| id |))
                           ]
                       ]
-                    |) in
-                  M.alloc (|
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.tuple []; Ty.path "erc721::Error" ],
-                    Value.StructTuple
-                      "core::result::Result::Ok"
-                      []
-                      [ Ty.tuple []; Ty.path "erc721::Error" ]
-                      [ Value.Tuple [] ]
-                  |)
-                |)
-              |)))
-          |)
+                  ]
+                |) in
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "erc721::Error" ],
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "erc721::Error" ]
+                  [ Value.Tuple [] ]
+              |)
+            |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -2397,165 +2298,143 @@ Module Impl_erc721_Erc721.
           M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "erc721::Erc721" ], self |) in
         let to := M.alloc (| Ty.path "erc721::AccountId", to |) in
         let id := M.alloc (| Ty.path "u32", id |) in
-        M.read (|
-          M.catch_return
-            (Ty.apply
-              (Ty.path "core::result::Result")
-              []
-              [ Ty.tuple []; Ty.path "erc721::Error" ]) (|
-            ltac:(M.monadic
-              (M.alloc (|
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.tuple []; Ty.path "erc721::Error" ],
-                M.read (|
-                  let~ _ : Ty.tuple [] :=
-                    M.read (|
-                      M.match_operator (|
-                        Ty.tuple [],
-                        M.alloc (|
+        M.catch_return
+          (Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "erc721::Error" ]) (|
+          ltac:(M.monadic
+            (M.read (|
+              let~ _ : Ty.tuple [] :=
+                M.match_operator (|
+                  Ty.tuple [],
+                  M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::ops::control_flow::ControlFlow")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "core::convert::Infallible"; Ty.path "erc721::Error" ];
+                        Ty.tuple []
+                      ],
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::ops::control_flow::ControlFlow")
+                        []
+                        [
                           Ty.apply
-                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            (Ty.path "core::result::Result")
                             []
-                            [
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [ Ty.path "core::convert::Infallible"; Ty.path "erc721::Error" ];
-                              Ty.tuple []
-                            ],
-                          M.call_closure (|
+                            [ Ty.path "core::convert::Infallible"; Ty.path "erc721::Error" ];
+                          Ty.tuple []
+                        ],
+                      M.get_trait_method (|
+                        "core::ops::try_trait::Try",
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "erc721::Error" ],
+                        [],
+                        [],
+                        "branch",
+                        [],
+                        []
+                      |),
+                      [
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "erc721::Error" ],
+                          M.get_associated_function (|
+                            Ty.path "erc721::Erc721",
+                            "approve_for",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, to |) |)
+                            |);
+                            M.read (| id |)
+                          ]
+                        |)
+                      ]
+                    |)
+                  |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "core::ops::control_flow::ControlFlow::Break",
+                            0
+                          |) in
+                        let residual :=
+                          M.copy (|
                             Ty.apply
-                              (Ty.path "core::ops::control_flow::ControlFlow")
+                              (Ty.path "core::result::Result")
                               []
-                              [
-                                Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  []
-                                  [ Ty.path "core::convert::Infallible"; Ty.path "erc721::Error" ];
-                                Ty.tuple []
-                              ],
-                            M.get_trait_method (|
-                              "core::ops::try_trait::Try",
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [ Ty.tuple []; Ty.path "erc721::Error" ],
-                              [],
-                              [],
-                              "branch",
-                              [],
-                              []
-                            |),
-                            [
+                              [ Ty.path "core::convert::Infallible"; Ty.path "erc721::Error" ],
+                            γ0_0
+                          |) in
+                        M.never_to_any (|
+                          M.read (|
+                            M.return_ (|
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
                                   []
                                   [ Ty.tuple []; Ty.path "erc721::Error" ],
-                                M.get_associated_function (|
-                                  Ty.path "erc721::Erc721",
-                                  "approve_for",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.MutRef,
-                                    M.deref (| M.read (| self |) |)
-                                  |);
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (| M.borrow (| Pointer.Kind.Ref, to |) |)
-                                  |);
-                                  M.read (| id |)
-                                ]
-                              |)
-                            ]
-                          |)
-                        |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::ops::control_flow::ControlFlow::Break",
-                                  0
-                                |) in
-                              let residual :=
-                                M.copy (|
+                                M.get_trait_method (|
+                                  "core::ops::try_trait::FromResidual",
                                   Ty.apply
                                     (Ty.path "core::result::Result")
                                     []
-                                    [ Ty.path "core::convert::Infallible"; Ty.path "erc721::Error"
-                                    ],
-                                  γ0_0
-                                |) in
-                              M.alloc (|
-                                Ty.tuple [],
-                                M.never_to_any (|
-                                  M.read (|
-                                    M.return_ (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [ Ty.tuple []; Ty.path "erc721::Error" ],
-                                        M.get_trait_method (|
-                                          "core::ops::try_trait::FromResidual",
-                                          Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            []
-                                            [ Ty.tuple []; Ty.path "erc721::Error" ],
-                                          [],
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::result::Result")
-                                              []
-                                              [
-                                                Ty.path "core::convert::Infallible";
-                                                Ty.path "erc721::Error"
-                                              ]
-                                          ],
-                                          "from_residual",
-                                          [],
-                                          []
-                                        |),
-                                        [ M.read (| residual |) ]
-                                      |)
-                                    |)
-                                  |)
-                                |)
-                              |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::ops::control_flow::ControlFlow::Continue",
-                                  0
-                                |) in
-                              let val := M.copy (| Ty.tuple [], γ0_0 |) in
-                              val))
-                        ]
-                      |)
-                    |) in
-                  M.alloc (|
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.tuple []; Ty.path "erc721::Error" ],
-                    Value.StructTuple
-                      "core::result::Result::Ok"
-                      []
-                      [ Ty.tuple []; Ty.path "erc721::Error" ]
-                      [ Value.Tuple [] ]
-                  |)
-                |)
-              |)))
-          |)
+                                    [ Ty.tuple []; Ty.path "erc721::Error" ],
+                                  [],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "core::convert::Infallible"; Ty.path "erc721::Error"
+                                      ]
+                                  ],
+                                  "from_residual",
+                                  [],
+                                  []
+                                |),
+                                [ M.read (| residual |) ]
+                              |)
+                            |)
+                          |)
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "core::ops::control_flow::ControlFlow::Continue",
+                            0
+                          |) in
+                        let val := M.copy (| Ty.tuple [], γ0_0 |) in
+                        M.read (| val |)))
+                  ]
+                |) in
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "erc721::Error" ],
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "erc721::Error" ]
+                  [ Value.Tuple [] ]
+              |)
+            |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -2594,415 +2473,361 @@ Module Impl_erc721_Erc721.
           M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "erc721::Erc721" ], self |) in
         let from := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "erc721::AccountId" ], from |) in
         let id := M.alloc (| Ty.path "u32", id |) in
-        M.read (|
-          M.catch_return
-            (Ty.apply
-              (Ty.path "core::result::Result")
-              []
-              [ Ty.tuple []; Ty.path "erc721::Error" ]) (|
-            ltac:(M.monadic
-              (M.alloc (|
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.tuple []; Ty.path "erc721::Error" ],
-                M.read (|
-                  M.match_operator (|
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.tuple []; Ty.path "erc721::Error" ],
-                    self,
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
-                          let γ1_0 :=
-                            M.SubPointer.get_struct_record_field (|
-                              γ,
-                              "erc721::Erc721",
-                              "token_owner"
-                            |) in
-                          let γ1_1 :=
-                            M.SubPointer.get_struct_record_field (|
-                              γ,
-                              "erc721::Erc721",
-                              "owned_tokens_count"
-                            |) in
-                          let token_owner :=
-                            M.alloc (|
-                              Ty.apply
-                                (Ty.path "&mut")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "erc721::Mapping")
-                                    []
-                                    [ Ty.path "u32"; Ty.path "erc721::AccountId" ]
-                                ],
-                              γ1_0
-                            |) in
-                          let owned_tokens_count :=
-                            M.alloc (|
-                              Ty.apply
-                                (Ty.path "&mut")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "erc721::Mapping")
-                                    []
-                                    [ Ty.path "erc721::AccountId"; Ty.path "u32" ]
-                                ],
-                              γ1_1
-                            |) in
-                          let~ _ : Ty.tuple [] :=
-                            M.read (|
-                              M.match_operator (|
-                                Ty.tuple [],
-                                M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ :=
-                                        M.use
-                                          (M.alloc (|
-                                            Ty.path "bool",
-                                            UnOp.not (|
-                                              M.call_closure (|
-                                                Ty.path "bool",
-                                                M.get_associated_function (|
-                                                  Ty.apply
-                                                    (Ty.path "erc721::Mapping")
-                                                    []
-                                                    [ Ty.path "u32"; Ty.path "erc721::AccountId" ],
-                                                  "contains",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (| M.read (| token_owner |) |)
-                                                  |);
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (|
-                                                      M.borrow (| Pointer.Kind.Ref, id |)
-                                                    |)
-                                                  |)
-                                                ]
-                                              |)
-                                            |)
-                                          |)) in
-                                      let _ :=
-                                        is_constant_or_break_match (|
-                                          M.read (| γ |),
-                                          Value.Bool true
-                                        |) in
-                                      M.alloc (|
-                                        Ty.tuple [],
-                                        M.never_to_any (|
-                                          M.read (|
-                                            M.return_ (|
-                                              Value.StructTuple
-                                                "core::result::Result::Err"
-                                                []
-                                                [ Ty.tuple []; Ty.path "erc721::Error" ]
-                                                [
-                                                  Value.StructTuple
-                                                    "erc721::Error::TokenNotFound"
-                                                    []
-                                                    []
-                                                    []
-                                                ]
-                                            |)
-                                          |)
-                                        |)
-                                      |)));
-                                  fun γ =>
-                                    ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                                ]
-                              |)
-                            |) in
-                          let~ count : Ty.path "u32" :=
-                            M.read (|
-                              M.match_operator (|
-                                Ty.path "u32",
-                                M.alloc (|
-                                  Ty.apply
-                                    (Ty.path "core::ops::control_flow::ControlFlow")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [
-                                          Ty.path "core::convert::Infallible";
-                                          Ty.path "erc721::Error"
-                                        ];
-                                      Ty.path "u32"
-                                    ],
-                                  M.call_closure (|
-                                    Ty.apply
-                                      (Ty.path "core::ops::control_flow::ControlFlow")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
+        M.catch_return
+          (Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "erc721::Error" ]) (|
+          ltac:(M.monadic
+            (M.match_operator (|
+              Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "erc721::Error" ],
+              self,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_record_field (|
+                        γ,
+                        "erc721::Erc721",
+                        "token_owner"
+                      |) in
+                    let γ1_1 :=
+                      M.SubPointer.get_struct_record_field (|
+                        γ,
+                        "erc721::Erc721",
+                        "owned_tokens_count"
+                      |) in
+                    let token_owner :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "erc721::Mapping")
+                              []
+                              [ Ty.path "u32"; Ty.path "erc721::AccountId" ]
+                          ],
+                        γ1_0
+                      |) in
+                    let owned_tokens_count :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "erc721::Mapping")
+                              []
+                              [ Ty.path "erc721::AccountId"; Ty.path "u32" ]
+                          ],
+                        γ1_1
+                      |) in
+                    M.read (|
+                      let~ _ : Ty.tuple [] :=
+                        M.match_operator (|
+                          Ty.tuple [],
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ :=
+                                  M.use
+                                    (M.alloc (|
+                                      Ty.path "bool",
+                                      UnOp.not (|
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "erc721::Mapping")
+                                              []
+                                              [ Ty.path "u32"; Ty.path "erc721::AccountId" ],
+                                            "contains",
+                                            [],
+                                            []
+                                          |),
                                           [
-                                            Ty.path "core::convert::Infallible";
-                                            Ty.path "erc721::Error"
-                                          ];
-                                        Ty.path "u32"
-                                      ],
-                                    M.get_trait_method (|
-                                      "core::ops::try_trait::Try",
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| token_owner |) |)
+                                            |);
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.borrow (| Pointer.Kind.Ref, id |) |)
+                                            |)
+                                          ]
+                                        |)
+                                      |)
+                                    |)) in
+                                let _ :=
+                                  is_constant_or_break_match (|
+                                    M.read (| γ |),
+                                    Value.Bool true
+                                  |) in
+                                M.never_to_any (|
+                                  M.read (|
+                                    M.return_ (|
+                                      Value.StructTuple
+                                        "core::result::Result::Err"
                                         []
-                                        [ Ty.path "u32"; Ty.path "erc721::Error" ],
-                                      [],
-                                      [],
-                                      "branch",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.call_closure (|
+                                        [ Ty.tuple []; Ty.path "erc721::Error" ]
+                                        [ Value.StructTuple "erc721::Error::TokenNotFound" [] [] []
+                                        ]
+                                    |)
+                                  |)
+                                |)));
+                            fun γ => ltac:(M.monadic (Value.Tuple []))
+                          ]
+                        |) in
+                      let~ count : Ty.path "u32" :=
+                        M.match_operator (|
+                          Ty.path "u32",
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::ops::control_flow::ControlFlow")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.path "core::convert::Infallible"; Ty.path "erc721::Error" ];
+                                Ty.path "u32"
+                              ],
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.path "core::convert::Infallible"; Ty.path "erc721::Error"
+                                    ];
+                                  Ty.path "u32"
+                                ],
+                              M.get_trait_method (|
+                                "core::ops::try_trait::Try",
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.path "u32"; Ty.path "erc721::Error" ],
+                                [],
+                                [],
+                                "branch",
+                                [],
+                                []
+                              |),
+                              [
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.path "u32"; Ty.path "erc721::Error" ],
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
+                                    "ok_or",
+                                    [],
+                                    [ Ty.path "erc721::Error" ]
+                                  |),
+                                  [
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "u32" ],
+                                      M.get_associated_function (|
                                         Ty.apply
-                                          (Ty.path "core::result::Result")
+                                          (Ty.path "core::option::Option")
                                           []
-                                          [ Ty.path "u32"; Ty.path "erc721::Error" ],
-                                        M.get_associated_function (|
+                                          [ Ty.path "u32" ],
+                                        "map",
+                                        [],
+                                        [
+                                          Ty.path "u32";
+                                          Ty.function [ Ty.tuple [ Ty.path "u32" ] ] (Ty.path "u32")
+                                        ]
+                                      |),
+                                      [
+                                        M.call_closure (|
                                           Ty.apply
                                             (Ty.path "core::option::Option")
                                             []
                                             [ Ty.path "u32" ],
-                                          "ok_or",
-                                          [],
-                                          [ Ty.path "erc721::Error" ]
-                                        |),
-                                        [
-                                          M.call_closure (|
+                                          M.get_associated_function (|
                                             Ty.apply
-                                              (Ty.path "core::option::Option")
+                                              (Ty.path "erc721::Mapping")
                                               []
-                                              [ Ty.path "u32" ],
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "core::option::Option")
-                                                []
-                                                [ Ty.path "u32" ],
-                                              "map",
-                                              [],
-                                              [
-                                                Ty.path "u32";
-                                                Ty.function
-                                                  [ Ty.tuple [ Ty.path "u32" ] ]
-                                                  (Ty.path "u32")
-                                              ]
-                                            |),
-                                            [
-                                              M.call_closure (|
-                                                Ty.apply
-                                                  (Ty.path "core::option::Option")
-                                                  []
-                                                  [ Ty.path "u32" ],
-                                                M.get_associated_function (|
-                                                  Ty.apply
-                                                    (Ty.path "erc721::Mapping")
-                                                    []
-                                                    [ Ty.path "erc721::AccountId"; Ty.path "u32" ],
-                                                  "get",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (| M.read (| owned_tokens_count |) |)
-                                                  |);
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (| M.read (| from |) |)
-                                                  |)
-                                                ]
-                                              |);
-                                              M.closure
-                                                (fun γ =>
-                                                  ltac:(M.monadic
-                                                    match γ with
-                                                    | [ α0 ] =>
-                                                      ltac:(M.monadic
-                                                        (M.match_operator (|
-                                                          Ty.function
-                                                            [ Ty.tuple [ Ty.path "u32" ] ]
-                                                            (Ty.path "u32"),
-                                                          M.alloc (| Ty.path "u32", α0 |),
-                                                          [
-                                                            fun γ =>
-                                                              ltac:(M.monadic
-                                                                (let c :=
-                                                                  M.copy (| Ty.path "u32", γ |) in
-                                                                M.call_closure (|
-                                                                  Ty.path "u32",
-                                                                  BinOp.Wrap.sub,
-                                                                  [
-                                                                    M.read (| c |);
-                                                                    M.read (|
-                                                                      M.use
-                                                                        (M.alloc (|
-                                                                          Ty.path "u32",
-                                                                          Value.Integer
-                                                                            IntegerKind.U32
-                                                                            1
-                                                                        |))
-                                                                    |)
-                                                                  ]
-                                                                |)))
-                                                          ]
-                                                        |)))
-                                                    | _ => M.impossible "wrong number of arguments"
-                                                    end))
-                                            ]
-                                          |);
-                                          Value.StructTuple
-                                            "erc721::Error::CannotFetchValue"
+                                              [ Ty.path "erc721::AccountId"; Ty.path "u32" ],
+                                            "get",
+                                            [],
                                             []
-                                            []
-                                            []
-                                        ]
-                                      |)
-                                    ]
-                                  |)
-                                |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ0_0 :=
-                                        M.SubPointer.get_struct_tuple_field (|
-                                          γ,
-                                          "core::ops::control_flow::ControlFlow::Break",
-                                          0
-                                        |) in
-                                      let residual :=
-                                        M.copy (|
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| owned_tokens_count |) |)
+                                            |);
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| from |) |)
+                                            |)
+                                          ]
+                                        |);
+                                        M.closure
+                                          (fun γ =>
+                                            ltac:(M.monadic
+                                              match γ with
+                                              | [ α0 ] =>
+                                                ltac:(M.monadic
+                                                  (M.match_operator (|
+                                                    Ty.function
+                                                      [ Ty.tuple [ Ty.path "u32" ] ]
+                                                      (Ty.path "u32"),
+                                                    M.alloc (| Ty.path "u32", α0 |),
+                                                    [
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (let c := M.copy (| Ty.path "u32", γ |) in
+                                                          M.call_closure (|
+                                                            Ty.path "u32",
+                                                            BinOp.Wrap.sub,
+                                                            [
+                                                              M.read (| c |);
+                                                              M.read (|
+                                                                M.use
+                                                                  (M.alloc (|
+                                                                    Ty.path "u32",
+                                                                    Value.Integer IntegerKind.U32 1
+                                                                  |))
+                                                              |)
+                                                            ]
+                                                          |)))
+                                                    ]
+                                                  |)))
+                                              | _ => M.impossible "wrong number of arguments"
+                                              end))
+                                      ]
+                                    |);
+                                    Value.StructTuple "erc721::Error::CannotFetchValue" [] [] []
+                                  ]
+                                |)
+                              ]
+                            |)
+                          |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ0_0 :=
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    γ,
+                                    "core::ops::control_flow::ControlFlow::Break",
+                                    0
+                                  |) in
+                                let residual :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "core::convert::Infallible"; Ty.path "erc721::Error"
+                                      ],
+                                    γ0_0
+                                  |) in
+                                M.never_to_any (|
+                                  M.read (|
+                                    M.return_ (|
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [ Ty.tuple []; Ty.path "erc721::Error" ],
+                                        M.get_trait_method (|
+                                          "core::ops::try_trait::FromResidual",
                                           Ty.apply
                                             (Ty.path "core::result::Result")
                                             []
-                                            [
-                                              Ty.path "core::convert::Infallible";
-                                              Ty.path "erc721::Error"
-                                            ],
-                                          γ0_0
-                                        |) in
-                                      M.alloc (|
-                                        Ty.path "u32",
-                                        M.never_to_any (|
-                                          M.read (|
-                                            M.return_ (|
-                                              M.call_closure (|
-                                                Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [ Ty.tuple []; Ty.path "erc721::Error" ],
-                                                M.get_trait_method (|
-                                                  "core::ops::try_trait::FromResidual",
-                                                  Ty.apply
-                                                    (Ty.path "core::result::Result")
-                                                    []
-                                                    [ Ty.tuple []; Ty.path "erc721::Error" ],
-                                                  [],
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::result::Result")
-                                                      []
-                                                      [
-                                                        Ty.path "core::convert::Infallible";
-                                                        Ty.path "erc721::Error"
-                                                      ]
-                                                  ],
-                                                  "from_residual",
-                                                  [],
-                                                  []
-                                                |),
-                                                [ M.read (| residual |) ]
-                                              |)
-                                            |)
-                                          |)
-                                        |)
-                                      |)));
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ0_0 :=
-                                        M.SubPointer.get_struct_tuple_field (|
-                                          γ,
-                                          "core::ops::control_flow::ControlFlow::Continue",
-                                          0
-                                        |) in
-                                      let val := M.copy (| Ty.path "u32", γ0_0 |) in
-                                      val))
-                                ]
-                              |)
-                            |) in
-                          let~ _ : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ] :=
-                            M.call_closure (|
-                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "erc721::Mapping")
-                                  []
-                                  [ Ty.path "erc721::AccountId"; Ty.path "u32" ],
-                                "insert",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.MutRef,
-                                  M.deref (| M.read (| owned_tokens_count |) |)
-                                |);
-                                M.read (| M.deref (| M.read (| from |) |) |);
-                                M.read (| count |)
-                              ]
-                            |) in
-                          let~ _ : Ty.tuple [] :=
-                            M.call_closure (|
-                              Ty.tuple [],
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "erc721::Mapping")
-                                  []
-                                  [ Ty.path "u32"; Ty.path "erc721::AccountId" ],
-                                "remove",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (| M.read (| token_owner |) |)
-                                |);
-                                M.read (| id |)
-                              ]
-                            |) in
-                          M.alloc (|
+                                            [ Ty.tuple []; Ty.path "erc721::Error" ],
+                                          [],
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.path "core::convert::Infallible";
+                                                Ty.path "erc721::Error"
+                                              ]
+                                          ],
+                                          "from_residual",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| residual |) ]
+                                      |)
+                                    |)
+                                  |)
+                                |)));
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ0_0 :=
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    γ,
+                                    "core::ops::control_flow::ControlFlow::Continue",
+                                    0
+                                  |) in
+                                let val := M.copy (| Ty.path "u32", γ0_0 |) in
+                                M.read (| val |)))
+                          ]
+                        |) in
+                      let~ _ : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ] :=
+                        M.call_closure (|
+                          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
+                          M.get_associated_function (|
                             Ty.apply
-                              (Ty.path "core::result::Result")
+                              (Ty.path "erc721::Mapping")
                               []
-                              [ Ty.tuple []; Ty.path "erc721::Error" ],
-                            Value.StructTuple
-                              "core::result::Result::Ok"
+                              [ Ty.path "erc721::AccountId"; Ty.path "u32" ],
+                            "insert",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.read (| owned_tokens_count |) |)
+                            |);
+                            M.read (| M.deref (| M.read (| from |) |) |);
+                            M.read (| count |)
+                          ]
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.call_closure (|
+                          Ty.tuple [],
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "erc721::Mapping")
                               []
-                              [ Ty.tuple []; Ty.path "erc721::Error" ]
-                              [ Value.Tuple [] ]
-                          |)))
-                    ]
-                  |)
-                |)
-              |)))
-          |)
+                              [ Ty.path "u32"; Ty.path "erc721::AccountId" ],
+                            "remove",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| token_owner |) |) |);
+                            M.read (| id |)
+                          ]
+                        |) in
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "erc721::Error" ],
+                        Value.StructTuple
+                          "core::result::Result::Ok"
+                          []
+                          [ Ty.tuple []; Ty.path "erc721::Error" ]
+                          [ Value.Tuple [] ]
+                      |)
+                    |)))
+              ]
+            |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -3091,192 +2916,165 @@ Module Impl_erc721_Erc721.
           M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "erc721::Erc721" ], self |) in
         let destination := M.alloc (| Ty.path "erc721::AccountId", destination |) in
         let id := M.alloc (| Ty.path "u32", id |) in
-        M.read (|
-          M.catch_return
-            (Ty.apply
-              (Ty.path "core::result::Result")
-              []
-              [ Ty.tuple []; Ty.path "erc721::Error" ]) (|
-            ltac:(M.monadic
-              (M.alloc (|
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.tuple []; Ty.path "erc721::Error" ],
-                M.read (|
-                  let~ caller : Ty.path "erc721::AccountId" :=
-                    M.call_closure (|
-                      Ty.path "erc721::AccountId",
-                      M.get_associated_function (| Ty.path "erc721::Env", "caller", [], [] |),
+        M.catch_return
+          (Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "erc721::Error" ]) (|
+          ltac:(M.monadic
+            (M.read (|
+              let~ caller : Ty.path "erc721::AccountId" :=
+                M.call_closure (|
+                  Ty.path "erc721::AccountId",
+                  M.get_associated_function (| Ty.path "erc721::Env", "caller", [], [] |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        Ty.path "erc721::Env",
+                        M.call_closure (|
+                          Ty.path "erc721::Env",
+                          M.get_associated_function (| Ty.path "erc721::Erc721", "env", [], [] |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                        |)
+                      |)
+                    |)
+                  ]
+                |) in
+              let~ _ : Ty.tuple [] :=
+                M.match_operator (|
+                  Ty.tuple [],
+                  M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::ops::control_flow::ControlFlow")
+                      []
                       [
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.alloc (|
-                            Ty.path "erc721::Env",
-                            M.call_closure (|
-                              Ty.path "erc721::Env",
-                              M.get_associated_function (|
-                                Ty.path "erc721::Erc721",
-                                "env",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                            |)
-                          |)
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "core::convert::Infallible"; Ty.path "erc721::Error" ];
+                        Ty.tuple []
+                      ],
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::ops::control_flow::ControlFlow")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "core::convert::Infallible"; Ty.path "erc721::Error" ];
+                          Ty.tuple []
+                        ],
+                      M.get_trait_method (|
+                        "core::ops::try_trait::Try",
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "erc721::Error" ],
+                        [],
+                        [],
+                        "branch",
+                        [],
+                        []
+                      |),
+                      [
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "erc721::Error" ],
+                          M.get_associated_function (|
+                            Ty.path "erc721::Erc721",
+                            "transfer_token_from",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, caller |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, destination |) |)
+                            |);
+                            M.read (| id |)
+                          ]
                         |)
                       ]
-                    |) in
-                  let~ _ : Ty.tuple [] :=
-                    M.read (|
-                      M.match_operator (|
-                        Ty.tuple [],
-                        M.alloc (|
-                          Ty.apply
-                            (Ty.path "core::ops::control_flow::ControlFlow")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [ Ty.path "core::convert::Infallible"; Ty.path "erc721::Error" ];
-                              Ty.tuple []
-                            ],
-                          M.call_closure (|
+                    |)
+                  |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "core::ops::control_flow::ControlFlow::Break",
+                            0
+                          |) in
+                        let residual :=
+                          M.copy (|
                             Ty.apply
-                              (Ty.path "core::ops::control_flow::ControlFlow")
+                              (Ty.path "core::result::Result")
                               []
-                              [
-                                Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  []
-                                  [ Ty.path "core::convert::Infallible"; Ty.path "erc721::Error" ];
-                                Ty.tuple []
-                              ],
-                            M.get_trait_method (|
-                              "core::ops::try_trait::Try",
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [ Ty.tuple []; Ty.path "erc721::Error" ],
-                              [],
-                              [],
-                              "branch",
-                              [],
-                              []
-                            |),
-                            [
+                              [ Ty.path "core::convert::Infallible"; Ty.path "erc721::Error" ],
+                            γ0_0
+                          |) in
+                        M.never_to_any (|
+                          M.read (|
+                            M.return_ (|
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
                                   []
                                   [ Ty.tuple []; Ty.path "erc721::Error" ],
-                                M.get_associated_function (|
-                                  Ty.path "erc721::Erc721",
-                                  "transfer_token_from",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.MutRef,
-                                    M.deref (| M.read (| self |) |)
-                                  |);
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (| M.borrow (| Pointer.Kind.Ref, caller |) |)
-                                  |);
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (| M.borrow (| Pointer.Kind.Ref, destination |) |)
-                                  |);
-                                  M.read (| id |)
-                                ]
-                              |)
-                            ]
-                          |)
-                        |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::ops::control_flow::ControlFlow::Break",
-                                  0
-                                |) in
-                              let residual :=
-                                M.copy (|
+                                M.get_trait_method (|
+                                  "core::ops::try_trait::FromResidual",
                                   Ty.apply
                                     (Ty.path "core::result::Result")
                                     []
-                                    [ Ty.path "core::convert::Infallible"; Ty.path "erc721::Error"
-                                    ],
-                                  γ0_0
-                                |) in
-                              M.alloc (|
-                                Ty.tuple [],
-                                M.never_to_any (|
-                                  M.read (|
-                                    M.return_ (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [ Ty.tuple []; Ty.path "erc721::Error" ],
-                                        M.get_trait_method (|
-                                          "core::ops::try_trait::FromResidual",
-                                          Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            []
-                                            [ Ty.tuple []; Ty.path "erc721::Error" ],
-                                          [],
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::result::Result")
-                                              []
-                                              [
-                                                Ty.path "core::convert::Infallible";
-                                                Ty.path "erc721::Error"
-                                              ]
-                                          ],
-                                          "from_residual",
-                                          [],
-                                          []
-                                        |),
-                                        [ M.read (| residual |) ]
-                                      |)
-                                    |)
-                                  |)
-                                |)
-                              |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::ops::control_flow::ControlFlow::Continue",
-                                  0
-                                |) in
-                              let val := M.copy (| Ty.tuple [], γ0_0 |) in
-                              val))
-                        ]
-                      |)
-                    |) in
-                  M.alloc (|
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.tuple []; Ty.path "erc721::Error" ],
-                    Value.StructTuple
-                      "core::result::Result::Ok"
-                      []
-                      [ Ty.tuple []; Ty.path "erc721::Error" ]
-                      [ Value.Tuple [] ]
-                  |)
-                |)
-              |)))
-          |)
+                                    [ Ty.tuple []; Ty.path "erc721::Error" ],
+                                  [],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "core::convert::Infallible"; Ty.path "erc721::Error"
+                                      ]
+                                  ],
+                                  "from_residual",
+                                  [],
+                                  []
+                                |),
+                                [ M.read (| residual |) ]
+                              |)
+                            |)
+                          |)
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "core::ops::control_flow::ControlFlow::Continue",
+                            0
+                          |) in
+                        let val := M.copy (| Ty.tuple [], γ0_0 |) in
+                        M.read (| val |)))
+                  ]
+                |) in
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "erc721::Error" ],
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "erc721::Error" ]
+                  [ Value.Tuple [] ]
+              |)
+            |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -3305,169 +3103,147 @@ Module Impl_erc721_Erc721.
         let from := M.alloc (| Ty.path "erc721::AccountId", from |) in
         let to := M.alloc (| Ty.path "erc721::AccountId", to |) in
         let id := M.alloc (| Ty.path "u32", id |) in
-        M.read (|
-          M.catch_return
-            (Ty.apply
-              (Ty.path "core::result::Result")
-              []
-              [ Ty.tuple []; Ty.path "erc721::Error" ]) (|
-            ltac:(M.monadic
-              (M.alloc (|
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.tuple []; Ty.path "erc721::Error" ],
-                M.read (|
-                  let~ _ : Ty.tuple [] :=
-                    M.read (|
-                      M.match_operator (|
-                        Ty.tuple [],
-                        M.alloc (|
+        M.catch_return
+          (Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "erc721::Error" ]) (|
+          ltac:(M.monadic
+            (M.read (|
+              let~ _ : Ty.tuple [] :=
+                M.match_operator (|
+                  Ty.tuple [],
+                  M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::ops::control_flow::ControlFlow")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "core::convert::Infallible"; Ty.path "erc721::Error" ];
+                        Ty.tuple []
+                      ],
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::ops::control_flow::ControlFlow")
+                        []
+                        [
                           Ty.apply
-                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            (Ty.path "core::result::Result")
                             []
-                            [
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [ Ty.path "core::convert::Infallible"; Ty.path "erc721::Error" ];
-                              Ty.tuple []
-                            ],
-                          M.call_closure (|
+                            [ Ty.path "core::convert::Infallible"; Ty.path "erc721::Error" ];
+                          Ty.tuple []
+                        ],
+                      M.get_trait_method (|
+                        "core::ops::try_trait::Try",
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "erc721::Error" ],
+                        [],
+                        [],
+                        "branch",
+                        [],
+                        []
+                      |),
+                      [
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "erc721::Error" ],
+                          M.get_associated_function (|
+                            Ty.path "erc721::Erc721",
+                            "transfer_token_from",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, from |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, to |) |)
+                            |);
+                            M.read (| id |)
+                          ]
+                        |)
+                      ]
+                    |)
+                  |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "core::ops::control_flow::ControlFlow::Break",
+                            0
+                          |) in
+                        let residual :=
+                          M.copy (|
                             Ty.apply
-                              (Ty.path "core::ops::control_flow::ControlFlow")
+                              (Ty.path "core::result::Result")
                               []
-                              [
-                                Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  []
-                                  [ Ty.path "core::convert::Infallible"; Ty.path "erc721::Error" ];
-                                Ty.tuple []
-                              ],
-                            M.get_trait_method (|
-                              "core::ops::try_trait::Try",
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [ Ty.tuple []; Ty.path "erc721::Error" ],
-                              [],
-                              [],
-                              "branch",
-                              [],
-                              []
-                            |),
-                            [
+                              [ Ty.path "core::convert::Infallible"; Ty.path "erc721::Error" ],
+                            γ0_0
+                          |) in
+                        M.never_to_any (|
+                          M.read (|
+                            M.return_ (|
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
                                   []
                                   [ Ty.tuple []; Ty.path "erc721::Error" ],
-                                M.get_associated_function (|
-                                  Ty.path "erc721::Erc721",
-                                  "transfer_token_from",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.MutRef,
-                                    M.deref (| M.read (| self |) |)
-                                  |);
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (| M.borrow (| Pointer.Kind.Ref, from |) |)
-                                  |);
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (| M.borrow (| Pointer.Kind.Ref, to |) |)
-                                  |);
-                                  M.read (| id |)
-                                ]
-                              |)
-                            ]
-                          |)
-                        |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::ops::control_flow::ControlFlow::Break",
-                                  0
-                                |) in
-                              let residual :=
-                                M.copy (|
+                                M.get_trait_method (|
+                                  "core::ops::try_trait::FromResidual",
                                   Ty.apply
                                     (Ty.path "core::result::Result")
                                     []
-                                    [ Ty.path "core::convert::Infallible"; Ty.path "erc721::Error"
-                                    ],
-                                  γ0_0
-                                |) in
-                              M.alloc (|
-                                Ty.tuple [],
-                                M.never_to_any (|
-                                  M.read (|
-                                    M.return_ (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [ Ty.tuple []; Ty.path "erc721::Error" ],
-                                        M.get_trait_method (|
-                                          "core::ops::try_trait::FromResidual",
-                                          Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            []
-                                            [ Ty.tuple []; Ty.path "erc721::Error" ],
-                                          [],
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::result::Result")
-                                              []
-                                              [
-                                                Ty.path "core::convert::Infallible";
-                                                Ty.path "erc721::Error"
-                                              ]
-                                          ],
-                                          "from_residual",
-                                          [],
-                                          []
-                                        |),
-                                        [ M.read (| residual |) ]
-                                      |)
-                                    |)
-                                  |)
-                                |)
-                              |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::ops::control_flow::ControlFlow::Continue",
-                                  0
-                                |) in
-                              let val := M.copy (| Ty.tuple [], γ0_0 |) in
-                              val))
-                        ]
-                      |)
-                    |) in
-                  M.alloc (|
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.tuple []; Ty.path "erc721::Error" ],
-                    Value.StructTuple
-                      "core::result::Result::Ok"
-                      []
-                      [ Ty.tuple []; Ty.path "erc721::Error" ]
-                      [ Value.Tuple [] ]
-                  |)
-                |)
-              |)))
-          |)
+                                    [ Ty.tuple []; Ty.path "erc721::Error" ],
+                                  [],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "core::convert::Infallible"; Ty.path "erc721::Error"
+                                      ]
+                                  ],
+                                  "from_residual",
+                                  [],
+                                  []
+                                |),
+                                [ M.read (| residual |) ]
+                              |)
+                            |)
+                          |)
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "core::ops::control_flow::ControlFlow::Continue",
+                            0
+                          |) in
+                        let val := M.copy (| Ty.tuple [], γ0_0 |) in
+                        M.read (| val |)))
+                  ]
+                |) in
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "erc721::Error" ],
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "erc721::Error" ]
+                  [ Value.Tuple [] ]
+              |)
+            |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -3496,260 +3272,228 @@ Module Impl_erc721_Erc721.
         (let self :=
           M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "erc721::Erc721" ], self |) in
         let id := M.alloc (| Ty.path "u32", id |) in
-        M.read (|
-          M.catch_return
-            (Ty.apply
-              (Ty.path "core::result::Result")
-              []
-              [ Ty.tuple []; Ty.path "erc721::Error" ]) (|
-            ltac:(M.monadic
-              (M.alloc (|
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.tuple []; Ty.path "erc721::Error" ],
-                M.read (|
-                  let~ caller : Ty.path "erc721::AccountId" :=
-                    M.call_closure (|
-                      Ty.path "erc721::AccountId",
-                      M.get_associated_function (| Ty.path "erc721::Env", "caller", [], [] |),
+        M.catch_return
+          (Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "erc721::Error" ]) (|
+          ltac:(M.monadic
+            (M.read (|
+              let~ caller : Ty.path "erc721::AccountId" :=
+                M.call_closure (|
+                  Ty.path "erc721::AccountId",
+                  M.get_associated_function (| Ty.path "erc721::Env", "caller", [], [] |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        Ty.path "erc721::Env",
+                        M.call_closure (|
+                          Ty.path "erc721::Env",
+                          M.get_associated_function (| Ty.path "erc721::Erc721", "env", [], [] |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                        |)
+                      |)
+                    |)
+                  ]
+                |) in
+              let~ _ : Ty.tuple [] :=
+                M.match_operator (|
+                  Ty.tuple [],
+                  M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::ops::control_flow::ControlFlow")
+                      []
                       [
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.alloc (|
-                            Ty.path "erc721::Env",
-                            M.call_closure (|
-                              Ty.path "erc721::Env",
-                              M.get_associated_function (|
-                                Ty.path "erc721::Erc721",
-                                "env",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                            |)
-                          |)
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "core::convert::Infallible"; Ty.path "erc721::Error" ];
+                        Ty.tuple []
+                      ],
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::ops::control_flow::ControlFlow")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "core::convert::Infallible"; Ty.path "erc721::Error" ];
+                          Ty.tuple []
+                        ],
+                      M.get_trait_method (|
+                        "core::ops::try_trait::Try",
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "erc721::Error" ],
+                        [],
+                        [],
+                        "branch",
+                        [],
+                        []
+                      |),
+                      [
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "erc721::Error" ],
+                          M.get_associated_function (|
+                            Ty.path "erc721::Erc721",
+                            "add_token_to",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, caller |) |)
+                            |);
+                            M.read (| id |)
+                          ]
                         |)
                       ]
-                    |) in
-                  let~ _ : Ty.tuple [] :=
-                    M.read (|
-                      M.match_operator (|
-                        Ty.tuple [],
-                        M.alloc (|
-                          Ty.apply
-                            (Ty.path "core::ops::control_flow::ControlFlow")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [ Ty.path "core::convert::Infallible"; Ty.path "erc721::Error" ];
-                              Ty.tuple []
-                            ],
-                          M.call_closure (|
+                    |)
+                  |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "core::ops::control_flow::ControlFlow::Break",
+                            0
+                          |) in
+                        let residual :=
+                          M.copy (|
                             Ty.apply
-                              (Ty.path "core::ops::control_flow::ControlFlow")
+                              (Ty.path "core::result::Result")
                               []
-                              [
-                                Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  []
-                                  [ Ty.path "core::convert::Infallible"; Ty.path "erc721::Error" ];
-                                Ty.tuple []
-                              ],
-                            M.get_trait_method (|
-                              "core::ops::try_trait::Try",
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [ Ty.tuple []; Ty.path "erc721::Error" ],
-                              [],
-                              [],
-                              "branch",
-                              [],
-                              []
-                            |),
-                            [
+                              [ Ty.path "core::convert::Infallible"; Ty.path "erc721::Error" ],
+                            γ0_0
+                          |) in
+                        M.never_to_any (|
+                          M.read (|
+                            M.return_ (|
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
                                   []
                                   [ Ty.tuple []; Ty.path "erc721::Error" ],
-                                M.get_associated_function (|
-                                  Ty.path "erc721::Erc721",
-                                  "add_token_to",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.MutRef,
-                                    M.deref (| M.read (| self |) |)
-                                  |);
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (| M.borrow (| Pointer.Kind.Ref, caller |) |)
-                                  |);
-                                  M.read (| id |)
-                                ]
-                              |)
-                            ]
-                          |)
-                        |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::ops::control_flow::ControlFlow::Break",
-                                  0
-                                |) in
-                              let residual :=
-                                M.copy (|
+                                M.get_trait_method (|
+                                  "core::ops::try_trait::FromResidual",
                                   Ty.apply
                                     (Ty.path "core::result::Result")
                                     []
-                                    [ Ty.path "core::convert::Infallible"; Ty.path "erc721::Error"
-                                    ],
-                                  γ0_0
-                                |) in
-                              M.alloc (|
-                                Ty.tuple [],
-                                M.never_to_any (|
-                                  M.read (|
-                                    M.return_ (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [ Ty.tuple []; Ty.path "erc721::Error" ],
-                                        M.get_trait_method (|
-                                          "core::ops::try_trait::FromResidual",
-                                          Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            []
-                                            [ Ty.tuple []; Ty.path "erc721::Error" ],
-                                          [],
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::result::Result")
-                                              []
-                                              [
-                                                Ty.path "core::convert::Infallible";
-                                                Ty.path "erc721::Error"
-                                              ]
-                                          ],
-                                          "from_residual",
-                                          [],
-                                          []
-                                        |),
-                                        [ M.read (| residual |) ]
-                                      |)
-                                    |)
-                                  |)
-                                |)
-                              |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::ops::control_flow::ControlFlow::Continue",
-                                  0
-                                |) in
-                              let val := M.copy (| Ty.tuple [], γ0_0 |) in
-                              val))
-                        ]
-                      |)
-                    |) in
-                  let~ _ : Ty.tuple [] :=
-                    M.call_closure (|
-                      Ty.tuple [],
-                      M.get_associated_function (| Ty.path "erc721::Env", "emit_event", [], [] |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.alloc (|
-                            Ty.path "erc721::Env",
-                            M.call_closure (|
-                              Ty.path "erc721::Env",
-                              M.get_associated_function (|
-                                Ty.path "erc721::Erc721",
-                                "env",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                                    [ Ty.tuple []; Ty.path "erc721::Error" ],
+                                  [],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "core::convert::Infallible"; Ty.path "erc721::Error"
+                                      ]
+                                  ],
+                                  "from_residual",
+                                  [],
+                                  []
+                                |),
+                                [ M.read (| residual |) ]
+                              |)
                             |)
                           |)
-                        |);
-                        Value.StructTuple
-                          "erc721::Event::Transfer"
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "core::ops::control_flow::ControlFlow::Continue",
+                            0
+                          |) in
+                        let val := M.copy (| Ty.tuple [], γ0_0 |) in
+                        M.read (| val |)))
+                  ]
+                |) in
+              let~ _ : Ty.tuple [] :=
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.get_associated_function (| Ty.path "erc721::Env", "emit_event", [], [] |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        Ty.path "erc721::Env",
+                        M.call_closure (|
+                          Ty.path "erc721::Env",
+                          M.get_associated_function (| Ty.path "erc721::Erc721", "env", [], [] |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                        |)
+                      |)
+                    |);
+                    Value.StructTuple
+                      "erc721::Event::Transfer"
+                      []
+                      []
+                      [
+                        Value.mkStructRecord
+                          "erc721::Transfer"
                           []
                           []
                           [
-                            Value.mkStructRecord
-                              "erc721::Transfer"
-                              []
-                              []
-                              [
-                                ("from",
-                                  Value.StructTuple
-                                    "core::option::Option::Some"
-                                    []
-                                    [ Ty.path "erc721::AccountId" ]
+                            ("from",
+                              Value.StructTuple
+                                "core::option::Option::Some"
+                                []
+                                [ Ty.path "erc721::AccountId" ]
+                                [
+                                  M.call_closure (|
+                                    Ty.path "erc721::AccountId",
+                                    M.get_trait_method (|
+                                      "core::convert::From",
+                                      Ty.path "erc721::AccountId",
+                                      [],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 32 ]
+                                          [ Ty.path "u8" ]
+                                      ],
+                                      "from",
+                                      [],
+                                      []
+                                    |),
                                     [
-                                      M.call_closure (|
-                                        Ty.path "erc721::AccountId",
-                                        M.get_trait_method (|
-                                          "core::convert::From",
-                                          Ty.path "erc721::AccountId",
-                                          [],
-                                          [
-                                            Ty.apply
-                                              (Ty.path "array")
-                                              [ Value.Integer IntegerKind.Usize 32 ]
-                                              [ Ty.path "u8" ]
-                                          ],
-                                          "from",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          lib.repeat (|
-                                            Value.Integer IntegerKind.U8 0,
-                                            Value.Integer IntegerKind.Usize 32
-                                          |)
-                                        ]
+                                      lib.repeat (|
+                                        Value.Integer IntegerKind.U8 0,
+                                        Value.Integer IntegerKind.Usize 32
                                       |)
-                                    ]);
-                                ("to",
-                                  Value.StructTuple
-                                    "core::option::Option::Some"
-                                    []
-                                    [ Ty.path "erc721::AccountId" ]
-                                    [ M.read (| caller |) ]);
-                                ("id", M.read (| id |))
-                              ]
+                                    ]
+                                  |)
+                                ]);
+                            ("to",
+                              Value.StructTuple
+                                "core::option::Option::Some"
+                                []
+                                [ Ty.path "erc721::AccountId" ]
+                                [ M.read (| caller |) ]);
+                            ("id", M.read (| id |))
                           ]
                       ]
-                    |) in
-                  M.alloc (|
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.tuple []; Ty.path "erc721::Error" ],
-                    Value.StructTuple
-                      "core::result::Result::Ok"
-                      []
-                      [ Ty.tuple []; Ty.path "erc721::Error" ]
-                      [ Value.Tuple [] ]
-                  |)
-                |)
-              |)))
-          |)
+                  ]
+                |) in
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "erc721::Error" ],
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.tuple []; Ty.path "erc721::Error" ]
+                  [ Value.Tuple [] ]
+              |)
+            |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

@@ -98,52 +98,38 @@ Module state.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.read (|
-                M.match_operator (|
-                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                  self,
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
-                        let _ :=
-                          M.is_struct_tuple (|
-                            γ,
-                            "move_core_types::state::VMState::DESERIALIZER"
-                          |) in
-                        M.alloc (|
-                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "DESERIALIZER" |) |) |)
-                        |)));
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
-                        let _ :=
-                          M.is_struct_tuple (| γ, "move_core_types::state::VMState::VERIFIER" |) in
-                        M.alloc (|
-                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "VERIFIER" |) |) |)
-                        |)));
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
-                        let _ :=
-                          M.is_struct_tuple (| γ, "move_core_types::state::VMState::RUNTIME" |) in
-                        M.alloc (|
-                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "RUNTIME" |) |) |)
-                        |)));
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
-                        let _ :=
-                          M.is_struct_tuple (| γ, "move_core_types::state::VMState::OTHER" |) in
-                        M.alloc (|
-                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "OTHER" |) |) |)
-                        |)))
-                  ]
-                |)
+              M.match_operator (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                self,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let _ :=
+                        M.is_struct_tuple (|
+                          γ,
+                          "move_core_types::state::VMState::DESERIALIZER"
+                        |) in
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "DESERIALIZER" |) |) |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ, "move_core_types::state::VMState::VERIFIER" |) in
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "VERIFIER" |) |) |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ, "move_core_types::state::VMState::RUNTIME" |) in
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "RUNTIME" |) |) |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let _ :=
+                        M.is_struct_tuple (| γ, "move_core_types::state::VMState::OTHER" |) in
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "OTHER" |) |) |)))
+                ]
               |)
             ]
           |)))

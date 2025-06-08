@@ -11,239 +11,231 @@ Module iter.
           | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
-              M.read (|
-                M.match_operator (|
-                  Ty.path "usize",
-                  M.alloc (|
+              M.match_operator (|
+                Ty.path "usize",
+                M.alloc (|
+                  Ty.tuple
+                    [
+                      Ty.path "usize";
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                    ],
+                  M.call_closure (|
                     Ty.tuple
                       [
                         Ty.path "usize";
                         Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
                       ],
-                    M.call_closure (|
-                      Ty.tuple
-                        [
-                          Ty.path "usize";
-                          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
-                        ],
-                      M.get_trait_method (|
-                        "core::iter::traits::iterator::Iterator",
-                        Self,
-                        [],
-                        [],
-                        "size_hint",
-                        [],
-                        []
-                      |),
-                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                    |)
-                  |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                        let lower := M.copy (| Ty.path "usize", γ0_0 |) in
-                        let upper :=
-                          M.copy (|
-                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
-                            γ0_1
-                          |) in
+                    M.get_trait_method (|
+                      "core::iter::traits::iterator::Iterator",
+                      Self,
+                      [],
+                      [],
+                      "size_hint",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                  |)
+                |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let lower := M.copy (| Ty.path "usize", γ0_0 |) in
+                      let upper :=
+                        M.copy (|
+                          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
+                          γ0_1
+                        |) in
+                      M.read (|
                         let~ _ : Ty.tuple [] :=
-                          M.read (|
-                            M.match_operator (|
-                              Ty.tuple [],
-                              M.alloc (|
-                                Ty.tuple
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::option::Option")
-                                          []
-                                          [ Ty.path "usize" ]
-                                      ];
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::option::Option")
-                                          []
-                                          [ Ty.path "usize" ]
-                                      ]
-                                  ],
-                                Value.Tuple
-                                  [
-                                    M.borrow (| Pointer.Kind.Ref, upper |);
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.alloc (|
-                                        Ty.apply
-                                          (Ty.path "core::option::Option")
-                                          []
-                                          [ Ty.path "usize" ],
-                                        Value.StructTuple
-                                          "core::option::Option::Some"
-                                          []
-                                          [ Ty.path "usize" ]
-                                          [ M.read (| lower |) ]
-                                      |)
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (|
+                              Ty.tuple
+                                [
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "usize" ]
+                                    ];
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "usize" ]
+                                    ]
+                                ],
+                              Value.Tuple
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, upper |);
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "usize" ],
+                                      Value.StructTuple
+                                        "core::option::Option::Some"
+                                        []
+                                        [ Ty.path "usize" ]
+                                        [ M.read (| lower |) ]
                                     |)
-                                  ]
-                              |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                    let left_val :=
-                                      M.copy (|
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::option::Option")
-                                              []
-                                              [ Ty.path "usize" ]
-                                          ],
-                                        γ0_0
-                                      |) in
-                                    let right_val :=
-                                      M.copy (|
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::option::Option")
-                                              []
-                                              [ Ty.path "usize" ]
-                                          ],
-                                        γ0_1
-                                      |) in
-                                    M.match_operator (|
-                                      Ty.tuple [],
-                                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ :=
-                                              M.use
-                                                (M.alloc (|
-                                                  Ty.path "bool",
-                                                  UnOp.not (|
-                                                    M.call_closure (|
-                                                      Ty.path "bool",
-                                                      M.get_trait_method (|
-                                                        "core::cmp::PartialEq",
+                                  |)
+                                ]
+                            |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                  let left_val :=
+                                    M.copy (|
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "usize" ]
+                                        ],
+                                      γ0_0
+                                    |) in
+                                  let right_val :=
+                                    M.copy (|
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "usize" ]
+                                        ],
+                                      γ0_1
+                                    |) in
+                                  M.match_operator (|
+                                    Ty.tuple [],
+                                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ :=
+                                            M.use
+                                              (M.alloc (|
+                                                Ty.path "bool",
+                                                UnOp.not (|
+                                                  M.call_closure (|
+                                                    Ty.path "bool",
+                                                    M.get_trait_method (|
+                                                      "core::cmp::PartialEq",
+                                                      Ty.apply
+                                                        (Ty.path "core::option::Option")
+                                                        []
+                                                        [ Ty.path "usize" ],
+                                                      [],
+                                                      [
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
                                                           []
-                                                          [ Ty.path "usize" ],
-                                                        [],
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "core::option::Option")
-                                                            []
-                                                            [ Ty.path "usize" ]
-                                                        ],
-                                                        "eq",
-                                                        [],
+                                                          [ Ty.path "usize" ]
+                                                      ],
+                                                      "eq",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| left_val |) |)
+                                                      |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| right_val |) |)
+                                                      |)
+                                                    ]
+                                                  |)
+                                                |)
+                                              |)) in
+                                          let _ :=
+                                            is_constant_or_break_match (|
+                                              M.read (| γ |),
+                                              Value.Bool true
+                                            |) in
+                                          M.never_to_any (|
+                                            M.read (|
+                                              let~ kind : Ty.path "core::panicking::AssertKind" :=
+                                                Value.StructTuple
+                                                  "core::panicking::AssertKind::Eq"
+                                                  []
+                                                  []
+                                                  [] in
+                                              M.alloc (|
+                                                Ty.path "never",
+                                                M.call_closure (|
+                                                  Ty.path "never",
+                                                  M.get_function (|
+                                                    "core::panicking::assert_failed",
+                                                    [],
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::option::Option")
                                                         []
-                                                      |),
-                                                      [
+                                                        [ Ty.path "usize" ];
+                                                      Ty.apply
+                                                        (Ty.path "core::option::Option")
+                                                        []
+                                                        [ Ty.path "usize" ]
+                                                    ]
+                                                  |),
+                                                  [
+                                                    M.read (| kind |);
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
                                                         M.borrow (|
                                                           Pointer.Kind.Ref,
                                                           M.deref (| M.read (| left_val |) |)
-                                                        |);
+                                                        |)
+                                                      |)
+                                                    |);
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
                                                         M.borrow (|
                                                           Pointer.Kind.Ref,
                                                           M.deref (| M.read (| right_val |) |)
                                                         |)
-                                                      ]
-                                                    |)
-                                                  |)
-                                                |)) in
-                                            let _ :=
-                                              is_constant_or_break_match (|
-                                                M.read (| γ |),
-                                                Value.Bool true
-                                              |) in
-                                            M.alloc (|
-                                              Ty.tuple [],
-                                              M.never_to_any (|
-                                                M.read (|
-                                                  let~ kind :
-                                                      Ty.path "core::panicking::AssertKind" :=
+                                                      |)
+                                                    |);
                                                     Value.StructTuple
-                                                      "core::panicking::AssertKind::Eq"
+                                                      "core::option::Option::None"
                                                       []
+                                                      [ Ty.path "core::fmt::Arguments" ]
                                                       []
-                                                      [] in
-                                                  M.alloc (|
-                                                    Ty.path "never",
-                                                    M.call_closure (|
-                                                      Ty.path "never",
-                                                      M.get_function (|
-                                                        "core::panicking::assert_failed",
-                                                        [],
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "core::option::Option")
-                                                            []
-                                                            [ Ty.path "usize" ];
-                                                          Ty.apply
-                                                            (Ty.path "core::option::Option")
-                                                            []
-                                                            [ Ty.path "usize" ]
-                                                        ]
-                                                      |),
-                                                      [
-                                                        M.read (| kind |);
-                                                        M.borrow (|
-                                                          Pointer.Kind.Ref,
-                                                          M.deref (|
-                                                            M.borrow (|
-                                                              Pointer.Kind.Ref,
-                                                              M.deref (| M.read (| left_val |) |)
-                                                            |)
-                                                          |)
-                                                        |);
-                                                        M.borrow (|
-                                                          Pointer.Kind.Ref,
-                                                          M.deref (|
-                                                            M.borrow (|
-                                                              Pointer.Kind.Ref,
-                                                              M.deref (| M.read (| right_val |) |)
-                                                            |)
-                                                          |)
-                                                        |);
-                                                        Value.StructTuple
-                                                          "core::option::Option::None"
-                                                          []
-                                                          [ Ty.path "core::fmt::Arguments" ]
-                                                          []
-                                                      ]
-                                                    |)
-                                                  |)
+                                                  ]
                                                 |)
                                               |)
-                                            |)));
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                                      ]
-                                    |)))
-                              ]
-                            |)
+                                            |)
+                                          |)));
+                                      fun γ => ltac:(M.monadic (Value.Tuple []))
+                                    ]
+                                  |)))
+                            ]
                           |) in
-                        lower))
-                  ]
-                |)
+                        lower
+                      |)))
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.

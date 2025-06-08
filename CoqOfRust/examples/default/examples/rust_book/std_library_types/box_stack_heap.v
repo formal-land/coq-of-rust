@@ -93,12 +93,10 @@ Module Impl_core_clone_Clone_for_box_stack_heap_Point.
       ltac:(M.monadic
         (let self :=
           M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "box_stack_heap::Point" ], self |) in
-        M.read (|
-          M.match_operator (|
-            Ty.path "box_stack_heap::Point",
-            Value.DeclaredButUndefined,
-            [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
-          |)
+        M.match_operator (|
+          Ty.path "box_stack_heap::Point",
+          Value.DeclaredButUndefined,
+          [ fun γ => ltac:(M.monadic (M.read (| M.deref (| M.read (| self |) |) |))) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

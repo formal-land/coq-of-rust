@@ -135,85 +135,65 @@ Module transaction.
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.read (|
-                  M.match_operator (|
-                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                    self,
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
-                          let _ :=
-                            M.is_struct_tuple (|
-                              γ,
-                              "revm_context_interface::transaction::transaction_type::TransactionType::Legacy"
-                            |) in
-                          M.alloc (|
-                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Legacy" |) |) |)
-                          |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
-                          let _ :=
-                            M.is_struct_tuple (|
-                              γ,
-                              "revm_context_interface::transaction::transaction_type::TransactionType::Eip2930"
-                            |) in
-                          M.alloc (|
-                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Eip2930" |) |) |)
-                          |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
-                          let _ :=
-                            M.is_struct_tuple (|
-                              γ,
-                              "revm_context_interface::transaction::transaction_type::TransactionType::Eip1559"
-                            |) in
-                          M.alloc (|
-                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Eip1559" |) |) |)
-                          |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
-                          let _ :=
-                            M.is_struct_tuple (|
-                              γ,
-                              "revm_context_interface::transaction::transaction_type::TransactionType::Eip4844"
-                            |) in
-                          M.alloc (|
-                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Eip4844" |) |) |)
-                          |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
-                          let _ :=
-                            M.is_struct_tuple (|
-                              γ,
-                              "revm_context_interface::transaction::transaction_type::TransactionType::Eip7702"
-                            |) in
-                          M.alloc (|
-                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Eip7702" |) |) |)
-                          |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
-                          let _ :=
-                            M.is_struct_tuple (|
-                              γ,
-                              "revm_context_interface::transaction::transaction_type::TransactionType::Custom"
-                            |) in
-                          M.alloc (|
-                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Custom" |) |) |)
-                          |)))
-                    ]
-                  |)
+                M.match_operator (|
+                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                  self,
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_context_interface::transaction::transaction_type::TransactionType::Legacy"
+                          |) in
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Legacy" |) |) |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_context_interface::transaction::transaction_type::TransactionType::Eip2930"
+                          |) in
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Eip2930" |) |) |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_context_interface::transaction::transaction_type::TransactionType::Eip1559"
+                          |) in
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Eip1559" |) |) |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_context_interface::transaction::transaction_type::TransactionType::Eip4844"
+                          |) in
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Eip4844" |) |) |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_context_interface::transaction::transaction_type::TransactionType::Eip7702"
+                          |) in
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Eip7702" |) |) |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.read (| γ |) in
+                        let _ :=
+                          M.is_struct_tuple (|
+                            γ,
+                            "revm_context_interface::transaction::transaction_type::TransactionType::Custom"
+                          |) in
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Custom" |) |) |)))
+                  ]
                 |)
               ]
             |)))

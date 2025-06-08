@@ -24,88 +24,64 @@ Module str.
               Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
               v
             |) in
-          M.read (|
-            M.match_operator (|
+          M.match_operator (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "core::str::error::Utf8Error"
+              ],
+            M.alloc (|
               Ty.apply
                 (Ty.path "core::result::Result")
                 []
-                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "core::str::error::Utf8Error"
-                ],
-              M.alloc (|
+                [ Ty.tuple []; Ty.path "core::str::error::Utf8Error" ],
+              M.call_closure (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.tuple []; Ty.path "core::str::error::Utf8Error" ],
-                M.call_closure (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
+                M.get_function (| "core::str::validations::run_utf8_validation", [], [] |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
+              |)
+            |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
+                  Value.StructTuple
+                    "core::result::Result::Ok"
                     []
-                    [ Ty.tuple []; Ty.path "core::str::error::Utf8Error" ],
-                  M.get_function (| "core::str::validations::run_utf8_validation", [], [] |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
-                |)
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [
-                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
-                          Ty.path "core::str::error::Utf8Error"
-                        ],
-                      Value.StructTuple
-                        "core::result::Result::Ok"
-                        []
-                        [
-                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
-                          Ty.path "core::str::error::Utf8Error"
-                        ]
-                        [
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.call_closure (|
-                                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                                M.get_function (|
-                                  "core::str::converts::from_utf8_unchecked",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
-                              |)
-                            |)
+                    [
+                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                      Ty.path "core::str::error::Utf8Error"
+                    ]
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.call_closure (|
+                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                            M.get_function (| "core::str::converts::from_utf8_unchecked", [], [] |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                           |)
-                        ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                    let err := M.copy (| Ty.path "core::str::error::Utf8Error", γ0_0 |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [
-                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
-                          Ty.path "core::str::error::Utf8Error"
-                        ],
-                      Value.StructTuple
-                        "core::result::Result::Err"
-                        []
-                        [
-                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
-                          Ty.path "core::str::error::Utf8Error"
-                        ]
-                        [ M.read (| err |) ]
-                    |)))
-              ]
-            |)
+                        |)
+                      |)
+                    ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
+                  let err := M.copy (| Ty.path "core::str::error::Utf8Error", γ0_0 |) in
+                  Value.StructTuple
+                    "core::result::Result::Err"
+                    []
+                    [
+                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                      Ty.path "core::str::error::Utf8Error"
+                    ]
+                    [ M.read (| err |) ]))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -136,100 +112,75 @@ Module str.
               Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
               v
             |) in
-          M.read (|
-            M.match_operator (|
+          M.match_operator (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "str" ];
+                Ty.path "core::str::error::Utf8Error"
+              ],
+            M.alloc (|
               Ty.apply
                 (Ty.path "core::result::Result")
                 []
-                [
-                  Ty.apply (Ty.path "&mut") [] [ Ty.path "str" ];
-                  Ty.path "core::str::error::Utf8Error"
-                ],
-              M.alloc (|
+                [ Ty.tuple []; Ty.path "core::str::error::Utf8Error" ],
+              M.call_closure (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.tuple []; Ty.path "core::str::error::Utf8Error" ],
-                M.call_closure (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
+                M.get_function (| "core::str::validations::run_utf8_validation", [], [] |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
+              |)
+            |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
+                  Value.StructTuple
+                    "core::result::Result::Ok"
                     []
-                    [ Ty.tuple []; Ty.path "core::str::error::Utf8Error" ],
-                  M.get_function (| "core::str::validations::run_utf8_validation", [], [] |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
-                |)
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [
-                          Ty.apply (Ty.path "&mut") [] [ Ty.path "str" ];
-                          Ty.path "core::str::error::Utf8Error"
-                        ],
-                      Value.StructTuple
-                        "core::result::Result::Ok"
-                        []
-                        [
-                          Ty.apply (Ty.path "&mut") [] [ Ty.path "str" ];
-                          Ty.path "core::str::error::Utf8Error"
-                        ]
-                        [
+                    [
+                      Ty.apply (Ty.path "&mut") [] [ Ty.path "str" ];
+                      Ty.path "core::str::error::Utf8Error"
+                    ]
+                    [
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
                           M.borrow (|
                             Pointer.Kind.MutRef,
                             M.deref (|
-                              M.borrow (|
-                                Pointer.Kind.MutRef,
-                                M.deref (|
-                                  M.call_closure (|
-                                    Ty.apply (Ty.path "&mut") [] [ Ty.path "str" ],
-                                    M.get_function (|
-                                      "core::str::converts::from_utf8_unchecked_mut",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.MutRef,
-                                        M.deref (| M.read (| v |) |)
-                                      |)
-                                    ]
-                                  |)
-                                |)
+                              M.call_closure (|
+                                Ty.apply (Ty.path "&mut") [] [ Ty.path "str" ],
+                                M.get_function (|
+                                  "core::str::converts::from_utf8_unchecked_mut",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| v |) |) |) ]
                               |)
                             |)
                           |)
-                        ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                    let err := M.copy (| Ty.path "core::str::error::Utf8Error", γ0_0 |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [
-                          Ty.apply (Ty.path "&mut") [] [ Ty.path "str" ];
-                          Ty.path "core::str::error::Utf8Error"
-                        ],
-                      Value.StructTuple
-                        "core::result::Result::Err"
-                        []
-                        [
-                          Ty.apply (Ty.path "&mut") [] [ Ty.path "str" ];
-                          Ty.path "core::str::error::Utf8Error"
-                        ]
-                        [ M.read (| err |) ]
-                    |)))
-              ]
-            |)
+                        |)
+                      |)
+                    ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
+                  let err := M.copy (| Ty.path "core::str::error::Utf8Error", γ0_0 |) in
+                  Value.StructTuple
+                    "core::result::Result::Err"
+                    []
+                    [
+                      Ty.apply (Ty.path "&mut") [] [ Ty.path "str" ];
+                      Ty.path "core::str::error::Utf8Error"
+                    ]
+                    [ M.read (| err |) ]))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.

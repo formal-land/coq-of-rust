@@ -53,103 +53,93 @@ Module round_flags.
               M.get_trait_method (| "p3_air::air::AirBuilder", AB, [], [], "main", [], [] |),
               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| builder |) |) |) ]
             |) in
-          M.match_operator (|
+          M.alloc (|
             Ty.tuple [],
-            M.alloc (|
-              Ty.tuple
-                [
-                  Ty.associated_in_trait
-                    "p3_matrix::Matrix"
-                    []
-                    [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
-                    (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "M")
-                    "{{synthetic}}'2";
-                  Ty.associated_in_trait
-                    "p3_matrix::Matrix"
-                    []
-                    [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
-                    (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "M")
-                    "{{synthetic}}'2"
-                ],
-              Value.Tuple
-                [
-                  M.call_closure (|
+            M.match_operator (|
+              Ty.tuple [],
+              M.alloc (|
+                Ty.tuple
+                  [
                     Ty.associated_in_trait
                       "p3_matrix::Matrix"
                       []
                       [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
                       (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "M")
-                      "{{synthetic}}'2",
-                    M.get_trait_method (|
-                      "p3_matrix::Matrix",
-                      Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "M",
-                      [],
-                      [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ],
-                      "row_slice",
-                      [],
-                      []
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, main |); Value.Integer IntegerKind.Usize 0 ]
-                  |);
-                  M.call_closure (|
+                      "{{synthetic}}'2";
                     Ty.associated_in_trait
                       "p3_matrix::Matrix"
                       []
                       [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
                       (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "M")
-                      "{{synthetic}}'2",
-                    M.get_trait_method (|
-                      "p3_matrix::Matrix",
-                      Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "M",
-                      [],
-                      [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ],
-                      "row_slice",
-                      [],
-                      []
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, main |); Value.Integer IntegerKind.Usize 1 ]
-                  |)
-                ]
-            |),
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                  let local :=
-                    M.copy (|
+                      "{{synthetic}}'2"
+                  ],
+                Value.Tuple
+                  [
+                    M.call_closure (|
                       Ty.associated_in_trait
                         "p3_matrix::Matrix"
                         []
                         [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
                         (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "M")
                         "{{synthetic}}'2",
-                      γ0_0
-                    |) in
-                  let next :=
-                    M.copy (|
+                      M.get_trait_method (|
+                        "p3_matrix::Matrix",
+                        Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "M",
+                        [],
+                        [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ],
+                        "row_slice",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, main |); Value.Integer IntegerKind.Usize 0 ]
+                    |);
+                    M.call_closure (|
                       Ty.associated_in_trait
                         "p3_matrix::Matrix"
                         []
                         [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
                         (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "M")
                         "{{synthetic}}'2",
-                      γ0_1
-                    |) in
-                  let~ local :
-                      Ty.apply
-                        (Ty.path "&")
+                      M.get_trait_method (|
+                        "p3_matrix::Matrix",
+                        Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "M",
+                        [],
+                        [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ],
+                        "row_slice",
+                        [],
                         []
-                        [
-                          Ty.apply
-                            (Ty.path "p3_keccak_air::columns::KeccakCols")
-                            []
-                            [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
-                        ] :=
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.call_closure (|
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, main |); Value.Integer IntegerKind.Usize 1 ]
+                    |)
+                  ]
+              |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let local :=
+                      M.copy (|
+                        Ty.associated_in_trait
+                          "p3_matrix::Matrix"
+                          []
+                          [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
+                          (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "M")
+                          "{{synthetic}}'2",
+                        γ0_0
+                      |) in
+                    let next :=
+                      M.copy (|
+                        Ty.associated_in_trait
+                          "p3_matrix::Matrix"
+                          []
+                          [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
+                          (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "M")
+                          "{{synthetic}}'2",
+                        γ0_1
+                      |) in
+                    M.read (|
+                      let~ local :
                           Ty.apply
                             (Ty.path "&")
                             []
@@ -158,323 +148,18 @@ Module round_flags.
                                 (Ty.path "p3_keccak_air::columns::KeccakCols")
                                 []
                                 [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
-                            ],
-                          M.get_trait_method (|
-                            "core::borrow::Borrow",
-                            Ty.apply
-                              (Ty.path "slice")
-                              []
-                              [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ],
-                            [],
-                            [
-                              Ty.apply
-                                (Ty.path "p3_keccak_air::columns::KeccakCols")
-                                []
-                                [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
-                            ],
-                            "borrow",
-                            [],
-                            []
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.call_closure (|
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "slice")
-                                        []
-                                        [
-                                          Ty.associated_in_trait
-                                            "p3_air::air::AirBuilder"
-                                            []
-                                            []
-                                            AB
-                                            "Var"
-                                        ]
-                                    ],
-                                  M.get_trait_method (|
-                                    "core::ops::deref::Deref",
-                                    Ty.associated_in_trait
-                                      "p3_matrix::Matrix"
-                                      []
-                                      [
-                                        Ty.associated_in_trait
-                                          "p3_air::air::AirBuilder"
-                                          []
-                                          []
-                                          AB
-                                          "Var"
-                                      ]
-                                      (Ty.associated_in_trait
-                                        "p3_air::air::AirBuilder"
-                                        []
-                                        []
-                                        AB
-                                        "M")
-                                      "{{synthetic}}'2",
-                                    [],
-                                    [],
-                                    "deref",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.borrow (| Pointer.Kind.Ref, local |) ]
-                                |)
-                              |)
-                            |)
-                          ]
-                        |)
-                      |)
-                    |) in
-                  let~ next :
-                      Ty.apply
-                        (Ty.path "&")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "p3_keccak_air::columns::KeccakCols")
-                            []
-                            [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
-                        ] :=
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "&")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "p3_keccak_air::columns::KeccakCols")
-                                []
-                                [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
-                            ],
-                          M.get_trait_method (|
-                            "core::borrow::Borrow",
-                            Ty.apply
-                              (Ty.path "slice")
-                              []
-                              [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ],
-                            [],
-                            [
-                              Ty.apply
-                                (Ty.path "p3_keccak_air::columns::KeccakCols")
-                                []
-                                [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
-                            ],
-                            "borrow",
-                            [],
-                            []
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.call_closure (|
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "slice")
-                                        []
-                                        [
-                                          Ty.associated_in_trait
-                                            "p3_air::air::AirBuilder"
-                                            []
-                                            []
-                                            AB
-                                            "Var"
-                                        ]
-                                    ],
-                                  M.get_trait_method (|
-                                    "core::ops::deref::Deref",
-                                    Ty.associated_in_trait
-                                      "p3_matrix::Matrix"
-                                      []
-                                      [
-                                        Ty.associated_in_trait
-                                          "p3_air::air::AirBuilder"
-                                          []
-                                          []
-                                          AB
-                                          "Var"
-                                      ]
-                                      (Ty.associated_in_trait
-                                        "p3_air::air::AirBuilder"
-                                        []
-                                        []
-                                        AB
-                                        "M")
-                                      "{{synthetic}}'2",
-                                    [],
-                                    [],
-                                    "deref",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.borrow (| Pointer.Kind.Ref, next |) ]
-                                |)
-                              |)
-                            |)
-                          ]
-                        |)
-                      |)
-                    |) in
-                  let~ _ : Ty.tuple [] :=
-                    M.call_closure (|
-                      Ty.tuple [],
-                      M.get_trait_method (|
-                        "p3_air::air::AirBuilder",
-                        Ty.apply (Ty.path "p3_air::air::FilteredAirBuilder") [] [ AB ],
-                        [],
-                        [],
-                        "assert_one",
-                        [],
-                        [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
-                      |),
-                      [
+                            ] :=
                         M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.alloc (|
-                            Ty.apply (Ty.path "p3_air::air::FilteredAirBuilder") [] [ AB ],
-                            M.call_closure (|
-                              Ty.apply (Ty.path "p3_air::air::FilteredAirBuilder") [] [ AB ],
-                              M.get_trait_method (|
-                                "p3_air::air::AirBuilder",
-                                AB,
-                                [],
-                                [],
-                                "when_first_row",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.MutRef,
-                                  M.deref (| M.read (| builder |) |)
-                                |)
-                              ]
-                            |)
-                          |)
-                        |);
-                        M.read (|
-                          M.SubPointer.get_array_field (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| local |) |),
-                              "p3_keccak_air::columns::KeccakCols",
-                              "step_flags"
-                            |),
-                            Value.Integer IntegerKind.Usize 0
-                          |)
-                        |)
-                      ]
-                    |) in
-                  let~ _ : Ty.tuple [] :=
-                    M.call_closure (|
-                      Ty.tuple [],
-                      M.get_trait_method (|
-                        "p3_air::air::AirBuilder",
-                        Ty.apply (Ty.path "p3_air::air::FilteredAirBuilder") [] [ AB ],
-                        [],
-                        [],
-                        "assert_zeros",
-                        [ Value.Integer IntegerKind.Usize 23 ],
-                        [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
-                      |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.alloc (|
-                            Ty.apply (Ty.path "p3_air::air::FilteredAirBuilder") [] [ AB ],
-                            M.call_closure (|
-                              Ty.apply (Ty.path "p3_air::air::FilteredAirBuilder") [] [ AB ],
-                              M.get_trait_method (|
-                                "p3_air::air::AirBuilder",
-                                AB,
-                                [],
-                                [],
-                                "when_first_row",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.MutRef,
-                                  M.deref (| M.read (| builder |) |)
-                                |)
-                              ]
-                            |)
-                          |)
-                        |);
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "array")
-                            [ Value.Integer IntegerKind.Usize 23 ]
-                            [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ],
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "array")
-                                  [ Value.Integer IntegerKind.Usize 23 ]
-                                  [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var"
-                                  ];
-                                Ty.path "core::array::TryFromSliceError"
-                              ],
-                            "unwrap",
-                            [],
-                            []
-                          |),
-                          [
+                          Pointer.Kind.Ref,
+                          M.deref (|
                             M.call_closure (|
                               Ty.apply
-                                (Ty.path "core::result::Result")
+                                (Ty.path "&")
                                 []
                                 [
                                   Ty.apply
-                                    (Ty.path "array")
-                                    [ Value.Integer IntegerKind.Usize 23 ]
-                                    [
-                                      Ty.associated_in_trait
-                                        "p3_air::air::AirBuilder"
-                                        []
-                                        []
-                                        AB
-                                        "Var"
-                                    ];
-                                  Ty.path "core::array::TryFromSliceError"
-                                ],
-                              M.get_trait_method (|
-                                "core::convert::TryInto",
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "slice")
-                                      []
-                                      [
-                                        Ty.associated_in_trait
-                                          "p3_air::air::AirBuilder"
-                                          []
-                                          []
-                                          AB
-                                          "Var"
-                                      ]
-                                  ],
-                                [],
-                                [
-                                  Ty.apply
-                                    (Ty.path "array")
-                                    [ Value.Integer IntegerKind.Usize 23 ]
+                                    (Ty.path "p3_keccak_air::columns::KeccakCols")
+                                    []
                                     [
                                       Ty.associated_in_trait
                                         "p3_air::air::AirBuilder"
@@ -484,7 +169,28 @@ Module round_flags.
                                         "Var"
                                     ]
                                 ],
-                                "try_into",
+                              M.get_trait_method (|
+                                "core::borrow::Borrow",
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var"
+                                  ],
+                                [],
+                                [
+                                  Ty.apply
+                                    (Ty.path "p3_keccak_air::columns::KeccakCols")
+                                    []
+                                    [
+                                      Ty.associated_in_trait
+                                        "p3_air::air::AirBuilder"
+                                        []
+                                        []
+                                        AB
+                                        "Var"
+                                    ]
+                                ],
+                                "borrow",
                                 [],
                                 []
                               |),
@@ -510,10 +216,10 @@ Module round_flags.
                                             ]
                                         ],
                                       M.get_trait_method (|
-                                        "core::ops::index::Index",
-                                        Ty.apply
-                                          (Ty.path "array")
-                                          [ Value.Integer IntegerKind.Usize 24 ]
+                                        "core::ops::deref::Deref",
+                                        Ty.associated_in_trait
+                                          "p3_matrix::Matrix"
+                                          []
                                           [
                                             Ty.associated_in_trait
                                               "p3_air::air::AirBuilder"
@@ -521,195 +227,536 @@ Module round_flags.
                                               []
                                               AB
                                               "Var"
-                                          ],
-                                        [],
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::ops::range::RangeFrom")
-                                            []
-                                            [ Ty.path "usize" ]
-                                        ],
-                                        "index",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| local |) |),
-                                            "p3_keccak_air::columns::KeccakCols",
-                                            "step_flags"
-                                          |)
-                                        |);
-                                        Value.mkStructRecord
-                                          "core::ops::range::RangeFrom"
-                                          []
-                                          [ Ty.path "usize" ]
-                                          [ ("start", Value.Integer IntegerKind.Usize 1) ]
-                                      ]
-                                    |)
-                                  |)
-                                |)
-                              ]
-                            |)
-                          ]
-                        |)
-                      ]
-                    |) in
-                  let~ _ : Ty.tuple [] :=
-                    M.call_closure (|
-                      Ty.tuple [],
-                      M.get_trait_method (|
-                        "p3_air::air::AirBuilder",
-                        Ty.apply (Ty.path "p3_air::air::FilteredAirBuilder") [] [ AB ],
-                        [],
-                        [],
-                        "assert_zeros",
-                        [ Value.Integer IntegerKind.Usize 24 ],
-                        [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ]
-                      |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.alloc (|
-                            Ty.apply (Ty.path "p3_air::air::FilteredAirBuilder") [] [ AB ],
-                            M.call_closure (|
-                              Ty.apply (Ty.path "p3_air::air::FilteredAirBuilder") [] [ AB ],
-                              M.get_trait_method (|
-                                "p3_air::air::AirBuilder",
-                                AB,
-                                [],
-                                [],
-                                "when_transition",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.MutRef,
-                                  M.deref (| M.read (| builder |) |)
-                                |)
-                              ]
-                            |)
-                          |)
-                        |);
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "array")
-                            [ Value.Integer IntegerKind.Usize 24 ]
-                            [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ],
-                          M.get_function (|
-                            "core::array::from_fn",
-                            [ Value.Integer IntegerKind.Usize 24 ],
-                            [
-                              Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr";
-                              Ty.function
-                                [ Ty.tuple [ Ty.path "usize" ] ]
-                                (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr")
-                            ]
-                          |),
-                          [
-                            M.closure
-                              (fun γ =>
-                                ltac:(M.monadic
-                                  match γ with
-                                  | [ α0 ] =>
-                                    ltac:(M.monadic
-                                      (M.match_operator (|
-                                        Ty.function
-                                          [ Ty.tuple [ Ty.path "usize" ] ]
+                                          ]
                                           (Ty.associated_in_trait
                                             "p3_air::air::AirBuilder"
                                             []
                                             []
                                             AB
-                                            "Expr"),
-                                        M.alloc (| Ty.path "usize", α0 |),
+                                            "M")
+                                          "{{synthetic}}'2",
+                                        [],
+                                        [],
+                                        "deref",
+                                        [],
+                                        []
+                                      |),
+                                      [ M.borrow (| Pointer.Kind.Ref, local |) ]
+                                    |)
+                                  |)
+                                |)
+                              ]
+                            |)
+                          |)
+                        |) in
+                      let~ next :
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "p3_keccak_air::columns::KeccakCols")
+                                []
+                                [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
+                            ] :=
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "p3_keccak_air::columns::KeccakCols")
+                                    []
+                                    [
+                                      Ty.associated_in_trait
+                                        "p3_air::air::AirBuilder"
+                                        []
+                                        []
+                                        AB
+                                        "Var"
+                                    ]
+                                ],
+                              M.get_trait_method (|
+                                "core::borrow::Borrow",
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var"
+                                  ],
+                                [],
+                                [
+                                  Ty.apply
+                                    (Ty.path "p3_keccak_air::columns::KeccakCols")
+                                    []
+                                    [
+                                      Ty.associated_in_trait
+                                        "p3_air::air::AirBuilder"
+                                        []
+                                        []
+                                        AB
+                                        "Var"
+                                    ]
+                                ],
+                                "borrow",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
                                         [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let i := M.copy (| Ty.path "usize", γ |) in
-                                              M.call_closure (|
-                                                Ty.associated_in_trait
-                                                  "p3_air::air::AirBuilder"
-                                                  []
-                                                  []
-                                                  AB
-                                                  "Expr",
-                                                M.get_trait_method (|
-                                                  "core::ops::arith::Sub",
+                                          Ty.apply
+                                            (Ty.path "slice")
+                                            []
+                                            [
+                                              Ty.associated_in_trait
+                                                "p3_air::air::AirBuilder"
+                                                []
+                                                []
+                                                AB
+                                                "Var"
+                                            ]
+                                        ],
+                                      M.get_trait_method (|
+                                        "core::ops::deref::Deref",
+                                        Ty.associated_in_trait
+                                          "p3_matrix::Matrix"
+                                          []
+                                          [
+                                            Ty.associated_in_trait
+                                              "p3_air::air::AirBuilder"
+                                              []
+                                              []
+                                              AB
+                                              "Var"
+                                          ]
+                                          (Ty.associated_in_trait
+                                            "p3_air::air::AirBuilder"
+                                            []
+                                            []
+                                            AB
+                                            "M")
+                                          "{{synthetic}}'2",
+                                        [],
+                                        [],
+                                        "deref",
+                                        [],
+                                        []
+                                      |),
+                                      [ M.borrow (| Pointer.Kind.Ref, next |) ]
+                                    |)
+                                  |)
+                                |)
+                              ]
+                            |)
+                          |)
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.call_closure (|
+                          Ty.tuple [],
+                          M.get_trait_method (|
+                            "p3_air::air::AirBuilder",
+                            Ty.apply (Ty.path "p3_air::air::FilteredAirBuilder") [] [ AB ],
+                            [],
+                            [],
+                            "assert_one",
+                            [],
+                            [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.alloc (|
+                                Ty.apply (Ty.path "p3_air::air::FilteredAirBuilder") [] [ AB ],
+                                M.call_closure (|
+                                  Ty.apply (Ty.path "p3_air::air::FilteredAirBuilder") [] [ AB ],
+                                  M.get_trait_method (|
+                                    "p3_air::air::AirBuilder",
+                                    AB,
+                                    [],
+                                    [],
+                                    "when_first_row",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| builder |) |)
+                                    |)
+                                  ]
+                                |)
+                              |)
+                            |);
+                            M.read (|
+                              M.SubPointer.get_array_field (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| local |) |),
+                                  "p3_keccak_air::columns::KeccakCols",
+                                  "step_flags"
+                                |),
+                                Value.Integer IntegerKind.Usize 0
+                              |)
+                            |)
+                          ]
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.call_closure (|
+                          Ty.tuple [],
+                          M.get_trait_method (|
+                            "p3_air::air::AirBuilder",
+                            Ty.apply (Ty.path "p3_air::air::FilteredAirBuilder") [] [ AB ],
+                            [],
+                            [],
+                            "assert_zeros",
+                            [ Value.Integer IntegerKind.Usize 23 ],
+                            [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.alloc (|
+                                Ty.apply (Ty.path "p3_air::air::FilteredAirBuilder") [] [ AB ],
+                                M.call_closure (|
+                                  Ty.apply (Ty.path "p3_air::air::FilteredAirBuilder") [] [ AB ],
+                                  M.get_trait_method (|
+                                    "p3_air::air::AirBuilder",
+                                    AB,
+                                    [],
+                                    [],
+                                    "when_first_row",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| builder |) |)
+                                    |)
+                                  ]
+                                |)
+                              |)
+                            |);
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 23 ]
+                                [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ],
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 23 ]
+                                      [
+                                        Ty.associated_in_trait
+                                          "p3_air::air::AirBuilder"
+                                          []
+                                          []
+                                          AB
+                                          "Var"
+                                      ];
+                                    Ty.path "core::array::TryFromSliceError"
+                                  ],
+                                "unwrap",
+                                [],
+                                []
+                              |),
+                              [
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 23 ]
+                                        [
+                                          Ty.associated_in_trait
+                                            "p3_air::air::AirBuilder"
+                                            []
+                                            []
+                                            AB
+                                            "Var"
+                                        ];
+                                      Ty.path "core::array::TryFromSliceError"
+                                    ],
+                                  M.get_trait_method (|
+                                    "core::convert::TryInto",
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [
+                                            Ty.associated_in_trait
+                                              "p3_air::air::AirBuilder"
+                                              []
+                                              []
+                                              AB
+                                              "Var"
+                                          ]
+                                      ],
+                                    [],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 23 ]
+                                        [
+                                          Ty.associated_in_trait
+                                            "p3_air::air::AirBuilder"
+                                            []
+                                            []
+                                            AB
+                                            "Var"
+                                        ]
+                                    ],
+                                    "try_into",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "slice")
+                                                []
+                                                [
                                                   Ty.associated_in_trait
                                                     "p3_air::air::AirBuilder"
                                                     []
                                                     []
                                                     AB
-                                                    "Var",
-                                                  [],
-                                                  [
+                                                    "Var"
+                                                ]
+                                            ],
+                                          M.get_trait_method (|
+                                            "core::ops::index::Index",
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 24 ]
+                                              [
+                                                Ty.associated_in_trait
+                                                  "p3_air::air::AirBuilder"
+                                                  []
+                                                  []
+                                                  AB
+                                                  "Var"
+                                              ],
+                                            [],
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::ops::range::RangeFrom")
+                                                []
+                                                [ Ty.path "usize" ]
+                                            ],
+                                            "index",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| local |) |),
+                                                "p3_keccak_air::columns::KeccakCols",
+                                                "step_flags"
+                                              |)
+                                            |);
+                                            Value.mkStructRecord
+                                              "core::ops::range::RangeFrom"
+                                              []
+                                              [ Ty.path "usize" ]
+                                              [ ("start", Value.Integer IntegerKind.Usize 1) ]
+                                          ]
+                                        |)
+                                      |)
+                                    |)
+                                  ]
+                                |)
+                              ]
+                            |)
+                          ]
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.call_closure (|
+                          Ty.tuple [],
+                          M.get_trait_method (|
+                            "p3_air::air::AirBuilder",
+                            Ty.apply (Ty.path "p3_air::air::FilteredAirBuilder") [] [ AB ],
+                            [],
+                            [],
+                            "assert_zeros",
+                            [ Value.Integer IntegerKind.Usize 24 ],
+                            [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ]
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.alloc (|
+                                Ty.apply (Ty.path "p3_air::air::FilteredAirBuilder") [] [ AB ],
+                                M.call_closure (|
+                                  Ty.apply (Ty.path "p3_air::air::FilteredAirBuilder") [] [ AB ],
+                                  M.get_trait_method (|
+                                    "p3_air::air::AirBuilder",
+                                    AB,
+                                    [],
+                                    [],
+                                    "when_transition",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| builder |) |)
+                                    |)
+                                  ]
+                                |)
+                              |)
+                            |);
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 24 ]
+                                [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr"
+                                ],
+                              M.get_function (|
+                                "core::array::from_fn",
+                                [ Value.Integer IntegerKind.Usize 24 ],
+                                [
+                                  Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr";
+                                  Ty.function
+                                    [ Ty.tuple [ Ty.path "usize" ] ]
+                                    (Ty.associated_in_trait
+                                      "p3_air::air::AirBuilder"
+                                      []
+                                      []
+                                      AB
+                                      "Expr")
+                                ]
+                              |),
+                              [
+                                M.closure
+                                  (fun γ =>
+                                    ltac:(M.monadic
+                                      match γ with
+                                      | [ α0 ] =>
+                                        ltac:(M.monadic
+                                          (M.match_operator (|
+                                            Ty.function
+                                              [ Ty.tuple [ Ty.path "usize" ] ]
+                                              (Ty.associated_in_trait
+                                                "p3_air::air::AirBuilder"
+                                                []
+                                                []
+                                                AB
+                                                "Expr"),
+                                            M.alloc (| Ty.path "usize", α0 |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let i := M.copy (| Ty.path "usize", γ |) in
+                                                  M.call_closure (|
                                                     Ty.associated_in_trait
                                                       "p3_air::air::AirBuilder"
                                                       []
                                                       []
                                                       AB
-                                                      "Var"
-                                                  ],
-                                                  "sub",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
-                                                  M.read (|
-                                                    M.SubPointer.get_array_field (|
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        M.deref (| M.read (| local |) |),
-                                                        "p3_keccak_air::columns::KeccakCols",
-                                                        "step_flags"
-                                                      |),
-                                                      M.read (| i |)
-                                                    |)
-                                                  |);
-                                                  M.read (|
-                                                    M.SubPointer.get_array_field (|
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        M.deref (| M.read (| next |) |),
-                                                        "p3_keccak_air::columns::KeccakCols",
-                                                        "step_flags"
-                                                      |),
-                                                      M.call_closure (|
-                                                        Ty.path "usize",
-                                                        BinOp.Wrap.rem,
-                                                        [
+                                                      "Expr",
+                                                    M.get_trait_method (|
+                                                      "core::ops::arith::Sub",
+                                                      Ty.associated_in_trait
+                                                        "p3_air::air::AirBuilder"
+                                                        []
+                                                        []
+                                                        AB
+                                                        "Var",
+                                                      [],
+                                                      [
+                                                        Ty.associated_in_trait
+                                                          "p3_air::air::AirBuilder"
+                                                          []
+                                                          []
+                                                          AB
+                                                          "Var"
+                                                      ],
+                                                      "sub",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.read (|
+                                                        M.SubPointer.get_array_field (|
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.deref (| M.read (| local |) |),
+                                                            "p3_keccak_air::columns::KeccakCols",
+                                                            "step_flags"
+                                                          |),
+                                                          M.read (| i |)
+                                                        |)
+                                                      |);
+                                                      M.read (|
+                                                        M.SubPointer.get_array_field (|
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.deref (| M.read (| next |) |),
+                                                            "p3_keccak_air::columns::KeccakCols",
+                                                            "step_flags"
+                                                          |),
                                                           M.call_closure (|
                                                             Ty.path "usize",
-                                                            BinOp.Wrap.add,
+                                                            BinOp.Wrap.rem,
                                                             [
-                                                              M.read (| i |);
-                                                              Value.Integer IntegerKind.Usize 1
+                                                              M.call_closure (|
+                                                                Ty.path "usize",
+                                                                BinOp.Wrap.add,
+                                                                [
+                                                                  M.read (| i |);
+                                                                  Value.Integer IntegerKind.Usize 1
+                                                                ]
+                                                              |);
+                                                              M.read (|
+                                                                get_constant (|
+                                                                  "p3_keccak_air::NUM_ROUNDS",
+                                                                  Ty.path "usize"
+                                                                |)
+                                                              |)
                                                             ]
-                                                          |);
-                                                          M.read (|
-                                                            get_constant (|
-                                                              "p3_keccak_air::NUM_ROUNDS",
-                                                              Ty.path "usize"
-                                                            |)
                                                           |)
-                                                        ]
+                                                        |)
                                                       |)
-                                                    |)
-                                                  |)
-                                                ]
-                                              |)))
-                                        ]
-                                      |)))
-                                  | _ => M.impossible "wrong number of arguments"
-                                  end))
+                                                    ]
+                                                  |)))
+                                            ]
+                                          |)))
+                                      | _ => M.impossible "wrong number of arguments"
+                                      end))
+                              ]
+                            |)
                           ]
-                        |)
-                      ]
-                    |) in
-                  M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-            ]
+                        |) in
+                      M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                    |)))
+              ]
+            |)
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"

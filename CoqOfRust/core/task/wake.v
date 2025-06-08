@@ -454,39 +454,38 @@ Module task.
                 Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::RawWakerVTable" ],
                 self
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.path "core::task::wake::RawWakerVTable",
-                Value.DeclaredButUndefined,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.match_operator (|
-                        Ty.path "core::task::wake::RawWakerVTable",
-                        Value.DeclaredButUndefined,
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (M.match_operator (|
-                                Ty.path "core::task::wake::RawWakerVTable",
-                                Value.DeclaredButUndefined,
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (M.match_operator (|
-                                        Ty.path "core::task::wake::RawWakerVTable",
-                                        Value.DeclaredButUndefined,
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic (M.deref (| M.read (| self |) |)))
-                                        ]
-                                      |)))
-                                ]
-                              |)))
-                        ]
-                      |)))
-                ]
-              |)
+            M.match_operator (|
+              Ty.path "core::task::wake::RawWakerVTable",
+              Value.DeclaredButUndefined,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                      Ty.path "core::task::wake::RawWakerVTable",
+                      Value.DeclaredButUndefined,
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              Ty.path "core::task::wake::RawWakerVTable",
+                              Value.DeclaredButUndefined,
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (M.match_operator (|
+                                      Ty.path "core::task::wake::RawWakerVTable",
+                                      Value.DeclaredButUndefined,
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (M.read (| M.deref (| M.read (| self |) |) |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                      ]
+                    |)))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -716,105 +715,90 @@ Module task.
               |) in
             let f :=
               M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
-            M.read (|
-              M.match_operator (|
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                self,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::task::wake::ExtData::Some",
-                          0
-                        |) in
-                      let __self_0 :=
-                        M.alloc (|
-                          Ty.apply
-                            (Ty.path "&")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "&mut")
-                                []
-                                [ Ty.dyn [ ("core::any::Any::Trait", []) ] ]
-                            ],
-                          γ1_0
-                        |) in
+            M.match_operator (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+              self,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::task::wake::ExtData::Some",
+                        0
+                      |) in
+                    let __self_0 :=
                       M.alloc (|
                         Ty.apply
-                          (Ty.path "core::result::Result")
+                          (Ty.path "&")
                           []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::Formatter",
-                            "debug_tuple_field1_finish",
-                            [],
-                            []
-                          |),
                           [
-                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Some" |) |) |);
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                              |))
-                          ]
-                        |)
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::task::wake::ExtData::None",
-                          0
-                        |) in
-                      let __self_0 :=
-                        M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.tuple [] ], γ1_0 |) in
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::Formatter",
-                            "debug_tuple_field1_finish",
-                            [],
-                            []
-                          |),
-                          [
-                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "None" |) |) |);
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                              |))
-                          ]
-                        |)
-                      |)))
-                ]
-              |)
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.dyn [ ("core::any::Any::Trait", []) ] ]
+                          ],
+                        γ1_0
+                      |) in
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Formatter",
+                        "debug_tuple_field1_finish",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Some" |) |) |);
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |))
+                      ]
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::task::wake::ExtData::None",
+                        0
+                      |) in
+                    let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.tuple [] ], γ1_0 |) in
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Formatter",
+                        "debug_tuple_field1_finish",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "None" |) |) |);
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |))
+                      ]
+                    |)))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1011,90 +995,73 @@ Module task.
                     (M.borrow (|
                       Pointer.Kind.MutRef,
                       M.deref (|
-                        M.read (|
-                          M.match_operator (|
-                            Ty.apply
-                              (Ty.path "&mut")
-                              []
-                              [ Ty.dyn [ ("core::any::Any::Trait", []) ] ],
-                            M.alloc (|
-                              Ty.apply (Ty.path "&mut") [] [ Ty.path "core::task::wake::ExtData" ],
-                              M.borrow (|
-                                Pointer.Kind.MutRef,
-                                M.SubPointer.get_struct_tuple_field (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "core::task::wake::Context",
-                                    "ext"
-                                  |),
-                                  "core::panic::unwind_safe::AssertUnwindSafe",
-                                  0
-                                |)
+                        M.match_operator (|
+                          Ty.apply (Ty.path "&mut") [] [ Ty.dyn [ ("core::any::Any::Trait", []) ] ],
+                          M.alloc (|
+                            Ty.apply (Ty.path "&mut") [] [ Ty.path "core::task::wake::ExtData" ],
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::task::wake::Context",
+                                  "ext"
+                                |),
+                                "core::panic::unwind_safe::AssertUnwindSafe",
+                                0
                               |)
-                            |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
-                                  let γ1_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::task::wake::ExtData::Some",
-                                      0
-                                    |) in
-                                  let data :=
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "&mut")
-                                        []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&mut")
-                                            []
-                                            [ Ty.dyn [ ("core::any::Any::Trait", []) ] ]
-                                        ],
-                                      γ1_0
-                                    |) in
+                            |)
+                          |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ := M.read (| γ |) in
+                                let γ1_0 :=
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    γ,
+                                    "core::task::wake::ExtData::Some",
+                                    0
+                                  |) in
+                                let data :=
                                   M.alloc (|
                                     Ty.apply
                                       (Ty.path "&mut")
                                       []
-                                      [ Ty.dyn [ ("core::any::Any::Trait", []) ] ],
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.borrow (|
-                                        Pointer.Kind.MutRef,
-                                        M.deref (| M.read (| M.deref (| M.read (| data |) |) |) |)
-                                      |))
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
-                                  let γ1_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::task::wake::ExtData::None",
-                                      0
-                                    |) in
-                                  let unit_ :=
-                                    M.alloc (|
-                                      Ty.apply (Ty.path "&mut") [] [ Ty.tuple [] ],
-                                      γ1_0
-                                    |) in
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&mut")
+                                          []
+                                          [ Ty.dyn [ ("core::any::Any::Trait", []) ] ]
+                                      ],
+                                    γ1_0
+                                  |) in
+                                (* Unsize *)
+                                M.pointer_coercion
+                                  (M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| M.deref (| M.read (| data |) |) |) |)
+                                  |))));
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ := M.read (| γ |) in
+                                let γ1_0 :=
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    γ,
+                                    "core::task::wake::ExtData::None",
+                                    0
+                                  |) in
+                                let unit_ :=
                                   M.alloc (|
-                                    Ty.apply
-                                      (Ty.path "&mut")
-                                      []
-                                      [ Ty.dyn [ ("core::any::Any::Trait", []) ] ],
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.borrow (|
-                                        Pointer.Kind.MutRef,
-                                        M.deref (| M.read (| unit_ |) |)
-                                      |))
-                                  |)))
-                            ]
-                          |)
+                                    Ty.apply (Ty.path "&mut") [] [ Ty.tuple [] ],
+                                    γ1_0
+                                  |) in
+                                (* Unsize *)
+                                M.pointer_coercion
+                                  (M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| unit_ |) |)
+                                  |))))
+                          ]
                         |)
                       |)
                     |))
@@ -1475,81 +1442,73 @@ Module task.
               |) in
             M.read (|
               let~ ext : Ty.path "core::task::wake::ExtData" :=
-                M.read (|
-                  M.match_operator (|
-                    Ty.path "core::task::wake::ExtData",
-                    M.alloc (|
-                      Ty.apply (Ty.path "&mut") [] [ Ty.path "core::task::wake::ExtData" ],
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.SubPointer.get_struct_tuple_field (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| cx |) |),
-                            "core::task::wake::Context",
-                            "ext"
-                          |),
-                          "core::panic::unwind_safe::AssertUnwindSafe",
-                          0
-                        |)
+                M.match_operator (|
+                  Ty.path "core::task::wake::ExtData",
+                  M.alloc (|
+                    Ty.apply (Ty.path "&mut") [] [ Ty.path "core::task::wake::ExtData" ],
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| cx |) |),
+                          "core::task::wake::Context",
+                          "ext"
+                        |),
+                        "core::panic::unwind_safe::AssertUnwindSafe",
+                        0
                       |)
-                    |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
-                          let γ1_0 :=
-                            M.SubPointer.get_struct_tuple_field (|
-                              γ,
-                              "core::task::wake::ExtData::Some",
-                              0
-                            |) in
-                          let ext :=
-                            M.alloc (|
-                              Ty.apply
-                                (Ty.path "&mut")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "&mut")
-                                    []
-                                    [ Ty.dyn [ ("core::any::Any::Trait", []) ] ]
-                                ],
-                              γ1_0
-                            |) in
+                    |)
+                  |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.read (| γ |) in
+                        let γ1_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "core::task::wake::ExtData::Some",
+                            0
+                          |) in
+                        let ext :=
                           M.alloc (|
-                            Ty.path "core::task::wake::ExtData",
-                            Value.StructTuple
-                              "core::task::wake::ExtData::Some"
-                              []
+                            Ty.apply
+                              (Ty.path "&mut")
                               []
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.borrow (|
-                                    Pointer.Kind.MutRef,
-                                    M.deref (| M.read (| M.deref (| M.read (| ext |) |) |) |)
-                                  |))
-                              ]
-                          |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
-                          let γ1_0 :=
-                            M.SubPointer.get_struct_tuple_field (|
-                              γ,
-                              "core::task::wake::ExtData::None",
-                              0
-                            |) in
-                          M.alloc (|
-                            Ty.path "core::task::wake::ExtData",
-                            Value.StructTuple
-                              "core::task::wake::ExtData::None"
-                              []
-                              []
-                              [ Value.Tuple [] ]
-                          |)))
-                    ]
-                  |)
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.dyn [ ("core::any::Any::Trait", []) ] ]
+                              ],
+                            γ1_0
+                          |) in
+                        Value.StructTuple
+                          "core::task::wake::ExtData::Some"
+                          []
+                          []
+                          [
+                            (* Unsize *)
+                            M.pointer_coercion
+                              (M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (| M.read (| M.deref (| M.read (| ext |) |) |) |)
+                              |))
+                          ]));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.read (| γ |) in
+                        let γ1_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "core::task::wake::ExtData::None",
+                            0
+                          |) in
+                        Value.StructTuple
+                          "core::task::wake::ExtData::None"
+                          []
+                          []
+                          [ Value.Tuple [] ]))
+                  ]
                 |) in
               M.alloc (|
                 Ty.path "core::task::wake::ContextBuilder",
@@ -1707,100 +1666,92 @@ Module task.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| Ty.path "core::task::wake::ContextBuilder", self |) in
-            M.read (|
-              M.match_operator (|
-                Ty.path "core::task::wake::Context",
-                self,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_record_field (|
-                          γ,
-                          "core::task::wake::ContextBuilder",
-                          "waker"
-                        |) in
-                      let γ0_1 :=
-                        M.SubPointer.get_struct_record_field (|
-                          γ,
-                          "core::task::wake::ContextBuilder",
-                          "local_waker"
-                        |) in
-                      let γ0_2 :=
-                        M.SubPointer.get_struct_record_field (|
-                          γ,
-                          "core::task::wake::ContextBuilder",
-                          "ext"
-                        |) in
-                      let γ0_3 :=
-                        M.SubPointer.get_struct_record_field (|
-                          γ,
-                          "core::task::wake::ContextBuilder",
-                          "_marker"
-                        |) in
-                      let γ0_4 :=
-                        M.SubPointer.get_struct_record_field (|
-                          γ,
-                          "core::task::wake::ContextBuilder",
-                          "_marker2"
-                        |) in
-                      let waker :=
-                        M.copy (|
-                          Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::Waker" ],
-                          γ0_0
-                        |) in
-                      let local_waker :=
-                        M.copy (|
-                          Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::LocalWaker" ],
-                          γ0_1
-                        |) in
-                      let ext := M.copy (| Ty.path "core::task::wake::ExtData", γ0_2 |) in
-                      let _marker :=
-                        M.copy (|
-                          Ty.apply
-                            (Ty.path "core::marker::PhantomData")
-                            []
-                            [
-                              Ty.function
-                                [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ]
-                                (Ty.apply (Ty.path "&") [] [ Ty.tuple [] ])
-                            ],
-                          γ0_3
-                        |) in
-                      let _marker2 :=
-                        M.copy (|
-                          Ty.apply
-                            (Ty.path "core::marker::PhantomData")
-                            []
-                            [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ],
-                          γ0_4
-                        |) in
-                      M.alloc (|
-                        Ty.path "core::task::wake::Context",
-                        Value.mkStructRecord
-                          "core::task::wake::Context"
-                          []
+            M.match_operator (|
+              Ty.path "core::task::wake::Context",
+              self,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_record_field (|
+                        γ,
+                        "core::task::wake::ContextBuilder",
+                        "waker"
+                      |) in
+                    let γ0_1 :=
+                      M.SubPointer.get_struct_record_field (|
+                        γ,
+                        "core::task::wake::ContextBuilder",
+                        "local_waker"
+                      |) in
+                    let γ0_2 :=
+                      M.SubPointer.get_struct_record_field (|
+                        γ,
+                        "core::task::wake::ContextBuilder",
+                        "ext"
+                      |) in
+                    let γ0_3 :=
+                      M.SubPointer.get_struct_record_field (|
+                        γ,
+                        "core::task::wake::ContextBuilder",
+                        "_marker"
+                      |) in
+                    let γ0_4 :=
+                      M.SubPointer.get_struct_record_field (|
+                        γ,
+                        "core::task::wake::ContextBuilder",
+                        "_marker2"
+                      |) in
+                    let waker :=
+                      M.copy (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::Waker" ],
+                        γ0_0
+                      |) in
+                    let local_waker :=
+                      M.copy (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::LocalWaker" ],
+                        γ0_1
+                      |) in
+                    let ext := M.copy (| Ty.path "core::task::wake::ExtData", γ0_2 |) in
+                    let _marker :=
+                      M.copy (|
+                        Ty.apply
+                          (Ty.path "core::marker::PhantomData")
                           []
                           [
-                            ("waker",
-                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| waker |) |) |));
-                            ("local_waker",
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| local_waker |) |)
-                              |));
-                            ("ext",
-                              Value.StructTuple
-                                "core::panic::unwind_safe::AssertUnwindSafe"
-                                []
-                                [ Ty.path "core::task::wake::ExtData" ]
-                                [ M.read (| ext |) ]);
-                            ("_marker", M.read (| _marker |));
-                            ("_marker2", M.read (| _marker2 |))
-                          ]
-                      |)))
-                ]
-              |)
+                            Ty.function
+                              [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ]
+                              (Ty.apply (Ty.path "&") [] [ Ty.tuple [] ])
+                          ],
+                        γ0_3
+                      |) in
+                    let _marker2 :=
+                      M.copy (|
+                        Ty.apply
+                          (Ty.path "core::marker::PhantomData")
+                          []
+                          [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ],
+                        γ0_4
+                      |) in
+                    Value.mkStructRecord
+                      "core::task::wake::Context"
+                      []
+                      []
+                      [
+                        ("waker",
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| waker |) |) |));
+                        ("local_waker",
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| local_waker |) |) |));
+                        ("ext",
+                          Value.StructTuple
+                            "core::panic::unwind_safe::AssertUnwindSafe"
+                            []
+                            [ Ty.path "core::task::wake::ExtData" ]
+                            [ M.read (| ext |) ]);
+                        ("_marker", M.read (| _marker |));
+                        ("_marker2", M.read (| _marker2 |))
+                      ]))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2055,101 +2006,96 @@ Module task.
                 Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::Waker" ],
                 other
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.path "bool",
-                M.SubPointer.get_struct_record_field (|
-                  M.deref (| M.read (| self |) |),
-                  "core::task::wake::Waker",
-                  "waker"
-                |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_record_field (|
-                          γ,
-                          "core::task::wake::RawWaker",
-                          "data"
-                        |) in
-                      let γ0_1 :=
-                        M.SubPointer.get_struct_record_field (|
-                          γ,
-                          "core::task::wake::RawWaker",
-                          "vtable"
-                        |) in
-                      let a_data :=
-                        M.copy (| Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ], γ0_0 |) in
-                      let a_vtable :=
-                        M.copy (|
-                          Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::RawWakerVTable" ],
-                          γ0_1
-                        |) in
-                      M.match_operator (|
-                        Ty.path "bool",
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| other |) |),
-                          "core::task::wake::Waker",
-                          "waker"
-                        |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_record_field (|
-                                  γ,
-                                  "core::task::wake::RawWaker",
-                                  "data"
-                                |) in
-                              let γ0_1 :=
-                                M.SubPointer.get_struct_record_field (|
-                                  γ,
-                                  "core::task::wake::RawWaker",
-                                  "vtable"
-                                |) in
-                              let b_data :=
-                                M.copy (| Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ], γ0_0 |) in
-                              let b_vtable :=
-                                M.copy (|
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [ Ty.path "core::task::wake::RawWakerVTable" ],
-                                  γ0_1
-                                |) in
-                              M.alloc (|
+            M.match_operator (|
+              Ty.path "bool",
+              M.SubPointer.get_struct_record_field (|
+                M.deref (| M.read (| self |) |),
+                "core::task::wake::Waker",
+                "waker"
+              |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_record_field (|
+                        γ,
+                        "core::task::wake::RawWaker",
+                        "data"
+                      |) in
+                    let γ0_1 :=
+                      M.SubPointer.get_struct_record_field (|
+                        γ,
+                        "core::task::wake::RawWaker",
+                        "vtable"
+                      |) in
+                    let a_data :=
+                      M.copy (| Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ], γ0_0 |) in
+                    let a_vtable :=
+                      M.copy (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::RawWakerVTable" ],
+                        γ0_1
+                      |) in
+                    M.match_operator (|
+                      Ty.path "bool",
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| other |) |),
+                        "core::task::wake::Waker",
+                        "waker"
+                      |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 :=
+                              M.SubPointer.get_struct_record_field (|
+                                γ,
+                                "core::task::wake::RawWaker",
+                                "data"
+                              |) in
+                            let γ0_1 :=
+                              M.SubPointer.get_struct_record_field (|
+                                γ,
+                                "core::task::wake::RawWaker",
+                                "vtable"
+                              |) in
+                            let b_data :=
+                              M.copy (| Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ], γ0_0 |) in
+                            let b_vtable :=
+                              M.copy (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "core::task::wake::RawWakerVTable" ],
+                                γ0_1
+                              |) in
+                            LogicalOp.and (|
+                              M.call_closure (|
                                 Ty.path "bool",
-                                LogicalOp.and (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    BinOp.eq,
-                                    [ M.read (| a_data |); M.read (| b_data |) ]
+                                BinOp.eq,
+                                [ M.read (| a_data |); M.read (| b_data |) ]
+                              |),
+                              ltac:(M.monadic
+                                (M.call_closure (|
+                                  Ty.path "bool",
+                                  M.get_function (|
+                                    "core::ptr::eq",
+                                    [],
+                                    [ Ty.path "core::task::wake::RawWakerVTable" ]
                                   |),
-                                  ltac:(M.monadic
-                                    (M.call_closure (|
-                                      Ty.path "bool",
-                                      M.get_function (|
-                                        "core::ptr::eq",
-                                        [],
-                                        [ Ty.path "core::task::wake::RawWakerVTable" ]
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.ConstPointer,
-                                          M.deref (| M.read (| a_vtable |) |)
-                                        |);
-                                        M.borrow (|
-                                          Pointer.Kind.ConstPointer,
-                                          M.deref (| M.read (| b_vtable |) |)
-                                        |)
-                                      ]
-                                    |)))
-                                |)
-                              |)))
-                        ]
-                      |)))
-                ]
-              |)
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.ConstPointer,
+                                      M.deref (| M.read (| a_vtable |) |)
+                                    |);
+                                    M.borrow (|
+                                      Pointer.Kind.ConstPointer,
+                                      M.deref (| M.read (| b_vtable |) |)
+                                    |)
+                                  ]
+                                |)))
+                            |)))
+                      ]
+                    |)))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2379,34 +2325,34 @@ Module task.
                 Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::Waker" ],
                 source
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.tuple [],
-                M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ :=
-                        M.use
-                          (M.alloc (|
-                            Ty.path "bool",
-                            UnOp.not (|
-                              M.call_closure (|
-                                Ty.path "bool",
-                                M.get_associated_function (|
-                                  Ty.path "core::task::wake::Waker",
-                                  "will_wake",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| source |) |) |)
-                                ]
-                              |)
+            M.match_operator (|
+              Ty.tuple [],
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          Ty.path "bool",
+                          UnOp.not (|
+                            M.call_closure (|
+                              Ty.path "bool",
+                              M.get_associated_function (|
+                                Ty.path "core::task::wake::Waker",
+                                "will_wake",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| source |) |) |)
+                              ]
                             |)
-                          |)) in
-                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          |)
+                        |)) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.read (|
                       let~ _ : Ty.tuple [] :=
                         M.write (|
                           M.deref (| M.read (| self |) |),
@@ -2424,10 +2370,10 @@ Module task.
                             [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| source |) |) |) ]
                           |)
                         |) in
-                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                ]
-              |)
+                      M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                    |)));
+                fun γ => ltac:(M.monadic (Value.Tuple []))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2911,101 +2857,96 @@ Module task.
                 Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::LocalWaker" ],
                 other
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.path "bool",
-                M.SubPointer.get_struct_record_field (|
-                  M.deref (| M.read (| self |) |),
-                  "core::task::wake::LocalWaker",
-                  "waker"
-                |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_record_field (|
-                          γ,
-                          "core::task::wake::RawWaker",
-                          "data"
-                        |) in
-                      let γ0_1 :=
-                        M.SubPointer.get_struct_record_field (|
-                          γ,
-                          "core::task::wake::RawWaker",
-                          "vtable"
-                        |) in
-                      let a_data :=
-                        M.copy (| Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ], γ0_0 |) in
-                      let a_vtable :=
-                        M.copy (|
-                          Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::RawWakerVTable" ],
-                          γ0_1
-                        |) in
-                      M.match_operator (|
-                        Ty.path "bool",
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| other |) |),
-                          "core::task::wake::LocalWaker",
-                          "waker"
-                        |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_record_field (|
-                                  γ,
-                                  "core::task::wake::RawWaker",
-                                  "data"
-                                |) in
-                              let γ0_1 :=
-                                M.SubPointer.get_struct_record_field (|
-                                  γ,
-                                  "core::task::wake::RawWaker",
-                                  "vtable"
-                                |) in
-                              let b_data :=
-                                M.copy (| Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ], γ0_0 |) in
-                              let b_vtable :=
-                                M.copy (|
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [ Ty.path "core::task::wake::RawWakerVTable" ],
-                                  γ0_1
-                                |) in
-                              M.alloc (|
+            M.match_operator (|
+              Ty.path "bool",
+              M.SubPointer.get_struct_record_field (|
+                M.deref (| M.read (| self |) |),
+                "core::task::wake::LocalWaker",
+                "waker"
+              |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_record_field (|
+                        γ,
+                        "core::task::wake::RawWaker",
+                        "data"
+                      |) in
+                    let γ0_1 :=
+                      M.SubPointer.get_struct_record_field (|
+                        γ,
+                        "core::task::wake::RawWaker",
+                        "vtable"
+                      |) in
+                    let a_data :=
+                      M.copy (| Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ], γ0_0 |) in
+                    let a_vtable :=
+                      M.copy (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::RawWakerVTable" ],
+                        γ0_1
+                      |) in
+                    M.match_operator (|
+                      Ty.path "bool",
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| other |) |),
+                        "core::task::wake::LocalWaker",
+                        "waker"
+                      |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 :=
+                              M.SubPointer.get_struct_record_field (|
+                                γ,
+                                "core::task::wake::RawWaker",
+                                "data"
+                              |) in
+                            let γ0_1 :=
+                              M.SubPointer.get_struct_record_field (|
+                                γ,
+                                "core::task::wake::RawWaker",
+                                "vtable"
+                              |) in
+                            let b_data :=
+                              M.copy (| Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ], γ0_0 |) in
+                            let b_vtable :=
+                              M.copy (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "core::task::wake::RawWakerVTable" ],
+                                γ0_1
+                              |) in
+                            LogicalOp.and (|
+                              M.call_closure (|
                                 Ty.path "bool",
-                                LogicalOp.and (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    BinOp.eq,
-                                    [ M.read (| a_data |); M.read (| b_data |) ]
+                                BinOp.eq,
+                                [ M.read (| a_data |); M.read (| b_data |) ]
+                              |),
+                              ltac:(M.monadic
+                                (M.call_closure (|
+                                  Ty.path "bool",
+                                  M.get_function (|
+                                    "core::ptr::eq",
+                                    [],
+                                    [ Ty.path "core::task::wake::RawWakerVTable" ]
                                   |),
-                                  ltac:(M.monadic
-                                    (M.call_closure (|
-                                      Ty.path "bool",
-                                      M.get_function (|
-                                        "core::ptr::eq",
-                                        [],
-                                        [ Ty.path "core::task::wake::RawWakerVTable" ]
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.ConstPointer,
-                                          M.deref (| M.read (| a_vtable |) |)
-                                        |);
-                                        M.borrow (|
-                                          Pointer.Kind.ConstPointer,
-                                          M.deref (| M.read (| b_vtable |) |)
-                                        |)
-                                      ]
-                                    |)))
-                                |)
-                              |)))
-                        ]
-                      |)))
-                ]
-              |)
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.ConstPointer,
+                                      M.deref (| M.read (| a_vtable |) |)
+                                    |);
+                                    M.borrow (|
+                                      Pointer.Kind.ConstPointer,
+                                      M.deref (| M.read (| b_vtable |) |)
+                                    |)
+                                  ]
+                                |)))
+                            |)))
+                      ]
+                    |)))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3248,34 +3189,34 @@ Module task.
                 Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::LocalWaker" ],
                 source
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.tuple [],
-                M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ :=
-                        M.use
-                          (M.alloc (|
-                            Ty.path "bool",
-                            UnOp.not (|
-                              M.call_closure (|
-                                Ty.path "bool",
-                                M.get_associated_function (|
-                                  Ty.path "core::task::wake::LocalWaker",
-                                  "will_wake",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| source |) |) |)
-                                ]
-                              |)
+            M.match_operator (|
+              Ty.tuple [],
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          Ty.path "bool",
+                          UnOp.not (|
+                            M.call_closure (|
+                              Ty.path "bool",
+                              M.get_associated_function (|
+                                Ty.path "core::task::wake::LocalWaker",
+                                "will_wake",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| source |) |) |)
+                              ]
                             |)
-                          |)) in
-                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          |)
+                        |)) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.read (|
                       let~ _ : Ty.tuple [] :=
                         M.write (|
                           M.deref (| M.read (| self |) |),
@@ -3293,10 +3234,10 @@ Module task.
                             [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| source |) |) |) ]
                           |)
                         |) in
-                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                ]
-              |)
+                      M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                    |)));
+                fun γ => ltac:(M.monadic (Value.Tuple []))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

@@ -612,46 +612,42 @@ Module linear_map.
             |) in
           let k := M.alloc (| K, k |) in
           let v := M.alloc (| V, v |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply (Ty.path "core::option::Option") [] [ V ],
-              M.alloc (| Ty.tuple [], Value.Tuple [] |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ :=
-                      M.alloc (|
+          M.match_operator (|
+            Ty.apply (Ty.path "core::option::Option") [] [ V ],
+            M.alloc (| Ty.tuple [], Value.Tuple [] |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ :=
+                    M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "&mut") [] [ V ] ],
+                      M.call_closure (|
                         Ty.apply
                           (Ty.path "core::option::Option")
                           []
                           [ Ty.apply (Ty.path "&mut") [] [ V ] ],
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::option::Option")
-                            []
-                            [ Ty.apply (Ty.path "&mut") [] [ V ] ],
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "p3_util::linear_map::LinearMap") [] [ K; V ],
-                            "get_mut",
-                            [],
-                            []
-                          |),
-                          [
-                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, k |) |)
-                            |)
-                          ]
-                        |)
-                      |) in
-                    let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let vv := M.copy (| Ty.apply (Ty.path "&mut") [] [ V ], γ0_0 |) in
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "p3_util::linear_map::LinearMap") [] [ K; V ],
+                          "get_mut",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, k |) |)
+                          |)
+                        ]
+                      |)
+                    |) in
+                  let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+                  let vv := M.copy (| Ty.apply (Ty.path "&mut") [] [ V ], γ0_0 |) in
+                  M.read (|
                     let~ _ : Ty.tuple [] :=
                       M.call_closure (|
                         Ty.tuple [],
@@ -667,10 +663,12 @@ Module linear_map.
                     M.alloc (|
                       Ty.apply (Ty.path "core::option::Option") [] [ V ],
                       Value.StructTuple "core::option::Option::Some" [] [ V ] [ M.read (| v |) ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let~ _ : Ty.tuple [] :=
+                    |)
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (M.read (|
+                    let~ _ : Ty.tuple [] :=
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_associated_function (|
@@ -697,9 +695,9 @@ Module linear_map.
                     M.alloc (|
                       Ty.apply (Ty.path "core::option::Option") [] [ V ],
                       Value.StructTuple "core::option::Option::None" [] [ V ] []
-                    |)))
-              ]
-            |)
+                    |)
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -865,77 +863,71 @@ Module linear_map.
                   M.borrow (|
                     Pointer.Kind.MutRef,
                     M.deref (|
-                      M.read (|
-                        M.match_operator (|
-                          Ty.apply (Ty.path "&mut") [] [ V ],
-                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ := existing in
-                                let γ0_0 :=
-                                  M.SubPointer.get_struct_tuple_field (|
-                                    γ,
-                                    "core::option::Option::Some",
-                                    0
-                                  |) in
-                                let idx := M.copy (| Ty.path "usize", γ0_0 |) in
-                                M.alloc (|
-                                  Ty.apply (Ty.path "&mut") [] [ V ],
+                      M.match_operator (|
+                        Ty.apply (Ty.path "&mut") [] [ V ],
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ := existing in
+                              let γ0_0 :=
+                                M.SubPointer.get_struct_tuple_field (|
+                                  γ,
+                                  "core::option::Option::Some",
+                                  0
+                                |) in
+                              let idx := M.copy (| Ty.path "usize", γ0_0 |) in
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.MutRef,
                                     M.deref (|
                                       M.borrow (|
                                         Pointer.Kind.MutRef,
-                                        M.deref (|
-                                          M.borrow (|
-                                            Pointer.Kind.MutRef,
-                                            M.SubPointer.get_tuple_field (|
-                                              M.deref (|
-                                                M.call_closure (|
-                                                  Ty.apply
-                                                    (Ty.path "&mut")
-                                                    []
-                                                    [ Ty.tuple [ K; V ] ],
-                                                  M.get_trait_method (|
-                                                    "core::ops::index::IndexMut",
-                                                    Ty.apply
-                                                      (Ty.path "alloc::vec::Vec")
-                                                      []
-                                                      [
-                                                        Ty.tuple [ K; V ];
-                                                        Ty.path "alloc::alloc::Global"
-                                                      ],
-                                                    [],
-                                                    [ Ty.path "usize" ],
-                                                    "index_mut",
-                                                    [],
-                                                    []
-                                                  |),
+                                        M.SubPointer.get_tuple_field (|
+                                          M.deref (|
+                                            M.call_closure (|
+                                              Ty.apply (Ty.path "&mut") [] [ Ty.tuple [ K; V ] ],
+                                              M.get_trait_method (|
+                                                "core::ops::index::IndexMut",
+                                                Ty.apply
+                                                  (Ty.path "alloc::vec::Vec")
+                                                  []
                                                   [
-                                                    M.borrow (|
-                                                      Pointer.Kind.MutRef,
-                                                      M.SubPointer.get_struct_tuple_field (|
-                                                        M.deref (| M.read (| self |) |),
-                                                        "p3_util::linear_map::LinearMap",
-                                                        0
-                                                      |)
-                                                    |);
-                                                    M.read (| idx |)
-                                                  ]
-                                                |)
+                                                    Ty.tuple [ K; V ];
+                                                    Ty.path "alloc::alloc::Global"
+                                                  ],
+                                                [],
+                                                [ Ty.path "usize" ],
+                                                "index_mut",
+                                                [],
+                                                []
                                               |),
-                                              1
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.SubPointer.get_struct_tuple_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "p3_util::linear_map::LinearMap",
+                                                    0
+                                                  |)
+                                                |);
+                                                M.read (| idx |)
+                                              ]
                                             |)
-                                          |)
+                                          |),
+                                          1
                                         |)
                                       |)
                                     |)
                                   |)
-                                |)));
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let~ _ : Ty.tuple [] :=
+                                |)
+                              |)));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (M.read (|
+                                let~ _ : Ty.tuple [] :=
                                   M.call_closure (|
                                     Ty.tuple [],
                                     M.get_associated_function (|
@@ -1059,9 +1051,9 @@ Module linear_map.
                                       |)
                                     |)
                                   |)
-                                |)))
-                          ]
-                        |)
+                                |)
+                              |)))
+                        ]
                       |)
                     |)
                   |)
@@ -1237,136 +1229,146 @@ Module linear_map.
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.use
-                  (M.match_operator (|
+                  (M.alloc (|
                     Ty.tuple [],
-                    M.alloc (|
-                      Ty.associated_in_trait
-                        "core::iter::traits::collect::IntoIterator"
-                        []
-                        []
-                        T
-                        "IntoIter",
-                      M.call_closure (|
+                    M.match_operator (|
+                      Ty.tuple [],
+                      M.alloc (|
                         Ty.associated_in_trait
                           "core::iter::traits::collect::IntoIterator"
                           []
                           []
                           T
                           "IntoIter",
-                        M.get_trait_method (|
-                          "core::iter::traits::collect::IntoIterator",
-                          T,
-                          [],
-                          [],
-                          "into_iter",
-                          [],
-                          []
-                        |),
-                        [ M.read (| iter |) ]
-                      |)
-                    |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let iter :=
-                            M.copy (|
-                              Ty.associated_in_trait
-                                "core::iter::traits::collect::IntoIterator"
-                                []
-                                []
-                                T
-                                "IntoIter",
-                              γ
-                            |) in
-                          M.loop (|
-                            Ty.tuple [],
-                            ltac:(M.monadic
-                              (let~ _ : Ty.tuple [] :=
-                                M.read (|
-                                  M.match_operator (|
-                                    Ty.tuple [],
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "core::option::Option")
-                                        []
-                                        [ Ty.tuple [ K; V ] ],
-                                      M.call_closure (|
+                        M.call_closure (|
+                          Ty.associated_in_trait
+                            "core::iter::traits::collect::IntoIterator"
+                            []
+                            []
+                            T
+                            "IntoIter",
+                          M.get_trait_method (|
+                            "core::iter::traits::collect::IntoIterator",
+                            T,
+                            [],
+                            [],
+                            "into_iter",
+                            [],
+                            []
+                          |),
+                          [ M.read (| iter |) ]
+                        |)
+                      |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let iter :=
+                              M.copy (|
+                                Ty.associated_in_trait
+                                  "core::iter::traits::collect::IntoIterator"
+                                  []
+                                  []
+                                  T
+                                  "IntoIter",
+                                γ
+                              |) in
+                            M.read (|
+                              M.loop (|
+                                Ty.tuple [],
+                                ltac:(M.monadic
+                                  (let~ _ : Ty.tuple [] :=
+                                    M.match_operator (|
+                                      Ty.tuple [],
+                                      M.alloc (|
                                         Ty.apply
                                           (Ty.path "core::option::Option")
                                           []
                                           [ Ty.tuple [ K; V ] ],
-                                        M.get_trait_method (|
-                                          "core::iter::traits::iterator::Iterator",
-                                          Ty.associated_in_trait
-                                            "core::iter::traits::collect::IntoIterator"
+                                        M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
                                             []
+                                            [ Ty.tuple [ K; V ] ],
+                                          M.get_trait_method (|
+                                            "core::iter::traits::iterator::Iterator",
+                                            Ty.associated_in_trait
+                                              "core::iter::traits::collect::IntoIterator"
+                                              []
+                                              []
+                                              T
+                                              "IntoIter",
+                                            [],
+                                            [],
+                                            "next",
+                                            [],
                                             []
-                                            T
-                                            "IntoIter",
-                                          [],
-                                          [],
-                                          "next",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.MutRef,
-                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
-                                          |)
-                                        ]
-                                      |)
-                                    |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let _ :=
-                                            M.is_struct_tuple (|
-                                              γ,
-                                              "core::option::Option::None"
-                                            |) in
-                                          M.alloc (|
-                                            Ty.tuple [],
-                                            M.never_to_any (| M.read (| M.break (||) |) |)
-                                          |)));
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let γ0_0 :=
-                                            M.SubPointer.get_struct_tuple_field (|
-                                              γ,
-                                              "core::option::Option::Some",
-                                              0
-                                            |) in
-                                          let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
-                                          let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                                          let k := M.copy (| K, γ1_0 |) in
-                                          let v := M.copy (| V, γ1_1 |) in
-                                          let~ _ :
-                                              Ty.apply (Ty.path "core::option::Option") [] [ V ] :=
-                                            M.call_closure (|
-                                              Ty.apply (Ty.path "core::option::Option") [] [ V ],
-                                              M.get_associated_function (|
-                                                Ty.apply
-                                                  (Ty.path "p3_util::linear_map::LinearMap")
-                                                  []
-                                                  [ K; V ],
-                                                "insert",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.borrow (| Pointer.Kind.MutRef, me |);
-                                                M.read (| k |);
-                                                M.read (| v |)
-                                              ]
-                                            |) in
-                                          M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                                    ]
-                                  |)
-                                |) in
-                              M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                          |)))
-                    ]
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                            |)
+                                          ]
+                                        |)
+                                      |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let _ :=
+                                              M.is_struct_tuple (|
+                                                γ,
+                                                "core::option::Option::None"
+                                              |) in
+                                            M.never_to_any (| M.read (| M.break (||) |) |)));
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let γ0_0 :=
+                                              M.SubPointer.get_struct_tuple_field (|
+                                                γ,
+                                                "core::option::Option::Some",
+                                                0
+                                              |) in
+                                            let γ1_0 :=
+                                              M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                                            let γ1_1 :=
+                                              M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
+                                            let k := M.copy (| K, γ1_0 |) in
+                                            let v := M.copy (| V, γ1_1 |) in
+                                            M.read (|
+                                              let~ _ :
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ V ] :=
+                                                M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ V ],
+                                                  M.get_associated_function (|
+                                                    Ty.apply
+                                                      (Ty.path "p3_util::linear_map::LinearMap")
+                                                      []
+                                                      [ K; V ],
+                                                    "insert",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (| Pointer.Kind.MutRef, me |);
+                                                    M.read (| k |);
+                                                    M.read (| v |)
+                                                  ]
+                                                |) in
+                                              M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                                            |)))
+                                      ]
+                                    |) in
+                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)))
+                              |)
+                            |)))
+                      ]
+                    |)
                   |))
               |) in
             me

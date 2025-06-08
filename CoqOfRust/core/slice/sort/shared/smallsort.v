@@ -76,42 +76,37 @@ Module slice.
                     _scratch
                   |) in
                 let is_less := M.alloc (| Ty.apply (Ty.path "&mut") [] [ F ], is_less |) in
-                M.read (|
-                  M.match_operator (|
-                    Ty.tuple [],
-                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
+                M.match_operator (|
+                  Ty.tuple [],
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              Ty.path "bool",
+                              M.call_closure (|
                                 Ty.path "bool",
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  BinOp.ge,
-                                  [
-                                    M.call_closure (|
-                                      Ty.path "usize",
-                                      M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [] [ T ],
-                                        "len",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (| M.read (| v |) |)
-                                        |)
-                                      ]
-                                    |);
-                                    Value.Integer IntegerKind.Usize 2
-                                  ]
-                                |)
-                              |)) in
-                          let _ :=
-                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                                BinOp.ge,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "slice") [] [ T ],
+                                      "len",
+                                      [],
+                                      []
+                                    |),
+                                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |)
+                                    ]
+                                  |);
+                                  Value.Integer IntegerKind.Usize 2
+                                ]
+                              |)
+                            |)) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.read (|
                           let~ _ : Ty.tuple [] :=
                             M.call_closure (|
                               Ty.tuple [],
@@ -129,10 +124,10 @@ Module slice.
                                 |)
                               ]
                             |) in
-                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                    ]
-                  |)
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                        |)));
+                    fun γ => ltac:(M.monadic (Value.Tuple []))
+                  ]
                 |)))
             | _, _, _ => M.impossible "wrong number of arguments"
             end.
@@ -457,61 +452,62 @@ Module slice.
             match ε, τ, α with
             | [], [], [] =>
               ltac:(M.monadic
-                (M.read (|
-                  M.match_operator (|
-                    Ty.path "usize",
-                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
+                (M.match_operator (|
+                  Ty.path "usize",
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              Ty.path "bool",
+                              M.call_closure (|
                                 Ty.path "bool",
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  BinOp.le,
-                                  [
-                                    M.call_closure (|
-                                      Ty.path "usize",
-                                      BinOp.Wrap.mul,
-                                      [
-                                        M.call_closure (|
-                                          Ty.path "usize",
-                                          M.get_function (| "core::mem::size_of", [], [ T ] |),
-                                          []
-                                        |);
-                                        M.read (|
-                                          get_constant (|
-                                            "core::slice::sort::shared::smallsort::SMALL_SORT_GENERAL_SCRATCH_LEN",
-                                            Ty.path "usize"
-                                          |)
+                                BinOp.le,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.mul,
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        M.get_function (| "core::mem::size_of", [], [ T ] |),
+                                        []
+                                      |);
+                                      M.read (|
+                                        get_constant (|
+                                          "core::slice::sort::shared::smallsort::SMALL_SORT_GENERAL_SCRATCH_LEN",
+                                          Ty.path "usize"
                                         |)
-                                      ]
-                                    |);
-                                    M.read (|
-                                      get_constant (|
-                                        "core::slice::sort::shared::smallsort::MAX_STACK_ARRAY_SIZE",
-                                        Ty.path "usize"
                                       |)
+                                    ]
+                                  |);
+                                  M.read (|
+                                    get_constant (|
+                                      "core::slice::sort::shared::smallsort::MAX_STACK_ARRAY_SIZE",
+                                      Ty.path "usize"
                                     |)
-                                  ]
-                                |)
-                              |)) in
-                          let _ :=
-                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                                  |)
+                                ]
+                              |)
+                            |)) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.read (|
                           get_constant (|
                             "core::slice::sort::shared::smallsort::SMALL_SORT_GENERAL_THRESHOLD",
                             Ty.path "usize"
-                          |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (get_constant (|
+                          |)
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (M.read (|
+                          get_constant (|
                             "core::slice::sort::shared::smallsort::SMALL_SORT_FALLBACK_THRESHOLD",
                             Ty.path "usize"
-                          |)))
-                    ]
-                  |)
+                          |)
+                        |)))
+                  ]
                 |)))
             | _, _, _ => M.impossible "wrong number of arguments"
             end.
@@ -544,49 +540,48 @@ Module slice.
                     v
                   |) in
                 let is_less := M.alloc (| Ty.apply (Ty.path "&mut") [] [ F ], is_less |) in
-                M.read (|
-                  M.match_operator (|
-                    Ty.tuple [],
-                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
+                M.match_operator (|
+                  Ty.tuple [],
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              Ty.path "bool",
+                              M.call_closure (|
                                 Ty.path "bool",
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  BinOp.le,
-                                  [
-                                    M.call_closure (|
-                                      Ty.path "usize",
-                                      BinOp.Wrap.mul,
-                                      [
-                                        M.call_closure (|
-                                          Ty.path "usize",
-                                          M.get_function (| "core::mem::size_of", [], [ T ] |),
-                                          []
-                                        |);
-                                        M.read (|
-                                          get_constant (|
-                                            "core::slice::sort::shared::smallsort::SMALL_SORT_GENERAL_SCRATCH_LEN",
-                                            Ty.path "usize"
-                                          |)
+                                BinOp.le,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.mul,
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        M.get_function (| "core::mem::size_of", [], [ T ] |),
+                                        []
+                                      |);
+                                      M.read (|
+                                        get_constant (|
+                                          "core::slice::sort::shared::smallsort::SMALL_SORT_GENERAL_SCRATCH_LEN",
+                                          Ty.path "usize"
                                         |)
-                                      ]
-                                    |);
-                                    M.read (|
-                                      get_constant (|
-                                        "core::slice::sort::shared::smallsort::MAX_STACK_ARRAY_SIZE",
-                                        Ty.path "usize"
                                       |)
+                                    ]
+                                  |);
+                                  M.read (|
+                                    get_constant (|
+                                      "core::slice::sort::shared::smallsort::MAX_STACK_ARRAY_SIZE",
+                                      Ty.path "usize"
                                     |)
-                                  ]
-                                |)
-                              |)) in
-                          let _ :=
-                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                                  |)
+                                ]
+                              |)
+                            |)) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.read (|
                           let~ _ : Ty.tuple [] :=
                             M.call_closure (|
                               Ty.tuple [],
@@ -603,10 +598,12 @@ Module slice.
                                 |)
                               ]
                             |) in
-                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let~ _ : Ty.tuple [] :=
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (M.read (|
+                          let~ _ : Ty.tuple [] :=
                             M.call_closure (|
                               Ty.tuple [],
                               M.get_function (|
@@ -622,9 +619,9 @@ Module slice.
                                 |)
                               ]
                             |) in
-                          M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                    ]
-                  |)
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                        |)))
+                  ]
                 |)))
             | _, _, _ => M.impossible "wrong number of arguments"
             end.
@@ -685,130 +682,133 @@ Module slice.
             match ε, τ, α with
             | [], [], [] =>
               ltac:(M.monadic
-                (M.read (|
-                  M.match_operator (|
-                    Ty.path "usize",
-                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                Ty.path "bool",
-                                LogicalOp.and (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_function (|
-                                      "core::slice::sort::shared::smallsort::has_efficient_in_place_swap",
-                                      [],
-                                      [ T ]
-                                    |),
-                                    []
+                (M.match_operator (|
+                  Ty.path "usize",
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              Ty.path "bool",
+                              LogicalOp.and (|
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  M.get_function (|
+                                    "core::slice::sort::shared::smallsort::has_efficient_in_place_swap",
+                                    [],
+                                    [ T ]
                                   |),
-                                  ltac:(M.monadic
-                                    (M.call_closure (|
-                                      Ty.path "bool",
-                                      BinOp.le,
-                                      [
-                                        M.call_closure (|
-                                          Ty.path "usize",
-                                          BinOp.Wrap.mul,
-                                          [
-                                            M.call_closure (|
-                                              Ty.path "usize",
-                                              M.get_function (| "core::mem::size_of", [], [ T ] |),
-                                              []
-                                            |);
-                                            M.read (|
-                                              get_constant (|
-                                                "core::slice::sort::shared::smallsort::SMALL_SORT_NETWORK_SCRATCH_LEN",
-                                                Ty.path "usize"
-                                              |)
+                                  []
+                                |),
+                                ltac:(M.monadic
+                                  (M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.le,
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        BinOp.Wrap.mul,
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "usize",
+                                            M.get_function (| "core::mem::size_of", [], [ T ] |),
+                                            []
+                                          |);
+                                          M.read (|
+                                            get_constant (|
+                                              "core::slice::sort::shared::smallsort::SMALL_SORT_NETWORK_SCRATCH_LEN",
+                                              Ty.path "usize"
                                             |)
-                                          ]
-                                        |);
-                                        M.read (|
-                                          get_constant (|
-                                            "core::slice::sort::shared::smallsort::MAX_STACK_ARRAY_SIZE",
-                                            Ty.path "usize"
                                           |)
+                                        ]
+                                      |);
+                                      M.read (|
+                                        get_constant (|
+                                          "core::slice::sort::shared::smallsort::MAX_STACK_ARRAY_SIZE",
+                                          Ty.path "usize"
                                         |)
-                                      ]
-                                    |)))
-                                |)
-                              |)) in
-                          let _ :=
-                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                                      |)
+                                    ]
+                                  |)))
+                              |)
+                            |)) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.read (|
                           get_constant (|
                             "core::slice::sort::shared::smallsort::SMALL_SORT_NETWORK_THRESHOLD",
                             Ty.path "usize"
-                          |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (M.match_operator (|
-                            Ty.path "usize",
-                            M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ :=
-                                    M.use
-                                      (M.alloc (|
+                          |)
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          Ty.path "usize",
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ :=
+                                  M.use
+                                    (M.alloc (|
+                                      Ty.path "bool",
+                                      M.call_closure (|
                                         Ty.path "bool",
-                                        M.call_closure (|
-                                          Ty.path "bool",
-                                          BinOp.le,
-                                          [
-                                            M.call_closure (|
-                                              Ty.path "usize",
-                                              BinOp.Wrap.mul,
-                                              [
-                                                M.call_closure (|
-                                                  Ty.path "usize",
-                                                  M.get_function (|
-                                                    "core::mem::size_of",
-                                                    [],
-                                                    [ T ]
-                                                  |),
-                                                  []
-                                                |);
-                                                M.read (|
-                                                  get_constant (|
-                                                    "core::slice::sort::shared::smallsort::SMALL_SORT_GENERAL_SCRATCH_LEN",
-                                                    Ty.path "usize"
-                                                  |)
+                                        BinOp.le,
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "usize",
+                                            BinOp.Wrap.mul,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "usize",
+                                                M.get_function (|
+                                                  "core::mem::size_of",
+                                                  [],
+                                                  [ T ]
+                                                |),
+                                                []
+                                              |);
+                                              M.read (|
+                                                get_constant (|
+                                                  "core::slice::sort::shared::smallsort::SMALL_SORT_GENERAL_SCRATCH_LEN",
+                                                  Ty.path "usize"
                                                 |)
-                                              ]
-                                            |);
-                                            M.read (|
-                                              get_constant (|
-                                                "core::slice::sort::shared::smallsort::MAX_STACK_ARRAY_SIZE",
-                                                Ty.path "usize"
                                               |)
+                                            ]
+                                          |);
+                                          M.read (|
+                                            get_constant (|
+                                              "core::slice::sort::shared::smallsort::MAX_STACK_ARRAY_SIZE",
+                                              Ty.path "usize"
                                             |)
-                                          ]
-                                        |)
-                                      |)) in
-                                  let _ :=
-                                    is_constant_or_break_match (|
-                                      M.read (| γ |),
-                                      Value.Bool true
-                                    |) in
+                                          |)
+                                        ]
+                                      |)
+                                    |)) in
+                                let _ :=
+                                  is_constant_or_break_match (|
+                                    M.read (| γ |),
+                                    Value.Bool true
+                                  |) in
+                                M.read (|
                                   get_constant (|
                                     "core::slice::sort::shared::smallsort::SMALL_SORT_GENERAL_THRESHOLD",
                                     Ty.path "usize"
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (get_constant (|
+                                  |)
+                                |)));
+                            fun γ =>
+                              ltac:(M.monadic
+                                (M.read (|
+                                  get_constant (|
                                     "core::slice::sort::shared::smallsort::SMALL_SORT_FALLBACK_THRESHOLD",
                                     Ty.path "usize"
-                                  |)))
-                            ]
-                          |)))
-                    ]
-                  |)
+                                  |)
+                                |)))
+                          ]
+                        |)))
+                  ]
                 |)))
             | _, _, _ => M.impossible "wrong number of arguments"
             end.
@@ -845,61 +845,60 @@ Module slice.
                     v
                   |) in
                 let is_less := M.alloc (| Ty.apply (Ty.path "&mut") [] [ F ], is_less |) in
-                M.read (|
-                  M.match_operator (|
-                    Ty.tuple [],
-                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                Ty.path "bool",
-                                LogicalOp.and (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_function (|
-                                      "core::slice::sort::shared::smallsort::has_efficient_in_place_swap",
-                                      [],
-                                      [ T ]
-                                    |),
-                                    []
+                M.match_operator (|
+                  Ty.tuple [],
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              Ty.path "bool",
+                              LogicalOp.and (|
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  M.get_function (|
+                                    "core::slice::sort::shared::smallsort::has_efficient_in_place_swap",
+                                    [],
+                                    [ T ]
                                   |),
-                                  ltac:(M.monadic
-                                    (M.call_closure (|
-                                      Ty.path "bool",
-                                      BinOp.le,
-                                      [
-                                        M.call_closure (|
-                                          Ty.path "usize",
-                                          BinOp.Wrap.mul,
-                                          [
-                                            M.call_closure (|
-                                              Ty.path "usize",
-                                              M.get_function (| "core::mem::size_of", [], [ T ] |),
-                                              []
-                                            |);
-                                            M.read (|
-                                              get_constant (|
-                                                "core::slice::sort::shared::smallsort::SMALL_SORT_NETWORK_SCRATCH_LEN",
-                                                Ty.path "usize"
-                                              |)
+                                  []
+                                |),
+                                ltac:(M.monadic
+                                  (M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.le,
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        BinOp.Wrap.mul,
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "usize",
+                                            M.get_function (| "core::mem::size_of", [], [ T ] |),
+                                            []
+                                          |);
+                                          M.read (|
+                                            get_constant (|
+                                              "core::slice::sort::shared::smallsort::SMALL_SORT_NETWORK_SCRATCH_LEN",
+                                              Ty.path "usize"
                                             |)
-                                          ]
-                                        |);
-                                        M.read (|
-                                          get_constant (|
-                                            "core::slice::sort::shared::smallsort::MAX_STACK_ARRAY_SIZE",
-                                            Ty.path "usize"
                                           |)
+                                        ]
+                                      |);
+                                      M.read (|
+                                        get_constant (|
+                                          "core::slice::sort::shared::smallsort::MAX_STACK_ARRAY_SIZE",
+                                          Ty.path "usize"
                                         |)
-                                      ]
-                                    |)))
-                                |)
-                              |)) in
-                          let _ :=
-                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                                      |)
+                                    ]
+                                  |)))
+                              |)
+                            |)) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.read (|
                           let~ _ : Ty.tuple [] :=
                             M.call_closure (|
                               Ty.tuple [],
@@ -916,58 +915,60 @@ Module slice.
                                 |)
                               ]
                             |) in
-                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (M.match_operator (|
-                            Ty.tuple [],
-                            M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ :=
-                                    M.use
-                                      (M.alloc (|
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          Ty.tuple [],
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ :=
+                                  M.use
+                                    (M.alloc (|
+                                      Ty.path "bool",
+                                      M.call_closure (|
                                         Ty.path "bool",
-                                        M.call_closure (|
-                                          Ty.path "bool",
-                                          BinOp.le,
-                                          [
-                                            M.call_closure (|
-                                              Ty.path "usize",
-                                              BinOp.Wrap.mul,
-                                              [
-                                                M.call_closure (|
-                                                  Ty.path "usize",
-                                                  M.get_function (|
-                                                    "core::mem::size_of",
-                                                    [],
-                                                    [ T ]
-                                                  |),
-                                                  []
-                                                |);
-                                                M.read (|
-                                                  get_constant (|
-                                                    "core::slice::sort::shared::smallsort::SMALL_SORT_GENERAL_SCRATCH_LEN",
-                                                    Ty.path "usize"
-                                                  |)
+                                        BinOp.le,
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "usize",
+                                            BinOp.Wrap.mul,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "usize",
+                                                M.get_function (|
+                                                  "core::mem::size_of",
+                                                  [],
+                                                  [ T ]
+                                                |),
+                                                []
+                                              |);
+                                              M.read (|
+                                                get_constant (|
+                                                  "core::slice::sort::shared::smallsort::SMALL_SORT_GENERAL_SCRATCH_LEN",
+                                                  Ty.path "usize"
                                                 |)
-                                              ]
-                                            |);
-                                            M.read (|
-                                              get_constant (|
-                                                "core::slice::sort::shared::smallsort::MAX_STACK_ARRAY_SIZE",
-                                                Ty.path "usize"
                                               |)
+                                            ]
+                                          |);
+                                          M.read (|
+                                            get_constant (|
+                                              "core::slice::sort::shared::smallsort::MAX_STACK_ARRAY_SIZE",
+                                              Ty.path "usize"
                                             |)
-                                          ]
-                                        |)
-                                      |)) in
-                                  let _ :=
-                                    is_constant_or_break_match (|
-                                      M.read (| γ |),
-                                      Value.Bool true
-                                    |) in
+                                          |)
+                                        ]
+                                      |)
+                                    |)) in
+                                let _ :=
+                                  is_constant_or_break_match (|
+                                    M.read (| γ |),
+                                    Value.Bool true
+                                  |) in
+                                M.read (|
                                   let~ _ : Ty.tuple [] :=
                                     M.call_closure (|
                                       Ty.tuple [],
@@ -987,10 +988,12 @@ Module slice.
                                         |)
                                       ]
                                     |) in
-                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let~ _ : Ty.tuple [] :=
+                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                                |)));
+                            fun γ =>
+                              ltac:(M.monadic
+                                (M.read (|
+                                  let~ _ : Ty.tuple [] :=
                                     M.call_closure (|
                                       Ty.tuple [],
                                       M.get_function (|
@@ -1009,11 +1012,11 @@ Module slice.
                                         |)
                                       ]
                                     |) in
-                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                            ]
-                          |)))
-                    ]
-                  |)
+                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                                |)))
+                          ]
+                        |)))
+                  ]
                 |)))
             | _, _, _ => M.impossible "wrong number of arguments"
             end.
@@ -1153,37 +1156,36 @@ Module slice.
                   v
                 |) in
               let is_less := M.alloc (| Ty.apply (Ty.path "&mut") [] [ F ], is_less |) in
-              M.read (|
-                M.match_operator (|
-                  Ty.tuple [],
-                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ :=
-                          M.use
-                            (M.alloc (|
+              M.match_operator (|
+                Ty.tuple [],
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ :=
+                        M.use
+                          (M.alloc (|
+                            Ty.path "bool",
+                            M.call_closure (|
                               Ty.path "bool",
-                              M.call_closure (|
-                                Ty.path "bool",
-                                BinOp.ge,
-                                [
-                                  M.call_closure (|
-                                    Ty.path "usize",
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [] [ T ],
-                                      "len",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |)
-                                    ]
-                                  |);
-                                  Value.Integer IntegerKind.Usize 2
-                                ]
-                              |)
-                            |)) in
-                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              BinOp.ge,
+                              [
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "slice") [] [ T ],
+                                    "len",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
+                                |);
+                                Value.Integer IntegerKind.Usize 2
+                              ]
+                            |)
+                          |)) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      M.read (|
                         let~ _ : Ty.tuple [] :=
                           M.call_closure (|
                             Ty.tuple [],
@@ -1198,10 +1200,10 @@ Module slice.
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                             ]
                           |) in
-                        M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                  ]
-                |)
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                      |)));
+                  fun γ => ltac:(M.monadic (Value.Tuple []))
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -1461,557 +1463,503 @@ Module slice.
                   scratch
                 |) in
               let is_less := M.alloc (| Ty.apply (Ty.path "&mut") [] [ F ], is_less |) in
-              M.read (|
-                M.catch_return (Ty.tuple []) (|
-                  ltac:(M.monadic
-                    (M.alloc (|
-                      Ty.tuple [],
-                      M.read (|
-                        let~ len : Ty.path "usize" :=
-                          M.call_closure (|
-                            Ty.path "usize",
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "slice") [] [ T ],
-                              "len",
-                              [],
+              M.catch_return (Ty.tuple []) (|
+                ltac:(M.monadic
+                  (M.read (|
+                    let~ len : Ty.path "usize" :=
+                      M.call_closure (|
+                        Ty.path "usize",
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "slice") [] [ T ],
+                          "len",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
+                      |) in
+                    let~ _ : Ty.tuple [] :=
+                      M.match_operator (|
+                        Ty.tuple [],
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.use
+                                  (M.alloc (|
+                                    Ty.path "bool",
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.lt,
+                                      [ M.read (| len |); Value.Integer IntegerKind.Usize 2 ]
+                                    |)
+                                  |)) in
+                              let _ :=
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              M.never_to_any (| M.read (| M.return_ (| Value.Tuple [] |) |) |)));
+                          fun γ => ltac:(M.monadic (Value.Tuple []))
+                        ]
+                      |) in
+                    let~ _ : Ty.tuple [] :=
+                      M.match_operator (|
+                        Ty.tuple [],
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.use
+                                  (M.alloc (|
+                                    Ty.path "bool",
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.lt,
+                                      [
+                                        M.call_closure (|
+                                          Ty.path "usize",
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "slice")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                  []
+                                                  [ T ]
+                                              ],
+                                            "len",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| scratch |) |)
+                                            |)
+                                          ]
+                                        |);
+                                        M.call_closure (|
+                                          Ty.path "usize",
+                                          BinOp.Wrap.add,
+                                          [ M.read (| len |); Value.Integer IntegerKind.Usize 16 ]
+                                        |)
+                                      ]
+                                    |)
+                                  |)) in
+                              let _ :=
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              M.never_to_any (|
+                                M.call_closure (|
+                                  Ty.path "never",
+                                  M.get_function (| "core::intrinsics::abort", [], [] |),
+                                  []
+                                |)
+                              |)));
+                          fun γ => ltac:(M.monadic (Value.Tuple []))
+                        ]
+                      |) in
+                    let~ v_base : Ty.apply (Ty.path "*mut") [] [ T ] :=
+                      M.call_closure (|
+                        Ty.apply (Ty.path "*mut") [] [ T ],
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "slice") [] [ T ],
+                          "as_mut_ptr",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| v |) |) |) ]
+                      |) in
+                    let~ len_div_2 : Ty.path "usize" :=
+                      M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.div,
+                        [ M.read (| len |); Value.Integer IntegerKind.Usize 2 ]
+                      |) in
+                    let~ scratch_base : Ty.apply (Ty.path "*mut") [] [ T ] :=
+                      M.cast
+                        (Ty.apply (Ty.path "*mut") [] [ T ])
+                        (M.call_closure (|
+                          Ty.apply
+                            (Ty.path "*mut")
+                            []
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "slice")
                               []
-                            |),
-                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
-                          |) in
-                        let~ _ : Ty.tuple [] :=
-                          M.read (|
-                            M.match_operator (|
-                              Ty.tuple [],
-                              M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ :=
-                                      M.use
-                                        (M.alloc (|
+                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                              ],
+                            "as_mut_ptr",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| scratch |) |) |) ]
+                        |)) in
+                    let~ presorted_len : Ty.path "usize" :=
+                      M.match_operator (|
+                        Ty.path "usize",
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.use
+                                  (M.alloc (|
+                                    Ty.path "bool",
+                                    LogicalOp.and (|
+                                      M.read (|
+                                        get_constant (|
+                                          "core::slice::sort::shared::smallsort::small_sort_general_with_scratch_discriminant",
+                                          Ty.path "bool"
+                                        |)
+                                      |),
+                                      ltac:(M.monadic
+                                        (M.call_closure (|
                                           Ty.path "bool",
-                                          M.call_closure (|
-                                            Ty.path "bool",
-                                            BinOp.lt,
-                                            [ M.read (| len |); Value.Integer IntegerKind.Usize 2 ]
-                                          |)
-                                        |)) in
-                                    let _ :=
-                                      is_constant_or_break_match (|
-                                        M.read (| γ |),
-                                        Value.Bool true
-                                      |) in
-                                    M.alloc (|
-                                      Ty.tuple [],
-                                      M.never_to_any (|
-                                        M.read (| M.return_ (| Value.Tuple [] |) |)
+                                          BinOp.ge,
+                                          [ M.read (| len |); Value.Integer IntegerKind.Usize 16 ]
+                                        |)))
+                                    |)
+                                  |)) in
+                              let _ :=
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              M.read (|
+                                let~ _ : Ty.tuple [] :=
+                                  M.call_closure (|
+                                    Ty.tuple [],
+                                    M.get_function (|
+                                      "core::slice::sort::shared::smallsort::sort8_stable",
+                                      [],
+                                      [ T; F ]
+                                    |),
+                                    [
+                                      M.read (| v_base |);
+                                      M.read (| scratch_base |);
+                                      M.call_closure (|
+                                        Ty.apply (Ty.path "*mut") [] [ T ],
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "*mut") [] [ T ],
+                                          "add",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| scratch_base |); M.read (| len |) ]
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| is_less |) |)
                                       |)
-                                    |)));
-                                fun γ =>
-                                  ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                              ]
-                            |)
-                          |) in
-                        let~ _ : Ty.tuple [] :=
-                          M.read (|
-                            M.match_operator (|
-                              Ty.tuple [],
-                              M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ :=
-                                      M.use
-                                        (M.alloc (|
-                                          Ty.path "bool",
+                                    ]
+                                  |) in
+                                let~ _ : Ty.tuple [] :=
+                                  M.call_closure (|
+                                    Ty.tuple [],
+                                    M.get_function (|
+                                      "core::slice::sort::shared::smallsort::sort8_stable",
+                                      [],
+                                      [ T; F ]
+                                    |),
+                                    [
+                                      M.call_closure (|
+                                        Ty.apply (Ty.path "*mut") [] [ T ],
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "*mut") [] [ T ],
+                                          "add",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| v_base |); M.read (| len_div_2 |) ]
+                                      |);
+                                      M.call_closure (|
+                                        Ty.apply (Ty.path "*mut") [] [ T ],
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "*mut") [] [ T ],
+                                          "add",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| scratch_base |); M.read (| len_div_2 |) ]
+                                      |);
+                                      M.call_closure (|
+                                        Ty.apply (Ty.path "*mut") [] [ T ],
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "*mut") [] [ T ],
+                                          "add",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.read (| scratch_base |);
                                           M.call_closure (|
+                                            Ty.path "usize",
+                                            BinOp.Wrap.add,
+                                            [ M.read (| len |); Value.Integer IntegerKind.Usize 8 ]
+                                          |)
+                                        ]
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| is_less |) |)
+                                      |)
+                                    ]
+                                  |) in
+                                M.alloc (| Ty.path "usize", Value.Integer IntegerKind.Usize 8 |)
+                              |)));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                Ty.path "usize",
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ :=
+                                        M.use
+                                          (M.alloc (|
                                             Ty.path "bool",
-                                            BinOp.lt,
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.ge,
+                                              [ M.read (| len |); Value.Integer IntegerKind.Usize 8
+                                              ]
+                                            |)
+                                          |)) in
+                                      let _ :=
+                                        is_constant_or_break_match (|
+                                          M.read (| γ |),
+                                          Value.Bool true
+                                        |) in
+                                      M.read (|
+                                        let~ _ : Ty.tuple [] :=
+                                          M.call_closure (|
+                                            Ty.tuple [],
+                                            M.get_function (|
+                                              "core::slice::sort::shared::smallsort::sort4_stable",
+                                              [],
+                                              [ T; F ]
+                                            |),
                                             [
-                                              M.call_closure (|
-                                                Ty.path "usize",
-                                                M.get_associated_function (|
-                                                  Ty.apply
-                                                    (Ty.path "slice")
+                                              (* MutToConstPointer *)
+                                              M.pointer_coercion (M.read (| v_base |));
+                                              M.read (| scratch_base |);
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (| M.read (| is_less |) |)
+                                              |)
+                                            ]
+                                          |) in
+                                        let~ _ : Ty.tuple [] :=
+                                          M.call_closure (|
+                                            Ty.tuple [],
+                                            M.get_function (|
+                                              "core::slice::sort::shared::smallsort::sort4_stable",
+                                              [],
+                                              [ T; F ]
+                                            |),
+                                            [
+                                              (* MutToConstPointer *)
+                                              M.pointer_coercion
+                                                (M.call_closure (|
+                                                  Ty.apply (Ty.path "*mut") [] [ T ],
+                                                  M.get_associated_function (|
+                                                    Ty.apply (Ty.path "*mut") [] [ T ],
+                                                    "add",
+                                                    [],
                                                     []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path
-                                                          "core::mem::maybe_uninit::MaybeUninit")
-                                                        []
-                                                        [ T ]
-                                                    ],
-                                                  "len",
+                                                  |),
+                                                  [ M.read (| v_base |); M.read (| len_div_2 |) ]
+                                                |));
+                                              M.call_closure (|
+                                                Ty.apply (Ty.path "*mut") [] [ T ],
+                                                M.get_associated_function (|
+                                                  Ty.apply (Ty.path "*mut") [] [ T ],
+                                                  "add",
                                                   [],
                                                   []
                                                 |),
-                                                [
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (| M.read (| scratch |) |)
-                                                  |)
+                                                [ M.read (| scratch_base |); M.read (| len_div_2 |)
                                                 ]
                                               |);
-                                              M.call_closure (|
-                                                Ty.path "usize",
-                                                BinOp.Wrap.add,
-                                                [
-                                                  M.read (| len |);
-                                                  Value.Integer IntegerKind.Usize 16
-                                                ]
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (| M.read (| is_less |) |)
                                               |)
                                             ]
-                                          |)
-                                        |)) in
-                                    let _ :=
-                                      is_constant_or_break_match (|
-                                        M.read (| γ |),
-                                        Value.Bool true
-                                      |) in
-                                    M.alloc (|
-                                      Ty.tuple [],
-                                      M.never_to_any (|
-                                        M.call_closure (|
-                                          Ty.path "never",
-                                          M.get_function (| "core::intrinsics::abort", [], [] |),
-                                          []
+                                          |) in
+                                        M.alloc (|
+                                          Ty.path "usize",
+                                          Value.Integer IntegerKind.Usize 4
                                         |)
-                                      |)
-                                    |)));
-                                fun γ =>
-                                  ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                              ]
-                            |)
-                          |) in
-                        let~ v_base : Ty.apply (Ty.path "*mut") [] [ T ] :=
-                          M.call_closure (|
-                            Ty.apply (Ty.path "*mut") [] [ T ],
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "slice") [] [ T ],
-                              "as_mut_ptr",
-                              [],
-                              []
-                            |),
-                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| v |) |) |) ]
-                          |) in
-                        let~ len_div_2 : Ty.path "usize" :=
-                          M.call_closure (|
-                            Ty.path "usize",
-                            BinOp.Wrap.div,
-                            [ M.read (| len |); Value.Integer IntegerKind.Usize 2 ]
-                          |) in
-                        let~ scratch_base : Ty.apply (Ty.path "*mut") [] [ T ] :=
-                          M.cast
-                            (Ty.apply (Ty.path "*mut") [] [ T ])
-                            (M.call_closure (|
-                              Ty.apply
-                                (Ty.path "*mut")
-                                []
-                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
-                                ],
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "slice")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                      []
-                                      [ T ]
-                                  ],
-                                "as_mut_ptr",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.MutRef,
-                                  M.deref (| M.read (| scratch |) |)
-                                |)
-                              ]
-                            |)) in
-                        let~ presorted_len : Ty.path "usize" :=
-                          M.read (|
-                            M.match_operator (|
-                              Ty.path "usize",
-                              M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ :=
-                                      M.use
-                                        (M.alloc (|
-                                          Ty.path "bool",
-                                          LogicalOp.and (|
-                                            M.read (|
-                                              get_constant (|
-                                                "core::slice::sort::shared::smallsort::small_sort_general_with_scratch_discriminant",
-                                                Ty.path "bool"
-                                              |)
-                                            |),
-                                            ltac:(M.monadic
-                                              (M.call_closure (|
-                                                Ty.path "bool",
-                                                BinOp.ge,
-                                                [
-                                                  M.read (| len |);
-                                                  Value.Integer IntegerKind.Usize 16
-                                                ]
-                                              |)))
-                                          |)
-                                        |)) in
-                                    let _ :=
-                                      is_constant_or_break_match (|
-                                        M.read (| γ |),
-                                        Value.Bool true
-                                      |) in
-                                    let~ _ : Ty.tuple [] :=
-                                      M.call_closure (|
-                                        Ty.tuple [],
-                                        M.get_function (|
-                                          "core::slice::sort::shared::smallsort::sort8_stable",
-                                          [],
-                                          [ T; F ]
-                                        |),
-                                        [
-                                          M.read (| v_base |);
-                                          M.read (| scratch_base |);
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (M.read (|
+                                        let~ _ : Ty.tuple [] :=
                                           M.call_closure (|
-                                            Ty.apply (Ty.path "*mut") [] [ T ],
-                                            M.get_associated_function (|
-                                              Ty.apply (Ty.path "*mut") [] [ T ],
-                                              "add",
+                                            Ty.tuple [],
+                                            M.get_function (|
+                                              "core::intrinsics::copy_nonoverlapping",
                                               [],
-                                              []
-                                            |),
-                                            [ M.read (| scratch_base |); M.read (| len |) ]
-                                          |);
-                                          M.borrow (|
-                                            Pointer.Kind.MutRef,
-                                            M.deref (| M.read (| is_less |) |)
-                                          |)
-                                        ]
-                                      |) in
-                                    let~ _ : Ty.tuple [] :=
-                                      M.call_closure (|
-                                        Ty.tuple [],
-                                        M.get_function (|
-                                          "core::slice::sort::shared::smallsort::sort8_stable",
-                                          [],
-                                          [ T; F ]
-                                        |),
-                                        [
-                                          M.call_closure (|
-                                            Ty.apply (Ty.path "*mut") [] [ T ],
-                                            M.get_associated_function (|
-                                              Ty.apply (Ty.path "*mut") [] [ T ],
-                                              "add",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.read (| v_base |); M.read (| len_div_2 |) ]
-                                          |);
-                                          M.call_closure (|
-                                            Ty.apply (Ty.path "*mut") [] [ T ],
-                                            M.get_associated_function (|
-                                              Ty.apply (Ty.path "*mut") [] [ T ],
-                                              "add",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.read (| scratch_base |); M.read (| len_div_2 |) ]
-                                          |);
-                                          M.call_closure (|
-                                            Ty.apply (Ty.path "*mut") [] [ T ],
-                                            M.get_associated_function (|
-                                              Ty.apply (Ty.path "*mut") [] [ T ],
-                                              "add",
-                                              [],
-                                              []
+                                              [ T ]
                                             |),
                                             [
+                                              (* MutToConstPointer *)
+                                              M.pointer_coercion (M.read (| v_base |));
                                               M.read (| scratch_base |);
-                                              M.call_closure (|
-                                                Ty.path "usize",
-                                                BinOp.Wrap.add,
-                                                [
-                                                  M.read (| len |);
-                                                  Value.Integer IntegerKind.Usize 8
-                                                ]
-                                              |)
-                                            ]
-                                          |);
-                                          M.borrow (|
-                                            Pointer.Kind.MutRef,
-                                            M.deref (| M.read (| is_less |) |)
-                                          |)
-                                        ]
-                                      |) in
-                                    M.alloc (|
-                                      Ty.path "usize",
-                                      Value.Integer IntegerKind.Usize 8
-                                    |)));
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (M.match_operator (|
-                                      Ty.path "usize",
-                                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ :=
-                                              M.use
-                                                (M.alloc (|
-                                                  Ty.path "bool",
-                                                  M.call_closure (|
-                                                    Ty.path "bool",
-                                                    BinOp.ge,
-                                                    [
-                                                      M.read (| len |);
-                                                      Value.Integer IntegerKind.Usize 8
-                                                    ]
-                                                  |)
-                                                |)) in
-                                            let _ :=
-                                              is_constant_or_break_match (|
-                                                M.read (| γ |),
-                                                Value.Bool true
-                                              |) in
-                                            let~ _ : Ty.tuple [] :=
-                                              M.call_closure (|
-                                                Ty.tuple [],
-                                                M.get_function (|
-                                                  "core::slice::sort::shared::smallsort::sort4_stable",
-                                                  [],
-                                                  [ T; F ]
-                                                |),
-                                                [
-                                                  (* MutToConstPointer *)
-                                                  M.pointer_coercion (M.read (| v_base |));
-                                                  M.read (| scratch_base |);
-                                                  M.borrow (|
-                                                    Pointer.Kind.MutRef,
-                                                    M.deref (| M.read (| is_less |) |)
-                                                  |)
-                                                ]
-                                              |) in
-                                            let~ _ : Ty.tuple [] :=
-                                              M.call_closure (|
-                                                Ty.tuple [],
-                                                M.get_function (|
-                                                  "core::slice::sort::shared::smallsort::sort4_stable",
-                                                  [],
-                                                  [ T; F ]
-                                                |),
-                                                [
-                                                  (* MutToConstPointer *)
-                                                  M.pointer_coercion
-                                                    (M.call_closure (|
-                                                      Ty.apply (Ty.path "*mut") [] [ T ],
-                                                      M.get_associated_function (|
-                                                        Ty.apply (Ty.path "*mut") [] [ T ],
-                                                        "add",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [ M.read (| v_base |); M.read (| len_div_2 |)
-                                                      ]
-                                                    |));
-                                                  M.call_closure (|
-                                                    Ty.apply (Ty.path "*mut") [] [ T ],
-                                                    M.get_associated_function (|
-                                                      Ty.apply (Ty.path "*mut") [] [ T ],
-                                                      "add",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.read (| scratch_base |);
-                                                      M.read (| len_div_2 |)
-                                                    ]
-                                                  |);
-                                                  M.borrow (|
-                                                    Pointer.Kind.MutRef,
-                                                    M.deref (| M.read (| is_less |) |)
-                                                  |)
-                                                ]
-                                              |) in
-                                            M.alloc (|
-                                              Ty.path "usize",
-                                              Value.Integer IntegerKind.Usize 4
-                                            |)));
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let~ _ : Ty.tuple [] :=
-                                              M.call_closure (|
-                                                Ty.tuple [],
-                                                M.get_function (|
-                                                  "core::intrinsics::copy_nonoverlapping",
-                                                  [],
-                                                  [ T ]
-                                                |),
-                                                [
-                                                  (* MutToConstPointer *)
-                                                  M.pointer_coercion (M.read (| v_base |));
-                                                  M.read (| scratch_base |);
-                                                  Value.Integer IntegerKind.Usize 1
-                                                ]
-                                              |) in
-                                            let~ _ : Ty.tuple [] :=
-                                              M.call_closure (|
-                                                Ty.tuple [],
-                                                M.get_function (|
-                                                  "core::intrinsics::copy_nonoverlapping",
-                                                  [],
-                                                  [ T ]
-                                                |),
-                                                [
-                                                  (* MutToConstPointer *)
-                                                  M.pointer_coercion
-                                                    (M.call_closure (|
-                                                      Ty.apply (Ty.path "*mut") [] [ T ],
-                                                      M.get_associated_function (|
-                                                        Ty.apply (Ty.path "*mut") [] [ T ],
-                                                        "add",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [ M.read (| v_base |); M.read (| len_div_2 |)
-                                                      ]
-                                                    |));
-                                                  M.call_closure (|
-                                                    Ty.apply (Ty.path "*mut") [] [ T ],
-                                                    M.get_associated_function (|
-                                                      Ty.apply (Ty.path "*mut") [] [ T ],
-                                                      "add",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.read (| scratch_base |);
-                                                      M.read (| len_div_2 |)
-                                                    ]
-                                                  |);
-                                                  Value.Integer IntegerKind.Usize 1
-                                                ]
-                                              |) in
-                                            M.alloc (|
-                                              Ty.path "usize",
                                               Value.Integer IntegerKind.Usize 1
-                                            |)))
-                                      ]
-                                    |)))
-                              ]
-                            |)
-                          |) in
-                        let~ _ : Ty.tuple [] :=
-                          M.read (|
-                            M.use
-                              (M.match_operator (|
-                                Ty.tuple [],
-                                M.alloc (|
+                                            ]
+                                          |) in
+                                        let~ _ : Ty.tuple [] :=
+                                          M.call_closure (|
+                                            Ty.tuple [],
+                                            M.get_function (|
+                                              "core::intrinsics::copy_nonoverlapping",
+                                              [],
+                                              [ T ]
+                                            |),
+                                            [
+                                              (* MutToConstPointer *)
+                                              M.pointer_coercion
+                                                (M.call_closure (|
+                                                  Ty.apply (Ty.path "*mut") [] [ T ],
+                                                  M.get_associated_function (|
+                                                    Ty.apply (Ty.path "*mut") [] [ T ],
+                                                    "add",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [ M.read (| v_base |); M.read (| len_div_2 |) ]
+                                                |));
+                                              M.call_closure (|
+                                                Ty.apply (Ty.path "*mut") [] [ T ],
+                                                M.get_associated_function (|
+                                                  Ty.apply (Ty.path "*mut") [] [ T ],
+                                                  "add",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.read (| scratch_base |); M.read (| len_div_2 |)
+                                                ]
+                                              |);
+                                              Value.Integer IntegerKind.Usize 1
+                                            ]
+                                          |) in
+                                        M.alloc (|
+                                          Ty.path "usize",
+                                          Value.Integer IntegerKind.Usize 1
+                                        |)
+                                      |)))
+                                ]
+                              |)))
+                        ]
+                      |) in
+                    let~ _ : Ty.tuple [] :=
+                      M.read (|
+                        M.use
+                          (M.alloc (|
+                            Ty.tuple [],
+                            M.match_operator (|
+                              Ty.tuple [],
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "core::array::iter::IntoIter")
+                                  [ Value.Integer IntegerKind.Usize 2 ]
+                                  [ Ty.path "usize" ],
+                                M.call_closure (|
                                   Ty.apply
                                     (Ty.path "core::array::iter::IntoIter")
                                     [ Value.Integer IntegerKind.Usize 2 ]
                                     [ Ty.path "usize" ],
-                                  M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::iter::traits::collect::IntoIterator",
                                     Ty.apply
-                                      (Ty.path "core::array::iter::IntoIter")
+                                      (Ty.path "array")
                                       [ Value.Integer IntegerKind.Usize 2 ]
                                       [ Ty.path "usize" ],
-                                    M.get_trait_method (|
-                                      "core::iter::traits::collect::IntoIterator",
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 2 ]
-                                        [ Ty.path "usize" ],
-                                      [],
-                                      [],
-                                      "into_iter",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      Value.Array
-                                        [ Value.Integer IntegerKind.Usize 0; M.read (| len_div_2 |)
-                                        ]
-                                    ]
-                                  |)
-                                |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let iter :=
-                                        M.copy (|
-                                          Ty.apply
-                                            (Ty.path "core::array::iter::IntoIter")
-                                            [ Value.Integer IntegerKind.Usize 2 ]
-                                            [ Ty.path "usize" ],
-                                          γ
-                                        |) in
+                                    [],
+                                    [],
+                                    "into_iter",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    Value.Array
+                                      [ Value.Integer IntegerKind.Usize 0; M.read (| len_div_2 |) ]
+                                  ]
+                                |)
+                              |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let iter :=
+                                      M.copy (|
+                                        Ty.apply
+                                          (Ty.path "core::array::iter::IntoIter")
+                                          [ Value.Integer IntegerKind.Usize 2 ]
+                                          [ Ty.path "usize" ],
+                                        γ
+                                      |) in
+                                    M.read (|
                                       M.loop (|
                                         Ty.tuple [],
                                         ltac:(M.monadic
                                           (let~ _ : Ty.tuple [] :=
-                                            M.read (|
-                                              M.match_operator (|
-                                                Ty.tuple [],
-                                                M.alloc (|
+                                            M.match_operator (|
+                                              Ty.tuple [],
+                                              M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "usize" ],
+                                                M.call_closure (|
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")
                                                     []
                                                     [ Ty.path "usize" ],
-                                                  M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "core::iter::traits::iterator::Iterator",
                                                     Ty.apply
-                                                      (Ty.path "core::option::Option")
-                                                      []
+                                                      (Ty.path "core::array::iter::IntoIter")
+                                                      [ Value.Integer IntegerKind.Usize 2 ]
                                                       [ Ty.path "usize" ],
-                                                    M.get_trait_method (|
-                                                      "core::iter::traits::iterator::Iterator",
-                                                      Ty.apply
-                                                        (Ty.path "core::array::iter::IntoIter")
-                                                        [ Value.Integer IntegerKind.Usize 2 ]
-                                                        [ Ty.path "usize" ],
-                                                      [],
-                                                      [],
-                                                      "next",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.borrow (|
-                                                        Pointer.Kind.MutRef,
-                                                        M.deref (|
-                                                          M.borrow (| Pointer.Kind.MutRef, iter |)
-                                                        |)
+                                                    [],
+                                                    [],
+                                                    "next",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutRef,
+                                                      M.deref (|
+                                                        M.borrow (| Pointer.Kind.MutRef, iter |)
                                                       |)
-                                                    ]
-                                                  |)
-                                                |),
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let _ :=
-                                                        M.is_struct_tuple (|
-                                                          γ,
-                                                          "core::option::Option::None"
-                                                        |) in
-                                                      M.alloc (|
-                                                        Ty.tuple [],
-                                                        M.never_to_any (|
-                                                          M.read (| M.break (||) |)
-                                                        |)
-                                                      |)));
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let γ0_0 :=
-                                                        M.SubPointer.get_struct_tuple_field (|
-                                                          γ,
-                                                          "core::option::Option::Some",
-                                                          0
-                                                        |) in
-                                                      let offset :=
-                                                        M.copy (| Ty.path "usize", γ0_0 |) in
+                                                    |)
+                                                  ]
+                                                |)
+                                              |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let _ :=
+                                                      M.is_struct_tuple (|
+                                                        γ,
+                                                        "core::option::Option::None"
+                                                      |) in
+                                                    M.never_to_any (|
+                                                      M.read (| M.break (||) |)
+                                                    |)));
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let γ0_0 :=
+                                                      M.SubPointer.get_struct_tuple_field (|
+                                                        γ,
+                                                        "core::option::Option::Some",
+                                                        0
+                                                      |) in
+                                                    let offset :=
+                                                      M.copy (| Ty.path "usize", γ0_0 |) in
+                                                    M.read (|
                                                       let~ src :
                                                           Ty.apply (Ty.path "*mut") [] [ T ] :=
                                                         M.call_closure (|
@@ -2041,408 +1989,413 @@ Module slice.
                                                           ]
                                                         |) in
                                                       let~ desired_len : Ty.path "usize" :=
-                                                        M.read (|
-                                                          M.match_operator (|
-                                                            Ty.path "usize",
-                                                            M.alloc (|
-                                                              Ty.tuple [],
-                                                              Value.Tuple []
-                                                            |),
-                                                            [
-                                                              fun γ =>
-                                                                ltac:(M.monadic
-                                                                  (let γ :=
-                                                                    M.use
-                                                                      (M.alloc (|
+                                                        M.match_operator (|
+                                                          Ty.path "usize",
+                                                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                                                          [
+                                                            fun γ =>
+                                                              ltac:(M.monadic
+                                                                (let γ :=
+                                                                  M.use
+                                                                    (M.alloc (|
+                                                                      Ty.path "bool",
+                                                                      M.call_closure (|
                                                                         Ty.path "bool",
-                                                                        M.call_closure (|
-                                                                          Ty.path "bool",
-                                                                          BinOp.eq,
-                                                                          [
-                                                                            M.read (| offset |);
-                                                                            Value.Integer
-                                                                              IntegerKind.Usize
-                                                                              0
-                                                                          ]
-                                                                        |)
-                                                                      |)) in
-                                                                  let _ :=
-                                                                    is_constant_or_break_match (|
-                                                                      M.read (| γ |),
-                                                                      Value.Bool true
-                                                                    |) in
-                                                                  len_div_2));
-                                                              fun γ =>
-                                                                ltac:(M.monadic
-                                                                  (M.alloc (|
-                                                                    Ty.path "usize",
-                                                                    M.call_closure (|
-                                                                      Ty.path "usize",
-                                                                      BinOp.Wrap.sub,
-                                                                      [
-                                                                        M.read (| len |);
-                                                                        M.read (| len_div_2 |)
-                                                                      ]
-                                                                    |)
-                                                                  |)))
-                                                            ]
-                                                          |)
+                                                                        BinOp.eq,
+                                                                        [
+                                                                          M.read (| offset |);
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            0
+                                                                        ]
+                                                                      |)
+                                                                    |)) in
+                                                                let _ :=
+                                                                  is_constant_or_break_match (|
+                                                                    M.read (| γ |),
+                                                                    Value.Bool true
+                                                                  |) in
+                                                                M.read (| len_div_2 |)));
+                                                            fun γ =>
+                                                              ltac:(M.monadic
+                                                                (M.call_closure (|
+                                                                  Ty.path "usize",
+                                                                  BinOp.Wrap.sub,
+                                                                  [
+                                                                    M.read (| len |);
+                                                                    M.read (| len_div_2 |)
+                                                                  ]
+                                                                |)))
+                                                          ]
                                                         |) in
                                                       M.use
-                                                        (M.match_operator (|
+                                                        (M.alloc (|
                                                           Ty.tuple [],
-                                                          M.alloc (|
-                                                            Ty.apply
-                                                              (Ty.path "core::ops::range::Range")
-                                                              []
-                                                              [ Ty.path "usize" ],
-                                                            M.call_closure (|
+                                                          M.match_operator (|
+                                                            Ty.tuple [],
+                                                            M.alloc (|
                                                               Ty.apply
                                                                 (Ty.path "core::ops::range::Range")
                                                                 []
                                                                 [ Ty.path "usize" ],
-                                                              M.get_trait_method (|
-                                                                "core::iter::traits::collect::IntoIterator",
+                                                              M.call_closure (|
                                                                 Ty.apply
                                                                   (Ty.path
                                                                     "core::ops::range::Range")
                                                                   []
                                                                   [ Ty.path "usize" ],
-                                                                [],
-                                                                [],
-                                                                "into_iter",
-                                                                [],
-                                                                []
-                                                              |),
-                                                              [
-                                                                Value.mkStructRecord
-                                                                  "core::ops::range::Range"
+                                                                M.get_trait_method (|
+                                                                  "core::iter::traits::collect::IntoIterator",
+                                                                  Ty.apply
+                                                                    (Ty.path
+                                                                      "core::ops::range::Range")
+                                                                    []
+                                                                    [ Ty.path "usize" ],
+                                                                  [],
+                                                                  [],
+                                                                  "into_iter",
+                                                                  [],
                                                                   []
-                                                                  [ Ty.path "usize" ]
-                                                                  [
-                                                                    ("start",
-                                                                      M.read (| presorted_len |));
-                                                                    ("end_",
-                                                                      M.read (| desired_len |))
-                                                                  ]
-                                                              ]
-                                                            |)
-                                                          |),
-                                                          [
-                                                            fun γ =>
-                                                              ltac:(M.monadic
-                                                                (let iter :=
-                                                                  M.copy (|
-                                                                    Ty.apply
-                                                                      (Ty.path
-                                                                        "core::ops::range::Range")
-                                                                      []
-                                                                      [ Ty.path "usize" ],
-                                                                    γ
-                                                                  |) in
-                                                                M.loop (|
-                                                                  Ty.tuple [],
-                                                                  ltac:(M.monadic
-                                                                    (let~ _ : Ty.tuple [] :=
-                                                                      M.read (|
-                                                                        M.match_operator (|
-                                                                          Ty.tuple [],
-                                                                          M.alloc (|
-                                                                            Ty.apply
-                                                                              (Ty.path
-                                                                                "core::option::Option")
-                                                                              []
-                                                                              [ Ty.path "usize" ],
-                                                                            M.call_closure (|
+                                                                |),
+                                                                [
+                                                                  Value.mkStructRecord
+                                                                    "core::ops::range::Range"
+                                                                    []
+                                                                    [ Ty.path "usize" ]
+                                                                    [
+                                                                      ("start",
+                                                                        M.read (| presorted_len |));
+                                                                      ("end_",
+                                                                        M.read (| desired_len |))
+                                                                    ]
+                                                                ]
+                                                              |)
+                                                            |),
+                                                            [
+                                                              fun γ =>
+                                                                ltac:(M.monadic
+                                                                  (let iter :=
+                                                                    M.copy (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::ops::range::Range")
+                                                                        []
+                                                                        [ Ty.path "usize" ],
+                                                                      γ
+                                                                    |) in
+                                                                  M.read (|
+                                                                    M.loop (|
+                                                                      Ty.tuple [],
+                                                                      ltac:(M.monadic
+                                                                        (let~ _ : Ty.tuple [] :=
+                                                                          M.match_operator (|
+                                                                            Ty.tuple [],
+                                                                            M.alloc (|
                                                                               Ty.apply
                                                                                 (Ty.path
                                                                                   "core::option::Option")
                                                                                 []
                                                                                 [ Ty.path "usize" ],
-                                                                              M.get_trait_method (|
-                                                                                "core::iter::traits::iterator::Iterator",
+                                                                              M.call_closure (|
                                                                                 Ty.apply
                                                                                   (Ty.path
-                                                                                    "core::ops::range::Range")
+                                                                                    "core::option::Option")
                                                                                   []
                                                                                   [ Ty.path "usize"
                                                                                   ],
-                                                                                [],
-                                                                                [],
-                                                                                "next",
-                                                                                [],
-                                                                                []
-                                                                              |),
-                                                                              [
-                                                                                M.borrow (|
-                                                                                  Pointer.Kind.MutRef,
-                                                                                  M.deref (|
-                                                                                    M.borrow (|
-                                                                                      Pointer.Kind.MutRef,
-                                                                                      iter
+                                                                                M.get_trait_method (|
+                                                                                  "core::iter::traits::iterator::Iterator",
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::ops::range::Range")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "usize"
+                                                                                    ],
+                                                                                  [],
+                                                                                  [],
+                                                                                  "next",
+                                                                                  [],
+                                                                                  []
+                                                                                |),
+                                                                                [
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.MutRef,
+                                                                                    M.deref (|
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.MutRef,
+                                                                                        iter
+                                                                                      |)
                                                                                     |)
                                                                                   |)
-                                                                                |)
-                                                                              ]
-                                                                            |)
-                                                                          |),
-                                                                          [
-                                                                            fun γ =>
-                                                                              ltac:(M.monadic
-                                                                                (let _ :=
-                                                                                  M.is_struct_tuple (|
-                                                                                    γ,
-                                                                                    "core::option::Option::None"
-                                                                                  |) in
-                                                                                M.alloc (|
-                                                                                  Ty.tuple [],
+                                                                                ]
+                                                                              |)
+                                                                            |),
+                                                                            [
+                                                                              fun γ =>
+                                                                                ltac:(M.monadic
+                                                                                  (let _ :=
+                                                                                    M.is_struct_tuple (|
+                                                                                      γ,
+                                                                                      "core::option::Option::None"
+                                                                                    |) in
                                                                                   M.never_to_any (|
                                                                                     M.read (|
                                                                                       M.break (||)
                                                                                     |)
-                                                                                  |)
-                                                                                |)));
-                                                                            fun γ =>
-                                                                              ltac:(M.monadic
-                                                                                (let γ0_0 :=
-                                                                                  M.SubPointer.get_struct_tuple_field (|
-                                                                                    γ,
-                                                                                    "core::option::Option::Some",
-                                                                                    0
-                                                                                  |) in
-                                                                                let i :=
-                                                                                  M.copy (|
-                                                                                    Ty.path "usize",
-                                                                                    γ0_0
-                                                                                  |) in
-                                                                                let~ _ :
-                                                                                    Ty.tuple [] :=
-                                                                                  M.call_closure (|
-                                                                                    Ty.tuple [],
-                                                                                    M.get_function (|
-                                                                                      "core::intrinsics::copy_nonoverlapping",
-                                                                                      [],
-                                                                                      [ T ]
-                                                                                    |),
-                                                                                    [
-                                                                                      (* MutToConstPointer *)
-                                                                                      M.pointer_coercion
-                                                                                        (M.call_closure (|
-                                                                                          Ty.apply
-                                                                                            (Ty.path
-                                                                                              "*mut")
-                                                                                            []
-                                                                                            [ T ],
-                                                                                          M.get_associated_function (|
+                                                                                  |)));
+                                                                              fun γ =>
+                                                                                ltac:(M.monadic
+                                                                                  (let γ0_0 :=
+                                                                                    M.SubPointer.get_struct_tuple_field (|
+                                                                                      γ,
+                                                                                      "core::option::Option::Some",
+                                                                                      0
+                                                                                    |) in
+                                                                                  let i :=
+                                                                                    M.copy (|
+                                                                                      Ty.path
+                                                                                        "usize",
+                                                                                      γ0_0
+                                                                                    |) in
+                                                                                  M.read (|
+                                                                                    let~ _ :
+                                                                                        Ty.tuple
+                                                                                          [] :=
+                                                                                      M.call_closure (|
+                                                                                        Ty.tuple [],
+                                                                                        M.get_function (|
+                                                                                          "core::intrinsics::copy_nonoverlapping",
+                                                                                          [],
+                                                                                          [ T ]
+                                                                                        |),
+                                                                                        [
+                                                                                          (* MutToConstPointer *)
+                                                                                          M.pointer_coercion
+                                                                                            (M.call_closure (|
+                                                                                              Ty.apply
+                                                                                                (Ty.path
+                                                                                                  "*mut")
+                                                                                                []
+                                                                                                [ T
+                                                                                                ],
+                                                                                              M.get_associated_function (|
+                                                                                                Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "*mut")
+                                                                                                  []
+                                                                                                  [
+                                                                                                    T
+                                                                                                  ],
+                                                                                                "add",
+                                                                                                [],
+                                                                                                []
+                                                                                              |),
+                                                                                              [
+                                                                                                M.read (|
+                                                                                                  src
+                                                                                                |);
+                                                                                                M.read (|
+                                                                                                  i
+                                                                                                |)
+                                                                                              ]
+                                                                                            |));
+                                                                                          M.call_closure (|
                                                                                             Ty.apply
                                                                                               (Ty.path
                                                                                                 "*mut")
                                                                                               []
                                                                                               [ T ],
-                                                                                            "add",
-                                                                                            [],
-                                                                                            []
-                                                                                          |),
-                                                                                          [
-                                                                                            M.read (|
-                                                                                              src
-                                                                                            |);
-                                                                                            M.read (|
-                                                                                              i
+                                                                                            M.get_associated_function (|
+                                                                                              Ty.apply
+                                                                                                (Ty.path
+                                                                                                  "*mut")
+                                                                                                []
+                                                                                                [ T
+                                                                                                ],
+                                                                                              "add",
+                                                                                              [],
+                                                                                              []
+                                                                                            |),
+                                                                                            [
+                                                                                              M.read (|
+                                                                                                dst
+                                                                                              |);
+                                                                                              M.read (|
+                                                                                                i
+                                                                                              |)
+                                                                                            ]
+                                                                                          |);
+                                                                                          Value.Integer
+                                                                                            IntegerKind.Usize
+                                                                                            1
+                                                                                        ]
+                                                                                      |) in
+                                                                                    let~ _ :
+                                                                                        Ty.tuple
+                                                                                          [] :=
+                                                                                      M.call_closure (|
+                                                                                        Ty.tuple [],
+                                                                                        M.get_function (|
+                                                                                          "core::slice::sort::shared::smallsort::insert_tail",
+                                                                                          [],
+                                                                                          [ T; F ]
+                                                                                        |),
+                                                                                        [
+                                                                                          M.read (|
+                                                                                            dst
+                                                                                          |);
+                                                                                          M.call_closure (|
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "*mut")
+                                                                                              []
+                                                                                              [ T ],
+                                                                                            M.get_associated_function (|
+                                                                                              Ty.apply
+                                                                                                (Ty.path
+                                                                                                  "*mut")
+                                                                                                []
+                                                                                                [ T
+                                                                                                ],
+                                                                                              "add",
+                                                                                              [],
+                                                                                              []
+                                                                                            |),
+                                                                                            [
+                                                                                              M.read (|
+                                                                                                dst
+                                                                                              |);
+                                                                                              M.read (|
+                                                                                                i
+                                                                                              |)
+                                                                                            ]
+                                                                                          |);
+                                                                                          M.borrow (|
+                                                                                            Pointer.Kind.MutRef,
+                                                                                            M.deref (|
+                                                                                              M.read (|
+                                                                                                is_less
+                                                                                              |)
                                                                                             |)
-                                                                                          ]
-                                                                                        |));
-                                                                                      M.call_closure (|
-                                                                                        Ty.apply
-                                                                                          (Ty.path
-                                                                                            "*mut")
-                                                                                          []
-                                                                                          [ T ],
-                                                                                        M.get_associated_function (|
-                                                                                          Ty.apply
-                                                                                            (Ty.path
-                                                                                              "*mut")
-                                                                                            []
-                                                                                            [ T ],
-                                                                                          "add",
-                                                                                          [],
-                                                                                          []
-                                                                                        |),
-                                                                                        [
-                                                                                          M.read (|
-                                                                                            dst
-                                                                                          |);
-                                                                                          M.read (|
-                                                                                            i
                                                                                           |)
                                                                                         ]
-                                                                                      |);
-                                                                                      Value.Integer
-                                                                                        IntegerKind.Usize
-                                                                                        1
-                                                                                    ]
-                                                                                  |) in
-                                                                                let~ _ :
-                                                                                    Ty.tuple [] :=
-                                                                                  M.call_closure (|
-                                                                                    Ty.tuple [],
-                                                                                    M.get_function (|
-                                                                                      "core::slice::sort::shared::smallsort::insert_tail",
-                                                                                      [],
-                                                                                      [ T; F ]
-                                                                                    |),
-                                                                                    [
-                                                                                      M.read (|
-                                                                                        dst
-                                                                                      |);
-                                                                                      M.call_closure (|
-                                                                                        Ty.apply
-                                                                                          (Ty.path
-                                                                                            "*mut")
-                                                                                          []
-                                                                                          [ T ],
-                                                                                        M.get_associated_function (|
-                                                                                          Ty.apply
-                                                                                            (Ty.path
-                                                                                              "*mut")
-                                                                                            []
-                                                                                            [ T ],
-                                                                                          "add",
-                                                                                          [],
-                                                                                          []
-                                                                                        |),
-                                                                                        [
-                                                                                          M.read (|
-                                                                                            dst
-                                                                                          |);
-                                                                                          M.read (|
-                                                                                            i
-                                                                                          |)
-                                                                                        ]
-                                                                                      |);
-                                                                                      M.borrow (|
-                                                                                        Pointer.Kind.MutRef,
-                                                                                        M.deref (|
-                                                                                          M.read (|
-                                                                                            is_less
-                                                                                          |)
-                                                                                        |)
-                                                                                      |)
-                                                                                    ]
-                                                                                  |) in
-                                                                                M.alloc (|
-                                                                                  Ty.tuple [],
-                                                                                  Value.Tuple []
-                                                                                |)))
-                                                                          ]
-                                                                        |)
-                                                                      |) in
-                                                                    M.alloc (|
-                                                                      Ty.tuple [],
-                                                                      Value.Tuple []
-                                                                    |)))
-                                                                |)))
-                                                          ]
-                                                        |))))
-                                                ]
-                                              |)
+                                                                                      |) in
+                                                                                    M.alloc (|
+                                                                                      Ty.tuple [],
+                                                                                      Value.Tuple []
+                                                                                    |)
+                                                                                  |)))
+                                                                            ]
+                                                                          |) in
+                                                                        M.alloc (|
+                                                                          Ty.tuple [],
+                                                                          Value.Tuple []
+                                                                        |)))
+                                                                    |)
+                                                                  |)))
+                                                            ]
+                                                          |)
+                                                        |))
+                                                    |)))
+                                              ]
                                             |) in
                                           M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                                      |)))
-                                ]
-                              |))
-                          |) in
-                        let~ drop_guard :
-                            Ty.apply
-                              (Ty.path "core::slice::sort::shared::smallsort::CopyOnDrop")
-                              []
-                              [ T ] :=
-                          Value.mkStructRecord
-                            "core::slice::sort::shared::smallsort::CopyOnDrop"
-                            []
-                            [ T ]
-                            [
-                              ("src",
-                                (* MutToConstPointer *)
-                                M.pointer_coercion (M.read (| scratch_base |)));
-                              ("dst", M.read (| v_base |));
-                              ("len", M.read (| len |))
-                            ] in
-                        let~ _ : Ty.tuple [] :=
-                          M.call_closure (|
-                            Ty.tuple [],
-                            M.get_function (|
-                              "core::slice::sort::shared::smallsort::bidirectional_merge",
-                              [],
-                              [ T; F ]
-                            |),
-                            [
+                                      |)
+                                    |)))
+                              ]
+                            |)
+                          |))
+                      |) in
+                    let~ drop_guard :
+                        Ty.apply
+                          (Ty.path "core::slice::sort::shared::smallsort::CopyOnDrop")
+                          []
+                          [ T ] :=
+                      Value.mkStructRecord
+                        "core::slice::sort::shared::smallsort::CopyOnDrop"
+                        []
+                        [ T ]
+                        [
+                          ("src",
+                            (* MutToConstPointer *) M.pointer_coercion (M.read (| scratch_base |)));
+                          ("dst", M.read (| v_base |));
+                          ("len", M.read (| len |))
+                        ] in
+                    let~ _ : Ty.tuple [] :=
+                      M.call_closure (|
+                        Ty.tuple [],
+                        M.get_function (|
+                          "core::slice::sort::shared::smallsort::bidirectional_merge",
+                          [],
+                          [ T; F ]
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "*const")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                        M.get_function (|
-                                          "core::ptr::slice_from_raw_parts",
-                                          [],
-                                          [ T ]
-                                        |),
-                                        [
-                                          M.read (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              drop_guard,
-                                              "core::slice::sort::shared::smallsort::CopyOnDrop",
-                                              "src"
-                                            |)
-                                          |);
-                                          M.read (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              drop_guard,
-                                              "core::slice::sort::shared::smallsort::CopyOnDrop",
-                                              "len"
-                                            |)
-                                          |)
-                                        ]
+                                  M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "*const")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                    M.get_function (|
+                                      "core::ptr::slice_from_raw_parts",
+                                      [],
+                                      [ T ]
+                                    |),
+                                    [
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          drop_guard,
+                                          "core::slice::sort::shared::smallsort::CopyOnDrop",
+                                          "src"
+                                        |)
+                                      |);
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          drop_guard,
+                                          "core::slice::sort::shared::smallsort::CopyOnDrop",
+                                          "len"
+                                        |)
                                       |)
-                                    |)
+                                    ]
                                   |)
                                 |)
-                              |);
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  drop_guard,
-                                  "core::slice::sort::shared::smallsort::CopyOnDrop",
-                                  "dst"
-                                |)
-                              |);
-                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
-                            ]
-                          |) in
-                        let~ _ : Ty.tuple [] :=
-                          M.call_closure (|
-                            Ty.tuple [],
-                            M.get_function (|
-                              "core::mem::forget",
-                              [],
-                              [
-                                Ty.apply
-                                  (Ty.path "core::slice::sort::shared::smallsort::CopyOnDrop")
-                                  []
-                                  [ T ]
-                              ]
-                            |),
-                            [ M.read (| drop_guard |) ]
-                          |) in
-                        M.alloc (| Ty.tuple [], Value.Tuple [] |)
-                      |)
-                    |)))
-                |)
+                              |)
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              drop_guard,
+                              "core::slice::sort::shared::smallsort::CopyOnDrop",
+                              "dst"
+                            |)
+                          |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
+                        ]
+                      |) in
+                    let~ _ : Ty.tuple [] :=
+                      M.call_closure (|
+                        Ty.tuple [],
+                        M.get_function (|
+                          "core::mem::forget",
+                          [],
+                          [
+                            Ty.apply
+                              (Ty.path "core::slice::sort::shared::smallsort::CopyOnDrop")
+                              []
+                              [ T ]
+                          ]
+                        |),
+                        [ M.read (| drop_guard |) ]
+                      |) in
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                  |)))
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -2621,114 +2574,451 @@ Module slice.
                   v
                 |) in
               let is_less := M.alloc (| Ty.apply (Ty.path "&mut") [] [ F ], is_less |) in
-              M.read (|
-                M.catch_return (Ty.tuple []) (|
-                  ltac:(M.monadic
-                    (M.alloc (|
-                      Ty.tuple [],
-                      M.read (|
-                        let~ len : Ty.path "usize" :=
-                          M.call_closure (|
-                            Ty.path "usize",
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "slice") [] [ T ],
-                              "len",
-                              [],
-                              []
-                            |),
-                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
-                          |) in
-                        let~ _ : Ty.tuple [] :=
-                          M.read (|
-                            M.match_operator (|
-                              Ty.tuple [],
-                              M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ :=
-                                      M.use
-                                        (M.alloc (|
-                                          Ty.path "bool",
-                                          M.call_closure (|
-                                            Ty.path "bool",
-                                            BinOp.lt,
-                                            [ M.read (| len |); Value.Integer IntegerKind.Usize 2 ]
+              M.catch_return (Ty.tuple []) (|
+                ltac:(M.monadic
+                  (M.read (|
+                    let~ len : Ty.path "usize" :=
+                      M.call_closure (|
+                        Ty.path "usize",
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "slice") [] [ T ],
+                          "len",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
+                      |) in
+                    let~ _ : Ty.tuple [] :=
+                      M.match_operator (|
+                        Ty.tuple [],
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.use
+                                  (M.alloc (|
+                                    Ty.path "bool",
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.lt,
+                                      [ M.read (| len |); Value.Integer IntegerKind.Usize 2 ]
+                                    |)
+                                  |)) in
+                              let _ :=
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              M.never_to_any (| M.read (| M.return_ (| Value.Tuple [] |) |) |)));
+                          fun γ => ltac:(M.monadic (Value.Tuple []))
+                        ]
+                      |) in
+                    let~ _ : Ty.tuple [] :=
+                      M.match_operator (|
+                        Ty.tuple [],
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.use
+                                  (M.alloc (|
+                                    Ty.path "bool",
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.gt,
+                                      [
+                                        M.read (| len |);
+                                        M.read (|
+                                          get_constant (|
+                                            "core::slice::sort::shared::smallsort::SMALL_SORT_NETWORK_SCRATCH_LEN",
+                                            Ty.path "usize"
                                           |)
-                                        |)) in
-                                    let _ :=
-                                      is_constant_or_break_match (|
-                                        M.read (| γ |),
-                                        Value.Bool true
-                                      |) in
-                                    M.alloc (|
-                                      Ty.tuple [],
-                                      M.never_to_any (|
-                                        M.read (| M.return_ (| Value.Tuple [] |) |)
-                                      |)
-                                    |)));
-                                fun γ =>
-                                  ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                              ]
+                                        |)
+                                      ]
+                                    |)
+                                  |)) in
+                              let _ :=
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              M.never_to_any (|
+                                M.call_closure (|
+                                  Ty.path "never",
+                                  M.get_function (| "core::intrinsics::abort", [], [] |),
+                                  []
+                                |)
+                              |)));
+                          fun γ => ltac:(M.monadic (Value.Tuple []))
+                        ]
+                      |) in
+                    let~ stack_array :
+                        Ty.apply
+                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                          []
+                          [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ T ]
+                          ] :=
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                          []
+                          [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ T ]
+                          ],
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 32 ]
+                                [ T ]
+                            ],
+                          "uninit",
+                          [],
+                          []
+                        |),
+                        []
+                      |) in
+                    let~ len_div_2 : Ty.path "usize" :=
+                      M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.div,
+                        [ M.read (| len |); Value.Integer IntegerKind.Usize 2 ]
+                      |) in
+                    let~ no_merge : Ty.path "bool" :=
+                      M.call_closure (|
+                        Ty.path "bool",
+                        BinOp.lt,
+                        [ M.read (| len |); Value.Integer IntegerKind.Usize 18 ]
+                      |) in
+                    let~ v_base : Ty.apply (Ty.path "*mut") [] [ T ] :=
+                      M.call_closure (|
+                        Ty.apply (Ty.path "*mut") [] [ T ],
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "slice") [] [ T ],
+                          "as_mut_ptr",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| v |) |) |) ]
+                      |) in
+                    let~ initial_region_len : Ty.path "usize" :=
+                      M.match_operator (|
+                        Ty.path "usize",
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ := M.use no_merge in
+                              let _ :=
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              M.read (| len |)));
+                          fun γ => ltac:(M.monadic (M.read (| len_div_2 |)))
+                        ]
+                      |) in
+                    let~ region :
+                        Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] :=
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "*mut")
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                M.get_function (|
+                                  "core::ptr::slice_from_raw_parts_mut",
+                                  [],
+                                  [ T ]
+                                |),
+                                [ M.read (| v_base |); M.read (| initial_region_len |) ]
+                              |)
                             |)
-                          |) in
-                        let~ _ : Ty.tuple [] :=
-                          M.read (|
-                            M.match_operator (|
-                              Ty.tuple [],
-                              M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ :=
-                                      M.use
-                                        (M.alloc (|
-                                          Ty.path "bool",
-                                          M.call_closure (|
+                          |)
+                        |)
+                      |) in
+                    let~ _ : Ty.tuple [] :=
+                      M.read (|
+                        M.loop (|
+                          Ty.tuple [],
+                          ltac:(M.monadic
+                            (let~ presorted_len : Ty.path "usize" :=
+                              M.match_operator (|
+                                Ty.path "usize",
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ :=
+                                        M.use
+                                          (M.alloc (|
                                             Ty.path "bool",
-                                            BinOp.gt,
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.ge,
+                                              [
+                                                M.call_closure (|
+                                                  Ty.path "usize",
+                                                  M.get_associated_function (|
+                                                    Ty.apply (Ty.path "slice") [] [ T ],
+                                                    "len",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| region |) |)
+                                                    |)
+                                                  ]
+                                                |);
+                                                Value.Integer IntegerKind.Usize 13
+                                              ]
+                                            |)
+                                          |)) in
+                                      let _ :=
+                                        is_constant_or_break_match (|
+                                          M.read (| γ |),
+                                          Value.Bool true
+                                        |) in
+                                      M.read (|
+                                        let~ _ : Ty.tuple [] :=
+                                          M.call_closure (|
+                                            Ty.tuple [],
+                                            M.get_function (|
+                                              "core::slice::sort::shared::smallsort::sort13_optimal",
+                                              [],
+                                              [ T; F ]
+                                            |),
                                             [
-                                              M.read (| len |);
-                                              M.read (|
-                                                get_constant (|
-                                                  "core::slice::sort::shared::smallsort::SMALL_SORT_NETWORK_SCRATCH_LEN",
-                                                  Ty.path "usize"
-                                                |)
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (| M.read (| region |) |)
+                                              |);
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (| M.read (| is_less |) |)
                                               |)
                                             ]
-                                          |)
-                                        |)) in
-                                    let _ :=
-                                      is_constant_or_break_match (|
-                                        M.read (| γ |),
-                                        Value.Bool true
-                                      |) in
-                                    M.alloc (|
-                                      Ty.tuple [],
+                                          |) in
+                                        M.alloc (|
+                                          Ty.path "usize",
+                                          Value.Integer IntegerKind.Usize 13
+                                        |)
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        Ty.path "usize",
+                                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ :=
+                                                M.use
+                                                  (M.alloc (|
+                                                    Ty.path "bool",
+                                                    M.call_closure (|
+                                                      Ty.path "bool",
+                                                      BinOp.ge,
+                                                      [
+                                                        M.call_closure (|
+                                                          Ty.path "usize",
+                                                          M.get_associated_function (|
+                                                            Ty.apply (Ty.path "slice") [] [ T ],
+                                                            "len",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (| M.read (| region |) |)
+                                                            |)
+                                                          ]
+                                                        |);
+                                                        Value.Integer IntegerKind.Usize 9
+                                                      ]
+                                                    |)
+                                                  |)) in
+                                              let _ :=
+                                                is_constant_or_break_match (|
+                                                  M.read (| γ |),
+                                                  Value.Bool true
+                                                |) in
+                                              M.read (|
+                                                let~ _ : Ty.tuple [] :=
+                                                  M.call_closure (|
+                                                    Ty.tuple [],
+                                                    M.get_function (|
+                                                      "core::slice::sort::shared::smallsort::sort9_optimal",
+                                                      [],
+                                                      [ T; F ]
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (| M.read (| region |) |)
+                                                      |);
+                                                      M.borrow (|
+                                                        Pointer.Kind.MutRef,
+                                                        M.deref (| M.read (| is_less |) |)
+                                                      |)
+                                                    ]
+                                                  |) in
+                                                M.alloc (|
+                                                  Ty.path "usize",
+                                                  Value.Integer IntegerKind.Usize 9
+                                                |)
+                                              |)));
+                                          fun γ =>
+                                            ltac:(M.monadic (Value.Integer IntegerKind.Usize 1))
+                                        ]
+                                      |)))
+                                ]
+                              |) in
+                            let~ _ : Ty.tuple [] :=
+                              M.call_closure (|
+                                Ty.tuple [],
+                                M.get_function (|
+                                  "core::slice::sort::shared::smallsort::insertion_sort_shift_left",
+                                  [],
+                                  [ T; F ]
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| region |) |)
+                                  |);
+                                  M.read (| presorted_len |);
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| is_less |) |)
+                                  |)
+                                ]
+                              |) in
+                            let~ _ : Ty.tuple [] :=
+                              M.match_operator (|
+                                Ty.tuple [],
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ := M.use no_merge in
+                                      let _ :=
+                                        is_constant_or_break_match (|
+                                          M.read (| γ |),
+                                          Value.Bool true
+                                        |) in
                                       M.never_to_any (|
+                                        M.read (| M.return_ (| Value.Tuple [] |) |)
+                                      |)));
+                                  fun γ => ltac:(M.monadic (Value.Tuple []))
+                                ]
+                              |) in
+                            let~ _ : Ty.tuple [] :=
+                              M.match_operator (|
+                                Ty.tuple [],
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ :=
+                                        M.use
+                                          (M.alloc (|
+                                            Ty.path "bool",
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.ne,
+                                              [
+                                                M.call_closure (|
+                                                  Ty.apply (Ty.path "*const") [] [ T ],
+                                                  M.get_associated_function (|
+                                                    Ty.apply (Ty.path "slice") [] [ T ],
+                                                    "as_ptr",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| region |) |)
+                                                    |)
+                                                  ]
+                                                |);
+                                                (* MutToConstPointer *)
+                                                M.pointer_coercion (M.read (| v_base |))
+                                              ]
+                                            |)
+                                          |)) in
+                                      let _ :=
+                                        is_constant_or_break_match (|
+                                          M.read (| γ |),
+                                          Value.Bool true
+                                        |) in
+                                      M.never_to_any (| M.read (| M.break (||) |) |)));
+                                  fun γ => ltac:(M.monadic (Value.Tuple []))
+                                ]
+                              |) in
+                            let~ _ : Ty.tuple [] :=
+                              M.write (|
+                                region,
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (|
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (|
                                         M.call_closure (|
-                                          Ty.path "never",
-                                          M.get_function (| "core::intrinsics::abort", [], [] |),
-                                          []
+                                          Ty.apply
+                                            (Ty.path "*mut")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                          M.get_function (|
+                                            "core::ptr::slice_from_raw_parts_mut",
+                                            [],
+                                            [ T ]
+                                          |),
+                                          [
+                                            M.call_closure (|
+                                              Ty.apply (Ty.path "*mut") [] [ T ],
+                                              M.get_associated_function (|
+                                                Ty.apply (Ty.path "*mut") [] [ T ],
+                                                "add",
+                                                [],
+                                                []
+                                              |),
+                                              [ M.read (| v_base |); M.read (| len_div_2 |) ]
+                                            |);
+                                            M.call_closure (|
+                                              Ty.path "usize",
+                                              BinOp.Wrap.sub,
+                                              [ M.read (| len |); M.read (| len_div_2 |) ]
+                                            |)
+                                          ]
                                         |)
                                       |)
-                                    |)));
-                                fun γ =>
-                                  ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                              ]
-                            |)
-                          |) in
-                        let~ stack_array :
-                            Ty.apply
-                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "array")
-                                  [ Value.Integer IntegerKind.Usize 32 ]
-                                  [ T ]
-                              ] :=
-                          M.call_closure (|
+                                    |)
+                                  |)
+                                |)
+                              |) in
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)))
+                        |)
+                      |) in
+                    let~ scratch_base : Ty.apply (Ty.path "*mut") [] [ T ] :=
+                      M.cast
+                        (Ty.apply (Ty.path "*mut") [] [ T ])
+                        (M.call_closure (|
+                          Ty.apply
+                            (Ty.path "*mut")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 32 ]
+                                [ T ]
+                            ],
+                          M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                               []
@@ -2738,68 +3028,23 @@ Module slice.
                                   [ Value.Integer IntegerKind.Usize 32 ]
                                   [ T ]
                               ],
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "array")
-                                    [ Value.Integer IntegerKind.Usize 32 ]
-                                    [ T ]
-                                ],
-                              "uninit",
-                              [],
-                              []
-                            |),
+                            "as_mut_ptr",
+                            [],
                             []
-                          |) in
-                        let~ len_div_2 : Ty.path "usize" :=
-                          M.call_closure (|
-                            Ty.path "usize",
-                            BinOp.Wrap.div,
-                            [ M.read (| len |); Value.Integer IntegerKind.Usize 2 ]
-                          |) in
-                        let~ no_merge : Ty.path "bool" :=
-                          M.call_closure (|
-                            Ty.path "bool",
-                            BinOp.lt,
-                            [ M.read (| len |); Value.Integer IntegerKind.Usize 18 ]
-                          |) in
-                        let~ v_base : Ty.apply (Ty.path "*mut") [] [ T ] :=
-                          M.call_closure (|
-                            Ty.apply (Ty.path "*mut") [] [ T ],
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "slice") [] [ T ],
-                              "as_mut_ptr",
-                              [],
-                              []
-                            |),
-                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| v |) |) |) ]
-                          |) in
-                        let~ initial_region_len : Ty.path "usize" :=
-                          M.read (|
-                            M.match_operator (|
-                              Ty.path "usize",
-                              M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ := M.use no_merge in
-                                    let _ :=
-                                      is_constant_or_break_match (|
-                                        M.read (| γ |),
-                                        Value.Bool true
-                                      |) in
-                                    len));
-                                fun γ => ltac:(M.monadic len_div_2)
-                              ]
-                            |)
-                          |) in
-                        let~ region :
-                            Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] :=
+                          |),
+                          [ M.borrow (| Pointer.Kind.MutRef, stack_array |) ]
+                        |)) in
+                    let~ _ : Ty.tuple [] :=
+                      M.call_closure (|
+                        Ty.tuple [],
+                        M.get_function (|
+                          "core::slice::sort::shared::smallsort::bidirectional_merge",
+                          [],
+                          [ T; F ]
+                        |),
+                        [
                           M.borrow (|
-                            Pointer.Kind.MutRef,
+                            Pointer.Kind.Ref,
                             M.deref (|
                               M.borrow (|
                                 Pointer.Kind.MutRef,
@@ -2814,380 +3059,28 @@ Module slice.
                                       [],
                                       [ T ]
                                     |),
-                                    [ M.read (| v_base |); M.read (| initial_region_len |) ]
+                                    [ M.read (| v_base |); M.read (| len |) ]
                                   |)
                                 |)
                               |)
                             |)
-                          |) in
-                        let~ _ : Ty.tuple [] :=
-                          M.read (|
-                            M.loop (|
-                              Ty.tuple [],
-                              ltac:(M.monadic
-                                (let~ presorted_len : Ty.path "usize" :=
-                                  M.read (|
-                                    M.match_operator (|
-                                      Ty.path "usize",
-                                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ :=
-                                              M.use
-                                                (M.alloc (|
-                                                  Ty.path "bool",
-                                                  M.call_closure (|
-                                                    Ty.path "bool",
-                                                    BinOp.ge,
-                                                    [
-                                                      M.call_closure (|
-                                                        Ty.path "usize",
-                                                        M.get_associated_function (|
-                                                          Ty.apply (Ty.path "slice") [] [ T ],
-                                                          "len",
-                                                          [],
-                                                          []
-                                                        |),
-                                                        [
-                                                          M.borrow (|
-                                                            Pointer.Kind.Ref,
-                                                            M.deref (| M.read (| region |) |)
-                                                          |)
-                                                        ]
-                                                      |);
-                                                      Value.Integer IntegerKind.Usize 13
-                                                    ]
-                                                  |)
-                                                |)) in
-                                            let _ :=
-                                              is_constant_or_break_match (|
-                                                M.read (| γ |),
-                                                Value.Bool true
-                                              |) in
-                                            let~ _ : Ty.tuple [] :=
-                                              M.call_closure (|
-                                                Ty.tuple [],
-                                                M.get_function (|
-                                                  "core::slice::sort::shared::smallsort::sort13_optimal",
-                                                  [],
-                                                  [ T; F ]
-                                                |),
-                                                [
-                                                  M.borrow (|
-                                                    Pointer.Kind.MutRef,
-                                                    M.deref (| M.read (| region |) |)
-                                                  |);
-                                                  M.borrow (|
-                                                    Pointer.Kind.MutRef,
-                                                    M.deref (| M.read (| is_less |) |)
-                                                  |)
-                                                ]
-                                              |) in
-                                            M.alloc (|
-                                              Ty.path "usize",
-                                              Value.Integer IntegerKind.Usize 13
-                                            |)));
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (M.match_operator (|
-                                              Ty.path "usize",
-                                              M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let γ :=
-                                                      M.use
-                                                        (M.alloc (|
-                                                          Ty.path "bool",
-                                                          M.call_closure (|
-                                                            Ty.path "bool",
-                                                            BinOp.ge,
-                                                            [
-                                                              M.call_closure (|
-                                                                Ty.path "usize",
-                                                                M.get_associated_function (|
-                                                                  Ty.apply
-                                                                    (Ty.path "slice")
-                                                                    []
-                                                                    [ T ],
-                                                                  "len",
-                                                                  [],
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.borrow (|
-                                                                    Pointer.Kind.Ref,
-                                                                    M.deref (|
-                                                                      M.read (| region |)
-                                                                    |)
-                                                                  |)
-                                                                ]
-                                                              |);
-                                                              Value.Integer IntegerKind.Usize 9
-                                                            ]
-                                                          |)
-                                                        |)) in
-                                                    let _ :=
-                                                      is_constant_or_break_match (|
-                                                        M.read (| γ |),
-                                                        Value.Bool true
-                                                      |) in
-                                                    let~ _ : Ty.tuple [] :=
-                                                      M.call_closure (|
-                                                        Ty.tuple [],
-                                                        M.get_function (|
-                                                          "core::slice::sort::shared::smallsort::sort9_optimal",
-                                                          [],
-                                                          [ T; F ]
-                                                        |),
-                                                        [
-                                                          M.borrow (|
-                                                            Pointer.Kind.MutRef,
-                                                            M.deref (| M.read (| region |) |)
-                                                          |);
-                                                          M.borrow (|
-                                                            Pointer.Kind.MutRef,
-                                                            M.deref (| M.read (| is_less |) |)
-                                                          |)
-                                                        ]
-                                                      |) in
-                                                    M.alloc (|
-                                                      Ty.path "usize",
-                                                      Value.Integer IntegerKind.Usize 9
-                                                    |)));
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (M.alloc (|
-                                                      Ty.path "usize",
-                                                      Value.Integer IntegerKind.Usize 1
-                                                    |)))
-                                              ]
-                                            |)))
-                                      ]
-                                    |)
-                                  |) in
-                                let~ _ : Ty.tuple [] :=
-                                  M.call_closure (|
-                                    Ty.tuple [],
-                                    M.get_function (|
-                                      "core::slice::sort::shared::smallsort::insertion_sort_shift_left",
-                                      [],
-                                      [ T; F ]
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.MutRef,
-                                        M.deref (| M.read (| region |) |)
-                                      |);
-                                      M.read (| presorted_len |);
-                                      M.borrow (|
-                                        Pointer.Kind.MutRef,
-                                        M.deref (| M.read (| is_less |) |)
-                                      |)
-                                    ]
-                                  |) in
-                                let~ _ : Ty.tuple [] :=
-                                  M.read (|
-                                    M.match_operator (|
-                                      Ty.tuple [],
-                                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ := M.use no_merge in
-                                            let _ :=
-                                              is_constant_or_break_match (|
-                                                M.read (| γ |),
-                                                Value.Bool true
-                                              |) in
-                                            M.alloc (|
-                                              Ty.tuple [],
-                                              M.never_to_any (|
-                                                M.read (| M.return_ (| Value.Tuple [] |) |)
-                                              |)
-                                            |)));
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                                      ]
-                                    |)
-                                  |) in
-                                let~ _ : Ty.tuple [] :=
-                                  M.read (|
-                                    M.match_operator (|
-                                      Ty.tuple [],
-                                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ :=
-                                              M.use
-                                                (M.alloc (|
-                                                  Ty.path "bool",
-                                                  M.call_closure (|
-                                                    Ty.path "bool",
-                                                    BinOp.ne,
-                                                    [
-                                                      M.call_closure (|
-                                                        Ty.apply (Ty.path "*const") [] [ T ],
-                                                        M.get_associated_function (|
-                                                          Ty.apply (Ty.path "slice") [] [ T ],
-                                                          "as_ptr",
-                                                          [],
-                                                          []
-                                                        |),
-                                                        [
-                                                          M.borrow (|
-                                                            Pointer.Kind.Ref,
-                                                            M.deref (| M.read (| region |) |)
-                                                          |)
-                                                        ]
-                                                      |);
-                                                      (* MutToConstPointer *)
-                                                      M.pointer_coercion (M.read (| v_base |))
-                                                    ]
-                                                  |)
-                                                |)) in
-                                            let _ :=
-                                              is_constant_or_break_match (|
-                                                M.read (| γ |),
-                                                Value.Bool true
-                                              |) in
-                                            M.alloc (|
-                                              Ty.tuple [],
-                                              M.never_to_any (| M.read (| M.break (||) |) |)
-                                            |)));
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                                      ]
-                                    |)
-                                  |) in
-                                let~ _ : Ty.tuple [] :=
-                                  M.write (|
-                                    region,
-                                    M.borrow (|
-                                      Pointer.Kind.MutRef,
-                                      M.deref (|
-                                        M.borrow (|
-                                          Pointer.Kind.MutRef,
-                                          M.deref (|
-                                            M.call_closure (|
-                                              Ty.apply
-                                                (Ty.path "*mut")
-                                                []
-                                                [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                              M.get_function (|
-                                                "core::ptr::slice_from_raw_parts_mut",
-                                                [],
-                                                [ T ]
-                                              |),
-                                              [
-                                                M.call_closure (|
-                                                  Ty.apply (Ty.path "*mut") [] [ T ],
-                                                  M.get_associated_function (|
-                                                    Ty.apply (Ty.path "*mut") [] [ T ],
-                                                    "add",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [ M.read (| v_base |); M.read (| len_div_2 |) ]
-                                                |);
-                                                M.call_closure (|
-                                                  Ty.path "usize",
-                                                  BinOp.Wrap.sub,
-                                                  [ M.read (| len |); M.read (| len_div_2 |) ]
-                                                |)
-                                              ]
-                                            |)
-                                          |)
-                                        |)
-                                      |)
-                                    |)
-                                  |) in
-                                M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                            |)
-                          |) in
-                        let~ scratch_base : Ty.apply (Ty.path "*mut") [] [ T ] :=
-                          M.cast
-                            (Ty.apply (Ty.path "*mut") [] [ T ])
-                            (M.call_closure (|
-                              Ty.apply
-                                (Ty.path "*mut")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "array")
-                                    [ Value.Integer IntegerKind.Usize 32 ]
-                                    [ T ]
-                                ],
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "array")
-                                      [ Value.Integer IntegerKind.Usize 32 ]
-                                      [ T ]
-                                  ],
-                                "as_mut_ptr",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.MutRef, stack_array |) ]
-                            |)) in
-                        let~ _ : Ty.tuple [] :=
-                          M.call_closure (|
-                            Ty.tuple [],
-                            M.get_function (|
-                              "core::slice::sort::shared::smallsort::bidirectional_merge",
-                              [],
-                              [ T; F ]
-                            |),
-                            [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.MutRef,
-                                    M.deref (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "*mut")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                        M.get_function (|
-                                          "core::ptr::slice_from_raw_parts_mut",
-                                          [],
-                                          [ T ]
-                                        |),
-                                        [ M.read (| v_base |); M.read (| len |) ]
-                                      |)
-                                    |)
-                                  |)
-                                |)
-                              |);
-                              M.read (| scratch_base |);
-                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
-                            ]
-                          |) in
-                        let~ _ : Ty.tuple [] :=
-                          M.call_closure (|
-                            Ty.tuple [],
-                            M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
-                            [
-                              (* MutToConstPointer *)
-                              M.pointer_coercion (M.read (| scratch_base |));
-                              M.read (| v_base |);
-                              M.read (| len |)
-                            ]
-                          |) in
-                        M.alloc (| Ty.tuple [], Value.Tuple [] |)
-                      |)
-                    |)))
-                |)
+                          |);
+                          M.read (| scratch_base |);
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
+                        ]
+                      |) in
+                    let~ _ : Ty.tuple [] :=
+                      M.call_closure (|
+                        Ty.tuple [],
+                        M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
+                        [
+                          (* MutToConstPointer *) M.pointer_coercion (M.read (| scratch_base |));
+                          M.read (| v_base |);
+                          M.read (| len |)
+                        ]
+                      |) in
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                  |)))
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -3300,36 +3193,32 @@ Module slice.
                     ]
                   |) in
                 let~ left_swap : Ty.apply (Ty.path "*mut") [] [ T ] :=
-                  M.read (|
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*mut") [] [ T ],
-                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ := M.use should_swap in
-                            let _ :=
-                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            v_b));
-                        fun γ => ltac:(M.monadic v_a)
-                      ]
-                    |)
+                  M.match_operator (|
+                    Ty.apply (Ty.path "*mut") [] [ T ],
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ := M.use should_swap in
+                          let _ :=
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          M.read (| v_b |)));
+                      fun γ => ltac:(M.monadic (M.read (| v_a |)))
+                    ]
                   |) in
                 let~ right_swap : Ty.apply (Ty.path "*mut") [] [ T ] :=
-                  M.read (|
-                    M.match_operator (|
-                      Ty.apply (Ty.path "*mut") [] [ T ],
-                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ := M.use should_swap in
-                            let _ :=
-                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            v_a));
-                        fun γ => ltac:(M.monadic v_b)
-                      ]
-                    |)
+                  M.match_operator (|
+                    Ty.apply (Ty.path "*mut") [] [ T ],
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ := M.use should_swap in
+                          let _ :=
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          M.read (| v_a |)));
+                      fun γ => ltac:(M.monadic (M.read (| v_b |)))
+                    ]
                   |) in
                 let~ right_swap_tmp :
                     Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ] :=
@@ -3460,55 +3349,50 @@ Module slice.
               let is_less := M.alloc (| Ty.apply (Ty.path "&mut") [] [ F ], is_less |) in
               M.read (|
                 let~ _ : Ty.tuple [] :=
-                  M.read (|
-                    M.match_operator (|
-                      Ty.tuple [],
-                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  Ty.path "bool",
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    BinOp.lt,
-                                    [
-                                      M.call_closure (|
-                                        Ty.path "usize",
-                                        M.get_associated_function (|
-                                          Ty.apply (Ty.path "slice") [] [ T ],
-                                          "len",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| v |) |)
-                                          |)
-                                        ]
-                                      |);
-                                      Value.Integer IntegerKind.Usize 9
-                                    ]
-                                  |)
-                                |)) in
-                            let _ :=
-                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              Ty.tuple [],
-                              M.never_to_any (|
+                  M.match_operator (|
+                    Ty.tuple [],
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ :=
+                            M.use
+                              (M.alloc (|
+                                Ty.path "bool",
                                 M.call_closure (|
-                                  Ty.path "never",
-                                  M.get_function (| "core::intrinsics::abort", [], [] |),
-                                  []
+                                  Ty.path "bool",
+                                  BinOp.lt,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      M.get_associated_function (|
+                                        Ty.apply (Ty.path "slice") [] [ T ],
+                                        "len",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| v |) |)
+                                        |)
+                                      ]
+                                    |);
+                                    Value.Integer IntegerKind.Usize 9
+                                  ]
                                 |)
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                      ]
-                    |)
+                              |)) in
+                          let _ :=
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          M.never_to_any (|
+                            M.call_closure (|
+                              Ty.path "never",
+                              M.get_function (| "core::intrinsics::abort", [], [] |),
+                              []
+                            |)
+                          |)));
+                      fun γ => ltac:(M.monadic (Value.Tuple []))
+                    ]
                   |) in
                 let~ v_base : Ty.apply (Ty.path "*mut") [] [ T ] :=
                   M.call_closure (|
@@ -3982,55 +3866,50 @@ Module slice.
               let is_less := M.alloc (| Ty.apply (Ty.path "&mut") [] [ F ], is_less |) in
               M.read (|
                 let~ _ : Ty.tuple [] :=
-                  M.read (|
-                    M.match_operator (|
-                      Ty.tuple [],
-                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  Ty.path "bool",
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    BinOp.lt,
-                                    [
-                                      M.call_closure (|
-                                        Ty.path "usize",
-                                        M.get_associated_function (|
-                                          Ty.apply (Ty.path "slice") [] [ T ],
-                                          "len",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| v |) |)
-                                          |)
-                                        ]
-                                      |);
-                                      Value.Integer IntegerKind.Usize 13
-                                    ]
-                                  |)
-                                |)) in
-                            let _ :=
-                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              Ty.tuple [],
-                              M.never_to_any (|
+                  M.match_operator (|
+                    Ty.tuple [],
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ :=
+                            M.use
+                              (M.alloc (|
+                                Ty.path "bool",
                                 M.call_closure (|
-                                  Ty.path "never",
-                                  M.get_function (| "core::intrinsics::abort", [], [] |),
-                                  []
+                                  Ty.path "bool",
+                                  BinOp.lt,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      M.get_associated_function (|
+                                        Ty.apply (Ty.path "slice") [] [ T ],
+                                        "len",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| v |) |)
+                                        |)
+                                      ]
+                                    |);
+                                    Value.Integer IntegerKind.Usize 13
+                                  ]
                                 |)
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                      ]
-                    |)
+                              |)) in
+                          let _ :=
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          M.never_to_any (|
+                            M.call_closure (|
+                              Ty.path "never",
+                              M.get_function (| "core::intrinsics::abort", [], [] |),
+                              []
+                            |)
+                          |)));
+                      fun γ => ltac:(M.monadic (Value.Tuple []))
+                    ]
                   |) in
                 let~ v_base : Ty.apply (Ty.path "*mut") [] [ T ] :=
                   M.call_closure (|
@@ -4773,335 +4652,308 @@ Module slice.
               (let begin := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], begin |) in
               let tail := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], tail |) in
               let is_less := M.alloc (| Ty.apply (Ty.path "&mut") [] [ F ], is_less |) in
-              M.read (|
-                M.catch_return (Ty.tuple []) (|
-                  ltac:(M.monadic
-                    (M.alloc (|
-                      Ty.tuple [],
-                      M.read (|
-                        let~ sift : Ty.apply (Ty.path "*mut") [] [ T ] :=
+              M.catch_return (Ty.tuple []) (|
+                ltac:(M.monadic
+                  (M.read (|
+                    let~ sift : Ty.apply (Ty.path "*mut") [] [ T ] :=
+                      M.call_closure (|
+                        Ty.apply (Ty.path "*mut") [] [ T ],
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "*mut") [] [ T ],
+                          "sub",
+                          [],
+                          []
+                        |),
+                        [ M.read (| tail |); Value.Integer IntegerKind.Usize 1 ]
+                      |) in
+                    let~ _ : Ty.tuple [] :=
+                      M.match_operator (|
+                        Ty.tuple [],
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.use
+                                  (M.alloc (|
+                                    Ty.path "bool",
+                                    UnOp.not (|
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        M.get_trait_method (|
+                                          "core::ops::function::FnMut",
+                                          F,
+                                          [],
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.apply (Ty.path "&") [] [ T ];
+                                                Ty.apply (Ty.path "&") [] [ T ]
+                                              ]
+                                          ],
+                                          "call_mut",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| is_less |) |)
+                                          |);
+                                          Value.Tuple
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| tail |) |)
+                                                  |)
+                                                |)
+                                              |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| sift |) |)
+                                                  |)
+                                                |)
+                                              |)
+                                            ]
+                                        ]
+                                      |)
+                                    |)
+                                  |)) in
+                              let _ :=
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              M.never_to_any (| M.read (| M.return_ (| Value.Tuple [] |) |) |)));
+                          fun γ => ltac:(M.monadic (Value.Tuple []))
+                        ]
+                      |) in
+                    let~ tmp :
+                        Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ] :=
+                      M.call_closure (|
+                        Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ],
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ],
+                          "new",
+                          [],
+                          []
+                        |),
+                        [
                           M.call_closure (|
-                            Ty.apply (Ty.path "*mut") [] [ T ],
+                            T,
                             M.get_associated_function (|
                               Ty.apply (Ty.path "*mut") [] [ T ],
-                              "sub",
+                              "read",
                               [],
                               []
                             |),
-                            [ M.read (| tail |); Value.Integer IntegerKind.Usize 1 ]
-                          |) in
-                        let~ _ : Ty.tuple [] :=
-                          M.read (|
-                            M.match_operator (|
-                              Ty.tuple [],
-                              M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ :=
-                                      M.use
-                                        (M.alloc (|
-                                          Ty.path "bool",
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              M.get_trait_method (|
-                                                "core::ops::function::FnMut",
-                                                F,
-                                                [],
-                                                [
-                                                  Ty.tuple
-                                                    [
-                                                      Ty.apply (Ty.path "&") [] [ T ];
-                                                      Ty.apply (Ty.path "&") [] [ T ]
-                                                    ]
-                                                ],
-                                                "call_mut",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.borrow (|
-                                                  Pointer.Kind.MutRef,
-                                                  M.deref (| M.read (| is_less |) |)
-                                                |);
-                                                Value.Tuple
-                                                  [
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.deref (|
-                                                        M.borrow (|
-                                                          Pointer.Kind.Ref,
-                                                          M.deref (| M.read (| tail |) |)
-                                                        |)
-                                                      |)
-                                                    |);
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.deref (|
-                                                        M.borrow (|
-                                                          Pointer.Kind.Ref,
-                                                          M.deref (| M.read (| sift |) |)
-                                                        |)
-                                                      |)
-                                                    |)
-                                                  ]
-                                              ]
-                                            |)
-                                          |)
-                                        |)) in
-                                    let _ :=
-                                      is_constant_or_break_match (|
-                                        M.read (| γ |),
-                                        Value.Bool true
-                                      |) in
-                                    M.alloc (|
-                                      Ty.tuple [],
-                                      M.never_to_any (|
-                                        M.read (| M.return_ (| Value.Tuple [] |) |)
-                                      |)
-                                    |)));
-                                fun γ =>
-                                  ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                              ]
-                            |)
-                          |) in
-                        let~ tmp :
-                            Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ] :=
-                          M.call_closure (|
-                            Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ],
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ],
-                              "new",
-                              [],
-                              []
-                            |),
-                            [
-                              M.call_closure (|
-                                T,
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "*mut") [] [ T ],
-                                  "read",
-                                  [],
-                                  []
-                                |),
-                                [ M.read (| tail |) ]
-                              |)
-                            ]
-                          |) in
-                        let~ gap_guard :
-                            Ty.apply
-                              (Ty.path "core::slice::sort::shared::smallsort::CopyOnDrop")
-                              []
-                              [ T ] :=
-                          Value.mkStructRecord
-                            "core::slice::sort::shared::smallsort::CopyOnDrop"
-                            []
-                            [ T ]
-                            [
-                              ("src",
+                            [ M.read (| tail |) ]
+                          |)
+                        ]
+                      |) in
+                    let~ gap_guard :
+                        Ty.apply
+                          (Ty.path "core::slice::sort::shared::smallsort::CopyOnDrop")
+                          []
+                          [ T ] :=
+                      Value.mkStructRecord
+                        "core::slice::sort::shared::smallsort::CopyOnDrop"
+                        []
+                        [ T ]
+                        [
+                          ("src",
+                            M.borrow (|
+                              Pointer.Kind.ConstPointer,
+                              M.deref (|
                                 M.borrow (|
-                                  Pointer.Kind.ConstPointer,
+                                  Pointer.Kind.Ref,
                                   M.deref (|
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (|
-                                        M.call_closure (|
-                                          Ty.apply (Ty.path "&") [] [ T ],
-                                          M.get_trait_method (|
-                                            "core::ops::deref::Deref",
-                                            Ty.apply
-                                              (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                                              []
-                                              [ T ],
-                                            [],
-                                            [],
-                                            "deref",
-                                            [],
-                                            []
-                                          |),
-                                          [ M.borrow (| Pointer.Kind.Ref, tmp |) ]
-                                        |)
-                                      |)
+                                    M.call_closure (|
+                                      Ty.apply (Ty.path "&") [] [ T ],
+                                      M.get_trait_method (|
+                                        "core::ops::deref::Deref",
+                                        Ty.apply
+                                          (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                          []
+                                          [ T ],
+                                        [],
+                                        [],
+                                        "deref",
+                                        [],
+                                        []
+                                      |),
+                                      [ M.borrow (| Pointer.Kind.Ref, tmp |) ]
                                     |)
                                   |)
-                                |));
-                              ("dst", M.read (| tail |));
-                              ("len", Value.Integer IntegerKind.Usize 1)
-                            ] in
-                        M.loop (|
-                          Ty.tuple [],
-                          ltac:(M.monadic
-                            (let~ _ : Ty.tuple [] :=
-                              M.call_closure (|
-                                Ty.tuple [],
-                                M.get_function (|
-                                  "core::intrinsics::copy_nonoverlapping",
-                                  [],
-                                  [ T ]
-                                |),
-                                [
-                                  (* MutToConstPointer *) M.pointer_coercion (M.read (| sift |));
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      gap_guard,
-                                      "core::slice::sort::shared::smallsort::CopyOnDrop",
-                                      "dst"
-                                    |)
-                                  |);
-                                  Value.Integer IntegerKind.Usize 1
-                                ]
-                              |) in
-                            let~ _ : Ty.tuple [] :=
-                              M.write (|
+                                |)
+                              |)
+                            |));
+                          ("dst", M.read (| tail |));
+                          ("len", Value.Integer IntegerKind.Usize 1)
+                        ] in
+                    M.loop (|
+                      Ty.tuple [],
+                      ltac:(M.monadic
+                        (let~ _ : Ty.tuple [] :=
+                          M.call_closure (|
+                            Ty.tuple [],
+                            M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
+                            [
+                              (* MutToConstPointer *) M.pointer_coercion (M.read (| sift |));
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   gap_guard,
                                   "core::slice::sort::shared::smallsort::CopyOnDrop",
                                   "dst"
-                                |),
-                                M.read (| sift |)
-                              |) in
-                            let~ _ : Ty.tuple [] :=
-                              M.read (|
-                                M.match_operator (|
-                                  Ty.tuple [],
-                                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let γ :=
-                                          M.use
-                                            (M.alloc (|
-                                              Ty.path "bool",
-                                              M.call_closure (|
-                                                Ty.path "bool",
-                                                BinOp.eq,
-                                                [ M.read (| sift |); M.read (| begin |) ]
-                                              |)
-                                            |)) in
-                                        let _ :=
-                                          is_constant_or_break_match (|
-                                            M.read (| γ |),
-                                            Value.Bool true
-                                          |) in
-                                        M.alloc (|
-                                          Ty.tuple [],
-                                          M.never_to_any (| M.read (| M.break (||) |) |)
-                                        |)));
-                                    fun γ =>
-                                      ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                                  ]
                                 |)
-                              |) in
-                            let~ _ : Ty.tuple [] :=
-                              M.write (|
-                                sift,
-                                M.call_closure (|
-                                  Ty.apply (Ty.path "*mut") [] [ T ],
-                                  M.get_associated_function (|
-                                    Ty.apply (Ty.path "*mut") [] [ T ],
-                                    "sub",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.read (| sift |); Value.Integer IntegerKind.Usize 1 ]
-                                |)
-                              |) in
-                            M.match_operator (|
-                              Ty.tuple [],
-                              M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ :=
-                                      M.use
-                                        (M.alloc (|
+                              |);
+                              Value.Integer IntegerKind.Usize 1
+                            ]
+                          |) in
+                        let~ _ : Ty.tuple [] :=
+                          M.write (|
+                            M.SubPointer.get_struct_record_field (|
+                              gap_guard,
+                              "core::slice::sort::shared::smallsort::CopyOnDrop",
+                              "dst"
+                            |),
+                            M.read (| sift |)
+                          |) in
+                        let~ _ : Ty.tuple [] :=
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
+                                        Ty.path "bool",
+                                        M.call_closure (|
                                           Ty.path "bool",
-                                          UnOp.not (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              M.get_trait_method (|
-                                                "core::ops::function::FnMut",
-                                                F,
-                                                [],
-                                                [
-                                                  Ty.tuple
-                                                    [
-                                                      Ty.apply (Ty.path "&") [] [ T ];
-                                                      Ty.apply (Ty.path "&") [] [ T ]
-                                                    ]
-                                                ],
-                                                "call_mut",
-                                                [],
-                                                []
-                                              |),
+                                          BinOp.eq,
+                                          [ M.read (| sift |); M.read (| begin |) ]
+                                        |)
+                                      |)) in
+                                  let _ :=
+                                    is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  M.never_to_any (| M.read (| M.break (||) |) |)));
+                              fun γ => ltac:(M.monadic (Value.Tuple []))
+                            ]
+                          |) in
+                        let~ _ : Ty.tuple [] :=
+                          M.write (|
+                            sift,
+                            M.call_closure (|
+                              Ty.apply (Ty.path "*mut") [] [ T ],
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "*mut") [] [ T ],
+                                "sub",
+                                [],
+                                []
+                              |),
+                              [ M.read (| sift |); Value.Integer IntegerKind.Usize 1 ]
+                            |)
+                          |) in
+                        M.alloc (|
+                          Ty.tuple [],
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
+                                        Ty.path "bool",
+                                        UnOp.not (|
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            M.get_trait_method (|
+                                              "core::ops::function::FnMut",
+                                              F,
+                                              [],
                                               [
-                                                M.borrow (|
-                                                  Pointer.Kind.MutRef,
-                                                  M.deref (| M.read (| is_less |) |)
-                                                |);
-                                                Value.Tuple
+                                                Ty.tuple
                                                   [
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.deref (|
-                                                        M.call_closure (|
-                                                          Ty.apply (Ty.path "&") [] [ T ],
-                                                          M.get_trait_method (|
-                                                            "core::ops::deref::Deref",
-                                                            Ty.apply
-                                                              (Ty.path
-                                                                "core::mem::manually_drop::ManuallyDrop")
-                                                              []
-                                                              [ T ],
-                                                            [],
-                                                            [],
-                                                            "deref",
-                                                            [],
+                                                    Ty.apply (Ty.path "&") [] [ T ];
+                                                    Ty.apply (Ty.path "&") [] [ T ]
+                                                  ]
+                                              ],
+                                              "call_mut",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.deref (| M.read (| is_less |) |)
+                                              |);
+                                              Value.Tuple
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.call_closure (|
+                                                        Ty.apply (Ty.path "&") [] [ T ],
+                                                        M.get_trait_method (|
+                                                          "core::ops::deref::Deref",
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::mem::manually_drop::ManuallyDrop")
                                                             []
-                                                          |),
-                                                          [
-                                                            M.borrow (|
-                                                              Pointer.Kind.Ref,
-                                                              M.deref (|
-                                                                M.borrow (| Pointer.Kind.Ref, tmp |)
-                                                              |)
+                                                            [ T ],
+                                                          [],
+                                                          [],
+                                                          "deref",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.borrow (| Pointer.Kind.Ref, tmp |)
                                                             |)
-                                                          ]
-                                                        |)
-                                                      |)
-                                                    |);
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.deref (|
-                                                        M.borrow (|
-                                                          Pointer.Kind.Ref,
-                                                          M.deref (| M.read (| sift |) |)
-                                                        |)
+                                                          |)
+                                                        ]
                                                       |)
                                                     |)
-                                                  ]
-                                              ]
-                                            |)
+                                                  |);
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| sift |) |)
+                                                      |)
+                                                    |)
+                                                  |)
+                                                ]
+                                            ]
                                           |)
-                                        |)) in
-                                    let _ :=
-                                      is_constant_or_break_match (|
-                                        M.read (| γ |),
-                                        Value.Bool true
-                                      |) in
-                                    M.alloc (|
-                                      Ty.tuple [],
-                                      M.never_to_any (| M.read (| M.break (||) |) |)
-                                    |)));
-                                fun γ =>
-                                  ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                              ]
-                            |)))
-                        |)
-                      |)
-                    |)))
-                |)
+                                        |)
+                                      |)) in
+                                  let _ :=
+                                    is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  M.never_to_any (| M.read (| M.break (||) |) |)));
+                              fun γ => ltac:(M.monadic (Value.Tuple []))
+                            ]
+                          |)
+                        |)))
+                    |)
+                  |)))
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -5170,46 +5022,41 @@ Module slice.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                   |) in
                 let~ _ : Ty.tuple [] :=
-                  M.read (|
-                    M.match_operator (|
-                      Ty.tuple [],
-                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  Ty.path "bool",
-                                  LogicalOp.or (|
-                                    M.call_closure (|
+                  M.match_operator (|
+                    Ty.tuple [],
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ :=
+                            M.use
+                              (M.alloc (|
+                                Ty.path "bool",
+                                LogicalOp.or (|
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [ M.read (| offset |); Value.Integer IntegerKind.Usize 0 ]
+                                  |),
+                                  ltac:(M.monadic
+                                    (M.call_closure (|
                                       Ty.path "bool",
-                                      BinOp.eq,
-                                      [ M.read (| offset |); Value.Integer IntegerKind.Usize 0 ]
-                                    |),
-                                    ltac:(M.monadic
-                                      (M.call_closure (|
-                                        Ty.path "bool",
-                                        BinOp.gt,
-                                        [ M.read (| offset |); M.read (| len |) ]
-                                      |)))
-                                  |)
-                                |)) in
-                            let _ :=
-                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              Ty.tuple [],
-                              M.never_to_any (|
-                                M.call_closure (|
-                                  Ty.path "never",
-                                  M.get_function (| "core::intrinsics::abort", [], [] |),
-                                  []
+                                      BinOp.gt,
+                                      [ M.read (| offset |); M.read (| len |) ]
+                                    |)))
                                 |)
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                      ]
-                    |)
+                              |)) in
+                          let _ :=
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          M.never_to_any (|
+                            M.call_closure (|
+                              Ty.path "never",
+                              M.get_function (| "core::intrinsics::abort", [], [] |),
+                              []
+                            |)
+                          |)));
+                      fun γ => ltac:(M.monadic (Value.Tuple []))
+                    ]
                   |) in
                 let~ v_base : Ty.apply (Ty.path "*mut") [] [ T ] :=
                   M.call_closure (|
@@ -5247,69 +5094,71 @@ Module slice.
                 M.loop (|
                   Ty.tuple [],
                   ltac:(M.monadic
-                    (M.match_operator (|
+                    (M.alloc (|
                       Ty.tuple [],
-                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  Ty.path "bool",
-                                  M.call_closure (|
+                      M.match_operator (|
+                        Ty.tuple [],
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.use
+                                  (M.alloc (|
                                     Ty.path "bool",
-                                    BinOp.ne,
-                                    [ M.read (| tail |); M.read (| v_end |) ]
-                                  |)
-                                |)) in
-                            let _ :=
-                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let~ _ : Ty.tuple [] :=
-                              M.call_closure (|
-                                Ty.tuple [],
-                                M.get_function (|
-                                  "core::slice::sort::shared::smallsort::insert_tail",
-                                  [],
-                                  [ T; F ]
-                                |),
-                                [
-                                  M.read (| v_base |);
-                                  M.read (| tail |);
-                                  M.borrow (|
-                                    Pointer.Kind.MutRef,
-                                    M.deref (| M.read (| is_less |) |)
-                                  |)
-                                ]
-                              |) in
-                            let~ _ : Ty.tuple [] :=
-                              M.write (|
-                                tail,
-                                M.call_closure (|
-                                  Ty.apply (Ty.path "*mut") [] [ T ],
-                                  M.get_associated_function (|
-                                    Ty.apply (Ty.path "*mut") [] [ T ],
-                                    "add",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.read (| tail |); Value.Integer IntegerKind.Usize 1 ]
-                                |)
-                              |) in
-                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.alloc (|
-                              Ty.tuple [],
-                              M.never_to_any (|
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.ne,
+                                      [ M.read (| tail |); M.read (| v_end |) ]
+                                    |)
+                                  |)) in
+                              let _ :=
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              M.read (|
+                                let~ _ : Ty.tuple [] :=
+                                  M.call_closure (|
+                                    Ty.tuple [],
+                                    M.get_function (|
+                                      "core::slice::sort::shared::smallsort::insert_tail",
+                                      [],
+                                      [ T; F ]
+                                    |),
+                                    [
+                                      M.read (| v_base |);
+                                      M.read (| tail |);
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| is_less |) |)
+                                      |)
+                                    ]
+                                  |) in
+                                let~ _ : Ty.tuple [] :=
+                                  M.write (|
+                                    tail,
+                                    M.call_closure (|
+                                      Ty.apply (Ty.path "*mut") [] [ T ],
+                                      M.get_associated_function (|
+                                        Ty.apply (Ty.path "*mut") [] [ T ],
+                                        "add",
+                                        [],
+                                        []
+                                      |),
+                                      [ M.read (| tail |); Value.Integer IntegerKind.Usize 1 ]
+                                    |)
+                                  |) in
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                              |)));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (M.never_to_any (|
                                 M.read (|
                                   let~ _ : Ty.tuple [] :=
                                     M.never_to_any (| M.read (| M.break (||) |) |) in
                                   M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                 |)
-                              |)
-                            |)))
-                      ]
+                              |)))
+                        ]
+                      |)
                     |)))
                 |)
               |)))
@@ -5844,20 +5693,17 @@ Module slice.
                 (let cond := M.alloc (| Ty.path "bool", cond |) in
                 let if_true := M.alloc (| Ty.apply (Ty.path "*const") [] [ T ], if_true |) in
                 let if_false := M.alloc (| Ty.apply (Ty.path "*const") [] [ T ], if_false |) in
-                M.read (|
-                  M.match_operator (|
-                    Ty.apply (Ty.path "*const") [] [ T ],
-                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ := M.use cond in
-                          let _ :=
-                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          if_true));
-                      fun γ => ltac:(M.monadic if_false)
-                    ]
-                  |)
+                M.match_operator (|
+                  Ty.apply (Ty.path "*const") [] [ T ],
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.use cond in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.read (| if_true |)));
+                    fun γ => ltac:(M.monadic (M.read (| if_false |)))
+                  ]
                 |)))
             | _, _, _ => M.impossible "wrong number of arguments"
             end.
@@ -6081,23 +5927,18 @@ Module slice.
                         |)
                       |) in
                     let~ src : Ty.apply (Ty.path "*const") [] [ T ] :=
-                      M.read (|
-                        M.match_operator (|
-                          Ty.apply (Ty.path "*const") [] [ T ],
-                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ := M.use is_l in
-                                let _ :=
-                                  is_constant_or_break_match (|
-                                    M.read (| γ |),
-                                    Value.Bool true
-                                  |) in
-                                left_src));
-                            fun γ => ltac:(M.monadic right_src)
-                          ]
-                        |)
+                      M.match_operator (|
+                        Ty.apply (Ty.path "*const") [] [ T ],
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ := M.use is_l in
+                              let _ :=
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              M.read (| left_src |)));
+                          fun γ => ltac:(M.monadic (M.read (| right_src |)))
+                        ]
                       |) in
                     let~ _ : Ty.tuple [] :=
                       M.call_closure (|
@@ -6257,23 +6098,18 @@ Module slice.
                         |)
                       |) in
                     let~ src : Ty.apply (Ty.path "*const") [] [ T ] :=
-                      M.read (|
-                        M.match_operator (|
-                          Ty.apply (Ty.path "*const") [] [ T ],
-                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ := M.use is_l in
-                                let _ :=
-                                  is_constant_or_break_match (|
-                                    M.read (| γ |),
-                                    Value.Bool true
-                                  |) in
-                                right_src));
-                            fun γ => ltac:(M.monadic left_src)
-                          ]
-                        |)
+                      M.match_operator (|
+                        Ty.apply (Ty.path "*const") [] [ T ],
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ := M.use is_l in
+                              let _ :=
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              M.read (| right_src |)));
+                          fun γ => ltac:(M.monadic (M.read (| left_src |)))
+                        ]
                       |) in
                     let~ _ : Ty.tuple [] :=
                       M.call_closure (|
@@ -6556,279 +6392,302 @@ Module slice.
                 let~ _ : Ty.tuple [] :=
                   M.read (|
                     M.use
-                      (M.match_operator (|
+                      (M.alloc (|
                         Ty.tuple [],
-                        M.alloc (|
-                          Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
-                          M.call_closure (|
+                        M.match_operator (|
+                          Ty.tuple [],
+                          M.alloc (|
                             Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
-                            M.get_trait_method (|
-                              "core::iter::traits::collect::IntoIterator",
+                            M.call_closure (|
                               Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
-                              [],
-                              [],
-                              "into_iter",
-                              [],
-                              []
-                            |),
-                            [
-                              Value.mkStructRecord
-                                "core::ops::range::Range"
+                              M.get_trait_method (|
+                                "core::iter::traits::collect::IntoIterator",
+                                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                                [],
+                                [],
+                                "into_iter",
+                                [],
                                 []
-                                [ Ty.path "usize" ]
-                                [
-                                  ("start", Value.Integer IntegerKind.Usize 0);
-                                  ("end_", M.read (| len_div_2 |))
-                                ]
-                            ]
-                          |)
-                        |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let iter :=
-                                M.copy (|
-                                  Ty.apply
-                                    (Ty.path "core::ops::range::Range")
-                                    []
-                                    [ Ty.path "usize" ],
-                                  γ
-                                |) in
-                              M.loop (|
-                                Ty.tuple [],
-                                ltac:(M.monadic
-                                  (let~ _ : Ty.tuple [] :=
-                                    M.read (|
-                                      M.match_operator (|
-                                        Ty.tuple [],
-                                        M.alloc (|
-                                          Ty.apply
-                                            (Ty.path "core::option::Option")
-                                            []
-                                            [ Ty.path "usize" ],
-                                          M.call_closure (|
+                              |),
+                              [
+                                Value.mkStructRecord
+                                  "core::ops::range::Range"
+                                  []
+                                  [ Ty.path "usize" ]
+                                  [
+                                    ("start", Value.Integer IntegerKind.Usize 0);
+                                    ("end_", M.read (| len_div_2 |))
+                                  ]
+                              ]
+                            |)
+                          |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let iter :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "core::ops::range::Range")
+                                      []
+                                      [ Ty.path "usize" ],
+                                    γ
+                                  |) in
+                                M.read (|
+                                  M.loop (|
+                                    Ty.tuple [],
+                                    ltac:(M.monadic
+                                      (let~ _ : Ty.tuple [] :=
+                                        M.match_operator (|
+                                          Ty.tuple [],
+                                          M.alloc (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
                                               []
                                               [ Ty.path "usize" ],
-                                            M.get_trait_method (|
-                                              "core::iter::traits::iterator::Iterator",
+                                            M.call_closure (|
                                               Ty.apply
-                                                (Ty.path "core::ops::range::Range")
+                                                (Ty.path "core::option::Option")
                                                 []
                                                 [ Ty.path "usize" ],
-                                              [],
-                                              [],
-                                              "next",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.MutRef,
-                                                M.deref (|
-                                                  M.borrow (| Pointer.Kind.MutRef, iter |)
+                                              M.get_trait_method (|
+                                                "core::iter::traits::iterator::Iterator",
+                                                Ty.apply
+                                                  (Ty.path "core::ops::range::Range")
+                                                  []
+                                                  [ Ty.path "usize" ],
+                                                [],
+                                                [],
+                                                "next",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, iter |)
+                                                  |)
                                                 |)
-                                              |)
-                                            ]
-                                          |)
-                                        |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let _ :=
-                                                M.is_struct_tuple (|
-                                                  γ,
-                                                  "core::option::Option::None"
-                                                |) in
-                                              M.alloc (|
-                                                Ty.tuple [],
-                                                M.never_to_any (| M.read (| M.break (||) |) |)
-                                              |)));
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let γ0_0 :=
-                                                M.SubPointer.get_struct_tuple_field (|
-                                                  γ,
-                                                  "core::option::Option::Some",
-                                                  0
-                                                |) in
-                                              let~ _ : Ty.tuple [] :=
+                                              ]
+                                            |)
+                                          |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let _ :=
+                                                  M.is_struct_tuple (|
+                                                    γ,
+                                                    "core::option::Option::None"
+                                                  |) in
+                                                M.never_to_any (| M.read (| M.break (||) |) |)));
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let γ0_0 :=
+                                                  M.SubPointer.get_struct_tuple_field (|
+                                                    γ,
+                                                    "core::option::Option::Some",
+                                                    0
+                                                  |) in
                                                 M.read (|
-                                                  M.match_operator (|
-                                                    Ty.tuple [],
-                                                    M.alloc (|
-                                                      Ty.tuple
-                                                        [
-                                                          Ty.apply (Ty.path "*const") [] [ T ];
-                                                          Ty.apply (Ty.path "*const") [] [ T ];
-                                                          Ty.apply (Ty.path "*mut") [] [ T ]
-                                                        ],
-                                                      M.call_closure (|
+                                                  let~ _ : Ty.tuple [] :=
+                                                    M.match_operator (|
+                                                      Ty.tuple [],
+                                                      M.alloc (|
                                                         Ty.tuple
                                                           [
                                                             Ty.apply (Ty.path "*const") [] [ T ];
                                                             Ty.apply (Ty.path "*const") [] [ T ];
                                                             Ty.apply (Ty.path "*mut") [] [ T ]
                                                           ],
-                                                        M.get_function (|
-                                                          "core::slice::sort::shared::smallsort::merge_up",
-                                                          [],
-                                                          [ T; F ]
-                                                        |),
-                                                        [
-                                                          M.read (| left |);
-                                                          M.read (| right |);
-                                                          M.read (| dst |);
-                                                          M.borrow (|
-                                                            Pointer.Kind.MutRef,
-                                                            M.deref (| M.read (| is_less |) |)
-                                                          |)
-                                                        ]
-                                                      |)
-                                                    |),
-                                                    [
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ0_0 :=
-                                                            M.SubPointer.get_tuple_field (|
-                                                              γ,
-                                                              0
-                                                            |) in
-                                                          let γ0_1 :=
-                                                            M.SubPointer.get_tuple_field (|
-                                                              γ,
-                                                              1
-                                                            |) in
-                                                          let γ0_2 :=
-                                                            M.SubPointer.get_tuple_field (|
-                                                              γ,
-                                                              2
-                                                            |) in
-                                                          let lhs :=
-                                                            M.copy (|
-                                                              Ty.apply (Ty.path "*const") [] [ T ],
-                                                              γ0_0
-                                                            |) in
-                                                          let lhs :=
-                                                            M.copy (|
-                                                              Ty.apply (Ty.path "*const") [] [ T ],
-                                                              γ0_1
-                                                            |) in
-                                                          let lhs :=
-                                                            M.copy (|
-                                                              Ty.apply (Ty.path "*mut") [] [ T ],
-                                                              γ0_2
-                                                            |) in
-                                                          let~ _ : Ty.tuple [] :=
-                                                            M.write (| left, M.read (| lhs |) |) in
-                                                          let~ _ : Ty.tuple [] :=
-                                                            M.write (| right, M.read (| lhs |) |) in
-                                                          let~ _ : Ty.tuple [] :=
-                                                            M.write (| dst, M.read (| lhs |) |) in
-                                                          M.alloc (|
-                                                            Ty.tuple [],
-                                                            Value.Tuple []
-                                                          |)))
-                                                    ]
-                                                  |)
-                                                |) in
-                                              let~ _ : Ty.tuple [] :=
-                                                M.read (|
-                                                  M.match_operator (|
-                                                    Ty.tuple [],
-                                                    M.alloc (|
-                                                      Ty.tuple
-                                                        [
-                                                          Ty.apply (Ty.path "*const") [] [ T ];
-                                                          Ty.apply (Ty.path "*const") [] [ T ];
-                                                          Ty.apply (Ty.path "*mut") [] [ T ]
-                                                        ],
-                                                      M.call_closure (|
+                                                        M.call_closure (|
+                                                          Ty.tuple
+                                                            [
+                                                              Ty.apply (Ty.path "*const") [] [ T ];
+                                                              Ty.apply (Ty.path "*const") [] [ T ];
+                                                              Ty.apply (Ty.path "*mut") [] [ T ]
+                                                            ],
+                                                          M.get_function (|
+                                                            "core::slice::sort::shared::smallsort::merge_up",
+                                                            [],
+                                                            [ T; F ]
+                                                          |),
+                                                          [
+                                                            M.read (| left |);
+                                                            M.read (| right |);
+                                                            M.read (| dst |);
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| is_less |) |)
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      |),
+                                                      [
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            (let γ0_0 :=
+                                                              M.SubPointer.get_tuple_field (|
+                                                                γ,
+                                                                0
+                                                              |) in
+                                                            let γ0_1 :=
+                                                              M.SubPointer.get_tuple_field (|
+                                                                γ,
+                                                                1
+                                                              |) in
+                                                            let γ0_2 :=
+                                                              M.SubPointer.get_tuple_field (|
+                                                                γ,
+                                                                2
+                                                              |) in
+                                                            let lhs :=
+                                                              M.copy (|
+                                                                Ty.apply
+                                                                  (Ty.path "*const")
+                                                                  []
+                                                                  [ T ],
+                                                                γ0_0
+                                                              |) in
+                                                            let lhs :=
+                                                              M.copy (|
+                                                                Ty.apply
+                                                                  (Ty.path "*const")
+                                                                  []
+                                                                  [ T ],
+                                                                γ0_1
+                                                              |) in
+                                                            let lhs :=
+                                                              M.copy (|
+                                                                Ty.apply (Ty.path "*mut") [] [ T ],
+                                                                γ0_2
+                                                              |) in
+                                                            M.read (|
+                                                              let~ _ : Ty.tuple [] :=
+                                                                M.write (|
+                                                                  left,
+                                                                  M.read (| lhs |)
+                                                                |) in
+                                                              let~ _ : Ty.tuple [] :=
+                                                                M.write (|
+                                                                  right,
+                                                                  M.read (| lhs |)
+                                                                |) in
+                                                              let~ _ : Ty.tuple [] :=
+                                                                M.write (|
+                                                                  dst,
+                                                                  M.read (| lhs |)
+                                                                |) in
+                                                              M.alloc (|
+                                                                Ty.tuple [],
+                                                                Value.Tuple []
+                                                              |)
+                                                            |)))
+                                                      ]
+                                                    |) in
+                                                  let~ _ : Ty.tuple [] :=
+                                                    M.match_operator (|
+                                                      Ty.tuple [],
+                                                      M.alloc (|
                                                         Ty.tuple
                                                           [
                                                             Ty.apply (Ty.path "*const") [] [ T ];
                                                             Ty.apply (Ty.path "*const") [] [ T ];
                                                             Ty.apply (Ty.path "*mut") [] [ T ]
                                                           ],
-                                                        M.get_function (|
-                                                          "core::slice::sort::shared::smallsort::merge_down",
-                                                          [],
-                                                          [ T; F ]
-                                                        |),
-                                                        [
-                                                          M.read (| left_rev |);
-                                                          M.read (| right_rev |);
-                                                          M.read (| dst_rev |);
-                                                          M.borrow (|
-                                                            Pointer.Kind.MutRef,
-                                                            M.deref (| M.read (| is_less |) |)
-                                                          |)
-                                                        ]
-                                                      |)
-                                                    |),
-                                                    [
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ0_0 :=
-                                                            M.SubPointer.get_tuple_field (|
-                                                              γ,
-                                                              0
-                                                            |) in
-                                                          let γ0_1 :=
-                                                            M.SubPointer.get_tuple_field (|
-                                                              γ,
-                                                              1
-                                                            |) in
-                                                          let γ0_2 :=
-                                                            M.SubPointer.get_tuple_field (|
-                                                              γ,
-                                                              2
-                                                            |) in
-                                                          let lhs :=
-                                                            M.copy (|
-                                                              Ty.apply (Ty.path "*const") [] [ T ],
-                                                              γ0_0
-                                                            |) in
-                                                          let lhs :=
-                                                            M.copy (|
-                                                              Ty.apply (Ty.path "*const") [] [ T ],
-                                                              γ0_1
-                                                            |) in
-                                                          let lhs :=
-                                                            M.copy (|
-                                                              Ty.apply (Ty.path "*mut") [] [ T ],
-                                                              γ0_2
-                                                            |) in
-                                                          let~ _ : Ty.tuple [] :=
-                                                            M.write (|
-                                                              left_rev,
-                                                              M.read (| lhs |)
-                                                            |) in
-                                                          let~ _ : Ty.tuple [] :=
-                                                            M.write (|
-                                                              right_rev,
-                                                              M.read (| lhs |)
-                                                            |) in
-                                                          let~ _ : Ty.tuple [] :=
-                                                            M.write (|
-                                                              dst_rev,
-                                                              M.read (| lhs |)
-                                                            |) in
-                                                          M.alloc (|
-                                                            Ty.tuple [],
-                                                            Value.Tuple []
-                                                          |)))
-                                                    ]
-                                                  |)
-                                                |) in
-                                              M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                                        ]
-                                      |)
-                                    |) in
-                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                              |)))
-                        ]
+                                                        M.call_closure (|
+                                                          Ty.tuple
+                                                            [
+                                                              Ty.apply (Ty.path "*const") [] [ T ];
+                                                              Ty.apply (Ty.path "*const") [] [ T ];
+                                                              Ty.apply (Ty.path "*mut") [] [ T ]
+                                                            ],
+                                                          M.get_function (|
+                                                            "core::slice::sort::shared::smallsort::merge_down",
+                                                            [],
+                                                            [ T; F ]
+                                                          |),
+                                                          [
+                                                            M.read (| left_rev |);
+                                                            M.read (| right_rev |);
+                                                            M.read (| dst_rev |);
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              M.deref (| M.read (| is_less |) |)
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      |),
+                                                      [
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            (let γ0_0 :=
+                                                              M.SubPointer.get_tuple_field (|
+                                                                γ,
+                                                                0
+                                                              |) in
+                                                            let γ0_1 :=
+                                                              M.SubPointer.get_tuple_field (|
+                                                                γ,
+                                                                1
+                                                              |) in
+                                                            let γ0_2 :=
+                                                              M.SubPointer.get_tuple_field (|
+                                                                γ,
+                                                                2
+                                                              |) in
+                                                            let lhs :=
+                                                              M.copy (|
+                                                                Ty.apply
+                                                                  (Ty.path "*const")
+                                                                  []
+                                                                  [ T ],
+                                                                γ0_0
+                                                              |) in
+                                                            let lhs :=
+                                                              M.copy (|
+                                                                Ty.apply
+                                                                  (Ty.path "*const")
+                                                                  []
+                                                                  [ T ],
+                                                                γ0_1
+                                                              |) in
+                                                            let lhs :=
+                                                              M.copy (|
+                                                                Ty.apply (Ty.path "*mut") [] [ T ],
+                                                                γ0_2
+                                                              |) in
+                                                            M.read (|
+                                                              let~ _ : Ty.tuple [] :=
+                                                                M.write (|
+                                                                  left_rev,
+                                                                  M.read (| lhs |)
+                                                                |) in
+                                                              let~ _ : Ty.tuple [] :=
+                                                                M.write (|
+                                                                  right_rev,
+                                                                  M.read (| lhs |)
+                                                                |) in
+                                                              let~ _ : Ty.tuple [] :=
+                                                                M.write (|
+                                                                  dst_rev,
+                                                                  M.read (| lhs |)
+                                                                |) in
+                                                              M.alloc (|
+                                                                Ty.tuple [],
+                                                                Value.Tuple []
+                                                              |)
+                                                            |)))
+                                                      ]
+                                                    |) in
+                                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                                                |)))
+                                          ]
+                                        |) in
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)))
+                                  |)
+                                |)))
+                          ]
+                        |)
                       |))
                   |) in
                 let~ left_end : Ty.apply (Ty.path "*const") [] [ T ] :=
@@ -6854,32 +6713,32 @@ Module slice.
                     [ M.read (| right_rev |); Value.Integer IntegerKind.Usize 1 ]
                   |) in
                 let~ _ : Ty.tuple [] :=
-                  M.read (|
-                    M.match_operator (|
-                      Ty.tuple [],
-                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
+                  M.match_operator (|
+                    Ty.tuple [],
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ :=
+                            M.use
+                              (M.alloc (|
+                                Ty.path "bool",
+                                M.call_closure (|
                                   Ty.path "bool",
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    BinOp.ne,
-                                    [
-                                      M.call_closure (|
-                                        Ty.path "usize",
-                                        BinOp.Wrap.rem,
-                                        [ M.read (| len |); Value.Integer IntegerKind.Usize 2 ]
-                                      |);
-                                      Value.Integer IntegerKind.Usize 0
-                                    ]
-                                  |)
-                                |)) in
-                            let _ :=
-                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                                  BinOp.ne,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      BinOp.Wrap.rem,
+                                      [ M.read (| len |); Value.Integer IntegerKind.Usize 2 ]
+                                    |);
+                                    Value.Integer IntegerKind.Usize 0
+                                  ]
+                                |)
+                              |)) in
+                          let _ :=
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          M.read (|
                             let~ left_nonempty : Ty.path "bool" :=
                               M.call_closure (|
                                 Ty.path "bool",
@@ -6887,23 +6746,21 @@ Module slice.
                                 [ M.read (| left |); M.read (| left_end |) ]
                               |) in
                             let~ last_src : Ty.apply (Ty.path "*const") [] [ T ] :=
-                              M.read (|
-                                M.match_operator (|
-                                  Ty.apply (Ty.path "*const") [] [ T ],
-                                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let γ := M.use left_nonempty in
-                                        let _ :=
-                                          is_constant_or_break_match (|
-                                            M.read (| γ |),
-                                            Value.Bool true
-                                          |) in
-                                        left));
-                                    fun γ => ltac:(M.monadic right)
-                                  ]
-                                |)
+                              M.match_operator (|
+                                Ty.apply (Ty.path "*const") [] [ T ],
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ := M.use left_nonempty in
+                                      let _ :=
+                                        is_constant_or_break_match (|
+                                          M.read (| γ |),
+                                          Value.Bool true
+                                        |) in
+                                      M.read (| left |)));
+                                  fun γ => ltac:(M.monadic (M.read (| right |)))
+                                ]
                               |) in
                             let~ _ : Ty.tuple [] :=
                               M.call_closure (|
@@ -6955,38 +6812,39 @@ Module slice.
                                   ]
                                 |)
                               |) in
-                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                      ]
-                    |)
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                          |)));
+                      fun γ => ltac:(M.monadic (Value.Tuple []))
+                    ]
                   |) in
-                M.match_operator (|
+                M.alloc (|
                   Ty.tuple [],
-                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ :=
-                          M.use
-                            (M.alloc (|
-                              Ty.path "bool",
-                              LogicalOp.or (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  BinOp.ne,
-                                  [ M.read (| left |); M.read (| left_end |) ]
-                                |),
-                                ltac:(M.monadic
-                                  (M.call_closure (|
+                  M.match_operator (|
+                    Ty.tuple [],
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ :=
+                            M.use
+                              (M.alloc (|
+                                Ty.path "bool",
+                                LogicalOp.or (|
+                                  M.call_closure (|
                                     Ty.path "bool",
                                     BinOp.ne,
-                                    [ M.read (| right |); M.read (| right_end |) ]
-                                  |)))
-                              |)
-                            |)) in
-                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        M.alloc (|
-                          Ty.tuple [],
+                                    [ M.read (| left |); M.read (| left_end |) ]
+                                  |),
+                                  ltac:(M.monadic
+                                    (M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.ne,
+                                      [ M.read (| right |); M.read (| right_end |) ]
+                                    |)))
+                                |)
+                              |)) in
+                          let _ :=
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.never_to_any (|
                             M.call_closure (|
                               Ty.path "never",
@@ -6997,10 +6855,10 @@ Module slice.
                               |),
                               []
                             |)
-                          |)
-                        |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                  ]
+                          |)));
+                      fun γ => ltac:(M.monadic (Value.Tuple []))
+                    ]
+                  |)
                 |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"

@@ -454,20 +454,18 @@ Module result.
                 ],
               self
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.tuple [],
-              Value.DeclaredButUndefined,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (M.match_operator (|
-                      Ty.tuple [],
-                      Value.DeclaredButUndefined,
-                      [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
-                    |)))
-              ]
-            |)
+          M.match_operator (|
+            Ty.tuple [],
+            Value.DeclaredButUndefined,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (M.match_operator (|
+                    Ty.tuple [],
+                    Value.DeclaredButUndefined,
+                    [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -565,65 +563,141 @@ Module result.
                 ],
               self
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply
-                (Ty.path "revm_context_interface::result::ExecutionResult")
-                []
-                [ HaltReasonT ],
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::ExecutionResult::Success",
-                        "reason"
-                      |) in
-                    let γ1_1 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::ExecutionResult::Success",
-                        "gas_used"
-                      |) in
-                    let γ1_2 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::ExecutionResult::Success",
-                        "gas_refunded"
-                      |) in
-                    let γ1_3 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::ExecutionResult::Success",
-                        "logs"
-                      |) in
-                    let γ1_4 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::ExecutionResult::Success",
-                        "output"
-                      |) in
-                    let __self_0 :=
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [ Ty.path "revm_context_interface::result::SuccessReason" ],
-                        γ1_0
-                      |) in
-                    let __self_1 :=
-                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_1 |) in
-                    let __self_2 :=
-                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_2 |) in
-                    let __self_3 :=
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [
+          M.match_operator (|
+            Ty.apply (Ty.path "revm_context_interface::result::ExecutionResult") [] [ HaltReasonT ],
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::ExecutionResult::Success",
+                      "reason"
+                    |) in
+                  let γ1_1 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::ExecutionResult::Success",
+                      "gas_used"
+                    |) in
+                  let γ1_2 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::ExecutionResult::Success",
+                      "gas_refunded"
+                    |) in
+                  let γ1_3 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::ExecutionResult::Success",
+                      "logs"
+                    |) in
+                  let γ1_4 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::ExecutionResult::Success",
+                      "output"
+                    |) in
+                  let __self_0 :=
+                    M.alloc (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.path "revm_context_interface::result::SuccessReason" ],
+                      γ1_0
+                    |) in
+                  let __self_1 := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_1 |) in
+                  let __self_2 := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_2 |) in
+                  let __self_3 :=
+                    M.alloc (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloy_primitives::log::Log")
+                                []
+                                [ Ty.path "alloy_primitives::log::LogData" ];
+                              Ty.path "alloc::alloc::Global"
+                            ]
+                        ],
+                      γ1_3
+                    |) in
+                  let __self_4 :=
+                    M.alloc (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.path "revm_context_interface::result::Output" ],
+                      γ1_4
+                    |) in
+                  Value.mkStructRecord
+                    "revm_context_interface::result::ExecutionResult::Success"
+                    []
+                    [ HaltReasonT ]
+                    [
+                      ("reason",
+                        M.call_closure (|
+                          Ty.path "revm_context_interface::result::SuccessReason",
+                          M.get_trait_method (|
+                            "core::clone::Clone",
+                            Ty.path "revm_context_interface::result::SuccessReason",
+                            [],
+                            [],
+                            "clone",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
+                        |));
+                      ("gas_used",
+                        M.call_closure (|
+                          Ty.path "u64",
+                          M.get_trait_method (|
+                            "core::clone::Clone",
+                            Ty.path "u64",
+                            [],
+                            [],
+                            "clone",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |) ]
+                        |));
+                      ("gas_refunded",
+                        M.call_closure (|
+                          Ty.path "u64",
+                          M.get_trait_method (|
+                            "core::clone::Clone",
+                            Ty.path "u64",
+                            [],
+                            [],
+                            "clone",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_2 |) |) |) ]
+                        |));
+                      ("logs",
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloy_primitives::log::Log")
+                                []
+                                [ Ty.path "alloy_primitives::log::LogData" ];
+                              Ty.path "alloc::alloc::Global"
+                            ],
+                          M.get_trait_method (|
+                            "core::clone::Clone",
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
                               []
@@ -633,249 +707,137 @@ Module result.
                                   []
                                   [ Ty.path "alloy_primitives::log::LogData" ];
                                 Ty.path "alloc::alloc::Global"
-                              ]
-                          ],
-                        γ1_3
-                      |) in
-                    let __self_4 :=
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [ Ty.path "revm_context_interface::result::Output" ],
-                        γ1_4
-                      |) in
+                              ],
+                            [],
+                            [],
+                            "clone",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_3 |) |) |) ]
+                        |));
+                      ("output",
+                        M.call_closure (|
+                          Ty.path "revm_context_interface::result::Output",
+                          M.get_trait_method (|
+                            "core::clone::Clone",
+                            Ty.path "revm_context_interface::result::Output",
+                            [],
+                            [],
+                            "clone",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_4 |) |) |) ]
+                        |))
+                    ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::ExecutionResult::Revert",
+                      "gas_used"
+                    |) in
+                  let γ1_1 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::ExecutionResult::Revert",
+                      "output"
+                    |) in
+                  let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
+                  let __self_1 :=
                     M.alloc (|
-                      Ty.apply
-                        (Ty.path "revm_context_interface::result::ExecutionResult")
-                        []
-                        [ HaltReasonT ],
-                      Value.mkStructRecord
-                        "revm_context_interface::result::ExecutionResult::Success"
-                        []
-                        [ HaltReasonT ]
-                        [
-                          ("reason",
-                            M.call_closure (|
-                              Ty.path "revm_context_interface::result::SuccessReason",
-                              M.get_trait_method (|
-                                "core::clone::Clone",
-                                Ty.path "revm_context_interface::result::SuccessReason",
-                                [],
-                                [],
-                                "clone",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |)
-                              ]
-                            |));
-                          ("gas_used",
-                            M.call_closure (|
-                              Ty.path "u64",
-                              M.get_trait_method (|
-                                "core::clone::Clone",
-                                Ty.path "u64",
-                                [],
-                                [],
-                                "clone",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |)
-                              ]
-                            |));
-                          ("gas_refunded",
-                            M.call_closure (|
-                              Ty.path "u64",
-                              M.get_trait_method (|
-                                "core::clone::Clone",
-                                Ty.path "u64",
-                                [],
-                                [],
-                                "clone",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_2 |) |) |)
-                              ]
-                            |));
-                          ("logs",
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "alloc::vec::Vec")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "alloy_primitives::log::Log")
-                                    []
-                                    [ Ty.path "alloy_primitives::log::LogData" ];
-                                  Ty.path "alloc::alloc::Global"
-                                ],
-                              M.get_trait_method (|
-                                "core::clone::Clone",
-                                Ty.apply
-                                  (Ty.path "alloc::vec::Vec")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "alloy_primitives::log::Log")
-                                      []
-                                      [ Ty.path "alloy_primitives::log::LogData" ];
-                                    Ty.path "alloc::alloc::Global"
-                                  ],
-                                [],
-                                [],
-                                "clone",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_3 |) |) |)
-                              ]
-                            |));
-                          ("output",
-                            M.call_closure (|
-                              Ty.path "revm_context_interface::result::Output",
-                              M.get_trait_method (|
-                                "core::clone::Clone",
-                                Ty.path "revm_context_interface::result::Output",
-                                [],
-                                [],
-                                "clone",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_4 |) |) |)
-                              ]
-                            |))
-                        ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::ExecutionResult::Revert",
-                        "gas_used"
-                      |) in
-                    let γ1_1 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::ExecutionResult::Revert",
-                        "output"
-                      |) in
-                    let __self_0 :=
-                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
-                    let __self_1 :=
-                      M.alloc (|
-                        Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-                        γ1_1
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "revm_context_interface::result::ExecutionResult")
-                        []
-                        [ HaltReasonT ],
-                      Value.mkStructRecord
-                        "revm_context_interface::result::ExecutionResult::Revert"
-                        []
-                        [ HaltReasonT ]
-                        [
-                          ("gas_used",
-                            M.call_closure (|
-                              Ty.path "u64",
-                              M.get_trait_method (|
-                                "core::clone::Clone",
-                                Ty.path "u64",
-                                [],
-                                [],
-                                "clone",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |)
-                              ]
-                            |));
-                          ("output",
-                            M.call_closure (|
-                              Ty.path "alloy_primitives::bytes_::Bytes",
-                              M.get_trait_method (|
-                                "core::clone::Clone",
-                                Ty.path "alloy_primitives::bytes_::Bytes",
-                                [],
-                                [],
-                                "clone",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |)
-                              ]
-                            |))
-                        ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::ExecutionResult::Halt",
-                        "reason"
-                      |) in
-                    let γ1_1 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::ExecutionResult::Halt",
-                        "gas_used"
-                      |) in
-                    let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ HaltReasonT ], γ1_0 |) in
-                    let __self_1 :=
-                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_1 |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "revm_context_interface::result::ExecutionResult")
-                        []
-                        [ HaltReasonT ],
-                      Value.mkStructRecord
-                        "revm_context_interface::result::ExecutionResult::Halt"
-                        []
-                        [ HaltReasonT ]
-                        [
-                          ("reason",
-                            M.call_closure (|
-                              HaltReasonT,
-                              M.get_trait_method (|
-                                "core::clone::Clone",
-                                HaltReasonT,
-                                [],
-                                [],
-                                "clone",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |)
-                              ]
-                            |));
-                          ("gas_used",
-                            M.call_closure (|
-                              Ty.path "u64",
-                              M.get_trait_method (|
-                                "core::clone::Clone",
-                                Ty.path "u64",
-                                [],
-                                [],
-                                "clone",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |)
-                              ]
-                            |))
-                        ]
-                    |)))
-              ]
-            |)
+                      Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                      γ1_1
+                    |) in
+                  Value.mkStructRecord
+                    "revm_context_interface::result::ExecutionResult::Revert"
+                    []
+                    [ HaltReasonT ]
+                    [
+                      ("gas_used",
+                        M.call_closure (|
+                          Ty.path "u64",
+                          M.get_trait_method (|
+                            "core::clone::Clone",
+                            Ty.path "u64",
+                            [],
+                            [],
+                            "clone",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
+                        |));
+                      ("output",
+                        M.call_closure (|
+                          Ty.path "alloy_primitives::bytes_::Bytes",
+                          M.get_trait_method (|
+                            "core::clone::Clone",
+                            Ty.path "alloy_primitives::bytes_::Bytes",
+                            [],
+                            [],
+                            "clone",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |) ]
+                        |))
+                    ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::ExecutionResult::Halt",
+                      "reason"
+                    |) in
+                  let γ1_1 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::ExecutionResult::Halt",
+                      "gas_used"
+                    |) in
+                  let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ HaltReasonT ], γ1_0 |) in
+                  let __self_1 := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_1 |) in
+                  Value.mkStructRecord
+                    "revm_context_interface::result::ExecutionResult::Halt"
+                    []
+                    [ HaltReasonT ]
+                    [
+                      ("reason",
+                        M.call_closure (|
+                          HaltReasonT,
+                          M.get_trait_method (|
+                            "core::clone::Clone",
+                            HaltReasonT,
+                            [],
+                            [],
+                            "clone",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
+                        |));
+                      ("gas_used",
+                        M.call_closure (|
+                          Ty.path "u64",
+                          M.get_trait_method (|
+                            "core::clone::Clone",
+                            Ty.path "u64",
+                            [],
+                            [],
+                            "clone",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |) ]
+                        |))
+                    ]))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -915,242 +877,215 @@ Module result.
             |) in
           let f :=
             M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::ExecutionResult::Success",
-                        "reason"
-                      |) in
-                    let γ1_1 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::ExecutionResult::Success",
-                        "gas_used"
-                      |) in
-                    let γ1_2 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::ExecutionResult::Success",
-                        "gas_refunded"
-                      |) in
-                    let γ1_3 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::ExecutionResult::Success",
-                        "logs"
-                      |) in
-                    let γ1_4 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::ExecutionResult::Success",
-                        "output"
-                      |) in
-                    let __self_0 :=
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [ Ty.path "revm_context_interface::result::SuccessReason" ],
-                        γ1_0
-                      |) in
-                    let __self_1 :=
-                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_1 |) in
-                    let __self_2 :=
-                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_2 |) in
-                    let __self_3 :=
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "alloc::vec::Vec")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "alloy_primitives::log::Log")
-                                  []
-                                  [ Ty.path "alloy_primitives::log::LogData" ];
-                                Ty.path "alloc::alloc::Global"
-                              ]
-                          ],
-                        γ1_3
-                      |) in
-                    let __self_4 :=
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [ Ty.path "revm_context_interface::result::Output" ],
-                        γ1_4
-                      |) in
+          M.match_operator (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::ExecutionResult::Success",
+                      "reason"
+                    |) in
+                  let γ1_1 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::ExecutionResult::Success",
+                      "gas_used"
+                    |) in
+                  let γ1_2 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::ExecutionResult::Success",
+                      "gas_refunded"
+                    |) in
+                  let γ1_3 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::ExecutionResult::Success",
+                      "logs"
+                    |) in
+                  let γ1_4 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::ExecutionResult::Success",
+                      "output"
+                    |) in
+                  let __self_0 :=
                     M.alloc (|
                       Ty.apply
-                        (Ty.path "core::result::Result")
+                        (Ty.path "&")
                         []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_struct_field5_finish",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Success" |) |) |);
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "reason" |) |) |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |));
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "gas_used" |) |) |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |));
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "gas_refunded" |) |)
-                          |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_2 |) |) |));
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "logs" |) |) |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_3 |) |) |));
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "output" |) |) |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_4 |) |)
-                            |))
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::ExecutionResult::Revert",
-                        "gas_used"
-                      |) in
-                    let γ1_1 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::ExecutionResult::Revert",
-                        "output"
-                      |) in
-                    let __self_0 :=
-                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
-                    let __self_1 :=
-                      M.alloc (|
-                        Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-                        γ1_1
-                      |) in
+                        [ Ty.path "revm_context_interface::result::SuccessReason" ],
+                      γ1_0
+                    |) in
+                  let __self_1 := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_1 |) in
+                  let __self_2 := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_2 |) in
+                  let __self_3 :=
                     M.alloc (|
                       Ty.apply
-                        (Ty.path "core::result::Result")
+                        (Ty.path "&")
                         []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_struct_field2_finish",
-                          [],
-                          []
-                        |),
                         [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Revert" |) |) |);
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "gas_used" |) |) |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |));
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "output" |) |) |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_1 |) |)
-                            |))
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::ExecutionResult::Halt",
-                        "reason"
-                      |) in
-                    let γ1_1 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::ExecutionResult::Halt",
-                        "gas_used"
-                      |) in
-                    let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ HaltReasonT ], γ1_0 |) in
-                    let __self_1 :=
-                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_1 |) in
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloy_primitives::log::Log")
+                                []
+                                [ Ty.path "alloy_primitives::log::LogData" ];
+                              Ty.path "alloc::alloc::Global"
+                            ]
+                        ],
+                      γ1_3
+                    |) in
+                  let __self_4 :=
                     M.alloc (|
                       Ty.apply
-                        (Ty.path "core::result::Result")
+                        (Ty.path "&")
                         []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_struct_field2_finish",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Halt" |) |) |);
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "reason" |) |) |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |));
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "gas_used" |) |) |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_1 |) |)
-                            |))
-                        ]
-                      |)
-                    |)))
-              ]
-            |)
+                        [ Ty.path "revm_context_interface::result::Output" ],
+                      γ1_4
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "debug_struct_field5_finish",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Success" |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "reason" |) |) |);
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |));
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "gas_used" |) |) |);
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |));
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "gas_refunded" |) |) |);
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_2 |) |) |));
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "logs" |) |) |);
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_3 |) |) |));
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "output" |) |) |);
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_4 |) |)
+                        |))
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::ExecutionResult::Revert",
+                      "gas_used"
+                    |) in
+                  let γ1_1 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::ExecutionResult::Revert",
+                      "output"
+                    |) in
+                  let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
+                  let __self_1 :=
+                    M.alloc (|
+                      Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                      γ1_1
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "debug_struct_field2_finish",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Revert" |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "gas_used" |) |) |);
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |));
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "output" |) |) |);
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_1 |) |)
+                        |))
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::ExecutionResult::Halt",
+                      "reason"
+                    |) in
+                  let γ1_1 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::ExecutionResult::Halt",
+                      "gas_used"
+                    |) in
+                  let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ HaltReasonT ], γ1_0 |) in
+                  let __self_1 := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_1 |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "debug_struct_field2_finish",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Halt" |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "reason" |) |) |);
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |));
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "gas_used" |) |) |);
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_1 |) |)
+                        |))
+                    ]
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1255,477 +1190,223 @@ Module result.
                   [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
                 |),
                 ltac:(M.monadic
-                  (M.read (|
-                    M.match_operator (|
-                      Ty.path "bool",
-                      M.alloc (|
-                        Ty.tuple
-                          [
-                            Ty.apply
-                              (Ty.path "&")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "revm_context_interface::result::ExecutionResult")
-                                  []
-                                  [ HaltReasonT ]
-                              ];
-                            Ty.apply
-                              (Ty.path "&")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "revm_context_interface::result::ExecutionResult")
-                                  []
-                                  [ HaltReasonT ]
-                              ]
-                          ],
-                        Value.Tuple [ M.read (| self |); M.read (| other |) ]
-                      |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                            let γ0_0 := M.read (| γ0_0 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_0,
-                                "revm_context_interface::result::ExecutionResult::Success",
-                                "reason"
-                              |) in
-                            let γ2_1 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_0,
-                                "revm_context_interface::result::ExecutionResult::Success",
-                                "gas_used"
-                              |) in
-                            let γ2_2 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_0,
-                                "revm_context_interface::result::ExecutionResult::Success",
-                                "gas_refunded"
-                              |) in
-                            let γ2_3 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_0,
-                                "revm_context_interface::result::ExecutionResult::Success",
-                                "logs"
-                              |) in
-                            let γ2_4 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_0,
-                                "revm_context_interface::result::ExecutionResult::Success",
-                                "output"
-                              |) in
-                            let __self_0 :=
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "revm_context_interface::result::SuccessReason" ],
-                                γ2_0
-                              |) in
-                            let __self_1 :=
-                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_1 |) in
-                            let __self_2 :=
-                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_2 |) in
-                            let __self_3 :=
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "alloc::vec::Vec")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloy_primitives::log::Log")
-                                          []
-                                          [ Ty.path "alloy_primitives::log::LogData" ];
-                                        Ty.path "alloc::alloc::Global"
-                                      ]
-                                  ],
-                                γ2_3
-                              |) in
-                            let __self_4 :=
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "revm_context_interface::result::Output" ],
-                                γ2_4
-                              |) in
-                            let γ0_1 := M.read (| γ0_1 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_1,
-                                "revm_context_interface::result::ExecutionResult::Success",
-                                "reason"
-                              |) in
-                            let γ2_1 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_1,
-                                "revm_context_interface::result::ExecutionResult::Success",
-                                "gas_used"
-                              |) in
-                            let γ2_2 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_1,
-                                "revm_context_interface::result::ExecutionResult::Success",
-                                "gas_refunded"
-                              |) in
-                            let γ2_3 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_1,
-                                "revm_context_interface::result::ExecutionResult::Success",
-                                "logs"
-                              |) in
-                            let γ2_4 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_1,
-                                "revm_context_interface::result::ExecutionResult::Success",
-                                "output"
-                              |) in
-                            let __arg1_0 :=
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "revm_context_interface::result::SuccessReason" ],
-                                γ2_0
-                              |) in
-                            let __arg1_1 :=
-                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_1 |) in
-                            let __arg1_2 :=
-                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_2 |) in
-                            let __arg1_3 :=
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "alloc::vec::Vec")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloy_primitives::log::Log")
-                                          []
-                                          [ Ty.path "alloy_primitives::log::LogData" ];
-                                        Ty.path "alloc::alloc::Global"
-                                      ]
-                                  ],
-                                γ2_3
-                              |) in
-                            let __arg1_4 :=
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "revm_context_interface::result::Output" ],
-                                γ2_4
-                              |) in
+                  (M.match_operator (|
+                    Ty.path "bool",
+                    M.alloc (|
+                      Ty.tuple
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "revm_context_interface::result::ExecutionResult")
+                                []
+                                [ HaltReasonT ]
+                            ];
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "revm_context_interface::result::ExecutionResult")
+                                []
+                                [ HaltReasonT ]
+                            ]
+                        ],
+                      Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                    |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                          let γ0_0 := M.read (| γ0_0 |) in
+                          let γ2_0 :=
+                            M.SubPointer.get_struct_record_field (|
+                              γ0_0,
+                              "revm_context_interface::result::ExecutionResult::Success",
+                              "reason"
+                            |) in
+                          let γ2_1 :=
+                            M.SubPointer.get_struct_record_field (|
+                              γ0_0,
+                              "revm_context_interface::result::ExecutionResult::Success",
+                              "gas_used"
+                            |) in
+                          let γ2_2 :=
+                            M.SubPointer.get_struct_record_field (|
+                              γ0_0,
+                              "revm_context_interface::result::ExecutionResult::Success",
+                              "gas_refunded"
+                            |) in
+                          let γ2_3 :=
+                            M.SubPointer.get_struct_record_field (|
+                              γ0_0,
+                              "revm_context_interface::result::ExecutionResult::Success",
+                              "logs"
+                            |) in
+                          let γ2_4 :=
+                            M.SubPointer.get_struct_record_field (|
+                              γ0_0,
+                              "revm_context_interface::result::ExecutionResult::Success",
+                              "output"
+                            |) in
+                          let __self_0 :=
                             M.alloc (|
-                              Ty.path "bool",
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "revm_context_interface::result::SuccessReason" ],
+                              γ2_0
+                            |) in
+                          let __self_1 :=
+                            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_1 |) in
+                          let __self_2 :=
+                            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_2 |) in
+                          let __self_3 :=
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::vec::Vec")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloy_primitives::log::Log")
+                                        []
+                                        [ Ty.path "alloy_primitives::log::LogData" ];
+                                      Ty.path "alloc::alloc::Global"
+                                    ]
+                                ],
+                              γ2_3
+                            |) in
+                          let __self_4 :=
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "revm_context_interface::result::Output" ],
+                              γ2_4
+                            |) in
+                          let γ0_1 := M.read (| γ0_1 |) in
+                          let γ2_0 :=
+                            M.SubPointer.get_struct_record_field (|
+                              γ0_1,
+                              "revm_context_interface::result::ExecutionResult::Success",
+                              "reason"
+                            |) in
+                          let γ2_1 :=
+                            M.SubPointer.get_struct_record_field (|
+                              γ0_1,
+                              "revm_context_interface::result::ExecutionResult::Success",
+                              "gas_used"
+                            |) in
+                          let γ2_2 :=
+                            M.SubPointer.get_struct_record_field (|
+                              γ0_1,
+                              "revm_context_interface::result::ExecutionResult::Success",
+                              "gas_refunded"
+                            |) in
+                          let γ2_3 :=
+                            M.SubPointer.get_struct_record_field (|
+                              γ0_1,
+                              "revm_context_interface::result::ExecutionResult::Success",
+                              "logs"
+                            |) in
+                          let γ2_4 :=
+                            M.SubPointer.get_struct_record_field (|
+                              γ0_1,
+                              "revm_context_interface::result::ExecutionResult::Success",
+                              "output"
+                            |) in
+                          let __arg1_0 :=
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "revm_context_interface::result::SuccessReason" ],
+                              γ2_0
+                            |) in
+                          let __arg1_1 :=
+                            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_1 |) in
+                          let __arg1_2 :=
+                            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_2 |) in
+                          let __arg1_3 :=
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::vec::Vec")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloy_primitives::log::Log")
+                                        []
+                                        [ Ty.path "alloy_primitives::log::LogData" ];
+                                      Ty.path "alloc::alloc::Global"
+                                    ]
+                                ],
+                              γ2_3
+                            |) in
+                          let __arg1_4 :=
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "revm_context_interface::result::Output" ],
+                              γ2_4
+                            |) in
+                          LogicalOp.and (|
+                            LogicalOp.and (|
                               LogicalOp.and (|
                                 LogicalOp.and (|
-                                  LogicalOp.and (|
-                                    LogicalOp.and (|
-                                      M.call_closure (|
-                                        Ty.path "bool",
-                                        M.get_trait_method (|
-                                          "core::cmp::PartialEq",
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.path
-                                                "revm_context_interface::result::SuccessReason"
-                                            ],
-                                          [],
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [
-                                                Ty.path
-                                                  "revm_context_interface::result::SuccessReason"
-                                              ]
-                                          ],
-                                          "eq",
-                                          [],
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    M.get_trait_method (|
+                                      "core::cmp::PartialEq",
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.path "revm_context_interface::result::SuccessReason" ],
+                                      [],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
                                           []
-                                        |),
-                                        [
-                                          M.borrow (| Pointer.Kind.Ref, __self_0 |);
-                                          M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
-                                        ]
-                                      |),
-                                      ltac:(M.monadic
-                                        (M.call_closure (|
-                                          Ty.path "bool",
-                                          M.get_trait_method (|
-                                            "core::cmp::PartialEq",
-                                            Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
-                                            [],
-                                            [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
-                                            "eq",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (| Pointer.Kind.Ref, __self_1 |);
-                                            M.borrow (| Pointer.Kind.Ref, __arg1_1 |)
+                                          [ Ty.path "revm_context_interface::result::SuccessReason"
                                           ]
-                                        |)))
+                                      ],
+                                      "eq",
+                                      [],
+                                      []
                                     |),
-                                    ltac:(M.monadic
-                                      (M.call_closure (|
-                                        Ty.path "bool",
-                                        M.get_trait_method (|
-                                          "core::cmp::PartialEq",
-                                          Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
-                                          [],
-                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
-                                          "eq",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (| Pointer.Kind.Ref, __self_2 |);
-                                          M.borrow (| Pointer.Kind.Ref, __arg1_2 |)
-                                        ]
-                                      |)))
+                                    [
+                                      M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                      M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                    ]
                                   |),
                                   ltac:(M.monadic
                                     (M.call_closure (|
                                       Ty.path "bool",
                                       M.get_trait_method (|
                                         "core::cmp::PartialEq",
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "alloc::vec::Vec")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "alloy_primitives::log::Log")
-                                                  []
-                                                  [ Ty.path "alloy_primitives::log::LogData" ];
-                                                Ty.path "alloc::alloc::Global"
-                                              ]
-                                          ],
+                                        Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
                                         [],
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "alloc::vec::Vec")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "alloy_primitives::log::Log")
-                                                    []
-                                                    [ Ty.path "alloy_primitives::log::LogData" ];
-                                                  Ty.path "alloc::alloc::Global"
-                                                ]
-                                            ]
-                                        ],
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
                                         "eq",
                                         [],
                                         []
                                       |),
                                       [
-                                        M.borrow (| Pointer.Kind.Ref, __self_3 |);
-                                        M.borrow (| Pointer.Kind.Ref, __arg1_3 |)
+                                        M.borrow (| Pointer.Kind.Ref, __self_1 |);
+                                        M.borrow (| Pointer.Kind.Ref, __arg1_1 |)
                                       ]
                                     |)))
-                                |),
-                                ltac:(M.monadic
-                                  (M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_trait_method (|
-                                      "core::cmp::PartialEq",
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.path "revm_context_interface::result::Output" ],
-                                      [],
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.path "revm_context_interface::result::Output" ]
-                                      ],
-                                      "eq",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (| Pointer.Kind.Ref, __self_4 |);
-                                      M.borrow (| Pointer.Kind.Ref, __arg1_4 |)
-                                    ]
-                                  |)))
-                              |)
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                            let γ0_0 := M.read (| γ0_0 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_0,
-                                "revm_context_interface::result::ExecutionResult::Revert",
-                                "gas_used"
-                              |) in
-                            let γ2_1 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_0,
-                                "revm_context_interface::result::ExecutionResult::Revert",
-                                "output"
-                              |) in
-                            let __self_0 :=
-                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_0 |) in
-                            let __self_1 :=
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-                                γ2_1
-                              |) in
-                            let γ0_1 := M.read (| γ0_1 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_1,
-                                "revm_context_interface::result::ExecutionResult::Revert",
-                                "gas_used"
-                              |) in
-                            let γ2_1 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_1,
-                                "revm_context_interface::result::ExecutionResult::Revert",
-                                "output"
-                              |) in
-                            let __arg1_0 :=
-                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_0 |) in
-                            let __arg1_1 :=
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-                                γ2_1
-                              |) in
-                            M.alloc (|
-                              Ty.path "bool",
-                              LogicalOp.and (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_trait_method (|
-                                    "core::cmp::PartialEq",
-                                    Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
-                                    [],
-                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
-                                    "eq",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (| Pointer.Kind.Ref, __self_0 |);
-                                    M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
-                                  ]
-                                |),
-                                ltac:(M.monadic
-                                  (M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_trait_method (|
-                                      "core::cmp::PartialEq",
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-                                      [],
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.path "alloy_primitives::bytes_::Bytes" ]
-                                      ],
-                                      "eq",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (| Pointer.Kind.Ref, __self_1 |);
-                                      M.borrow (| Pointer.Kind.Ref, __arg1_1 |)
-                                    ]
-                                  |)))
-                              |)
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                            let γ0_0 := M.read (| γ0_0 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_0,
-                                "revm_context_interface::result::ExecutionResult::Halt",
-                                "reason"
-                              |) in
-                            let γ2_1 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_0,
-                                "revm_context_interface::result::ExecutionResult::Halt",
-                                "gas_used"
-                              |) in
-                            let __self_0 :=
-                              M.alloc (| Ty.apply (Ty.path "&") [] [ HaltReasonT ], γ2_0 |) in
-                            let __self_1 :=
-                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_1 |) in
-                            let γ0_1 := M.read (| γ0_1 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_1,
-                                "revm_context_interface::result::ExecutionResult::Halt",
-                                "reason"
-                              |) in
-                            let γ2_1 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_1,
-                                "revm_context_interface::result::ExecutionResult::Halt",
-                                "gas_used"
-                              |) in
-                            let __arg1_0 :=
-                              M.alloc (| Ty.apply (Ty.path "&") [] [ HaltReasonT ], γ2_0 |) in
-                            let __arg1_1 :=
-                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_1 |) in
-                            M.alloc (|
-                              Ty.path "bool",
-                              LogicalOp.and (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_trait_method (|
-                                    "core::cmp::PartialEq",
-                                    Ty.apply (Ty.path "&") [] [ HaltReasonT ],
-                                    [],
-                                    [ Ty.apply (Ty.path "&") [] [ HaltReasonT ] ],
-                                    "eq",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (| Pointer.Kind.Ref, __self_0 |);
-                                    M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
-                                  ]
                                 |),
                                 ltac:(M.monadic
                                   (M.call_closure (|
@@ -1740,26 +1421,261 @@ Module result.
                                       []
                                     |),
                                     [
-                                      M.borrow (| Pointer.Kind.Ref, __self_1 |);
-                                      M.borrow (| Pointer.Kind.Ref, __arg1_1 |)
+                                      M.borrow (| Pointer.Kind.Ref, __self_2 |);
+                                      M.borrow (| Pointer.Kind.Ref, __arg1_2 |)
                                     ]
                                   |)))
-                              |)
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.alloc (|
-                              Ty.path "bool",
-                              M.never_to_any (|
-                                M.call_closure (|
-                                  Ty.path "never",
-                                  M.get_function (| "core::intrinsics::unreachable", [], [] |),
+                              |),
+                              ltac:(M.monadic
+                                (M.call_closure (|
+                                  Ty.path "bool",
+                                  M.get_trait_method (|
+                                    "core::cmp::PartialEq",
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "alloc::vec::Vec")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloy_primitives::log::Log")
+                                              []
+                                              [ Ty.path "alloy_primitives::log::LogData" ];
+                                            Ty.path "alloc::alloc::Global"
+                                          ]
+                                      ],
+                                    [],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "alloy_primitives::log::Log")
+                                                []
+                                                [ Ty.path "alloy_primitives::log::LogData" ];
+                                              Ty.path "alloc::alloc::Global"
+                                            ]
+                                        ]
+                                    ],
+                                    "eq",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (| Pointer.Kind.Ref, __self_3 |);
+                                    M.borrow (| Pointer.Kind.Ref, __arg1_3 |)
+                                  ]
+                                |)))
+                            |),
+                            ltac:(M.monadic
+                              (M.call_closure (|
+                                Ty.path "bool",
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "revm_context_interface::result::Output" ],
+                                  [],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "revm_context_interface::result::Output" ]
+                                  ],
+                                  "eq",
+                                  [],
                                   []
-                                |)
-                              |)
-                            |)))
-                      ]
-                    |)
+                                |),
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_4 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_4 |)
+                                ]
+                              |)))
+                          |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                          let γ0_0 := M.read (| γ0_0 |) in
+                          let γ2_0 :=
+                            M.SubPointer.get_struct_record_field (|
+                              γ0_0,
+                              "revm_context_interface::result::ExecutionResult::Revert",
+                              "gas_used"
+                            |) in
+                          let γ2_1 :=
+                            M.SubPointer.get_struct_record_field (|
+                              γ0_0,
+                              "revm_context_interface::result::ExecutionResult::Revert",
+                              "output"
+                            |) in
+                          let __self_0 :=
+                            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_0 |) in
+                          let __self_1 :=
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                              γ2_1
+                            |) in
+                          let γ0_1 := M.read (| γ0_1 |) in
+                          let γ2_0 :=
+                            M.SubPointer.get_struct_record_field (|
+                              γ0_1,
+                              "revm_context_interface::result::ExecutionResult::Revert",
+                              "gas_used"
+                            |) in
+                          let γ2_1 :=
+                            M.SubPointer.get_struct_record_field (|
+                              γ0_1,
+                              "revm_context_interface::result::ExecutionResult::Revert",
+                              "output"
+                            |) in
+                          let __arg1_0 :=
+                            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_0 |) in
+                          let __arg1_1 :=
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                              γ2_1
+                            |) in
+                          LogicalOp.and (|
+                            M.call_closure (|
+                              Ty.path "bool",
+                              M.get_trait_method (|
+                                "core::cmp::PartialEq",
+                                Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
+                                [],
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
+                                "eq",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                              ]
+                            |),
+                            ltac:(M.monadic
+                              (M.call_closure (|
+                                Ty.path "bool",
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                                  [],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "alloy_primitives::bytes_::Bytes" ]
+                                  ],
+                                  "eq",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_1 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_1 |)
+                                ]
+                              |)))
+                          |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                          let γ0_0 := M.read (| γ0_0 |) in
+                          let γ2_0 :=
+                            M.SubPointer.get_struct_record_field (|
+                              γ0_0,
+                              "revm_context_interface::result::ExecutionResult::Halt",
+                              "reason"
+                            |) in
+                          let γ2_1 :=
+                            M.SubPointer.get_struct_record_field (|
+                              γ0_0,
+                              "revm_context_interface::result::ExecutionResult::Halt",
+                              "gas_used"
+                            |) in
+                          let __self_0 :=
+                            M.alloc (| Ty.apply (Ty.path "&") [] [ HaltReasonT ], γ2_0 |) in
+                          let __self_1 :=
+                            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_1 |) in
+                          let γ0_1 := M.read (| γ0_1 |) in
+                          let γ2_0 :=
+                            M.SubPointer.get_struct_record_field (|
+                              γ0_1,
+                              "revm_context_interface::result::ExecutionResult::Halt",
+                              "reason"
+                            |) in
+                          let γ2_1 :=
+                            M.SubPointer.get_struct_record_field (|
+                              γ0_1,
+                              "revm_context_interface::result::ExecutionResult::Halt",
+                              "gas_used"
+                            |) in
+                          let __arg1_0 :=
+                            M.alloc (| Ty.apply (Ty.path "&") [] [ HaltReasonT ], γ2_0 |) in
+                          let __arg1_1 :=
+                            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_1 |) in
+                          LogicalOp.and (|
+                            M.call_closure (|
+                              Ty.path "bool",
+                              M.get_trait_method (|
+                                "core::cmp::PartialEq",
+                                Ty.apply (Ty.path "&") [] [ HaltReasonT ],
+                                [],
+                                [ Ty.apply (Ty.path "&") [] [ HaltReasonT ] ],
+                                "eq",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                              ]
+                            |),
+                            ltac:(M.monadic
+                              (M.call_closure (|
+                                Ty.path "bool",
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
+                                  [],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
+                                  "eq",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_1 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_1 |)
+                                ]
+                              |)))
+                          |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.never_to_any (|
+                            M.call_closure (|
+                              Ty.path "never",
+                              M.get_function (| "core::intrinsics::unreachable", [], [] |),
+                              []
+                            |)
+                          |)))
+                    ]
                   |)))
               |)
             |)
@@ -1806,59 +1722,50 @@ Module result.
                 ],
               self
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.tuple [],
-              Value.DeclaredButUndefined,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (M.match_operator (|
-                      Ty.tuple [],
-                      Value.DeclaredButUndefined,
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              Ty.tuple [],
-                              Value.DeclaredButUndefined,
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (M.match_operator (|
-                                      Ty.tuple [],
-                                      Value.DeclaredButUndefined,
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (M.match_operator (|
-                                              Ty.tuple [],
-                                              Value.DeclaredButUndefined,
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (M.match_operator (|
-                                                      Ty.tuple [],
-                                                      Value.DeclaredButUndefined,
-                                                      [
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (M.alloc (|
-                                                              Ty.tuple [],
-                                                              Value.Tuple []
-                                                            |)))
-                                                      ]
-                                                    |)))
-                                              ]
-                                            |)))
-                                      ]
-                                    |)))
-                              ]
-                            |)))
-                      ]
-                    |)))
-              ]
-            |)
+          M.match_operator (|
+            Ty.tuple [],
+            Value.DeclaredButUndefined,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (M.match_operator (|
+                    Ty.tuple [],
+                    Value.DeclaredButUndefined,
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            Ty.tuple [],
+                            Value.DeclaredButUndefined,
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    Ty.tuple [],
+                                    Value.DeclaredButUndefined,
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (M.match_operator (|
+                                            Ty.tuple [],
+                                            Value.DeclaredButUndefined,
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (M.match_operator (|
+                                                    Ty.tuple [],
+                                                    Value.DeclaredButUndefined,
+                                                    [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
+                                                  |)))
+                                            ]
+                                          |)))
+                                    ]
+                                  |)))
+                            ]
+                          |)))
+                    ]
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1942,291 +1849,301 @@ Module result.
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                 ]
               |) in
-            M.match_operator (|
+            M.alloc (|
               Ty.tuple [],
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::ExecutionResult::Success",
-                        "reason"
-                      |) in
-                    let γ1_1 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::ExecutionResult::Success",
-                        "gas_used"
-                      |) in
-                    let γ1_2 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::ExecutionResult::Success",
-                        "gas_refunded"
-                      |) in
-                    let γ1_3 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::ExecutionResult::Success",
-                        "logs"
-                      |) in
-                    let γ1_4 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::ExecutionResult::Success",
-                        "output"
-                      |) in
-                    let __self_0 :=
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [ Ty.path "revm_context_interface::result::SuccessReason" ],
-                        γ1_0
-                      |) in
-                    let __self_1 :=
-                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_1 |) in
-                    let __self_2 :=
-                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_2 |) in
-                    let __self_3 :=
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "alloc::vec::Vec")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "alloy_primitives::log::Log")
-                                  []
-                                  [ Ty.path "alloy_primitives::log::LogData" ];
-                                Ty.path "alloc::alloc::Global"
-                              ]
-                          ],
-                        γ1_3
-                      |) in
-                    let __self_4 :=
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [ Ty.path "revm_context_interface::result::Output" ],
-                        γ1_4
-                      |) in
-                    let~ _ : Ty.tuple [] :=
-                      M.call_closure (|
-                        Ty.tuple [],
-                        M.get_trait_method (|
-                          "core::hash::Hash",
-                          Ty.path "revm_context_interface::result::SuccessReason",
-                          [],
-                          [],
-                          "hash",
-                          [],
-                          [ __H ]
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                        ]
-                      |) in
-                    let~ _ : Ty.tuple [] :=
-                      M.call_closure (|
-                        Ty.tuple [],
-                        M.get_trait_method (|
-                          "core::hash::Hash",
-                          Ty.path "u64",
-                          [],
-                          [],
-                          "hash",
-                          [],
-                          [ __H ]
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |);
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                        ]
-                      |) in
-                    let~ _ : Ty.tuple [] :=
-                      M.call_closure (|
-                        Ty.tuple [],
-                        M.get_trait_method (|
-                          "core::hash::Hash",
-                          Ty.path "u64",
-                          [],
-                          [],
-                          "hash",
-                          [],
-                          [ __H ]
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_2 |) |) |);
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                        ]
-                      |) in
-                    let~ _ : Ty.tuple [] :=
-                      M.call_closure (|
-                        Ty.tuple [],
-                        M.get_trait_method (|
-                          "core::hash::Hash",
+              M.match_operator (|
+                Ty.tuple [],
+                self,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let γ1_0 :=
+                        M.SubPointer.get_struct_record_field (|
+                          γ,
+                          "revm_context_interface::result::ExecutionResult::Success",
+                          "reason"
+                        |) in
+                      let γ1_1 :=
+                        M.SubPointer.get_struct_record_field (|
+                          γ,
+                          "revm_context_interface::result::ExecutionResult::Success",
+                          "gas_used"
+                        |) in
+                      let γ1_2 :=
+                        M.SubPointer.get_struct_record_field (|
+                          γ,
+                          "revm_context_interface::result::ExecutionResult::Success",
+                          "gas_refunded"
+                        |) in
+                      let γ1_3 :=
+                        M.SubPointer.get_struct_record_field (|
+                          γ,
+                          "revm_context_interface::result::ExecutionResult::Success",
+                          "logs"
+                        |) in
+                      let γ1_4 :=
+                        M.SubPointer.get_struct_record_field (|
+                          γ,
+                          "revm_context_interface::result::ExecutionResult::Success",
+                          "output"
+                        |) in
+                      let __self_0 :=
+                        M.alloc (|
                           Ty.apply
-                            (Ty.path "alloc::vec::Vec")
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "revm_context_interface::result::SuccessReason" ],
+                          γ1_0
+                        |) in
+                      let __self_1 :=
+                        M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_1 |) in
+                      let __self_2 :=
+                        M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_2 |) in
+                      let __self_3 :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
                             []
                             [
                               Ty.apply
-                                (Ty.path "alloy_primitives::log::Log")
+                                (Ty.path "alloc::vec::Vec")
                                 []
-                                [ Ty.path "alloy_primitives::log::LogData" ];
-                              Ty.path "alloc::alloc::Global"
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloy_primitives::log::Log")
+                                    []
+                                    [ Ty.path "alloy_primitives::log::LogData" ];
+                                  Ty.path "alloc::alloc::Global"
+                                ]
                             ],
-                          [],
-                          [],
-                          "hash",
-                          [],
-                          [ __H ]
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_3 |) |) |);
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                        ]
-                      |) in
-                    M.alloc (|
-                      Ty.tuple [],
-                      M.call_closure (|
-                        Ty.tuple [],
-                        M.get_trait_method (|
-                          "core::hash::Hash",
-                          Ty.path "revm_context_interface::result::Output",
-                          [],
-                          [],
-                          "hash",
-                          [],
-                          [ __H ]
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_4 |) |) |);
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::ExecutionResult::Revert",
-                        "gas_used"
-                      |) in
-                    let γ1_1 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::ExecutionResult::Revert",
-                        "output"
-                      |) in
-                    let __self_0 :=
-                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
-                    let __self_1 :=
-                      M.alloc (|
-                        Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-                        γ1_1
-                      |) in
-                    let~ _ : Ty.tuple [] :=
-                      M.call_closure (|
-                        Ty.tuple [],
-                        M.get_trait_method (|
-                          "core::hash::Hash",
-                          Ty.path "u64",
-                          [],
-                          [],
-                          "hash",
-                          [],
-                          [ __H ]
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                        ]
-                      |) in
-                    M.alloc (|
-                      Ty.tuple [],
-                      M.call_closure (|
-                        Ty.tuple [],
-                        M.get_trait_method (|
-                          "core::hash::Hash",
-                          Ty.path "alloy_primitives::bytes_::Bytes",
-                          [],
-                          [],
-                          "hash",
-                          [],
-                          [ __H ]
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |);
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::ExecutionResult::Halt",
-                        "reason"
-                      |) in
-                    let γ1_1 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::ExecutionResult::Halt",
-                        "gas_used"
-                      |) in
-                    let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ HaltReasonT ], γ1_0 |) in
-                    let __self_1 :=
-                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_1 |) in
-                    let~ _ : Ty.tuple [] :=
-                      M.call_closure (|
-                        Ty.tuple [],
-                        M.get_trait_method (|
-                          "core::hash::Hash",
-                          HaltReasonT,
-                          [],
-                          [],
-                          "hash",
-                          [],
-                          [ __H ]
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                        ]
-                      |) in
-                    M.alloc (|
-                      Ty.tuple [],
-                      M.call_closure (|
-                        Ty.tuple [],
-                        M.get_trait_method (|
-                          "core::hash::Hash",
-                          Ty.path "u64",
-                          [],
-                          [],
-                          "hash",
-                          [],
-                          [ __H ]
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |);
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                        ]
-                      |)
-                    |)))
-              ]
+                          γ1_3
+                        |) in
+                      let __self_4 :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "revm_context_interface::result::Output" ],
+                          γ1_4
+                        |) in
+                      M.read (|
+                        let~ _ : Ty.tuple [] :=
+                          M.call_closure (|
+                            Ty.tuple [],
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              Ty.path "revm_context_interface::result::SuccessReason",
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ __H ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
+                          |) in
+                        let~ _ : Ty.tuple [] :=
+                          M.call_closure (|
+                            Ty.tuple [],
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              Ty.path "u64",
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ __H ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
+                          |) in
+                        let~ _ : Ty.tuple [] :=
+                          M.call_closure (|
+                            Ty.tuple [],
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              Ty.path "u64",
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ __H ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_2 |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
+                          |) in
+                        let~ _ : Ty.tuple [] :=
+                          M.call_closure (|
+                            Ty.tuple [],
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              Ty.apply
+                                (Ty.path "alloc::vec::Vec")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloy_primitives::log::Log")
+                                    []
+                                    [ Ty.path "alloy_primitives::log::LogData" ];
+                                  Ty.path "alloc::alloc::Global"
+                                ],
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ __H ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_3 |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
+                          |) in
+                        M.alloc (|
+                          Ty.tuple [],
+                          M.call_closure (|
+                            Ty.tuple [],
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              Ty.path "revm_context_interface::result::Output",
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ __H ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_4 |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
+                          |)
+                        |)
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let γ1_0 :=
+                        M.SubPointer.get_struct_record_field (|
+                          γ,
+                          "revm_context_interface::result::ExecutionResult::Revert",
+                          "gas_used"
+                        |) in
+                      let γ1_1 :=
+                        M.SubPointer.get_struct_record_field (|
+                          γ,
+                          "revm_context_interface::result::ExecutionResult::Revert",
+                          "output"
+                        |) in
+                      let __self_0 :=
+                        M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
+                      let __self_1 :=
+                        M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                          γ1_1
+                        |) in
+                      M.read (|
+                        let~ _ : Ty.tuple [] :=
+                          M.call_closure (|
+                            Ty.tuple [],
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              Ty.path "u64",
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ __H ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
+                          |) in
+                        M.alloc (|
+                          Ty.tuple [],
+                          M.call_closure (|
+                            Ty.tuple [],
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              Ty.path "alloy_primitives::bytes_::Bytes",
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ __H ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
+                          |)
+                        |)
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let γ1_0 :=
+                        M.SubPointer.get_struct_record_field (|
+                          γ,
+                          "revm_context_interface::result::ExecutionResult::Halt",
+                          "reason"
+                        |) in
+                      let γ1_1 :=
+                        M.SubPointer.get_struct_record_field (|
+                          γ,
+                          "revm_context_interface::result::ExecutionResult::Halt",
+                          "gas_used"
+                        |) in
+                      let __self_0 :=
+                        M.alloc (| Ty.apply (Ty.path "&") [] [ HaltReasonT ], γ1_0 |) in
+                      let __self_1 :=
+                        M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_1 |) in
+                      M.read (|
+                        let~ _ : Ty.tuple [] :=
+                          M.call_closure (|
+                            Ty.tuple [],
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              HaltReasonT,
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ __H ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
+                          |) in
+                        M.alloc (|
+                          Ty.tuple [],
+                          M.call_closure (|
+                            Ty.tuple [],
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              Ty.path "u64",
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ __H ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
+                          |)
+                        |)
+                      |)))
+                ]
+              |)
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2274,23 +2191,21 @@ Module result.
                 ],
               self
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.path "bool",
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::ExecutionResult::Success"
-                      |) in
-                    M.alloc (| Ty.path "bool", Value.Bool true |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
-              ]
-            |)
+          M.match_operator (|
+            Ty.path "bool",
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::ExecutionResult::Success"
+                    |) in
+                  Value.Bool true));
+              fun γ => ltac:(M.monadic (Value.Bool false))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2332,92 +2247,78 @@ Module result.
                 ],
               self
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply
-                (Ty.path "core::option::Option")
-                []
-                [ Ty.path "alloy_primitives::bits::address::Address" ],
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::ExecutionResult::Success",
-                        "output"
-                      |) in
-                    let output :=
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [ Ty.path "revm_context_interface::result::Output" ],
-                        γ1_0
-                      |) in
+          M.match_operator (|
+            Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [ Ty.path "alloy_primitives::bits::address::Address" ],
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::ExecutionResult::Success",
+                      "output"
+                    |) in
+                  let output :=
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.path "revm_context_interface::result::Output" ],
+                      γ1_0
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.path "alloy_primitives::bits::address::Address" ],
+                    M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::option::Option")
                         []
-                        [ Ty.path "alloy_primitives::bits::address::Address" ],
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "alloy_primitives::bits::address::Address" ]
+                        ],
+                      "cloned",
+                      [],
+                      []
+                    |),
+                    [
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::option::Option")
                           []
-                          [ Ty.path "alloy_primitives::bits::address::Address" ],
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "alloy_primitives::bits::address::Address" ]
+                          ],
                         M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "core::option::Option")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.path "alloy_primitives::bits::address::Address" ]
-                            ],
-                          "cloned",
+                          Ty.path "revm_context_interface::result::Output",
+                          "address",
                           [],
                           []
                         |),
-                        [
-                          M.call_closure (|
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "alloy_primitives::bits::address::Address" ]
-                              ],
-                            M.get_associated_function (|
-                              Ty.path "revm_context_interface::result::Output",
-                              "address",
-                              [],
-                              []
-                            |),
-                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| output |) |) |) ]
-                          |)
-                        ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| output |) |) |) ]
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        []
-                        [ Ty.path "alloy_primitives::bits::address::Address" ],
-                      Value.StructTuple
-                        "core::option::Option::None"
-                        []
-                        [ Ty.path "alloy_primitives::bits::address::Address" ]
-                        []
-                    |)))
-              ]
-            |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (Value.StructTuple
+                    "core::option::Option::None"
+                    []
+                    [ Ty.path "alloy_primitives::bits::address::Address" ]
+                    []))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2456,23 +2357,21 @@ Module result.
                 ],
               self
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.path "bool",
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::ExecutionResult::Halt"
-                      |) in
-                    M.alloc (| Ty.path "bool", Value.Bool true |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
-              ]
-            |)
+          M.match_operator (|
+            Ty.path "bool",
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::ExecutionResult::Halt"
+                    |) in
+                  Value.Bool true));
+              fun γ => ltac:(M.monadic (Value.Bool false))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2515,102 +2414,78 @@ Module result.
                 ],
               self
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply
-                (Ty.path "core::option::Option")
-                []
-                [ Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ] ],
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::ExecutionResult::Success",
-                        "output"
-                      |) in
-                    let output :=
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [ Ty.path "revm_context_interface::result::Output" ],
-                        γ1_0
-                      |) in
+          M.match_operator (|
+            Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ] ],
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::ExecutionResult::Success",
+                      "output"
+                    |) in
+                  let output :=
                     M.alloc (|
                       Ty.apply
-                        (Ty.path "core::option::Option")
+                        (Ty.path "&")
                         []
-                        [ Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ] ],
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        []
-                        [ Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ] ]
-                        [
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-                                M.get_associated_function (|
-                                  Ty.path "revm_context_interface::result::Output",
-                                  "data",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| output |) |) |)
-                                ]
-                              |)
-                            |)
+                        [ Ty.path "revm_context_interface::result::Output" ],
+                      γ1_0
+                    |) in
+                  Value.StructTuple
+                    "core::option::Option::Some"
+                    []
+                    [ Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ] ]
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.call_closure (|
+                            Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                            M.get_associated_function (|
+                              Ty.path "revm_context_interface::result::Output",
+                              "data",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| output |) |) |) ]
                           |)
-                        ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::ExecutionResult::Revert",
-                        "output"
-                      |) in
-                    let output :=
-                      M.alloc (|
-                        Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-                        γ1_0
-                      |) in
+                        |)
+                      |)
+                    ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::ExecutionResult::Revert",
+                      "output"
+                    |) in
+                  let output :=
                     M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        []
-                        [ Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ] ],
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        []
-                        [ Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ] ]
-                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| output |) |) |) ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        []
-                        [ Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ] ],
-                      Value.StructTuple
-                        "core::option::Option::None"
-                        []
-                        [ Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ] ]
-                        []
-                    |)))
-              ]
-            |)
+                      Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                      γ1_0
+                    |) in
+                  Value.StructTuple
+                    "core::option::Option::Some"
+                    []
+                    [ Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ] ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| output |) |) |) ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (Value.StructTuple
+                    "core::option::Option::None"
+                    []
+                    [ Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ] ]
+                    []))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2648,81 +2523,61 @@ Module result.
                 [ HaltReasonT ],
               self
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply
-                (Ty.path "core::option::Option")
-                []
-                [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::ExecutionResult::Success",
-                        "output"
-                      |) in
-                    let output :=
-                      M.copy (| Ty.path "revm_context_interface::result::Output", γ0_0 |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        []
-                        [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        []
-                        [ Ty.path "alloy_primitives::bytes_::Bytes" ]
-                        [
-                          M.call_closure (|
-                            Ty.path "alloy_primitives::bytes_::Bytes",
-                            M.get_associated_function (|
-                              Ty.path "revm_context_interface::result::Output",
-                              "into_data",
-                              [],
-                              []
-                            |),
-                            [ M.read (| output |) ]
-                          |)
-                        ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::ExecutionResult::Revert",
-                        "output"
-                      |) in
-                    let output := M.copy (| Ty.path "alloy_primitives::bytes_::Bytes", γ0_0 |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        []
-                        [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        []
-                        [ Ty.path "alloy_primitives::bytes_::Bytes" ]
+          M.match_operator (|
+            Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::ExecutionResult::Success",
+                      "output"
+                    |) in
+                  let output :=
+                    M.copy (| Ty.path "revm_context_interface::result::Output", γ0_0 |) in
+                  Value.StructTuple
+                    "core::option::Option::Some"
+                    []
+                    [ Ty.path "alloy_primitives::bytes_::Bytes" ]
+                    [
+                      M.call_closure (|
+                        Ty.path "alloy_primitives::bytes_::Bytes",
+                        M.get_associated_function (|
+                          Ty.path "revm_context_interface::result::Output",
+                          "into_data",
+                          [],
+                          []
+                        |),
                         [ M.read (| output |) ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        []
-                        [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-                      Value.StructTuple
-                        "core::option::Option::None"
-                        []
-                        [ Ty.path "alloy_primitives::bytes_::Bytes" ]
-                        []
-                    |)))
-              ]
-            |)
+                      |)
+                    ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::ExecutionResult::Revert",
+                      "output"
+                    |) in
+                  let output := M.copy (| Ty.path "alloy_primitives::bytes_::Bytes", γ0_0 |) in
+                  Value.StructTuple
+                    "core::option::Option::Some"
+                    []
+                    [ Ty.path "alloy_primitives::bytes_::Bytes" ]
+                    [ M.read (| output |) ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (Value.StructTuple
+                    "core::option::Option::None"
+                    []
+                    [ Ty.path "alloy_primitives::bytes_::Bytes" ]
+                    []))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2767,147 +2622,113 @@ Module result.
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
-              M.read (|
-                M.match_operator (|
-                  Ty.apply
-                    (Ty.path "&")
-                    []
-                    [
-                      Ty.apply
-                        (Ty.path "slice")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "alloy_primitives::log::Log")
-                            []
-                            [ Ty.path "alloy_primitives::log::LogData" ]
-                        ]
-                    ],
-                  self,
+              M.match_operator (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
                   [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
-                        let γ1_0 :=
-                          M.SubPointer.get_struct_record_field (|
-                            γ,
-                            "revm_context_interface::result::ExecutionResult::Success",
-                            "logs"
-                          |) in
-                        let logs :=
-                          M.alloc (|
-                            Ty.apply
-                              (Ty.path "&")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "alloc::vec::Vec")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "alloy_primitives::log::Log")
-                                      []
-                                      [ Ty.path "alloy_primitives::log::LogData" ];
-                                    Ty.path "alloc::alloc::Global"
-                                  ]
-                              ],
-                            γ1_0
-                          |) in
+                    Ty.apply
+                      (Ty.path "slice")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloy_primitives::log::Log")
+                          []
+                          [ Ty.path "alloy_primitives::log::LogData" ]
+                      ]
+                  ],
+                self,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let γ1_0 :=
+                        M.SubPointer.get_struct_record_field (|
+                          γ,
+                          "revm_context_interface::result::ExecutionResult::Success",
+                          "logs"
+                        |) in
+                      let logs :=
                         M.alloc (|
                           Ty.apply
                             (Ty.path "&")
                             []
                             [
                               Ty.apply
-                                (Ty.path "slice")
+                                (Ty.path "alloc::vec::Vec")
                                 []
                                 [
                                   Ty.apply
                                     (Ty.path "alloy_primitives::log::Log")
                                     []
-                                    [ Ty.path "alloy_primitives::log::LogData" ]
+                                    [ Ty.path "alloy_primitives::log::LogData" ];
+                                  Ty.path "alloc::alloc::Global"
                                 ]
                             ],
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.call_closure (|
+                          γ1_0
+                        |) in
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
                                 Ty.apply
-                                  (Ty.path "&")
+                                  (Ty.path "slice")
                                   []
                                   [
                                     Ty.apply
-                                      (Ty.path "slice")
+                                      (Ty.path "alloy_primitives::log::Log")
                                       []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloy_primitives::log::Log")
-                                          []
-                                          [ Ty.path "alloy_primitives::log::LogData" ]
-                                      ]
-                                  ],
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "alloc::vec::Vec")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "alloy_primitives::log::Log")
-                                        []
-                                        [ Ty.path "alloy_primitives::log::LogData" ];
-                                      Ty.path "alloc::alloc::Global"
-                                    ],
-                                  "as_slice",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| logs |) |) |) ]
-                              |)
-                            |)
-                          |)
-                        |)));
-                    fun γ =>
-                      ltac:(M.monadic
-                        (M.alloc (|
-                          Ty.apply
-                            (Ty.path "&")
-                            []
-                            [
+                                      [ Ty.path "alloy_primitives::log::LogData" ]
+                                  ]
+                              ],
+                            M.get_associated_function (|
                               Ty.apply
-                                (Ty.path "slice")
+                                (Ty.path "alloc::vec::Vec")
                                 []
                                 [
                                   Ty.apply
                                     (Ty.path "alloy_primitives::log::Log")
                                     []
-                                    [ Ty.path "alloy_primitives::log::LogData" ]
-                                ]
-                            ],
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
+                                    [ Ty.path "alloy_primitives::log::LogData" ];
+                                  Ty.path "alloc::alloc::Global"
+                                ],
+                              "as_slice",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| logs |) |) |) ]
+                          |)
+                        |)
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (* Unsize *)
+                      (M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.alloc (|
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 0 ]
+                                  [
                                     Ty.apply
-                                      (Ty.path "array")
-                                      [ Value.Integer IntegerKind.Usize 0 ]
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloy_primitives::log::Log")
-                                          []
-                                          [ Ty.path "alloy_primitives::log::LogData" ]
-                                      ],
-                                    Value.Array []
-                                  |)
-                                |)
+                                      (Ty.path "alloy_primitives::log::Log")
+                                      []
+                                      [ Ty.path "alloy_primitives::log::LogData" ]
+                                  ],
+                                Value.Array []
                               |)
-                            |))
-                        |)))
-                  ]
-                |)
+                            |)
+                          |)
+                        |))))
+                ]
               |)
             |)
           |)))
@@ -2946,46 +2767,29 @@ Module result.
                 [ HaltReasonT ],
               self
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply
-                (Ty.path "alloc::vec::Vec")
-                []
-                [
-                  Ty.apply
-                    (Ty.path "alloy_primitives::log::Log")
-                    []
-                    [ Ty.path "alloy_primitives::log::LogData" ];
-                  Ty.path "alloc::alloc::Global"
-                ],
-              self,
+          M.match_operator (|
+            Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              []
               [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::ExecutionResult::Success",
-                        "logs"
-                      |) in
-                    let logs :=
-                      M.copy (|
-                        Ty.apply
-                          (Ty.path "alloc::vec::Vec")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "alloy_primitives::log::Log")
-                              []
-                              [ Ty.path "alloy_primitives::log::LogData" ];
-                            Ty.path "alloc::alloc::Global"
-                          ],
-                        γ0_0
-                      |) in
-                    logs));
-                fun γ =>
-                  ltac:(M.monadic
-                    (M.alloc (|
+                Ty.apply
+                  (Ty.path "alloy_primitives::log::Log")
+                  []
+                  [ Ty.path "alloy_primitives::log::LogData" ];
+                Ty.path "alloc::alloc::Global"
+              ],
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::ExecutionResult::Success",
+                      "logs"
+                    |) in
+                  let logs :=
+                    M.copy (|
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
                         []
@@ -2996,37 +2800,40 @@ Module result.
                             [ Ty.path "alloy_primitives::log::LogData" ];
                           Ty.path "alloc::alloc::Global"
                         ],
-                      M.call_closure (|
+                      γ0_0
+                    |) in
+                  M.read (| logs |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [
                         Ty.apply
-                          (Ty.path "alloc::vec::Vec")
+                          (Ty.path "alloy_primitives::log::Log")
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "alloy_primitives::log::Log")
-                              []
-                              [ Ty.path "alloy_primitives::log::LogData" ];
-                            Ty.path "alloc::alloc::Global"
-                          ],
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "alloc::vec::Vec")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "alloy_primitives::log::Log")
-                                []
-                                [ Ty.path "alloy_primitives::log::LogData" ];
-                              Ty.path "alloc::alloc::Global"
-                            ],
-                          "new",
-                          [],
-                          []
-                        |),
+                          [ Ty.path "alloy_primitives::log::LogData" ];
+                        Ty.path "alloc::alloc::Global"
+                      ],
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
                         []
-                      |)
-                    |)))
-              ]
-            |)
+                        [
+                          Ty.apply
+                            (Ty.path "alloy_primitives::log::Log")
+                            []
+                            [ Ty.path "alloy_primitives::log::LogData" ];
+                          Ty.path "alloc::alloc::Global"
+                        ],
+                      "new",
+                      [],
+                      []
+                    |),
+                    []
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3069,56 +2876,54 @@ Module result.
                 ],
               self
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.path "u64",
-              M.deref (| M.read (| self |) |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (M.find_or_pattern (Ty.tuple [ Ty.path "u64" ]) (|
-                      γ,
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ,
-                                "revm_context_interface::result::ExecutionResult::Success",
-                                "gas_used"
-                              |) in
-                            let gas_used := M.copy (| Ty.path "u64", γ0_0 |) in
-                            M.alloc (| Ty.tuple [ Ty.path "u64" ], Value.Tuple [ gas_used ] |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ,
-                                "revm_context_interface::result::ExecutionResult::Revert",
-                                "gas_used"
-                              |) in
-                            let gas_used := M.copy (| Ty.path "u64", γ0_0 |) in
-                            M.alloc (| Ty.tuple [ Ty.path "u64" ], Value.Tuple [ gas_used ] |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ,
-                                "revm_context_interface::result::ExecutionResult::Halt",
-                                "gas_used"
-                              |) in
-                            let gas_used := M.copy (| Ty.path "u64", γ0_0 |) in
-                            M.alloc (| Ty.tuple [ Ty.path "u64" ], Value.Tuple [ gas_used ] |)))
-                      ],
+          M.match_operator (|
+            Ty.path "u64",
+            M.deref (| M.read (| self |) |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (M.find_or_pattern (Ty.tuple [ Ty.path "u64" ]) (|
+                    γ,
+                    [
                       fun γ =>
                         ltac:(M.monadic
-                          match γ with
-                          | [ gas_used ] => ltac:(M.monadic gas_used)
-                          | _ => M.impossible "wrong number of arguments"
-                          end)
-                    |)))
-              ]
-            |)
+                          (let γ0_0 :=
+                            M.SubPointer.get_struct_record_field (|
+                              γ,
+                              "revm_context_interface::result::ExecutionResult::Success",
+                              "gas_used"
+                            |) in
+                          let gas_used := M.copy (| Ty.path "u64", γ0_0 |) in
+                          Value.Tuple [ gas_used ]));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ0_0 :=
+                            M.SubPointer.get_struct_record_field (|
+                              γ,
+                              "revm_context_interface::result::ExecutionResult::Revert",
+                              "gas_used"
+                            |) in
+                          let gas_used := M.copy (| Ty.path "u64", γ0_0 |) in
+                          Value.Tuple [ gas_used ]));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ0_0 :=
+                            M.SubPointer.get_struct_record_field (|
+                              γ,
+                              "revm_context_interface::result::ExecutionResult::Halt",
+                              "gas_used"
+                            |) in
+                          let gas_used := M.copy (| Ty.path "u64", γ0_0 |) in
+                          Value.Tuple [ gas_used ]))
+                    ],
+                    fun γ =>
+                      ltac:(M.monadic
+                        match γ with
+                        | [ gas_used ] => ltac:(M.monadic (M.read (| gas_used |)))
+                        | _ => M.impossible "wrong number of arguments"
+                        end)
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3177,122 +2982,108 @@ Module result.
             |) in
           let f :=
             M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_context_interface::result::Output::Call",
-                        0
-                      |) in
-                    let __self_0 :=
-                      M.alloc (|
-                        Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-                        γ1_0
-                      |) in
+          M.match_operator (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "revm_context_interface::result::Output::Call",
+                      0
+                    |) in
+                  let __self_0 :=
+                    M.alloc (|
+                      Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                      γ1_0
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "debug_tuple_field1_finish",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Call" |) |) |);
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                        |))
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "revm_context_interface::result::Output::Create",
+                      0
+                    |) in
+                  let γ1_1 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "revm_context_interface::result::Output::Create",
+                      1
+                    |) in
+                  let __self_0 :=
+                    M.alloc (|
+                      Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                      γ1_0
+                    |) in
+                  let __self_1 :=
                     M.alloc (|
                       Ty.apply
-                        (Ty.path "core::result::Result")
+                        (Ty.path "&")
                         []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_tuple_field1_finish",
-                          [],
-                          []
-                        |),
                         [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Call" |) |) |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                            |))
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_context_interface::result::Output::Create",
-                        0
-                      |) in
-                    let γ1_1 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_context_interface::result::Output::Create",
-                        1
-                      |) in
-                    let __self_0 :=
-                      M.alloc (|
-                        Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-                        γ1_0
-                      |) in
-                    let __self_1 :=
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [ Ty.path "alloy_primitives::bits::address::Address" ]
-                          ],
-                        γ1_1
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_tuple_field2_finish",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Create" |) |) |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_1 |) |)
-                            |))
-                        ]
-                      |)
-                    |)))
-              ]
-            |)
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "alloy_primitives::bits::address::Address" ]
+                        ],
+                      γ1_1
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "debug_tuple_field2_finish",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Create" |) |) |);
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |));
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_1 |) |)
+                        |))
+                    ]
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3319,123 +3110,115 @@ Module result.
               Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::result::Output" ],
               self
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.path "revm_context_interface::result::Output",
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_context_interface::result::Output::Call",
-                        0
-                      |) in
-                    let __self_0 :=
-                      M.alloc (|
-                        Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-                        γ1_0
-                      |) in
+          M.match_operator (|
+            Ty.path "revm_context_interface::result::Output",
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "revm_context_interface::result::Output::Call",
+                      0
+                    |) in
+                  let __self_0 :=
                     M.alloc (|
-                      Ty.path "revm_context_interface::result::Output",
-                      Value.StructTuple
-                        "revm_context_interface::result::Output::Call"
-                        []
-                        []
-                        [
-                          M.call_closure (|
-                            Ty.path "alloy_primitives::bytes_::Bytes",
-                            M.get_trait_method (|
-                              "core::clone::Clone",
-                              Ty.path "alloy_primitives::bytes_::Bytes",
-                              [],
-                              [],
-                              "clone",
-                              [],
-                              []
-                            |),
-                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
-                          |)
-                        ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_context_interface::result::Output::Create",
-                        0
-                      |) in
-                    let γ1_1 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_context_interface::result::Output::Create",
-                        1
-                      |) in
-                    let __self_0 :=
-                      M.alloc (|
-                        Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-                        γ1_0
-                      |) in
-                    let __self_1 :=
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
+                      Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                      γ1_0
+                    |) in
+                  Value.StructTuple
+                    "revm_context_interface::result::Output::Call"
+                    []
+                    []
+                    [
+                      M.call_closure (|
+                        Ty.path "alloy_primitives::bytes_::Bytes",
+                        M.get_trait_method (|
+                          "core::clone::Clone",
+                          Ty.path "alloy_primitives::bytes_::Bytes",
+                          [],
+                          [],
+                          "clone",
+                          [],
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [ Ty.path "alloy_primitives::bits::address::Address" ]
-                          ],
-                        γ1_1
-                      |) in
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
+                      |)
+                    ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "revm_context_interface::result::Output::Create",
+                      0
+                    |) in
+                  let γ1_1 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "revm_context_interface::result::Output::Create",
+                      1
+                    |) in
+                  let __self_0 :=
                     M.alloc (|
-                      Ty.path "revm_context_interface::result::Output",
-                      Value.StructTuple
-                        "revm_context_interface::result::Output::Create"
-                        []
+                      Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                      γ1_0
+                    |) in
+                  let __self_1 :=
+                    M.alloc (|
+                      Ty.apply
+                        (Ty.path "&")
                         []
                         [
-                          M.call_closure (|
-                            Ty.path "alloy_primitives::bytes_::Bytes",
-                            M.get_trait_method (|
-                              "core::clone::Clone",
-                              Ty.path "alloy_primitives::bytes_::Bytes",
-                              [],
-                              [],
-                              "clone",
-                              [],
-                              []
-                            |),
-                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
-                          |);
-                          M.call_closure (|
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [ Ty.path "alloy_primitives::bits::address::Address" ],
-                            M.get_trait_method (|
-                              "core::clone::Clone",
-                              Ty.apply
-                                (Ty.path "core::option::Option")
-                                []
-                                [ Ty.path "alloy_primitives::bits::address::Address" ],
-                              [],
-                              [],
-                              "clone",
-                              [],
-                              []
-                            |),
-                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |) ]
-                          |)
-                        ]
-                    |)))
-              ]
-            |)
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "alloy_primitives::bits::address::Address" ]
+                        ],
+                      γ1_1
+                    |) in
+                  Value.StructTuple
+                    "revm_context_interface::result::Output::Create"
+                    []
+                    []
+                    [
+                      M.call_closure (|
+                        Ty.path "alloy_primitives::bytes_::Bytes",
+                        M.get_trait_method (|
+                          "core::clone::Clone",
+                          Ty.path "alloy_primitives::bytes_::Bytes",
+                          [],
+                          [],
+                          "clone",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
+                      |);
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "alloy_primitives::bits::address::Address" ],
+                        M.get_trait_method (|
+                          "core::clone::Clone",
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "alloy_primitives::bits::address::Address" ],
+                          [],
+                          [],
+                          "clone",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |) ]
+                      |)
+                    ]))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3509,235 +3292,224 @@ Module result.
                   [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
                 |),
                 ltac:(M.monadic
-                  (M.read (|
-                    M.match_operator (|
-                      Ty.path "bool",
-                      M.alloc (|
-                        Ty.tuple
-                          [
-                            Ty.apply
-                              (Ty.path "&")
-                              []
-                              [ Ty.path "revm_context_interface::result::Output" ];
-                            Ty.apply
-                              (Ty.path "&")
-                              []
-                              [ Ty.path "revm_context_interface::result::Output" ]
-                          ],
-                        Value.Tuple [ M.read (| self |); M.read (| other |) ]
-                      |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                            let γ0_0 := M.read (| γ0_0 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ0_0,
-                                "revm_context_interface::result::Output::Call",
-                                0
-                              |) in
-                            let __self_0 :=
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-                                γ2_0
-                              |) in
-                            let γ0_1 := M.read (| γ0_1 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ0_1,
-                                "revm_context_interface::result::Output::Call",
-                                0
-                              |) in
-                            let __arg1_0 :=
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-                                γ2_0
-                              |) in
+                  (M.match_operator (|
+                    Ty.path "bool",
+                    M.alloc (|
+                      Ty.tuple
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "revm_context_interface::result::Output" ];
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "revm_context_interface::result::Output" ]
+                        ],
+                      Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                    |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                          let γ0_0 := M.read (| γ0_0 |) in
+                          let γ2_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ0_0,
+                              "revm_context_interface::result::Output::Call",
+                              0
+                            |) in
+                          let __self_0 :=
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                              γ2_0
+                            |) in
+                          let γ0_1 := M.read (| γ0_1 |) in
+                          let γ2_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ0_1,
+                              "revm_context_interface::result::Output::Call",
+                              0
+                            |) in
+                          let __arg1_0 :=
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                              γ2_0
+                            |) in
+                          M.call_closure (|
+                            Ty.path "bool",
+                            M.get_trait_method (|
+                              "core::cmp::PartialEq",
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                              [],
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "alloy_primitives::bytes_::Bytes" ]
+                              ],
+                              "eq",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                              M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                            ]
+                          |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                          let γ0_0 := M.read (| γ0_0 |) in
+                          let γ2_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ0_0,
+                              "revm_context_interface::result::Output::Create",
+                              0
+                            |) in
+                          let γ2_1 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ0_0,
+                              "revm_context_interface::result::Output::Create",
+                              1
+                            |) in
+                          let __self_0 :=
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                              γ2_0
+                            |) in
+                          let __self_1 :=
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "alloy_primitives::bits::address::Address" ]
+                                ],
+                              γ2_1
+                            |) in
+                          let γ0_1 := M.read (| γ0_1 |) in
+                          let γ2_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ0_1,
+                              "revm_context_interface::result::Output::Create",
+                              0
+                            |) in
+                          let γ2_1 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ0_1,
+                              "revm_context_interface::result::Output::Create",
+                              1
+                            |) in
+                          let __arg1_0 :=
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                              γ2_0
+                            |) in
+                          let __arg1_1 :=
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "alloy_primitives::bits::address::Address" ]
+                                ],
+                              γ2_1
+                            |) in
+                          LogicalOp.and (|
+                            M.call_closure (|
                               Ty.path "bool",
-                              M.call_closure (|
+                              M.get_trait_method (|
+                                "core::cmp::PartialEq",
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                                [],
+                                [
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "alloy_primitives::bytes_::Bytes" ]
+                                ],
+                                "eq",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                              ]
+                            |),
+                            ltac:(M.monadic
+                              (M.call_closure (|
                                 Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
                                     (Ty.path "&")
                                     []
-                                    [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "alloy_primitives::bits::address::Address" ]
+                                    ],
                                   [],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
                                       []
-                                      [ Ty.path "alloy_primitives::bytes_::Bytes" ]
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "alloy_primitives::bits::address::Address" ]
+                                      ]
                                   ],
                                   "eq",
                                   [],
                                   []
                                 |),
                                 [
-                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
-                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                  M.borrow (| Pointer.Kind.Ref, __self_1 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_1 |)
                                 ]
-                              |)
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                            let γ0_0 := M.read (| γ0_0 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ0_0,
-                                "revm_context_interface::result::Output::Create",
-                                0
-                              |) in
-                            let γ2_1 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ0_0,
-                                "revm_context_interface::result::Output::Create",
-                                1
-                              |) in
-                            let __self_0 :=
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-                                γ2_0
-                              |) in
-                            let __self_1 :=
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::option::Option")
-                                      []
-                                      [ Ty.path "alloy_primitives::bits::address::Address" ]
-                                  ],
-                                γ2_1
-                              |) in
-                            let γ0_1 := M.read (| γ0_1 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ0_1,
-                                "revm_context_interface::result::Output::Create",
-                                0
-                              |) in
-                            let γ2_1 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ0_1,
-                                "revm_context_interface::result::Output::Create",
-                                1
-                              |) in
-                            let __arg1_0 :=
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-                                γ2_0
-                              |) in
-                            let __arg1_1 :=
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::option::Option")
-                                      []
-                                      [ Ty.path "alloy_primitives::bits::address::Address" ]
-                                  ],
-                                γ2_1
-                              |) in
-                            M.alloc (|
-                              Ty.path "bool",
-                              LogicalOp.and (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_trait_method (|
-                                    "core::cmp::PartialEq",
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-                                    [],
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.path "alloy_primitives::bytes_::Bytes" ]
-                                    ],
-                                    "eq",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (| Pointer.Kind.Ref, __self_0 |);
-                                    M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
-                                  ]
-                                |),
-                                ltac:(M.monadic
-                                  (M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_trait_method (|
-                                      "core::cmp::PartialEq",
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::option::Option")
-                                            []
-                                            [ Ty.path "alloy_primitives::bits::address::Address" ]
-                                        ],
-                                      [],
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::option::Option")
-                                              []
-                                              [ Ty.path "alloy_primitives::bits::address::Address" ]
-                                          ]
-                                      ],
-                                      "eq",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (| Pointer.Kind.Ref, __self_1 |);
-                                      M.borrow (| Pointer.Kind.Ref, __arg1_1 |)
-                                    ]
-                                  |)))
-                              |)
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.alloc (|
-                              Ty.path "bool",
-                              M.never_to_any (|
-                                M.call_closure (|
-                                  Ty.path "never",
-                                  M.get_function (| "core::intrinsics::unreachable", [], [] |),
-                                  []
-                                |)
-                              |)
-                            |)))
-                      ]
-                    |)
+                              |)))
+                          |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.never_to_any (|
+                            M.call_closure (|
+                              Ty.path "never",
+                              M.get_function (| "core::intrinsics::unreachable", [], [] |),
+                              []
+                            |)
+                          |)))
+                    ]
                   |)))
               |)
             |)
@@ -3771,20 +3543,18 @@ Module result.
               Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::result::Output" ],
               self
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.tuple [],
-              Value.DeclaredButUndefined,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (M.match_operator (|
-                      Ty.tuple [],
-                      Value.DeclaredButUndefined,
-                      [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
-                    |)))
-              ]
-            |)
+          M.match_operator (|
+            Ty.tuple [],
+            Value.DeclaredButUndefined,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (M.match_operator (|
+                    Ty.tuple [],
+                    Value.DeclaredButUndefined,
+                    [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3844,26 +3614,26 @@ Module result.
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                 ]
               |) in
-            M.match_operator (|
+            M.alloc (|
               Ty.tuple [],
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_context_interface::result::Output::Call",
-                        0
-                      |) in
-                    let __self_0 :=
-                      M.alloc (|
-                        Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-                        γ1_0
-                      |) in
-                    M.alloc (|
-                      Ty.tuple [],
+              M.match_operator (|
+                Ty.tuple [],
+                self,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let γ1_0 :=
+                        M.SubPointer.get_struct_tuple_field (|
+                          γ,
+                          "revm_context_interface::result::Output::Call",
+                          0
+                        |) in
+                      let __self_0 :=
+                        M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                          γ1_0
+                        |) in
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_trait_method (|
@@ -3879,81 +3649,83 @@ Module result.
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                         ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_context_interface::result::Output::Create",
-                        0
-                      |) in
-                    let γ1_1 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_context_interface::result::Output::Create",
-                        1
-                      |) in
-                    let __self_0 :=
-                      M.alloc (|
-                        Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-                        γ1_0
-                      |) in
-                    let __self_1 :=
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [ Ty.path "alloy_primitives::bits::address::Address" ]
-                          ],
-                        γ1_1
-                      |) in
-                    let~ _ : Ty.tuple [] :=
-                      M.call_closure (|
-                        Ty.tuple [],
-                        M.get_trait_method (|
-                          "core::hash::Hash",
-                          Ty.path "alloy_primitives::bytes_::Bytes",
-                          [],
-                          [],
-                          "hash",
-                          [],
-                          [ __H ]
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                        ]
-                      |) in
-                    M.alloc (|
-                      Ty.tuple [],
-                      M.call_closure (|
-                        Ty.tuple [],
-                        M.get_trait_method (|
-                          "core::hash::Hash",
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let γ1_0 :=
+                        M.SubPointer.get_struct_tuple_field (|
+                          γ,
+                          "revm_context_interface::result::Output::Create",
+                          0
+                        |) in
+                      let γ1_1 :=
+                        M.SubPointer.get_struct_tuple_field (|
+                          γ,
+                          "revm_context_interface::result::Output::Create",
+                          1
+                        |) in
+                      let __self_0 :=
+                        M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                          γ1_0
+                        |) in
+                      let __self_1 :=
+                        M.alloc (|
                           Ty.apply
-                            (Ty.path "core::option::Option")
+                            (Ty.path "&")
                             []
-                            [ Ty.path "alloy_primitives::bits::address::Address" ],
-                          [],
-                          [],
-                          "hash",
-                          [],
-                          [ __H ]
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |);
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                        ]
-                      |)
-                    |)))
-              ]
+                            [
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [ Ty.path "alloy_primitives::bits::address::Address" ]
+                            ],
+                          γ1_1
+                        |) in
+                      M.read (|
+                        let~ _ : Ty.tuple [] :=
+                          M.call_closure (|
+                            Ty.tuple [],
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              Ty.path "alloy_primitives::bytes_::Bytes",
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ __H ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
+                          |) in
+                        M.alloc (|
+                          Ty.tuple [],
+                          M.call_closure (|
+                            Ty.tuple [],
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [ Ty.path "alloy_primitives::bits::address::Address" ],
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ __H ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
+                          |)
+                        |)
+                      |)))
+                ]
+              |)
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3984,39 +3756,37 @@ Module result.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| Ty.path "revm_context_interface::result::Output", self |) in
-          M.read (|
-            M.match_operator (|
-              Ty.path "alloy_primitives::bytes_::Bytes",
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_context_interface::result::Output::Call",
-                        0
-                      |) in
-                    let data := M.copy (| Ty.path "alloy_primitives::bytes_::Bytes", γ0_0 |) in
-                    data));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_context_interface::result::Output::Create",
-                        0
-                      |) in
-                    let γ0_1 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_context_interface::result::Output::Create",
-                        1
-                      |) in
-                    let data := M.copy (| Ty.path "alloy_primitives::bytes_::Bytes", γ0_0 |) in
-                    data))
-              ]
-            |)
+          M.match_operator (|
+            Ty.path "alloy_primitives::bytes_::Bytes",
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "revm_context_interface::result::Output::Call",
+                      0
+                    |) in
+                  let data := M.copy (| Ty.path "alloy_primitives::bytes_::Bytes", γ0_0 |) in
+                  M.read (| data |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "revm_context_interface::result::Output::Create",
+                      0
+                    |) in
+                  let γ0_1 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "revm_context_interface::result::Output::Create",
+                      1
+                    |) in
+                  let data := M.copy (| Ty.path "alloy_primitives::bytes_::Bytes", γ0_0 |) in
+                  M.read (| data |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4046,55 +3816,47 @@ Module result.
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
-              M.read (|
-                M.match_operator (|
-                  Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-                  self,
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
-                        let γ1_0 :=
-                          M.SubPointer.get_struct_tuple_field (|
-                            γ,
-                            "revm_context_interface::result::Output::Call",
-                            0
-                          |) in
-                        let data :=
-                          M.alloc (|
-                            Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-                            γ1_0
-                          |) in
+              M.match_operator (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                self,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let γ1_0 :=
+                        M.SubPointer.get_struct_tuple_field (|
+                          γ,
+                          "revm_context_interface::result::Output::Call",
+                          0
+                        |) in
+                      let data :=
                         M.alloc (|
                           Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |)
-                        |)));
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
-                        let γ1_0 :=
-                          M.SubPointer.get_struct_tuple_field (|
-                            γ,
-                            "revm_context_interface::result::Output::Create",
-                            0
-                          |) in
-                        let γ1_1 :=
-                          M.SubPointer.get_struct_tuple_field (|
-                            γ,
-                            "revm_context_interface::result::Output::Create",
-                            1
-                          |) in
-                        let data :=
-                          M.alloc (|
-                            Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-                            γ1_0
-                          |) in
+                          γ1_0
+                        |) in
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let γ1_0 :=
+                        M.SubPointer.get_struct_tuple_field (|
+                          γ,
+                          "revm_context_interface::result::Output::Create",
+                          0
+                        |) in
+                      let γ1_1 :=
+                        M.SubPointer.get_struct_tuple_field (|
+                          γ,
+                          "revm_context_interface::result::Output::Create",
+                          1
+                        |) in
+                      let data :=
                         M.alloc (|
                           Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |)
-                        |)))
-                  ]
-                |)
+                          γ1_0
+                        |) in
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |)))
+                ]
               |)
             |)
           |)))
@@ -4122,107 +3884,82 @@ Module result.
               Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::result::Output" ],
               self
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply
-                (Ty.path "core::option::Option")
-                []
-                [ Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bits::address::Address" ]
-                ],
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_context_interface::result::Output::Call",
-                        0
-                      |) in
+          M.match_operator (|
+            Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bits::address::Address" ] ],
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "revm_context_interface::result::Output::Call",
+                      0
+                    |) in
+                  Value.StructTuple
+                    "core::option::Option::None"
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.path "alloy_primitives::bits::address::Address" ]
+                    ]
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "revm_context_interface::result::Output::Create",
+                      0
+                    |) in
+                  let γ1_1 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "revm_context_interface::result::Output::Create",
+                      1
+                    |) in
+                  let address :=
                     M.alloc (|
                       Ty.apply
-                        (Ty.path "core::option::Option")
+                        (Ty.path "&")
                         []
                         [
-                          Ty.apply
-                            (Ty.path "&")
-                            []
-                            [ Ty.path "alloy_primitives::bits::address::Address" ]
-                        ],
-                      Value.StructTuple
-                        "core::option::Option::None"
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "&")
-                            []
-                            [ Ty.path "alloy_primitives::bits::address::Address" ]
-                        ]
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_context_interface::result::Output::Create",
-                        0
-                      |) in
-                    let γ1_1 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_context_interface::result::Output::Create",
-                        1
-                      |) in
-                    let address :=
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [ Ty.path "alloy_primitives::bits::address::Address" ]
-                          ],
-                        γ1_1
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "&")
-                            []
-                            [ Ty.path "alloy_primitives::bits::address::Address" ]
-                        ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::option::Option")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "&")
-                              []
-                              [ Ty.path "alloy_primitives::bits::address::Address" ]
-                          ],
-                        M.get_associated_function (|
                           Ty.apply
                             (Ty.path "core::option::Option")
                             []
-                            [ Ty.path "alloy_primitives::bits::address::Address" ],
-                          "as_ref",
-                          [],
+                            [ Ty.path "alloy_primitives::bits::address::Address" ]
+                        ],
+                      γ1_1
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "&")
                           []
-                        |),
-                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| address |) |) |) ]
-                      |)
-                    |)))
-              ]
-            |)
+                          [ Ty.path "alloy_primitives::bits::address::Address" ]
+                      ],
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "alloy_primitives::bits::address::Address" ],
+                      "as_ref",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| address |) |) |) ]
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4307,222 +4044,190 @@ Module result.
             |) in
           let f :=
             M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_context_interface::result::EVMError::Transaction",
-                        0
-                      |) in
-                    let __self_0 :=
-                      M.alloc (| Ty.apply (Ty.path "&") [] [ TransactionError ], γ1_0 |) in
+          M.match_operator (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "revm_context_interface::result::EVMError::Transaction",
+                      0
+                    |) in
+                  let __self_0 :=
+                    M.alloc (| Ty.apply (Ty.path "&") [] [ TransactionError ], γ1_0 |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "debug_tuple_field1_finish",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Transaction" |) |) |);
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                        |))
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "revm_context_interface::result::EVMError::Header",
+                      0
+                    |) in
+                  let __self_0 :=
                     M.alloc (|
                       Ty.apply
-                        (Ty.path "core::result::Result")
+                        (Ty.path "&")
                         []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_tuple_field1_finish",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Transaction" |) |) |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                            |))
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_context_interface::result::EVMError::Header",
-                        0
-                      |) in
-                    let __self_0 :=
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [ Ty.path "revm_context_interface::result::InvalidHeader" ],
-                        γ1_0
-                      |) in
+                        [ Ty.path "revm_context_interface::result::InvalidHeader" ],
+                      γ1_0
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "debug_tuple_field1_finish",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Header" |) |) |);
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                        |))
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "revm_context_interface::result::EVMError::Database",
+                      0
+                    |) in
+                  let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ DBError ], γ1_0 |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "debug_tuple_field1_finish",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Database" |) |) |);
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                        |))
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "revm_context_interface::result::EVMError::Custom",
+                      0
+                    |) in
+                  let __self_0 :=
                     M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_tuple_field1_finish",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Header" |) |) |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                            |))
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_context_interface::result::EVMError::Database",
-                        0
-                      |) in
-                    let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ DBError ], γ1_0 |) in
+                      Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                      γ1_0
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "debug_tuple_field1_finish",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Custom" |) |) |);
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                        |))
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "revm_context_interface::result::EVMError::Precompile",
+                      0
+                    |) in
+                  let __self_0 :=
                     M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_tuple_field1_finish",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Database" |) |) |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                            |))
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_context_interface::result::EVMError::Custom",
-                        0
-                      |) in
-                    let __self_0 :=
-                      M.alloc (|
-                        Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
-                        γ1_0
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_tuple_field1_finish",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Custom" |) |) |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                            |))
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_context_interface::result::EVMError::Precompile",
-                        0
-                      |) in
-                    let __self_0 :=
-                      M.alloc (|
-                        Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
-                        γ1_0
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_tuple_field1_finish",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Precompile" |) |) |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                            |))
-                        ]
-                      |)
-                    |)))
-              ]
-            |)
+                      Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                      γ1_0
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "debug_tuple_field1_finish",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Precompile" |) |) |);
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                        |))
+                    ]
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4568,207 +4273,175 @@ Module result.
                 ],
               self
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply
-                (Ty.path "revm_context_interface::result::EVMError")
-                []
-                [ DBError; TransactionError ],
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_context_interface::result::EVMError::Transaction",
-                        0
-                      |) in
-                    let __self_0 :=
-                      M.alloc (| Ty.apply (Ty.path "&") [] [ TransactionError ], γ1_0 |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "revm_context_interface::result::EVMError")
-                        []
-                        [ DBError; TransactionError ],
-                      Value.StructTuple
-                        "revm_context_interface::result::EVMError::Transaction"
-                        []
-                        [ DBError; TransactionError ]
-                        [
-                          M.call_closure (|
-                            TransactionError,
-                            M.get_trait_method (|
-                              "core::clone::Clone",
-                              TransactionError,
-                              [],
-                              [],
-                              "clone",
-                              [],
-                              []
-                            |),
-                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
-                          |)
-                        ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_context_interface::result::EVMError::Header",
-                        0
-                      |) in
-                    let __self_0 :=
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
+          M.match_operator (|
+            Ty.apply
+              (Ty.path "revm_context_interface::result::EVMError")
+              []
+              [ DBError; TransactionError ],
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "revm_context_interface::result::EVMError::Transaction",
+                      0
+                    |) in
+                  let __self_0 :=
+                    M.alloc (| Ty.apply (Ty.path "&") [] [ TransactionError ], γ1_0 |) in
+                  Value.StructTuple
+                    "revm_context_interface::result::EVMError::Transaction"
+                    []
+                    [ DBError; TransactionError ]
+                    [
+                      M.call_closure (|
+                        TransactionError,
+                        M.get_trait_method (|
+                          "core::clone::Clone",
+                          TransactionError,
+                          [],
+                          [],
+                          "clone",
+                          [],
                           []
-                          [ Ty.path "revm_context_interface::result::InvalidHeader" ],
-                        γ1_0
-                      |) in
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
+                      |)
+                    ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "revm_context_interface::result::EVMError::Header",
+                      0
+                    |) in
+                  let __self_0 :=
                     M.alloc (|
                       Ty.apply
-                        (Ty.path "revm_context_interface::result::EVMError")
+                        (Ty.path "&")
                         []
-                        [ DBError; TransactionError ],
-                      Value.StructTuple
-                        "revm_context_interface::result::EVMError::Header"
-                        []
-                        [ DBError; TransactionError ]
-                        [
-                          M.call_closure (|
-                            Ty.path "revm_context_interface::result::InvalidHeader",
-                            M.get_trait_method (|
-                              "core::clone::Clone",
-                              Ty.path "revm_context_interface::result::InvalidHeader",
-                              [],
-                              [],
-                              "clone",
-                              [],
-                              []
-                            |),
-                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
-                          |)
-                        ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_context_interface::result::EVMError::Database",
-                        0
-                      |) in
-                    let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ DBError ], γ1_0 |) in
+                        [ Ty.path "revm_context_interface::result::InvalidHeader" ],
+                      γ1_0
+                    |) in
+                  Value.StructTuple
+                    "revm_context_interface::result::EVMError::Header"
+                    []
+                    [ DBError; TransactionError ]
+                    [
+                      M.call_closure (|
+                        Ty.path "revm_context_interface::result::InvalidHeader",
+                        M.get_trait_method (|
+                          "core::clone::Clone",
+                          Ty.path "revm_context_interface::result::InvalidHeader",
+                          [],
+                          [],
+                          "clone",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
+                      |)
+                    ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "revm_context_interface::result::EVMError::Database",
+                      0
+                    |) in
+                  let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ DBError ], γ1_0 |) in
+                  Value.StructTuple
+                    "revm_context_interface::result::EVMError::Database"
+                    []
+                    [ DBError; TransactionError ]
+                    [
+                      M.call_closure (|
+                        DBError,
+                        M.get_trait_method (|
+                          "core::clone::Clone",
+                          DBError,
+                          [],
+                          [],
+                          "clone",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
+                      |)
+                    ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "revm_context_interface::result::EVMError::Custom",
+                      0
+                    |) in
+                  let __self_0 :=
                     M.alloc (|
-                      Ty.apply
-                        (Ty.path "revm_context_interface::result::EVMError")
-                        []
-                        [ DBError; TransactionError ],
-                      Value.StructTuple
-                        "revm_context_interface::result::EVMError::Database"
-                        []
-                        [ DBError; TransactionError ]
-                        [
-                          M.call_closure (|
-                            DBError,
-                            M.get_trait_method (|
-                              "core::clone::Clone",
-                              DBError,
-                              [],
-                              [],
-                              "clone",
-                              [],
-                              []
-                            |),
-                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
-                          |)
-                        ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_context_interface::result::EVMError::Custom",
-                        0
-                      |) in
-                    let __self_0 :=
-                      M.alloc (|
-                        Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
-                        γ1_0
-                      |) in
+                      Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                      γ1_0
+                    |) in
+                  Value.StructTuple
+                    "revm_context_interface::result::EVMError::Custom"
+                    []
+                    [ DBError; TransactionError ]
+                    [
+                      M.call_closure (|
+                        Ty.path "alloc::string::String",
+                        M.get_trait_method (|
+                          "core::clone::Clone",
+                          Ty.path "alloc::string::String",
+                          [],
+                          [],
+                          "clone",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
+                      |)
+                    ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "revm_context_interface::result::EVMError::Precompile",
+                      0
+                    |) in
+                  let __self_0 :=
                     M.alloc (|
-                      Ty.apply
-                        (Ty.path "revm_context_interface::result::EVMError")
-                        []
-                        [ DBError; TransactionError ],
-                      Value.StructTuple
-                        "revm_context_interface::result::EVMError::Custom"
-                        []
-                        [ DBError; TransactionError ]
-                        [
-                          M.call_closure (|
-                            Ty.path "alloc::string::String",
-                            M.get_trait_method (|
-                              "core::clone::Clone",
-                              Ty.path "alloc::string::String",
-                              [],
-                              [],
-                              "clone",
-                              [],
-                              []
-                            |),
-                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
-                          |)
-                        ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_context_interface::result::EVMError::Precompile",
-                        0
-                      |) in
-                    let __self_0 :=
-                      M.alloc (|
-                        Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
-                        γ1_0
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "revm_context_interface::result::EVMError")
-                        []
-                        [ DBError; TransactionError ],
-                      Value.StructTuple
-                        "revm_context_interface::result::EVMError::Precompile"
-                        []
-                        [ DBError; TransactionError ]
-                        [
-                          M.call_closure (|
-                            Ty.path "alloc::string::String",
-                            M.get_trait_method (|
-                              "core::clone::Clone",
-                              Ty.path "alloc::string::String",
-                              [],
-                              [],
-                              "clone",
-                              [],
-                              []
-                            |),
-                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
-                          |)
-                        ]
-                    |)))
-              ]
-            |)
+                      Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                      γ1_0
+                    |) in
+                  Value.StructTuple
+                    "revm_context_interface::result::EVMError::Precompile"
+                    []
+                    [ DBError; TransactionError ]
+                    [
+                      M.call_closure (|
+                        Ty.path "alloc::string::String",
+                        M.get_trait_method (|
+                          "core::clone::Clone",
+                          Ty.path "alloc::string::String",
+                          [],
+                          [],
+                          "clone",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
+                      |)
+                    ]))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4884,285 +4557,265 @@ Module result.
                   [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
                 |),
                 ltac:(M.monadic
-                  (M.read (|
-                    M.match_operator (|
-                      Ty.path "bool",
-                      M.alloc (|
-                        Ty.tuple
-                          [
-                            Ty.apply
-                              (Ty.path "&")
+                  (M.match_operator (|
+                    Ty.path "bool",
+                    M.alloc (|
+                      Ty.tuple
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "revm_context_interface::result::EVMError")
+                                []
+                                [ DBError; TransactionError ]
+                            ];
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "revm_context_interface::result::EVMError")
+                                []
+                                [ DBError; TransactionError ]
+                            ]
+                        ],
+                      Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                    |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                          let γ0_0 := M.read (| γ0_0 |) in
+                          let γ2_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ0_0,
+                              "revm_context_interface::result::EVMError::Transaction",
+                              0
+                            |) in
+                          let __self_0 :=
+                            M.alloc (| Ty.apply (Ty.path "&") [] [ TransactionError ], γ2_0 |) in
+                          let γ0_1 := M.read (| γ0_1 |) in
+                          let γ2_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ0_1,
+                              "revm_context_interface::result::EVMError::Transaction",
+                              0
+                            |) in
+                          let __arg1_0 :=
+                            M.alloc (| Ty.apply (Ty.path "&") [] [ TransactionError ], γ2_0 |) in
+                          M.call_closure (|
+                            Ty.path "bool",
+                            M.get_trait_method (|
+                              "core::cmp::PartialEq",
+                              Ty.apply (Ty.path "&") [] [ TransactionError ],
+                              [],
+                              [ Ty.apply (Ty.path "&") [] [ TransactionError ] ],
+                              "eq",
+                              [],
                               []
-                              [
-                                Ty.apply
-                                  (Ty.path "revm_context_interface::result::EVMError")
-                                  []
-                                  [ DBError; TransactionError ]
-                              ];
-                            Ty.apply
-                              (Ty.path "&")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "revm_context_interface::result::EVMError")
-                                  []
-                                  [ DBError; TransactionError ]
-                              ]
-                          ],
-                        Value.Tuple [ M.read (| self |); M.read (| other |) ]
-                      |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                            let γ0_0 := M.read (| γ0_0 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ0_0,
-                                "revm_context_interface::result::EVMError::Transaction",
-                                0
-                              |) in
-                            let __self_0 :=
-                              M.alloc (| Ty.apply (Ty.path "&") [] [ TransactionError ], γ2_0 |) in
-                            let γ0_1 := M.read (| γ0_1 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ0_1,
-                                "revm_context_interface::result::EVMError::Transaction",
-                                0
-                              |) in
-                            let __arg1_0 :=
-                              M.alloc (| Ty.apply (Ty.path "&") [] [ TransactionError ], γ2_0 |) in
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                              M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                            ]
+                          |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                          let γ0_0 := M.read (| γ0_0 |) in
+                          let γ2_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ0_0,
+                              "revm_context_interface::result::EVMError::Header",
+                              0
+                            |) in
+                          let __self_0 :=
                             M.alloc (|
-                              Ty.path "bool",
-                              M.call_closure (|
-                                Ty.path "bool",
-                                M.get_trait_method (|
-                                  "core::cmp::PartialEq",
-                                  Ty.apply (Ty.path "&") [] [ TransactionError ],
-                                  [],
-                                  [ Ty.apply (Ty.path "&") [] [ TransactionError ] ],
-                                  "eq",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
-                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
-                                ]
-                              |)
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                            let γ0_0 := M.read (| γ0_0 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ0_0,
-                                "revm_context_interface::result::EVMError::Header",
-                                0
-                              |) in
-                            let __self_0 :=
-                              M.alloc (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "revm_context_interface::result::InvalidHeader" ],
+                              γ2_0
+                            |) in
+                          let γ0_1 := M.read (| γ0_1 |) in
+                          let γ2_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ0_1,
+                              "revm_context_interface::result::EVMError::Header",
+                              0
+                            |) in
+                          let __arg1_0 :=
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "revm_context_interface::result::InvalidHeader" ],
+                              γ2_0
+                            |) in
+                          M.call_closure (|
+                            Ty.path "bool",
+                            M.get_trait_method (|
+                              "core::cmp::PartialEq",
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "revm_context_interface::result::InvalidHeader" ],
+                              [],
+                              [
                                 Ty.apply
                                   (Ty.path "&")
                                   []
-                                  [ Ty.path "revm_context_interface::result::InvalidHeader" ],
-                                γ2_0
-                              |) in
-                            let γ0_1 := M.read (| γ0_1 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ0_1,
-                                "revm_context_interface::result::EVMError::Header",
-                                0
-                              |) in
-                            let __arg1_0 :=
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "revm_context_interface::result::InvalidHeader" ],
-                                γ2_0
-                              |) in
+                                  [ Ty.path "revm_context_interface::result::InvalidHeader" ]
+                              ],
+                              "eq",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                              M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                            ]
+                          |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                          let γ0_0 := M.read (| γ0_0 |) in
+                          let γ2_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ0_0,
+                              "revm_context_interface::result::EVMError::Database",
+                              0
+                            |) in
+                          let __self_0 :=
+                            M.alloc (| Ty.apply (Ty.path "&") [] [ DBError ], γ2_0 |) in
+                          let γ0_1 := M.read (| γ0_1 |) in
+                          let γ2_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ0_1,
+                              "revm_context_interface::result::EVMError::Database",
+                              0
+                            |) in
+                          let __arg1_0 :=
+                            M.alloc (| Ty.apply (Ty.path "&") [] [ DBError ], γ2_0 |) in
+                          M.call_closure (|
+                            Ty.path "bool",
+                            M.get_trait_method (|
+                              "core::cmp::PartialEq",
+                              Ty.apply (Ty.path "&") [] [ DBError ],
+                              [],
+                              [ Ty.apply (Ty.path "&") [] [ DBError ] ],
+                              "eq",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                              M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                            ]
+                          |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                          let γ0_0 := M.read (| γ0_0 |) in
+                          let γ2_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ0_0,
+                              "revm_context_interface::result::EVMError::Custom",
+                              0
+                            |) in
+                          let __self_0 :=
                             M.alloc (|
-                              Ty.path "bool",
-                              M.call_closure (|
-                                Ty.path "bool",
-                                M.get_trait_method (|
-                                  "core::cmp::PartialEq",
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [ Ty.path "revm_context_interface::result::InvalidHeader" ],
-                                  [],
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [ Ty.path "revm_context_interface::result::InvalidHeader" ]
-                                  ],
-                                  "eq",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
-                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
-                                ]
-                              |)
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                            let γ0_0 := M.read (| γ0_0 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ0_0,
-                                "revm_context_interface::result::EVMError::Database",
-                                0
-                              |) in
-                            let __self_0 :=
-                              M.alloc (| Ty.apply (Ty.path "&") [] [ DBError ], γ2_0 |) in
-                            let γ0_1 := M.read (| γ0_1 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ0_1,
-                                "revm_context_interface::result::EVMError::Database",
-                                0
-                              |) in
-                            let __arg1_0 :=
-                              M.alloc (| Ty.apply (Ty.path "&") [] [ DBError ], γ2_0 |) in
+                              Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                              γ2_0
+                            |) in
+                          let γ0_1 := M.read (| γ0_1 |) in
+                          let γ2_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ0_1,
+                              "revm_context_interface::result::EVMError::Custom",
+                              0
+                            |) in
+                          let __arg1_0 :=
                             M.alloc (|
-                              Ty.path "bool",
-                              M.call_closure (|
-                                Ty.path "bool",
-                                M.get_trait_method (|
-                                  "core::cmp::PartialEq",
-                                  Ty.apply (Ty.path "&") [] [ DBError ],
-                                  [],
-                                  [ Ty.apply (Ty.path "&") [] [ DBError ] ],
-                                  "eq",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
-                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
-                                ]
-                              |)
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                            let γ0_0 := M.read (| γ0_0 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ0_0,
-                                "revm_context_interface::result::EVMError::Custom",
-                                0
-                              |) in
-                            let __self_0 :=
-                              M.alloc (|
-                                Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
-                                γ2_0
-                              |) in
-                            let γ0_1 := M.read (| γ0_1 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ0_1,
-                                "revm_context_interface::result::EVMError::Custom",
-                                0
-                              |) in
-                            let __arg1_0 :=
-                              M.alloc (|
-                                Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
-                                γ2_0
-                              |) in
+                              Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                              γ2_0
+                            |) in
+                          M.call_closure (|
+                            Ty.path "bool",
+                            M.get_trait_method (|
+                              "core::cmp::PartialEq",
+                              Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                              [],
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ],
+                              "eq",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                              M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                            ]
+                          |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                          let γ0_0 := M.read (| γ0_0 |) in
+                          let γ2_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ0_0,
+                              "revm_context_interface::result::EVMError::Precompile",
+                              0
+                            |) in
+                          let __self_0 :=
                             M.alloc (|
-                              Ty.path "bool",
-                              M.call_closure (|
-                                Ty.path "bool",
-                                M.get_trait_method (|
-                                  "core::cmp::PartialEq",
-                                  Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
-                                  [],
-                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ],
-                                  "eq",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
-                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
-                                ]
-                              |)
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                            let γ0_0 := M.read (| γ0_0 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ0_0,
-                                "revm_context_interface::result::EVMError::Precompile",
-                                0
-                              |) in
-                            let __self_0 :=
-                              M.alloc (|
-                                Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
-                                γ2_0
-                              |) in
-                            let γ0_1 := M.read (| γ0_1 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ0_1,
-                                "revm_context_interface::result::EVMError::Precompile",
-                                0
-                              |) in
-                            let __arg1_0 :=
-                              M.alloc (|
-                                Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
-                                γ2_0
-                              |) in
+                              Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                              γ2_0
+                            |) in
+                          let γ0_1 := M.read (| γ0_1 |) in
+                          let γ2_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ0_1,
+                              "revm_context_interface::result::EVMError::Precompile",
+                              0
+                            |) in
+                          let __arg1_0 :=
                             M.alloc (|
-                              Ty.path "bool",
-                              M.call_closure (|
-                                Ty.path "bool",
-                                M.get_trait_method (|
-                                  "core::cmp::PartialEq",
-                                  Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
-                                  [],
-                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ],
-                                  "eq",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
-                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
-                                ]
-                              |)
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.alloc (|
-                              Ty.path "bool",
-                              M.never_to_any (|
-                                M.call_closure (|
-                                  Ty.path "never",
-                                  M.get_function (| "core::intrinsics::unreachable", [], [] |),
-                                  []
-                                |)
-                              |)
-                            |)))
-                      ]
-                    |)
+                              Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                              γ2_0
+                            |) in
+                          M.call_closure (|
+                            Ty.path "bool",
+                            M.get_trait_method (|
+                              "core::cmp::PartialEq",
+                              Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                              [],
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ],
+                              "eq",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                              M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                            ]
+                          |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.never_to_any (|
+                            M.call_closure (|
+                              Ty.path "never",
+                              M.get_function (| "core::intrinsics::unreachable", [], [] |),
+                              []
+                            |)
+                          |)))
+                    ]
                   |)))
               |)
             |)
@@ -5217,40 +4870,34 @@ Module result.
                 ],
               self
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.tuple [],
-              Value.DeclaredButUndefined,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (M.match_operator (|
-                      Ty.tuple [],
-                      Value.DeclaredButUndefined,
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              Ty.tuple [],
-                              Value.DeclaredButUndefined,
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (M.match_operator (|
-                                      Ty.tuple [],
-                                      Value.DeclaredButUndefined,
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                                      ]
-                                    |)))
-                              ]
-                            |)))
-                      ]
-                    |)))
-              ]
-            |)
+          M.match_operator (|
+            Ty.tuple [],
+            Value.DeclaredButUndefined,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (M.match_operator (|
+                    Ty.tuple [],
+                    Value.DeclaredButUndefined,
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            Ty.tuple [],
+                            Value.DeclaredButUndefined,
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    Ty.tuple [],
+                                    Value.DeclaredButUndefined,
+                                    [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
+                                  |)))
+                            ]
+                          |)))
+                    ]
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -5421,131 +5068,99 @@ Module result.
               self
             |) in
           let op := M.alloc (| F, op |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply
-                (Ty.path "revm_context_interface::result::EVMError")
-                []
-                [ E; TransactionValidationErrorT ],
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_context_interface::result::EVMError::Transaction",
-                        0
-                      |) in
-                    let e := M.copy (| TransactionValidationErrorT, γ0_0 |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "revm_context_interface::result::EVMError")
-                        []
-                        [ E; TransactionValidationErrorT ],
-                      Value.StructTuple
-                        "revm_context_interface::result::EVMError::Transaction"
-                        []
-                        [ E; TransactionValidationErrorT ]
-                        [ M.read (| e |) ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_context_interface::result::EVMError::Header",
-                        0
-                      |) in
-                    let e :=
-                      M.copy (| Ty.path "revm_context_interface::result::InvalidHeader", γ0_0 |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "revm_context_interface::result::EVMError")
-                        []
-                        [ E; TransactionValidationErrorT ],
-                      Value.StructTuple
-                        "revm_context_interface::result::EVMError::Header"
-                        []
-                        [ E; TransactionValidationErrorT ]
-                        [ M.read (| e |) ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_context_interface::result::EVMError::Database",
-                        0
-                      |) in
-                    let e := M.copy (| DBError, γ0_0 |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "revm_context_interface::result::EVMError")
-                        []
-                        [ E; TransactionValidationErrorT ],
-                      Value.StructTuple
-                        "revm_context_interface::result::EVMError::Database"
-                        []
-                        [ E; TransactionValidationErrorT ]
-                        [
-                          M.call_closure (|
-                            E,
-                            M.get_trait_method (|
-                              "core::ops::function::FnOnce",
-                              F,
-                              [],
-                              [ Ty.tuple [ DBError ] ],
-                              "call_once",
-                              [],
-                              []
-                            |),
-                            [ M.read (| op |); Value.Tuple [ M.read (| e |) ] ]
-                          |)
-                        ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_context_interface::result::EVMError::Precompile",
-                        0
-                      |) in
-                    let e := M.copy (| Ty.path "alloc::string::String", γ0_0 |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "revm_context_interface::result::EVMError")
-                        []
-                        [ E; TransactionValidationErrorT ],
-                      Value.StructTuple
-                        "revm_context_interface::result::EVMError::Precompile"
-                        []
-                        [ E; TransactionValidationErrorT ]
-                        [ M.read (| e |) ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_context_interface::result::EVMError::Custom",
-                        0
-                      |) in
-                    let e := M.copy (| Ty.path "alloc::string::String", γ0_0 |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "revm_context_interface::result::EVMError")
-                        []
-                        [ E; TransactionValidationErrorT ],
-                      Value.StructTuple
-                        "revm_context_interface::result::EVMError::Custom"
-                        []
-                        [ E; TransactionValidationErrorT ]
-                        [ M.read (| e |) ]
-                    |)))
-              ]
-            |)
+          M.match_operator (|
+            Ty.apply
+              (Ty.path "revm_context_interface::result::EVMError")
+              []
+              [ E; TransactionValidationErrorT ],
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "revm_context_interface::result::EVMError::Transaction",
+                      0
+                    |) in
+                  let e := M.copy (| TransactionValidationErrorT, γ0_0 |) in
+                  Value.StructTuple
+                    "revm_context_interface::result::EVMError::Transaction"
+                    []
+                    [ E; TransactionValidationErrorT ]
+                    [ M.read (| e |) ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "revm_context_interface::result::EVMError::Header",
+                      0
+                    |) in
+                  let e :=
+                    M.copy (| Ty.path "revm_context_interface::result::InvalidHeader", γ0_0 |) in
+                  Value.StructTuple
+                    "revm_context_interface::result::EVMError::Header"
+                    []
+                    [ E; TransactionValidationErrorT ]
+                    [ M.read (| e |) ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "revm_context_interface::result::EVMError::Database",
+                      0
+                    |) in
+                  let e := M.copy (| DBError, γ0_0 |) in
+                  Value.StructTuple
+                    "revm_context_interface::result::EVMError::Database"
+                    []
+                    [ E; TransactionValidationErrorT ]
+                    [
+                      M.call_closure (|
+                        E,
+                        M.get_trait_method (|
+                          "core::ops::function::FnOnce",
+                          F,
+                          [],
+                          [ Ty.tuple [ DBError ] ],
+                          "call_once",
+                          [],
+                          []
+                        |),
+                        [ M.read (| op |); Value.Tuple [ M.read (| e |) ] ]
+                      |)
+                    ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "revm_context_interface::result::EVMError::Precompile",
+                      0
+                    |) in
+                  let e := M.copy (| Ty.path "alloc::string::String", γ0_0 |) in
+                  Value.StructTuple
+                    "revm_context_interface::result::EVMError::Precompile"
+                    []
+                    [ E; TransactionValidationErrorT ]
+                    [ M.read (| e |) ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "revm_context_interface::result::EVMError::Custom",
+                      0
+                    |) in
+                  let e := M.copy (| Ty.path "alloc::string::String", γ0_0 |) in
+                  Value.StructTuple
+                    "revm_context_interface::result::EVMError::Custom"
+                    []
+                    [ E; TransactionValidationErrorT ]
+                    [ M.read (| e |) ]))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -5600,163 +5215,123 @@ Module result.
                 ],
               self
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply
-                (Ty.path "core::option::Option")
-                []
-                [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ] ],
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_context_interface::result::EVMError::Transaction",
-                        0
-                      |) in
-                    let e :=
-                      M.alloc (|
-                        Ty.apply (Ty.path "&") [] [ TransactionValidationErrorT ],
-                        γ1_0
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        []
-                        [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
-                        ],
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        []
-                        [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
-                        ]
-                        [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| e |) |) |))
-                        ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_context_interface::result::EVMError::Header",
-                        0
-                      |) in
-                    let e :=
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [ Ty.path "revm_context_interface::result::InvalidHeader" ],
-                        γ1_0
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        []
-                        [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
-                        ],
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        []
-                        [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
-                        ]
-                        [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| e |) |) |))
-                        ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_context_interface::result::EVMError::Database",
-                        0
-                      |) in
-                    let e := M.alloc (| Ty.apply (Ty.path "&") [] [ DBError ], γ1_0 |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        []
-                        [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
-                        ],
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        []
-                        [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
-                        ]
-                        [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| e |) |) |))
-                        ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (M.find_or_pattern (Ty.tuple []) (|
+          M.match_operator (|
+            Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ] ],
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
                       γ,
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ := M.read (| γ |) in
-                            let γ1_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "revm_context_interface::result::EVMError::Precompile",
-                                0
-                              |) in
-                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ := M.read (| γ |) in
-                            let γ1_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "revm_context_interface::result::EVMError::Custom",
-                                0
-                              |) in
-                            M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                      ],
+                      "revm_context_interface::result::EVMError::Transaction",
+                      0
+                    |) in
+                  let e :=
+                    M.alloc (| Ty.apply (Ty.path "&") [] [ TransactionValidationErrorT ], γ1_0 |) in
+                  Value.StructTuple
+                    "core::option::Option::Some"
+                    []
+                    [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ] ]
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| e |) |) |))
+                    ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "revm_context_interface::result::EVMError::Header",
+                      0
+                    |) in
+                  let e :=
+                    M.alloc (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.path "revm_context_interface::result::InvalidHeader" ],
+                      γ1_0
+                    |) in
+                  Value.StructTuple
+                    "core::option::Option::Some"
+                    []
+                    [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ] ]
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| e |) |) |))
+                    ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "revm_context_interface::result::EVMError::Database",
+                      0
+                    |) in
+                  let e := M.alloc (| Ty.apply (Ty.path "&") [] [ DBError ], γ1_0 |) in
+                  Value.StructTuple
+                    "core::option::Option::Some"
+                    []
+                    [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ] ]
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| e |) |) |))
+                    ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (M.find_or_pattern (Ty.tuple []) (|
+                    γ,
+                    [
                       fun γ =>
                         ltac:(M.monadic
-                          match γ with
-                          | [] =>
-                            ltac:(M.monadic
-                              (M.alloc (|
+                          (let γ := M.read (| γ |) in
+                          let γ1_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ,
+                              "revm_context_interface::result::EVMError::Precompile",
+                              0
+                            |) in
+                          Value.Tuple []));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ := M.read (| γ |) in
+                          let γ1_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ,
+                              "revm_context_interface::result::EVMError::Custom",
+                              0
+                            |) in
+                          Value.Tuple []))
+                    ],
+                    fun γ =>
+                      ltac:(M.monadic
+                        match γ with
+                        | [] =>
+                          ltac:(M.monadic
+                            (Value.StructTuple
+                              "core::option::Option::None"
+                              []
+                              [
                                 Ty.apply
-                                  (Ty.path "core::option::Option")
+                                  (Ty.path "&")
                                   []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
-                                  ],
-                                Value.StructTuple
-                                  "core::option::Option::None"
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
-                                  ]
-                                  []
-                              |)))
-                          | _ => M.impossible "wrong number of arguments"
-                          end)
-                    |)))
-              ]
-            |)
+                                  [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
+                              ]
+                              []))
+                        | _ => M.impossible "wrong number of arguments"
+                        end)
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -5814,411 +5389,367 @@ Module result.
             |) in
           let f :=
             M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_context_interface::result::EVMError::Transaction",
-                        0
-                      |) in
-                    let e :=
-                      M.alloc (|
-                        Ty.apply (Ty.path "&") [] [ TransactionValidationErrorT ],
-                        γ1_0
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_fmt",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.call_closure (|
-                            Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_v1",
-                              [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 1
-                              ],
-                              []
-                            |),
-                            [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 1 ]
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                      Value.Array [ mk_str (| "transaction validation error: " |) ]
-                                    |)
-                                  |)
-                                |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 1 ]
-                                        [ Ty.path "core::fmt::rt::Argument" ],
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_display",
-                                              [],
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [ TransactionValidationErrorT ]
-                                              ]
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| M.borrow (| Pointer.Kind.Ref, e |) |)
-                                              |)
-                                            ]
-                                          |)
-                                        ]
-                                    |)
-                                  |)
-                                |)
-                              |)
-                            ]
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_context_interface::result::EVMError::Header",
-                        0
-                      |) in
-                    let e :=
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [ Ty.path "revm_context_interface::result::InvalidHeader" ],
-                        γ1_0
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_fmt",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.call_closure (|
-                            Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_v1",
-                              [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 1
-                              ],
-                              []
-                            |),
-                            [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 1 ]
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                      Value.Array [ mk_str (| "header validation error: " |) ]
-                                    |)
-                                  |)
-                                |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 1 ]
-                                        [ Ty.path "core::fmt::rt::Argument" ],
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_display",
-                                              [],
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "revm_context_interface::result::InvalidHeader"
-                                                  ]
-                                              ]
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| M.borrow (| Pointer.Kind.Ref, e |) |)
-                                              |)
-                                            ]
-                                          |)
-                                        ]
-                                    |)
-                                  |)
-                                |)
-                              |)
-                            ]
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_context_interface::result::EVMError::Database",
-                        0
-                      |) in
-                    let e := M.alloc (| Ty.apply (Ty.path "&") [] [ DBError ], γ1_0 |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_fmt",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.call_closure (|
-                            Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_v1",
-                              [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 1
-                              ],
-                              []
-                            |),
-                            [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 1 ]
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                      Value.Array [ mk_str (| "database error: " |) ]
-                                    |)
-                                  |)
-                                |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 1 ]
-                                        [ Ty.path "core::fmt::rt::Argument" ],
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_display",
-                                              [],
-                                              [ Ty.apply (Ty.path "&") [] [ DBError ] ]
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| M.borrow (| Pointer.Kind.Ref, e |) |)
-                                              |)
-                                            ]
-                                          |)
-                                        ]
-                                    |)
-                                  |)
-                                |)
-                              |)
-                            ]
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (M.find_or_pattern
-                      (Ty.tuple
-                        [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ]) (|
+          M.match_operator (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
                       γ,
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ := M.read (| γ |) in
-                            let γ1_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "revm_context_interface::result::EVMError::Precompile",
-                                0
-                              |) in
-                            let e :=
-                              M.alloc (|
-                                Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
-                                γ1_0
-                              |) in
-                            M.alloc (|
-                              Ty.tuple
-                                [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ],
-                              Value.Tuple [ e ]
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ := M.read (| γ |) in
-                            let γ1_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "revm_context_interface::result::EVMError::Custom",
-                                0
-                              |) in
-                            let e :=
-                              M.alloc (|
-                                Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
-                                γ1_0
-                              |) in
-                            M.alloc (|
-                              Ty.tuple
-                                [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ],
-                              Value.Tuple [ e ]
-                            |)))
-                      ],
+                      "revm_context_interface::result::EVMError::Transaction",
+                      0
+                    |) in
+                  let e :=
+                    M.alloc (| Ty.apply (Ty.path "&") [] [ TransactionValidationErrorT ], γ1_0 |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_fmt",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.call_closure (|
+                        Ty.path "core::fmt::Arguments",
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::Arguments",
+                          "new_v1",
+                          [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 1 ],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array [ mk_str (| "transaction validation error: " |) ]
+                                |)
+                              |)
+                            |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.path "core::fmt::rt::Argument" ],
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [],
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ TransactionValidationErrorT ]
+                                          ]
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.borrow (| Pointer.Kind.Ref, e |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    ]
+                                |)
+                              |)
+                            |)
+                          |)
+                        ]
+                      |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "revm_context_interface::result::EVMError::Header",
+                      0
+                    |) in
+                  let e :=
+                    M.alloc (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.path "revm_context_interface::result::InvalidHeader" ],
+                      γ1_0
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_fmt",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.call_closure (|
+                        Ty.path "core::fmt::Arguments",
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::Arguments",
+                          "new_v1",
+                          [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 1 ],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array [ mk_str (| "header validation error: " |) ]
+                                |)
+                              |)
+                            |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.path "core::fmt::rt::Argument" ],
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [],
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "revm_context_interface::result::InvalidHeader"
+                                              ]
+                                          ]
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.borrow (| Pointer.Kind.Ref, e |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    ]
+                                |)
+                              |)
+                            |)
+                          |)
+                        ]
+                      |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "revm_context_interface::result::EVMError::Database",
+                      0
+                    |) in
+                  let e := M.alloc (| Ty.apply (Ty.path "&") [] [ DBError ], γ1_0 |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_fmt",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.call_closure (|
+                        Ty.path "core::fmt::Arguments",
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::Arguments",
+                          "new_v1",
+                          [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 1 ],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array [ mk_str (| "database error: " |) ]
+                                |)
+                              |)
+                            |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.path "core::fmt::rt::Argument" ],
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [],
+                                          [ Ty.apply (Ty.path "&") [] [ DBError ] ]
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.borrow (| Pointer.Kind.Ref, e |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    ]
+                                |)
+                              |)
+                            |)
+                          |)
+                        ]
+                      |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (M.find_or_pattern
+                    (Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ]) (|
+                    γ,
+                    [
                       fun γ =>
                         ltac:(M.monadic
-                          match γ with
-                          | [ e ] =>
-                            ltac:(M.monadic
-                              (M.alloc (|
-                                Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  []
-                                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                                M.call_closure (|
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::Formatter",
-                                    "write_str",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.MutRef,
-                                      M.deref (| M.read (| f |) |)
-                                    |);
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (|
-                                        M.call_closure (|
-                                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                                          M.get_trait_method (|
-                                            "core::ops::deref::Deref",
-                                            Ty.path "alloc::string::String",
-                                            [],
-                                            [],
-                                            "deref",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (| M.read (| e |) |)
-                                            |)
-                                          ]
+                          (let γ := M.read (| γ |) in
+                          let γ1_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ,
+                              "revm_context_interface::result::EVMError::Precompile",
+                              0
+                            |) in
+                          let e :=
+                            M.alloc (|
+                              Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                              γ1_0
+                            |) in
+                          Value.Tuple [ e ]));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ := M.read (| γ |) in
+                          let γ1_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ,
+                              "revm_context_interface::result::EVMError::Custom",
+                              0
+                            |) in
+                          let e :=
+                            M.alloc (|
+                              Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                              γ1_0
+                            |) in
+                          Value.Tuple [ e ]))
+                    ],
+                    fun γ =>
+                      ltac:(M.monadic
+                        match γ with
+                        | [ e ] =>
+                          ltac:(M.monadic
+                            (M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::Formatter",
+                                "write_str",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                                      M.get_trait_method (|
+                                        "core::ops::deref::Deref",
+                                        Ty.path "alloc::string::String",
+                                        [],
+                                        [],
+                                        "deref",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| e |) |)
                                         |)
-                                      |)
+                                      ]
                                     |)
-                                  ]
+                                  |)
                                 |)
-                              |)))
-                          | _ => M.impossible "wrong number of arguments"
-                          end)
-                    |)))
-              ]
-            |)
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
+                        end)
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -6541,1113 +6072,924 @@ Module result.
             |) in
           let f :=
             M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::PriorityFeeGreaterThanMaxFee"
-                      |) in
+          M.match_operator (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::PriorityFeeGreaterThanMaxFee"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "PriorityFeeGreaterThanMaxFee" |) |)
+                      |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::GasPriceLessThanBasefee"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "GasPriceLessThanBasefee" |) |)
+                      |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::CallerGasLimitMoreThanBlock"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "CallerGasLimitMoreThanBlock" |) |)
+                      |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::CallGasCostMoreThanGasLimit"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "CallGasCostMoreThanGasLimit" |) |)
+                      |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::RejectCallerWithCode"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "RejectCallerWithCode" |) |)
+                      |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::LackOfFundForMaxFee",
+                      "fee"
+                    |) in
+                  let γ1_1 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::LackOfFundForMaxFee",
+                      "balance"
+                    |) in
+                  let __self_0 :=
                     M.alloc (|
                       Ty.apply
-                        (Ty.path "core::result::Result")
+                        (Ty.path "&")
                         []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
                         [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "PriorityFeeGreaterThanMaxFee" |) |)
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::GasPriceLessThanBasefee"
-                      |) in
+                          Ty.apply
+                            (Ty.path "alloc::boxed::Box")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
+                                [];
+                              Ty.path "alloc::alloc::Global"
+                            ]
+                        ],
+                      γ1_0
+                    |) in
+                  let __self_1 :=
                     M.alloc (|
                       Ty.apply
-                        (Ty.path "core::result::Result")
+                        (Ty.path "&")
                         []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
                         [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "GasPriceLessThanBasefee" |) |)
-                          |)
-                        ]
+                          Ty.apply
+                            (Ty.path "alloc::boxed::Box")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
+                                [];
+                              Ty.path "alloc::alloc::Global"
+                            ]
+                        ],
+                      γ1_1
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "debug_struct_field2_finish",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "LackOfFundForMaxFee" |) |)
+                      |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "fee" |) |) |);
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |));
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "balance" |) |) |);
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_1 |) |)
+                        |))
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::OverflowPaymentInTransaction"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "OverflowPaymentInTransaction" |) |)
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::CallerGasLimitMoreThanBlock"
-                      |) in
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::NonceOverflowInTransaction"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "NonceOverflowInTransaction" |) |)
+                      |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::NonceTooHigh",
+                      "tx"
+                    |) in
+                  let γ1_1 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::NonceTooHigh",
+                      "state"
+                    |) in
+                  let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
+                  let __self_1 := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_1 |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "debug_struct_field2_finish",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "NonceTooHigh" |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "tx" |) |) |);
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |));
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "state" |) |) |);
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_1 |) |)
+                        |))
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::NonceTooLow",
+                      "tx"
+                    |) in
+                  let γ1_1 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::NonceTooLow",
+                      "state"
+                    |) in
+                  let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
+                  let __self_1 := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_1 |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "debug_struct_field2_finish",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "NonceTooLow" |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "tx" |) |) |);
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |));
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "state" |) |) |);
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_1 |) |)
+                        |))
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::CreateInitCodeSizeLimit"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "CreateInitCodeSizeLimit" |) |)
+                      |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::InvalidChainId"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "InvalidChainId" |) |) |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::AccessListNotSupported"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "AccessListNotSupported" |) |)
+                      |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::MaxFeePerBlobGasNotSupported"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "MaxFeePerBlobGasNotSupported" |) |)
+                      |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::BlobVersionedHashesNotSupported"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "BlobVersionedHashesNotSupported" |) |)
+                      |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::BlobGasPriceGreaterThanMax"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "BlobGasPriceGreaterThanMax" |) |)
+                      |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::EmptyBlobs"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "EmptyBlobs" |) |) |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::BlobCreateTransaction"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "BlobCreateTransaction" |) |)
+                      |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::TooManyBlobs",
+                      "max"
+                    |) in
+                  let γ1_1 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::TooManyBlobs",
+                      "have"
+                    |) in
+                  let __self_0 :=
+                    M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ1_0 |) in
+                  let __self_1 :=
+                    M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ1_1 |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "debug_struct_field2_finish",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "TooManyBlobs" |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "max" |) |) |);
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |));
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "have" |) |) |);
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_1 |) |)
+                        |))
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::BlobVersionNotSupported"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "BlobVersionNotSupported" |) |)
+                      |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::EofCrateShouldHaveToAddress"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "EofCrateShouldHaveToAddress" |) |)
+                      |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::AuthorizationListNotSupported"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "AuthorizationListNotSupported" |) |)
+                      |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::AuthorizationListInvalidFields"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "AuthorizationListInvalidFields" |) |)
+                      |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::EmptyAuthorizationList"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "EmptyAuthorizationList" |) |)
+                      |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::InvalidAuthorizationList",
+                      0
+                    |) in
+                  let __self_0 :=
                     M.alloc (|
                       Ty.apply
-                        (Ty.path "core::result::Result")
+                        (Ty.path "&")
                         []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
                         [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "CallerGasLimitMoreThanBlock" |) |)
-                          |)
-                        ]
+                          Ty.path
+                            "revm_specification::eip7702::authorization_list::InvalidAuthorization"
+                        ],
+                      γ1_0
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "debug_tuple_field1_finish",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "InvalidAuthorizationList" |) |)
+                      |);
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                        |))
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::Eip2930NotSupported"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "Eip2930NotSupported" |) |)
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::CallGasCostMoreThanGasLimit"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "CallGasCostMoreThanGasLimit" |) |)
-                          |)
-                        ]
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::Eip1559NotSupported"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "Eip1559NotSupported" |) |)
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::RejectCallerWithCode"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "RejectCallerWithCode" |) |)
-                          |)
-                        ]
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::Eip4844NotSupported"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "Eip4844NotSupported" |) |)
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::LackOfFundForMaxFee",
-                        "fee"
-                      |) in
-                    let γ1_1 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::LackOfFundForMaxFee",
-                        "balance"
-                      |) in
-                    let __self_0 :=
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "ruint::Uint")
-                                  [
-                                    Value.Integer IntegerKind.Usize 256;
-                                    Value.Integer IntegerKind.Usize 4
-                                  ]
-                                  [];
-                                Ty.path "alloc::alloc::Global"
-                              ]
-                          ],
-                        γ1_0
-                      |) in
-                    let __self_1 :=
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "ruint::Uint")
-                                  [
-                                    Value.Integer IntegerKind.Usize 256;
-                                    Value.Integer IntegerKind.Usize 4
-                                  ]
-                                  [];
-                                Ty.path "alloc::alloc::Global"
-                              ]
-                          ],
-                        γ1_1
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_struct_field2_finish",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "LackOfFundForMaxFee" |) |)
-                          |);
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "fee" |) |) |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |));
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "balance" |) |) |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_1 |) |)
-                            |))
-                        ]
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::Eip7702NotSupported"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "Eip7702NotSupported" |) |)
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::OverflowPaymentInTransaction"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "OverflowPaymentInTransaction" |) |)
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::NonceOverflowInTransaction"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "NonceOverflowInTransaction" |) |)
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::NonceTooHigh",
-                        "tx"
-                      |) in
-                    let γ1_1 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::NonceTooHigh",
-                        "state"
-                      |) in
-                    let __self_0 :=
-                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
-                    let __self_1 :=
-                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_1 |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_struct_field2_finish",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "NonceTooHigh" |) |)
-                          |);
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "tx" |) |) |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |));
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "state" |) |) |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_1 |) |)
-                            |))
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::NonceTooLow",
-                        "tx"
-                      |) in
-                    let γ1_1 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::NonceTooLow",
-                        "state"
-                      |) in
-                    let __self_0 :=
-                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
-                    let __self_1 :=
-                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_1 |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_struct_field2_finish",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "NonceTooLow" |) |) |);
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "tx" |) |) |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |));
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "state" |) |) |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_1 |) |)
-                            |))
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::CreateInitCodeSizeLimit"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "CreateInitCodeSizeLimit" |) |)
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::InvalidChainId"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "InvalidChainId" |) |)
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::AccessListNotSupported"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "AccessListNotSupported" |) |)
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::MaxFeePerBlobGasNotSupported"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "MaxFeePerBlobGasNotSupported" |) |)
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::BlobVersionedHashesNotSupported"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "BlobVersionedHashesNotSupported" |) |)
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::BlobGasPriceGreaterThanMax"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "BlobGasPriceGreaterThanMax" |) |)
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::EmptyBlobs"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "EmptyBlobs" |) |) |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::BlobCreateTransaction"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "BlobCreateTransaction" |) |)
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::TooManyBlobs",
-                        "max"
-                      |) in
-                    let γ1_1 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::TooManyBlobs",
-                        "have"
-                      |) in
-                    let __self_0 :=
-                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ1_0 |) in
-                    let __self_1 :=
-                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ1_1 |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_struct_field2_finish",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "TooManyBlobs" |) |)
-                          |);
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "max" |) |) |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |));
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "have" |) |) |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_1 |) |)
-                            |))
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::BlobVersionNotSupported"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "BlobVersionNotSupported" |) |)
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::EofCrateShouldHaveToAddress"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "EofCrateShouldHaveToAddress" |) |)
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::AuthorizationListNotSupported"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "AuthorizationListNotSupported" |) |)
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::AuthorizationListInvalidFields"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "AuthorizationListInvalidFields" |) |)
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::EmptyAuthorizationList"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "EmptyAuthorizationList" |) |)
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::InvalidAuthorizationList",
-                        0
-                      |) in
-                    let __self_0 :=
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [
-                            Ty.path
-                              "revm_specification::eip7702::authorization_list::InvalidAuthorization"
-                          ],
-                        γ1_0
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_tuple_field1_finish",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "InvalidAuthorizationList" |) |)
-                          |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                            |))
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::Eip2930NotSupported"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "Eip2930NotSupported" |) |)
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::Eip1559NotSupported"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "Eip1559NotSupported" |) |)
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::Eip4844NotSupported"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "Eip4844NotSupported" |) |)
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::Eip7702NotSupported"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "Eip7702NotSupported" |) |)
-                          |)
-                        ]
-                      |)
-                    |)))
-              ]
-            |)
+                    ]
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -7677,112 +7019,156 @@ Module result.
                 [ Ty.path "revm_context_interface::result::InvalidTransaction" ],
               self
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.path "revm_context_interface::result::InvalidTransaction",
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::PriorityFeeGreaterThanMaxFee"
-                      |) in
+          M.match_operator (|
+            Ty.path "revm_context_interface::result::InvalidTransaction",
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::PriorityFeeGreaterThanMaxFee"
+                    |) in
+                  Value.StructTuple
+                    "revm_context_interface::result::InvalidTransaction::PriorityFeeGreaterThanMaxFee"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::GasPriceLessThanBasefee"
+                    |) in
+                  Value.StructTuple
+                    "revm_context_interface::result::InvalidTransaction::GasPriceLessThanBasefee"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::CallerGasLimitMoreThanBlock"
+                    |) in
+                  Value.StructTuple
+                    "revm_context_interface::result::InvalidTransaction::CallerGasLimitMoreThanBlock"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::CallGasCostMoreThanGasLimit"
+                    |) in
+                  Value.StructTuple
+                    "revm_context_interface::result::InvalidTransaction::CallGasCostMoreThanGasLimit"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::RejectCallerWithCode"
+                    |) in
+                  Value.StructTuple
+                    "revm_context_interface::result::InvalidTransaction::RejectCallerWithCode"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::LackOfFundForMaxFee",
+                      "fee"
+                    |) in
+                  let γ1_1 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::LackOfFundForMaxFee",
+                      "balance"
+                    |) in
+                  let __self_0 :=
                     M.alloc (|
-                      Ty.path "revm_context_interface::result::InvalidTransaction",
-                      Value.StructTuple
-                        "revm_context_interface::result::InvalidTransaction::PriorityFeeGreaterThanMaxFee"
+                      Ty.apply
+                        (Ty.path "&")
                         []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::GasPriceLessThanBasefee"
-                      |) in
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::boxed::Box")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
+                                [];
+                              Ty.path "alloc::alloc::Global"
+                            ]
+                        ],
+                      γ1_0
+                    |) in
+                  let __self_1 :=
                     M.alloc (|
-                      Ty.path "revm_context_interface::result::InvalidTransaction",
-                      Value.StructTuple
-                        "revm_context_interface::result::InvalidTransaction::GasPriceLessThanBasefee"
+                      Ty.apply
+                        (Ty.path "&")
                         []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::CallerGasLimitMoreThanBlock"
-                      |) in
-                    M.alloc (|
-                      Ty.path "revm_context_interface::result::InvalidTransaction",
-                      Value.StructTuple
-                        "revm_context_interface::result::InvalidTransaction::CallerGasLimitMoreThanBlock"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::CallGasCostMoreThanGasLimit"
-                      |) in
-                    M.alloc (|
-                      Ty.path "revm_context_interface::result::InvalidTransaction",
-                      Value.StructTuple
-                        "revm_context_interface::result::InvalidTransaction::CallGasCostMoreThanGasLimit"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::RejectCallerWithCode"
-                      |) in
-                    M.alloc (|
-                      Ty.path "revm_context_interface::result::InvalidTransaction",
-                      Value.StructTuple
-                        "revm_context_interface::result::InvalidTransaction::RejectCallerWithCode"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::LackOfFundForMaxFee",
-                        "fee"
-                      |) in
-                    let γ1_1 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::LackOfFundForMaxFee",
-                        "balance"
-                      |) in
-                    let __self_0 :=
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::boxed::Box")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
+                                [];
+                              Ty.path "alloc::alloc::Global"
+                            ]
+                        ],
+                      γ1_1
+                    |) in
+                  Value.mkStructRecord
+                    "revm_context_interface::result::InvalidTransaction::LackOfFundForMaxFee"
+                    []
+                    []
+                    [
+                      ("fee",
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "alloc::boxed::Box")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
+                                [];
+                              Ty.path "alloc::alloc::Global"
+                            ],
+                          M.get_trait_method (|
+                            "core::clone::Clone",
                             Ty.apply
                               (Ty.path "alloc::boxed::Box")
                               []
@@ -7795,16 +7181,32 @@ Module result.
                                   ]
                                   [];
                                 Ty.path "alloc::alloc::Global"
-                              ]
-                          ],
-                        γ1_0
-                      |) in
-                    let __self_1 :=
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [
+                              ],
+                            [],
+                            [],
+                            "clone",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
+                        |));
+                      ("balance",
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "alloc::boxed::Box")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
+                                [];
+                              Ty.path "alloc::alloc::Global"
+                            ],
+                          M.get_trait_method (|
+                            "core::clone::Clone",
                             Ty.apply
                               (Ty.path "alloc::boxed::Box")
                               []
@@ -7817,621 +7219,460 @@ Module result.
                                   ]
                                   [];
                                 Ty.path "alloc::alloc::Global"
-                              ]
-                          ],
-                        γ1_1
-                      |) in
+                              ],
+                            [],
+                            [],
+                            "clone",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |) ]
+                        |))
+                    ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::OverflowPaymentInTransaction"
+                    |) in
+                  Value.StructTuple
+                    "revm_context_interface::result::InvalidTransaction::OverflowPaymentInTransaction"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::NonceOverflowInTransaction"
+                    |) in
+                  Value.StructTuple
+                    "revm_context_interface::result::InvalidTransaction::NonceOverflowInTransaction"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::NonceTooHigh",
+                      "tx"
+                    |) in
+                  let γ1_1 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::NonceTooHigh",
+                      "state"
+                    |) in
+                  let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
+                  let __self_1 := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_1 |) in
+                  Value.mkStructRecord
+                    "revm_context_interface::result::InvalidTransaction::NonceTooHigh"
+                    []
+                    []
+                    [
+                      ("tx",
+                        M.call_closure (|
+                          Ty.path "u64",
+                          M.get_trait_method (|
+                            "core::clone::Clone",
+                            Ty.path "u64",
+                            [],
+                            [],
+                            "clone",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
+                        |));
+                      ("state",
+                        M.call_closure (|
+                          Ty.path "u64",
+                          M.get_trait_method (|
+                            "core::clone::Clone",
+                            Ty.path "u64",
+                            [],
+                            [],
+                            "clone",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |) ]
+                        |))
+                    ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::NonceTooLow",
+                      "tx"
+                    |) in
+                  let γ1_1 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::NonceTooLow",
+                      "state"
+                    |) in
+                  let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
+                  let __self_1 := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_1 |) in
+                  Value.mkStructRecord
+                    "revm_context_interface::result::InvalidTransaction::NonceTooLow"
+                    []
+                    []
+                    [
+                      ("tx",
+                        M.call_closure (|
+                          Ty.path "u64",
+                          M.get_trait_method (|
+                            "core::clone::Clone",
+                            Ty.path "u64",
+                            [],
+                            [],
+                            "clone",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
+                        |));
+                      ("state",
+                        M.call_closure (|
+                          Ty.path "u64",
+                          M.get_trait_method (|
+                            "core::clone::Clone",
+                            Ty.path "u64",
+                            [],
+                            [],
+                            "clone",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |) ]
+                        |))
+                    ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::CreateInitCodeSizeLimit"
+                    |) in
+                  Value.StructTuple
+                    "revm_context_interface::result::InvalidTransaction::CreateInitCodeSizeLimit"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::InvalidChainId"
+                    |) in
+                  Value.StructTuple
+                    "revm_context_interface::result::InvalidTransaction::InvalidChainId"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::AccessListNotSupported"
+                    |) in
+                  Value.StructTuple
+                    "revm_context_interface::result::InvalidTransaction::AccessListNotSupported"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::MaxFeePerBlobGasNotSupported"
+                    |) in
+                  Value.StructTuple
+                    "revm_context_interface::result::InvalidTransaction::MaxFeePerBlobGasNotSupported"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::BlobVersionedHashesNotSupported"
+                    |) in
+                  Value.StructTuple
+                    "revm_context_interface::result::InvalidTransaction::BlobVersionedHashesNotSupported"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::BlobGasPriceGreaterThanMax"
+                    |) in
+                  Value.StructTuple
+                    "revm_context_interface::result::InvalidTransaction::BlobGasPriceGreaterThanMax"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::EmptyBlobs"
+                    |) in
+                  Value.StructTuple
+                    "revm_context_interface::result::InvalidTransaction::EmptyBlobs"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::BlobCreateTransaction"
+                    |) in
+                  Value.StructTuple
+                    "revm_context_interface::result::InvalidTransaction::BlobCreateTransaction"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::TooManyBlobs",
+                      "max"
+                    |) in
+                  let γ1_1 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::TooManyBlobs",
+                      "have"
+                    |) in
+                  let __self_0 :=
+                    M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ1_0 |) in
+                  let __self_1 :=
+                    M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ1_1 |) in
+                  Value.mkStructRecord
+                    "revm_context_interface::result::InvalidTransaction::TooManyBlobs"
+                    []
+                    []
+                    [
+                      ("max",
+                        M.call_closure (|
+                          Ty.path "usize",
+                          M.get_trait_method (|
+                            "core::clone::Clone",
+                            Ty.path "usize",
+                            [],
+                            [],
+                            "clone",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
+                        |));
+                      ("have",
+                        M.call_closure (|
+                          Ty.path "usize",
+                          M.get_trait_method (|
+                            "core::clone::Clone",
+                            Ty.path "usize",
+                            [],
+                            [],
+                            "clone",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |) ]
+                        |))
+                    ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::BlobVersionNotSupported"
+                    |) in
+                  Value.StructTuple
+                    "revm_context_interface::result::InvalidTransaction::BlobVersionNotSupported"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::EofCrateShouldHaveToAddress"
+                    |) in
+                  Value.StructTuple
+                    "revm_context_interface::result::InvalidTransaction::EofCrateShouldHaveToAddress"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::AuthorizationListNotSupported"
+                    |) in
+                  Value.StructTuple
+                    "revm_context_interface::result::InvalidTransaction::AuthorizationListNotSupported"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::AuthorizationListInvalidFields"
+                    |) in
+                  Value.StructTuple
+                    "revm_context_interface::result::InvalidTransaction::AuthorizationListInvalidFields"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::EmptyAuthorizationList"
+                    |) in
+                  Value.StructTuple
+                    "revm_context_interface::result::InvalidTransaction::EmptyAuthorizationList"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::InvalidAuthorizationList",
+                      0
+                    |) in
+                  let __self_0 :=
                     M.alloc (|
-                      Ty.path "revm_context_interface::result::InvalidTransaction",
-                      Value.mkStructRecord
-                        "revm_context_interface::result::InvalidTransaction::LackOfFundForMaxFee"
-                        []
+                      Ty.apply
+                        (Ty.path "&")
                         []
                         [
-                          ("fee",
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "alloc::boxed::Box")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "ruint::Uint")
-                                    [
-                                      Value.Integer IntegerKind.Usize 256;
-                                      Value.Integer IntegerKind.Usize 4
-                                    ]
-                                    [];
-                                  Ty.path "alloc::alloc::Global"
-                                ],
-                              M.get_trait_method (|
-                                "core::clone::Clone",
-                                Ty.apply
-                                  (Ty.path "alloc::boxed::Box")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "ruint::Uint")
-                                      [
-                                        Value.Integer IntegerKind.Usize 256;
-                                        Value.Integer IntegerKind.Usize 4
-                                      ]
-                                      [];
-                                    Ty.path "alloc::alloc::Global"
-                                  ],
-                                [],
-                                [],
-                                "clone",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |)
-                              ]
-                            |));
-                          ("balance",
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "alloc::boxed::Box")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "ruint::Uint")
-                                    [
-                                      Value.Integer IntegerKind.Usize 256;
-                                      Value.Integer IntegerKind.Usize 4
-                                    ]
-                                    [];
-                                  Ty.path "alloc::alloc::Global"
-                                ],
-                              M.get_trait_method (|
-                                "core::clone::Clone",
-                                Ty.apply
-                                  (Ty.path "alloc::boxed::Box")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "ruint::Uint")
-                                      [
-                                        Value.Integer IntegerKind.Usize 256;
-                                        Value.Integer IntegerKind.Usize 4
-                                      ]
-                                      [];
-                                    Ty.path "alloc::alloc::Global"
-                                  ],
-                                [],
-                                [],
-                                "clone",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |)
-                              ]
-                            |))
-                        ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::OverflowPaymentInTransaction"
-                      |) in
-                    M.alloc (|
-                      Ty.path "revm_context_interface::result::InvalidTransaction",
-                      Value.StructTuple
-                        "revm_context_interface::result::InvalidTransaction::OverflowPaymentInTransaction"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::NonceOverflowInTransaction"
-                      |) in
-                    M.alloc (|
-                      Ty.path "revm_context_interface::result::InvalidTransaction",
-                      Value.StructTuple
-                        "revm_context_interface::result::InvalidTransaction::NonceOverflowInTransaction"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::NonceTooHigh",
-                        "tx"
-                      |) in
-                    let γ1_1 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::NonceTooHigh",
-                        "state"
-                      |) in
-                    let __self_0 :=
-                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
-                    let __self_1 :=
-                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_1 |) in
-                    M.alloc (|
-                      Ty.path "revm_context_interface::result::InvalidTransaction",
-                      Value.mkStructRecord
-                        "revm_context_interface::result::InvalidTransaction::NonceTooHigh"
-                        []
-                        []
-                        [
-                          ("tx",
-                            M.call_closure (|
-                              Ty.path "u64",
-                              M.get_trait_method (|
-                                "core::clone::Clone",
-                                Ty.path "u64",
-                                [],
-                                [],
-                                "clone",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |)
-                              ]
-                            |));
-                          ("state",
-                            M.call_closure (|
-                              Ty.path "u64",
-                              M.get_trait_method (|
-                                "core::clone::Clone",
-                                Ty.path "u64",
-                                [],
-                                [],
-                                "clone",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |)
-                              ]
-                            |))
-                        ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::NonceTooLow",
-                        "tx"
-                      |) in
-                    let γ1_1 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::NonceTooLow",
-                        "state"
-                      |) in
-                    let __self_0 :=
-                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
-                    let __self_1 :=
-                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_1 |) in
-                    M.alloc (|
-                      Ty.path "revm_context_interface::result::InvalidTransaction",
-                      Value.mkStructRecord
-                        "revm_context_interface::result::InvalidTransaction::NonceTooLow"
-                        []
-                        []
-                        [
-                          ("tx",
-                            M.call_closure (|
-                              Ty.path "u64",
-                              M.get_trait_method (|
-                                "core::clone::Clone",
-                                Ty.path "u64",
-                                [],
-                                [],
-                                "clone",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |)
-                              ]
-                            |));
-                          ("state",
-                            M.call_closure (|
-                              Ty.path "u64",
-                              M.get_trait_method (|
-                                "core::clone::Clone",
-                                Ty.path "u64",
-                                [],
-                                [],
-                                "clone",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |)
-                              ]
-                            |))
-                        ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::CreateInitCodeSizeLimit"
-                      |) in
-                    M.alloc (|
-                      Ty.path "revm_context_interface::result::InvalidTransaction",
-                      Value.StructTuple
-                        "revm_context_interface::result::InvalidTransaction::CreateInitCodeSizeLimit"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::InvalidChainId"
-                      |) in
-                    M.alloc (|
-                      Ty.path "revm_context_interface::result::InvalidTransaction",
-                      Value.StructTuple
-                        "revm_context_interface::result::InvalidTransaction::InvalidChainId"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::AccessListNotSupported"
-                      |) in
-                    M.alloc (|
-                      Ty.path "revm_context_interface::result::InvalidTransaction",
-                      Value.StructTuple
-                        "revm_context_interface::result::InvalidTransaction::AccessListNotSupported"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::MaxFeePerBlobGasNotSupported"
-                      |) in
-                    M.alloc (|
-                      Ty.path "revm_context_interface::result::InvalidTransaction",
-                      Value.StructTuple
-                        "revm_context_interface::result::InvalidTransaction::MaxFeePerBlobGasNotSupported"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::BlobVersionedHashesNotSupported"
-                      |) in
-                    M.alloc (|
-                      Ty.path "revm_context_interface::result::InvalidTransaction",
-                      Value.StructTuple
-                        "revm_context_interface::result::InvalidTransaction::BlobVersionedHashesNotSupported"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::BlobGasPriceGreaterThanMax"
-                      |) in
-                    M.alloc (|
-                      Ty.path "revm_context_interface::result::InvalidTransaction",
-                      Value.StructTuple
-                        "revm_context_interface::result::InvalidTransaction::BlobGasPriceGreaterThanMax"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::EmptyBlobs"
-                      |) in
-                    M.alloc (|
-                      Ty.path "revm_context_interface::result::InvalidTransaction",
-                      Value.StructTuple
-                        "revm_context_interface::result::InvalidTransaction::EmptyBlobs"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::BlobCreateTransaction"
-                      |) in
-                    M.alloc (|
-                      Ty.path "revm_context_interface::result::InvalidTransaction",
-                      Value.StructTuple
-                        "revm_context_interface::result::InvalidTransaction::BlobCreateTransaction"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::TooManyBlobs",
-                        "max"
-                      |) in
-                    let γ1_1 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::TooManyBlobs",
-                        "have"
-                      |) in
-                    let __self_0 :=
-                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ1_0 |) in
-                    let __self_1 :=
-                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ1_1 |) in
-                    M.alloc (|
-                      Ty.path "revm_context_interface::result::InvalidTransaction",
-                      Value.mkStructRecord
-                        "revm_context_interface::result::InvalidTransaction::TooManyBlobs"
-                        []
-                        []
-                        [
-                          ("max",
-                            M.call_closure (|
-                              Ty.path "usize",
-                              M.get_trait_method (|
-                                "core::clone::Clone",
-                                Ty.path "usize",
-                                [],
-                                [],
-                                "clone",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |)
-                              ]
-                            |));
-                          ("have",
-                            M.call_closure (|
-                              Ty.path "usize",
-                              M.get_trait_method (|
-                                "core::clone::Clone",
-                                Ty.path "usize",
-                                [],
-                                [],
-                                "clone",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |)
-                              ]
-                            |))
-                        ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::BlobVersionNotSupported"
-                      |) in
-                    M.alloc (|
-                      Ty.path "revm_context_interface::result::InvalidTransaction",
-                      Value.StructTuple
-                        "revm_context_interface::result::InvalidTransaction::BlobVersionNotSupported"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::EofCrateShouldHaveToAddress"
-                      |) in
-                    M.alloc (|
-                      Ty.path "revm_context_interface::result::InvalidTransaction",
-                      Value.StructTuple
-                        "revm_context_interface::result::InvalidTransaction::EofCrateShouldHaveToAddress"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::AuthorizationListNotSupported"
-                      |) in
-                    M.alloc (|
-                      Ty.path "revm_context_interface::result::InvalidTransaction",
-                      Value.StructTuple
-                        "revm_context_interface::result::InvalidTransaction::AuthorizationListNotSupported"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::AuthorizationListInvalidFields"
-                      |) in
-                    M.alloc (|
-                      Ty.path "revm_context_interface::result::InvalidTransaction",
-                      Value.StructTuple
-                        "revm_context_interface::result::InvalidTransaction::AuthorizationListInvalidFields"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::EmptyAuthorizationList"
-                      |) in
-                    M.alloc (|
-                      Ty.path "revm_context_interface::result::InvalidTransaction",
-                      Value.StructTuple
-                        "revm_context_interface::result::InvalidTransaction::EmptyAuthorizationList"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::InvalidAuthorizationList",
-                        0
-                      |) in
-                    let __self_0 :=
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
+                          Ty.path
+                            "revm_specification::eip7702::authorization_list::InvalidAuthorization"
+                        ],
+                      γ1_0
+                    |) in
+                  Value.StructTuple
+                    "revm_context_interface::result::InvalidTransaction::InvalidAuthorizationList"
+                    []
+                    []
+                    [
+                      M.call_closure (|
+                        Ty.path
+                          "revm_specification::eip7702::authorization_list::InvalidAuthorization",
+                        M.get_trait_method (|
+                          "core::clone::Clone",
+                          Ty.path
+                            "revm_specification::eip7702::authorization_list::InvalidAuthorization",
+                          [],
+                          [],
+                          "clone",
+                          [],
                           []
-                          [
-                            Ty.path
-                              "revm_specification::eip7702::authorization_list::InvalidAuthorization"
-                          ],
-                        γ1_0
-                      |) in
-                    M.alloc (|
-                      Ty.path "revm_context_interface::result::InvalidTransaction",
-                      Value.StructTuple
-                        "revm_context_interface::result::InvalidTransaction::InvalidAuthorizationList"
-                        []
-                        []
-                        [
-                          M.call_closure (|
-                            Ty.path
-                              "revm_specification::eip7702::authorization_list::InvalidAuthorization",
-                            M.get_trait_method (|
-                              "core::clone::Clone",
-                              Ty.path
-                                "revm_specification::eip7702::authorization_list::InvalidAuthorization",
-                              [],
-                              [],
-                              "clone",
-                              [],
-                              []
-                            |),
-                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
-                          |)
-                        ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::Eip2930NotSupported"
-                      |) in
-                    M.alloc (|
-                      Ty.path "revm_context_interface::result::InvalidTransaction",
-                      Value.StructTuple
-                        "revm_context_interface::result::InvalidTransaction::Eip2930NotSupported"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::Eip1559NotSupported"
-                      |) in
-                    M.alloc (|
-                      Ty.path "revm_context_interface::result::InvalidTransaction",
-                      Value.StructTuple
-                        "revm_context_interface::result::InvalidTransaction::Eip1559NotSupported"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::Eip4844NotSupported"
-                      |) in
-                    M.alloc (|
-                      Ty.path "revm_context_interface::result::InvalidTransaction",
-                      Value.StructTuple
-                        "revm_context_interface::result::InvalidTransaction::Eip4844NotSupported"
-                        []
-                        []
-                        []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::Eip7702NotSupported"
-                      |) in
-                    M.alloc (|
-                      Ty.path "revm_context_interface::result::InvalidTransaction",
-                      Value.StructTuple
-                        "revm_context_interface::result::InvalidTransaction::Eip7702NotSupported"
-                        []
-                        []
-                        []
-                    |)))
-              ]
-            |)
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
+                      |)
+                    ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::Eip2930NotSupported"
+                    |) in
+                  Value.StructTuple
+                    "revm_context_interface::result::InvalidTransaction::Eip2930NotSupported"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::Eip1559NotSupported"
+                    |) in
+                  Value.StructTuple
+                    "revm_context_interface::result::InvalidTransaction::Eip1559NotSupported"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::Eip4844NotSupported"
+                    |) in
+                  Value.StructTuple
+                    "revm_context_interface::result::InvalidTransaction::Eip4844NotSupported"
+                    []
+                    []
+                    []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::Eip7702NotSupported"
+                    |) in
+                  Value.StructTuple
+                    "revm_context_interface::result::InvalidTransaction::Eip7702NotSupported"
+                    []
+                    []
+                    []))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -8511,149 +7752,219 @@ Module result.
                   [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
                 |),
                 ltac:(M.monadic
-                  (M.read (|
-                    M.match_operator (|
-                      Ty.path "bool",
-                      M.alloc (|
-                        Ty.tuple
-                          [
-                            Ty.apply
-                              (Ty.path "&")
-                              []
-                              [ Ty.path "revm_context_interface::result::InvalidTransaction" ];
-                            Ty.apply
-                              (Ty.path "&")
-                              []
-                              [ Ty.path "revm_context_interface::result::InvalidTransaction" ]
-                          ],
-                        Value.Tuple [ M.read (| self |); M.read (| other |) ]
-                      |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                            let γ0_0 := M.read (| γ0_0 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_0,
-                                "revm_context_interface::result::InvalidTransaction::LackOfFundForMaxFee",
-                                "fee"
-                              |) in
-                            let γ2_1 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_0,
-                                "revm_context_interface::result::InvalidTransaction::LackOfFundForMaxFee",
-                                "balance"
-                              |) in
-                            let __self_0 :=
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "ruint::Uint")
-                                          [
-                                            Value.Integer IntegerKind.Usize 256;
-                                            Value.Integer IntegerKind.Usize 4
-                                          ]
-                                          [];
-                                        Ty.path "alloc::alloc::Global"
-                                      ]
-                                  ],
-                                γ2_0
-                              |) in
-                            let __self_1 :=
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "ruint::Uint")
-                                          [
-                                            Value.Integer IntegerKind.Usize 256;
-                                            Value.Integer IntegerKind.Usize 4
-                                          ]
-                                          [];
-                                        Ty.path "alloc::alloc::Global"
-                                      ]
-                                  ],
-                                γ2_1
-                              |) in
-                            let γ0_1 := M.read (| γ0_1 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_1,
-                                "revm_context_interface::result::InvalidTransaction::LackOfFundForMaxFee",
-                                "fee"
-                              |) in
-                            let γ2_1 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_1,
-                                "revm_context_interface::result::InvalidTransaction::LackOfFundForMaxFee",
-                                "balance"
-                              |) in
-                            let __arg1_0 :=
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "ruint::Uint")
-                                          [
-                                            Value.Integer IntegerKind.Usize 256;
-                                            Value.Integer IntegerKind.Usize 4
-                                          ]
-                                          [];
-                                        Ty.path "alloc::alloc::Global"
-                                      ]
-                                  ],
-                                γ2_0
-                              |) in
-                            let __arg1_1 :=
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "ruint::Uint")
-                                          [
-                                            Value.Integer IntegerKind.Usize 256;
-                                            Value.Integer IntegerKind.Usize 4
-                                          ]
-                                          [];
-                                        Ty.path "alloc::alloc::Global"
-                                      ]
-                                  ],
-                                γ2_1
-                              |) in
+                  (M.match_operator (|
+                    Ty.path "bool",
+                    M.alloc (|
+                      Ty.tuple
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "revm_context_interface::result::InvalidTransaction" ];
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "revm_context_interface::result::InvalidTransaction" ]
+                        ],
+                      Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                    |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                          let γ0_0 := M.read (| γ0_0 |) in
+                          let γ2_0 :=
+                            M.SubPointer.get_struct_record_field (|
+                              γ0_0,
+                              "revm_context_interface::result::InvalidTransaction::LackOfFundForMaxFee",
+                              "fee"
+                            |) in
+                          let γ2_1 :=
+                            M.SubPointer.get_struct_record_field (|
+                              γ0_0,
+                              "revm_context_interface::result::InvalidTransaction::LackOfFundForMaxFee",
+                              "balance"
+                            |) in
+                          let __self_0 :=
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::boxed::Box")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [
+                                          Value.Integer IntegerKind.Usize 256;
+                                          Value.Integer IntegerKind.Usize 4
+                                        ]
+                                        [];
+                                      Ty.path "alloc::alloc::Global"
+                                    ]
+                                ],
+                              γ2_0
+                            |) in
+                          let __self_1 :=
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::boxed::Box")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [
+                                          Value.Integer IntegerKind.Usize 256;
+                                          Value.Integer IntegerKind.Usize 4
+                                        ]
+                                        [];
+                                      Ty.path "alloc::alloc::Global"
+                                    ]
+                                ],
+                              γ2_1
+                            |) in
+                          let γ0_1 := M.read (| γ0_1 |) in
+                          let γ2_0 :=
+                            M.SubPointer.get_struct_record_field (|
+                              γ0_1,
+                              "revm_context_interface::result::InvalidTransaction::LackOfFundForMaxFee",
+                              "fee"
+                            |) in
+                          let γ2_1 :=
+                            M.SubPointer.get_struct_record_field (|
+                              γ0_1,
+                              "revm_context_interface::result::InvalidTransaction::LackOfFundForMaxFee",
+                              "balance"
+                            |) in
+                          let __arg1_0 :=
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::boxed::Box")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [
+                                          Value.Integer IntegerKind.Usize 256;
+                                          Value.Integer IntegerKind.Usize 4
+                                        ]
+                                        [];
+                                      Ty.path "alloc::alloc::Global"
+                                    ]
+                                ],
+                              γ2_0
+                            |) in
+                          let __arg1_1 :=
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::boxed::Box")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [
+                                          Value.Integer IntegerKind.Usize 256;
+                                          Value.Integer IntegerKind.Usize 4
+                                        ]
+                                        [];
+                                      Ty.path "alloc::alloc::Global"
+                                    ]
+                                ],
+                              γ2_1
+                            |) in
+                          LogicalOp.and (|
+                            M.call_closure (|
                               Ty.path "bool",
-                              LogicalOp.and (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_trait_method (|
-                                    "core::cmp::PartialEq",
+                              M.get_trait_method (|
+                                "core::cmp::PartialEq",
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::boxed::Box")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ]
+                                          [];
+                                        Ty.path "alloc::alloc::Global"
+                                      ]
+                                  ],
+                                [],
+                                [
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::boxed::Box")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [
+                                              Value.Integer IntegerKind.Usize 256;
+                                              Value.Integer IntegerKind.Usize 4
+                                            ]
+                                            [];
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
+                                    ]
+                                ],
+                                "eq",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                              ]
+                            |),
+                            ltac:(M.monadic
+                              (M.call_closure (|
+                                Ty.path "bool",
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::boxed::Box")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [
+                                              Value.Integer IntegerKind.Usize 256;
+                                              Value.Integer IntegerKind.Usize 4
+                                            ]
+                                            [];
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
+                                    ],
+                                  [],
+                                  [
                                     Ty.apply
                                       (Ty.path "&")
                                       []
@@ -8671,381 +7982,6 @@ Module result.
                                               [];
                                             Ty.path "alloc::alloc::Global"
                                           ]
-                                      ],
-                                    [],
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "alloc::boxed::Box")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "ruint::Uint")
-                                                [
-                                                  Value.Integer IntegerKind.Usize 256;
-                                                  Value.Integer IntegerKind.Usize 4
-                                                ]
-                                                [];
-                                              Ty.path "alloc::alloc::Global"
-                                            ]
-                                        ]
-                                    ],
-                                    "eq",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (| Pointer.Kind.Ref, __self_0 |);
-                                    M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
-                                  ]
-                                |),
-                                ltac:(M.monadic
-                                  (M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_trait_method (|
-                                      "core::cmp::PartialEq",
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "alloc::boxed::Box")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "ruint::Uint")
-                                                [
-                                                  Value.Integer IntegerKind.Usize 256;
-                                                  Value.Integer IntegerKind.Usize 4
-                                                ]
-                                                [];
-                                              Ty.path "alloc::alloc::Global"
-                                            ]
-                                        ],
-                                      [],
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "alloc::boxed::Box")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "ruint::Uint")
-                                                  [
-                                                    Value.Integer IntegerKind.Usize 256;
-                                                    Value.Integer IntegerKind.Usize 4
-                                                  ]
-                                                  [];
-                                                Ty.path "alloc::alloc::Global"
-                                              ]
-                                          ]
-                                      ],
-                                      "eq",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (| Pointer.Kind.Ref, __self_1 |);
-                                      M.borrow (| Pointer.Kind.Ref, __arg1_1 |)
-                                    ]
-                                  |)))
-                              |)
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                            let γ0_0 := M.read (| γ0_0 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_0,
-                                "revm_context_interface::result::InvalidTransaction::NonceTooHigh",
-                                "tx"
-                              |) in
-                            let γ2_1 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_0,
-                                "revm_context_interface::result::InvalidTransaction::NonceTooHigh",
-                                "state"
-                              |) in
-                            let __self_0 :=
-                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_0 |) in
-                            let __self_1 :=
-                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_1 |) in
-                            let γ0_1 := M.read (| γ0_1 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_1,
-                                "revm_context_interface::result::InvalidTransaction::NonceTooHigh",
-                                "tx"
-                              |) in
-                            let γ2_1 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_1,
-                                "revm_context_interface::result::InvalidTransaction::NonceTooHigh",
-                                "state"
-                              |) in
-                            let __arg1_0 :=
-                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_0 |) in
-                            let __arg1_1 :=
-                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_1 |) in
-                            M.alloc (|
-                              Ty.path "bool",
-                              LogicalOp.and (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_trait_method (|
-                                    "core::cmp::PartialEq",
-                                    Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
-                                    [],
-                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
-                                    "eq",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (| Pointer.Kind.Ref, __self_0 |);
-                                    M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
-                                  ]
-                                |),
-                                ltac:(M.monadic
-                                  (M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_trait_method (|
-                                      "core::cmp::PartialEq",
-                                      Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
-                                      [],
-                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
-                                      "eq",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (| Pointer.Kind.Ref, __self_1 |);
-                                      M.borrow (| Pointer.Kind.Ref, __arg1_1 |)
-                                    ]
-                                  |)))
-                              |)
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                            let γ0_0 := M.read (| γ0_0 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_0,
-                                "revm_context_interface::result::InvalidTransaction::NonceTooLow",
-                                "tx"
-                              |) in
-                            let γ2_1 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_0,
-                                "revm_context_interface::result::InvalidTransaction::NonceTooLow",
-                                "state"
-                              |) in
-                            let __self_0 :=
-                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_0 |) in
-                            let __self_1 :=
-                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_1 |) in
-                            let γ0_1 := M.read (| γ0_1 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_1,
-                                "revm_context_interface::result::InvalidTransaction::NonceTooLow",
-                                "tx"
-                              |) in
-                            let γ2_1 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_1,
-                                "revm_context_interface::result::InvalidTransaction::NonceTooLow",
-                                "state"
-                              |) in
-                            let __arg1_0 :=
-                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_0 |) in
-                            let __arg1_1 :=
-                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_1 |) in
-                            M.alloc (|
-                              Ty.path "bool",
-                              LogicalOp.and (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_trait_method (|
-                                    "core::cmp::PartialEq",
-                                    Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
-                                    [],
-                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
-                                    "eq",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (| Pointer.Kind.Ref, __self_0 |);
-                                    M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
-                                  ]
-                                |),
-                                ltac:(M.monadic
-                                  (M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_trait_method (|
-                                      "core::cmp::PartialEq",
-                                      Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
-                                      [],
-                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
-                                      "eq",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (| Pointer.Kind.Ref, __self_1 |);
-                                      M.borrow (| Pointer.Kind.Ref, __arg1_1 |)
-                                    ]
-                                  |)))
-                              |)
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                            let γ0_0 := M.read (| γ0_0 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_0,
-                                "revm_context_interface::result::InvalidTransaction::TooManyBlobs",
-                                "max"
-                              |) in
-                            let γ2_1 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_0,
-                                "revm_context_interface::result::InvalidTransaction::TooManyBlobs",
-                                "have"
-                              |) in
-                            let __self_0 :=
-                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ2_0 |) in
-                            let __self_1 :=
-                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ2_1 |) in
-                            let γ0_1 := M.read (| γ0_1 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_1,
-                                "revm_context_interface::result::InvalidTransaction::TooManyBlobs",
-                                "max"
-                              |) in
-                            let γ2_1 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_1,
-                                "revm_context_interface::result::InvalidTransaction::TooManyBlobs",
-                                "have"
-                              |) in
-                            let __arg1_0 :=
-                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ2_0 |) in
-                            let __arg1_1 :=
-                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ2_1 |) in
-                            M.alloc (|
-                              Ty.path "bool",
-                              LogicalOp.and (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_trait_method (|
-                                    "core::cmp::PartialEq",
-                                    Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
-                                    [],
-                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ],
-                                    "eq",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (| Pointer.Kind.Ref, __self_0 |);
-                                    M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
-                                  ]
-                                |),
-                                ltac:(M.monadic
-                                  (M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_trait_method (|
-                                      "core::cmp::PartialEq",
-                                      Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
-                                      [],
-                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ],
-                                      "eq",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (| Pointer.Kind.Ref, __self_1 |);
-                                      M.borrow (| Pointer.Kind.Ref, __arg1_1 |)
-                                    ]
-                                  |)))
-                              |)
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                            let γ0_0 := M.read (| γ0_0 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ0_0,
-                                "revm_context_interface::result::InvalidTransaction::InvalidAuthorizationList",
-                                0
-                              |) in
-                            let __self_0 :=
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [
-                                    Ty.path
-                                      "revm_specification::eip7702::authorization_list::InvalidAuthorization"
-                                  ],
-                                γ2_0
-                              |) in
-                            let γ0_1 := M.read (| γ0_1 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ0_1,
-                                "revm_context_interface::result::InvalidTransaction::InvalidAuthorizationList",
-                                0
-                              |) in
-                            let __arg1_0 :=
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [
-                                    Ty.path
-                                      "revm_specification::eip7702::authorization_list::InvalidAuthorization"
-                                  ],
-                                γ2_0
-                              |) in
-                            M.alloc (|
-                              Ty.path "bool",
-                              M.call_closure (|
-                                Ty.path "bool",
-                                M.get_trait_method (|
-                                  "core::cmp::PartialEq",
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [
-                                      Ty.path
-                                        "revm_specification::eip7702::authorization_list::InvalidAuthorization"
-                                    ],
-                                  [],
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [
-                                        Ty.path
-                                          "revm_specification::eip7702::authorization_list::InvalidAuthorization"
                                       ]
                                   ],
                                   "eq",
@@ -9053,14 +7989,302 @@ Module result.
                                   []
                                 |),
                                 [
-                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
-                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                  M.borrow (| Pointer.Kind.Ref, __self_1 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_1 |)
                                 ]
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool true |)))
-                      ]
-                    |)
+                              |)))
+                          |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                          let γ0_0 := M.read (| γ0_0 |) in
+                          let γ2_0 :=
+                            M.SubPointer.get_struct_record_field (|
+                              γ0_0,
+                              "revm_context_interface::result::InvalidTransaction::NonceTooHigh",
+                              "tx"
+                            |) in
+                          let γ2_1 :=
+                            M.SubPointer.get_struct_record_field (|
+                              γ0_0,
+                              "revm_context_interface::result::InvalidTransaction::NonceTooHigh",
+                              "state"
+                            |) in
+                          let __self_0 :=
+                            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_0 |) in
+                          let __self_1 :=
+                            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_1 |) in
+                          let γ0_1 := M.read (| γ0_1 |) in
+                          let γ2_0 :=
+                            M.SubPointer.get_struct_record_field (|
+                              γ0_1,
+                              "revm_context_interface::result::InvalidTransaction::NonceTooHigh",
+                              "tx"
+                            |) in
+                          let γ2_1 :=
+                            M.SubPointer.get_struct_record_field (|
+                              γ0_1,
+                              "revm_context_interface::result::InvalidTransaction::NonceTooHigh",
+                              "state"
+                            |) in
+                          let __arg1_0 :=
+                            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_0 |) in
+                          let __arg1_1 :=
+                            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_1 |) in
+                          LogicalOp.and (|
+                            M.call_closure (|
+                              Ty.path "bool",
+                              M.get_trait_method (|
+                                "core::cmp::PartialEq",
+                                Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
+                                [],
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
+                                "eq",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                              ]
+                            |),
+                            ltac:(M.monadic
+                              (M.call_closure (|
+                                Ty.path "bool",
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
+                                  [],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
+                                  "eq",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_1 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_1 |)
+                                ]
+                              |)))
+                          |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                          let γ0_0 := M.read (| γ0_0 |) in
+                          let γ2_0 :=
+                            M.SubPointer.get_struct_record_field (|
+                              γ0_0,
+                              "revm_context_interface::result::InvalidTransaction::NonceTooLow",
+                              "tx"
+                            |) in
+                          let γ2_1 :=
+                            M.SubPointer.get_struct_record_field (|
+                              γ0_0,
+                              "revm_context_interface::result::InvalidTransaction::NonceTooLow",
+                              "state"
+                            |) in
+                          let __self_0 :=
+                            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_0 |) in
+                          let __self_1 :=
+                            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_1 |) in
+                          let γ0_1 := M.read (| γ0_1 |) in
+                          let γ2_0 :=
+                            M.SubPointer.get_struct_record_field (|
+                              γ0_1,
+                              "revm_context_interface::result::InvalidTransaction::NonceTooLow",
+                              "tx"
+                            |) in
+                          let γ2_1 :=
+                            M.SubPointer.get_struct_record_field (|
+                              γ0_1,
+                              "revm_context_interface::result::InvalidTransaction::NonceTooLow",
+                              "state"
+                            |) in
+                          let __arg1_0 :=
+                            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_0 |) in
+                          let __arg1_1 :=
+                            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_1 |) in
+                          LogicalOp.and (|
+                            M.call_closure (|
+                              Ty.path "bool",
+                              M.get_trait_method (|
+                                "core::cmp::PartialEq",
+                                Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
+                                [],
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
+                                "eq",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                              ]
+                            |),
+                            ltac:(M.monadic
+                              (M.call_closure (|
+                                Ty.path "bool",
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
+                                  [],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
+                                  "eq",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_1 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_1 |)
+                                ]
+                              |)))
+                          |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                          let γ0_0 := M.read (| γ0_0 |) in
+                          let γ2_0 :=
+                            M.SubPointer.get_struct_record_field (|
+                              γ0_0,
+                              "revm_context_interface::result::InvalidTransaction::TooManyBlobs",
+                              "max"
+                            |) in
+                          let γ2_1 :=
+                            M.SubPointer.get_struct_record_field (|
+                              γ0_0,
+                              "revm_context_interface::result::InvalidTransaction::TooManyBlobs",
+                              "have"
+                            |) in
+                          let __self_0 :=
+                            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ2_0 |) in
+                          let __self_1 :=
+                            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ2_1 |) in
+                          let γ0_1 := M.read (| γ0_1 |) in
+                          let γ2_0 :=
+                            M.SubPointer.get_struct_record_field (|
+                              γ0_1,
+                              "revm_context_interface::result::InvalidTransaction::TooManyBlobs",
+                              "max"
+                            |) in
+                          let γ2_1 :=
+                            M.SubPointer.get_struct_record_field (|
+                              γ0_1,
+                              "revm_context_interface::result::InvalidTransaction::TooManyBlobs",
+                              "have"
+                            |) in
+                          let __arg1_0 :=
+                            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ2_0 |) in
+                          let __arg1_1 :=
+                            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ2_1 |) in
+                          LogicalOp.and (|
+                            M.call_closure (|
+                              Ty.path "bool",
+                              M.get_trait_method (|
+                                "core::cmp::PartialEq",
+                                Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
+                                [],
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ],
+                                "eq",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                              ]
+                            |),
+                            ltac:(M.monadic
+                              (M.call_closure (|
+                                Ty.path "bool",
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
+                                  [],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ],
+                                  "eq",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_1 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_1 |)
+                                ]
+                              |)))
+                          |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                          let γ0_0 := M.read (| γ0_0 |) in
+                          let γ2_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ0_0,
+                              "revm_context_interface::result::InvalidTransaction::InvalidAuthorizationList",
+                              0
+                            |) in
+                          let __self_0 :=
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.path
+                                    "revm_specification::eip7702::authorization_list::InvalidAuthorization"
+                                ],
+                              γ2_0
+                            |) in
+                          let γ0_1 := M.read (| γ0_1 |) in
+                          let γ2_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ0_1,
+                              "revm_context_interface::result::InvalidTransaction::InvalidAuthorizationList",
+                              0
+                            |) in
+                          let __arg1_0 :=
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.path
+                                    "revm_specification::eip7702::authorization_list::InvalidAuthorization"
+                                ],
+                              γ2_0
+                            |) in
+                          M.call_closure (|
+                            Ty.path "bool",
+                            M.get_trait_method (|
+                              "core::cmp::PartialEq",
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.path
+                                    "revm_specification::eip7702::authorization_list::InvalidAuthorization"
+                                ],
+                              [],
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.path
+                                      "revm_specification::eip7702::authorization_list::InvalidAuthorization"
+                                  ]
+                              ],
+                              "eq",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                              M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                            ]
+                          |)));
+                      fun γ => ltac:(M.monadic (Value.Bool true))
+                    ]
                   |)))
               |)
             |)
@@ -9098,48 +8322,42 @@ Module result.
                 [ Ty.path "revm_context_interface::result::InvalidTransaction" ],
               self
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.tuple [],
-              Value.DeclaredButUndefined,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (M.match_operator (|
-                      Ty.tuple [],
-                      Value.DeclaredButUndefined,
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              Ty.tuple [],
-                              Value.DeclaredButUndefined,
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (M.match_operator (|
-                                      Ty.tuple [],
-                                      Value.DeclaredButUndefined,
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (M.match_operator (|
-                                              Ty.tuple [],
-                                              Value.DeclaredButUndefined,
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                                              ]
-                                            |)))
-                                      ]
-                                    |)))
-                              ]
-                            |)))
-                      ]
-                    |)))
-              ]
-            |)
+          M.match_operator (|
+            Ty.tuple [],
+            Value.DeclaredButUndefined,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (M.match_operator (|
+                    Ty.tuple [],
+                    Value.DeclaredButUndefined,
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            Ty.tuple [],
+                            Value.DeclaredButUndefined,
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    Ty.tuple [],
+                                    Value.DeclaredButUndefined,
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (M.match_operator (|
+                                            Ty.tuple [],
+                                            Value.DeclaredButUndefined,
+                                            [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
+                                          |)))
+                                    ]
+                                  |)))
+                            ]
+                          |)))
+                    ]
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -9202,316 +8420,324 @@ Module result.
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                 ]
               |) in
-            M.match_operator (|
+            M.alloc (|
               Ty.tuple [],
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::LackOfFundForMaxFee",
-                        "fee"
-                      |) in
-                    let γ1_1 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::LackOfFundForMaxFee",
-                        "balance"
-                      |) in
-                    let __self_0 :=
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "ruint::Uint")
-                                  [
-                                    Value.Integer IntegerKind.Usize 256;
-                                    Value.Integer IntegerKind.Usize 4
-                                  ]
-                                  [];
-                                Ty.path "alloc::alloc::Global"
-                              ]
-                          ],
-                        γ1_0
-                      |) in
-                    let __self_1 :=
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "ruint::Uint")
-                                  [
-                                    Value.Integer IntegerKind.Usize 256;
-                                    Value.Integer IntegerKind.Usize 4
-                                  ]
-                                  [];
-                                Ty.path "alloc::alloc::Global"
-                              ]
-                          ],
-                        γ1_1
-                      |) in
-                    let~ _ : Ty.tuple [] :=
-                      M.call_closure (|
-                        Ty.tuple [],
-                        M.get_trait_method (|
-                          "core::hash::Hash",
+              M.match_operator (|
+                Ty.tuple [],
+                self,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let γ1_0 :=
+                        M.SubPointer.get_struct_record_field (|
+                          γ,
+                          "revm_context_interface::result::InvalidTransaction::LackOfFundForMaxFee",
+                          "fee"
+                        |) in
+                      let γ1_1 :=
+                        M.SubPointer.get_struct_record_field (|
+                          γ,
+                          "revm_context_interface::result::InvalidTransaction::LackOfFundForMaxFee",
+                          "balance"
+                        |) in
+                      let __self_0 :=
+                        M.alloc (|
                           Ty.apply
-                            (Ty.path "alloc::boxed::Box")
+                            (Ty.path "&")
                             []
                             [
                               Ty.apply
-                                (Ty.path "ruint::Uint")
+                                (Ty.path "alloc::boxed::Box")
+                                []
                                 [
-                                  Value.Integer IntegerKind.Usize 256;
-                                  Value.Integer IntegerKind.Usize 4
+                                  Ty.apply
+                                    (Ty.path "ruint::Uint")
+                                    [
+                                      Value.Integer IntegerKind.Usize 256;
+                                      Value.Integer IntegerKind.Usize 4
+                                    ]
+                                    [];
+                                  Ty.path "alloc::alloc::Global"
                                 ]
-                                [];
-                              Ty.path "alloc::alloc::Global"
                             ],
-                          [],
-                          [],
-                          "hash",
-                          [],
-                          [ __H ]
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                        ]
-                      |) in
-                    M.alloc (|
-                      Ty.tuple [],
-                      M.call_closure (|
-                        Ty.tuple [],
-                        M.get_trait_method (|
-                          "core::hash::Hash",
+                          γ1_0
+                        |) in
+                      let __self_1 :=
+                        M.alloc (|
                           Ty.apply
-                            (Ty.path "alloc::boxed::Box")
+                            (Ty.path "&")
                             []
                             [
                               Ty.apply
-                                (Ty.path "ruint::Uint")
+                                (Ty.path "alloc::boxed::Box")
+                                []
                                 [
-                                  Value.Integer IntegerKind.Usize 256;
-                                  Value.Integer IntegerKind.Usize 4
+                                  Ty.apply
+                                    (Ty.path "ruint::Uint")
+                                    [
+                                      Value.Integer IntegerKind.Usize 256;
+                                      Value.Integer IntegerKind.Usize 4
+                                    ]
+                                    [];
+                                  Ty.path "alloc::alloc::Global"
                                 ]
-                                [];
-                              Ty.path "alloc::alloc::Global"
                             ],
-                          [],
-                          [],
-                          "hash",
-                          [],
-                          [ __H ]
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |);
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::NonceTooHigh",
-                        "tx"
-                      |) in
-                    let γ1_1 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::NonceTooHigh",
-                        "state"
-                      |) in
-                    let __self_0 :=
-                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
-                    let __self_1 :=
-                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_1 |) in
-                    let~ _ : Ty.tuple [] :=
-                      M.call_closure (|
-                        Ty.tuple [],
-                        M.get_trait_method (|
-                          "core::hash::Hash",
-                          Ty.path "u64",
-                          [],
-                          [],
-                          "hash",
-                          [],
-                          [ __H ]
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                        ]
-                      |) in
-                    M.alloc (|
-                      Ty.tuple [],
-                      M.call_closure (|
-                        Ty.tuple [],
-                        M.get_trait_method (|
-                          "core::hash::Hash",
-                          Ty.path "u64",
-                          [],
-                          [],
-                          "hash",
-                          [],
-                          [ __H ]
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |);
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::NonceTooLow",
-                        "tx"
-                      |) in
-                    let γ1_1 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::NonceTooLow",
-                        "state"
-                      |) in
-                    let __self_0 :=
-                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
-                    let __self_1 :=
-                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_1 |) in
-                    let~ _ : Ty.tuple [] :=
-                      M.call_closure (|
-                        Ty.tuple [],
-                        M.get_trait_method (|
-                          "core::hash::Hash",
-                          Ty.path "u64",
-                          [],
-                          [],
-                          "hash",
-                          [],
-                          [ __H ]
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                        ]
-                      |) in
-                    M.alloc (|
-                      Ty.tuple [],
-                      M.call_closure (|
-                        Ty.tuple [],
-                        M.get_trait_method (|
-                          "core::hash::Hash",
-                          Ty.path "u64",
-                          [],
-                          [],
-                          "hash",
-                          [],
-                          [ __H ]
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |);
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::TooManyBlobs",
-                        "max"
-                      |) in
-                    let γ1_1 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::TooManyBlobs",
-                        "have"
-                      |) in
-                    let __self_0 :=
-                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ1_0 |) in
-                    let __self_1 :=
-                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ1_1 |) in
-                    let~ _ : Ty.tuple [] :=
-                      M.call_closure (|
-                        Ty.tuple [],
-                        M.get_trait_method (|
-                          "core::hash::Hash",
-                          Ty.path "usize",
-                          [],
-                          [],
-                          "hash",
-                          [],
-                          [ __H ]
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                        ]
-                      |) in
-                    M.alloc (|
-                      Ty.tuple [],
-                      M.call_closure (|
-                        Ty.tuple [],
-                        M.get_trait_method (|
-                          "core::hash::Hash",
-                          Ty.path "usize",
-                          [],
-                          [],
-                          "hash",
-                          [],
-                          [ __H ]
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |);
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::InvalidAuthorizationList",
-                        0
-                      |) in
-                    let __self_0 :=
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [
-                            Ty.path
-                              "revm_specification::eip7702::authorization_list::InvalidAuthorization"
-                          ],
-                        γ1_0
-                      |) in
-                    M.alloc (|
-                      Ty.tuple [],
+                          γ1_1
+                        |) in
+                      M.read (|
+                        let~ _ : Ty.tuple [] :=
+                          M.call_closure (|
+                            Ty.tuple [],
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              Ty.apply
+                                (Ty.path "alloc::boxed::Box")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "ruint::Uint")
+                                    [
+                                      Value.Integer IntegerKind.Usize 256;
+                                      Value.Integer IntegerKind.Usize 4
+                                    ]
+                                    [];
+                                  Ty.path "alloc::alloc::Global"
+                                ],
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ __H ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
+                          |) in
+                        M.alloc (|
+                          Ty.tuple [],
+                          M.call_closure (|
+                            Ty.tuple [],
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              Ty.apply
+                                (Ty.path "alloc::boxed::Box")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "ruint::Uint")
+                                    [
+                                      Value.Integer IntegerKind.Usize 256;
+                                      Value.Integer IntegerKind.Usize 4
+                                    ]
+                                    [];
+                                  Ty.path "alloc::alloc::Global"
+                                ],
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ __H ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
+                          |)
+                        |)
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let γ1_0 :=
+                        M.SubPointer.get_struct_record_field (|
+                          γ,
+                          "revm_context_interface::result::InvalidTransaction::NonceTooHigh",
+                          "tx"
+                        |) in
+                      let γ1_1 :=
+                        M.SubPointer.get_struct_record_field (|
+                          γ,
+                          "revm_context_interface::result::InvalidTransaction::NonceTooHigh",
+                          "state"
+                        |) in
+                      let __self_0 :=
+                        M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
+                      let __self_1 :=
+                        M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_1 |) in
+                      M.read (|
+                        let~ _ : Ty.tuple [] :=
+                          M.call_closure (|
+                            Ty.tuple [],
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              Ty.path "u64",
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ __H ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
+                          |) in
+                        M.alloc (|
+                          Ty.tuple [],
+                          M.call_closure (|
+                            Ty.tuple [],
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              Ty.path "u64",
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ __H ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
+                          |)
+                        |)
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let γ1_0 :=
+                        M.SubPointer.get_struct_record_field (|
+                          γ,
+                          "revm_context_interface::result::InvalidTransaction::NonceTooLow",
+                          "tx"
+                        |) in
+                      let γ1_1 :=
+                        M.SubPointer.get_struct_record_field (|
+                          γ,
+                          "revm_context_interface::result::InvalidTransaction::NonceTooLow",
+                          "state"
+                        |) in
+                      let __self_0 :=
+                        M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
+                      let __self_1 :=
+                        M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_1 |) in
+                      M.read (|
+                        let~ _ : Ty.tuple [] :=
+                          M.call_closure (|
+                            Ty.tuple [],
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              Ty.path "u64",
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ __H ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
+                          |) in
+                        M.alloc (|
+                          Ty.tuple [],
+                          M.call_closure (|
+                            Ty.tuple [],
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              Ty.path "u64",
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ __H ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
+                          |)
+                        |)
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let γ1_0 :=
+                        M.SubPointer.get_struct_record_field (|
+                          γ,
+                          "revm_context_interface::result::InvalidTransaction::TooManyBlobs",
+                          "max"
+                        |) in
+                      let γ1_1 :=
+                        M.SubPointer.get_struct_record_field (|
+                          γ,
+                          "revm_context_interface::result::InvalidTransaction::TooManyBlobs",
+                          "have"
+                        |) in
+                      let __self_0 :=
+                        M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ1_0 |) in
+                      let __self_1 :=
+                        M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ1_1 |) in
+                      M.read (|
+                        let~ _ : Ty.tuple [] :=
+                          M.call_closure (|
+                            Ty.tuple [],
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              Ty.path "usize",
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ __H ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
+                          |) in
+                        M.alloc (|
+                          Ty.tuple [],
+                          M.call_closure (|
+                            Ty.tuple [],
+                            M.get_trait_method (|
+                              "core::hash::Hash",
+                              Ty.path "usize",
+                              [],
+                              [],
+                              "hash",
+                              [],
+                              [ __H ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                            ]
+                          |)
+                        |)
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let γ1_0 :=
+                        M.SubPointer.get_struct_tuple_field (|
+                          γ,
+                          "revm_context_interface::result::InvalidTransaction::InvalidAuthorizationList",
+                          0
+                        |) in
+                      let __self_0 :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.path
+                                "revm_specification::eip7702::authorization_list::InvalidAuthorization"
+                            ],
+                          γ1_0
+                        |) in
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_trait_method (|
@@ -9528,10 +8754,10 @@ Module result.
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                         ]
-                      |)
-                    |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-              ]
+                      |)));
+                  fun γ => ltac:(M.monadic (Value.Tuple []))
+                ]
+              |)
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -9689,1947 +8915,1751 @@ Module result.
             |) in
           let f :=
             M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::PriorityFeeGreaterThanMaxFee"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+          M.match_operator (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::PriorityFeeGreaterThanMaxFee"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_fmt",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                        Ty.path "core::fmt::Arguments",
                         M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_fmt",
-                          [],
+                          Ty.path "core::fmt::Arguments",
+                          "new_const",
+                          [ Value.Integer IntegerKind.Usize 1 ],
                           []
                         |),
                         [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.call_closure (|
-                            Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_const",
-                              [ Value.Integer IntegerKind.Usize 1 ],
-                              []
-                            |),
-                            [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 1 ]
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                      Value.Array
-                                        [ mk_str (| "priority fee is greater than max fee" |) ]
-                                    |)
-                                  |)
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array
+                                    [ mk_str (| "priority fee is greater than max fee" |) ]
                                 |)
                               |)
-                            ]
+                            |)
                           |)
                         ]
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::GasPriceLessThanBasefee"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::GasPriceLessThanBasefee"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_fmt",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                        Ty.path "core::fmt::Arguments",
                         M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_fmt",
-                          [],
+                          Ty.path "core::fmt::Arguments",
+                          "new_const",
+                          [ Value.Integer IntegerKind.Usize 1 ],
                           []
                         |),
                         [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.call_closure (|
-                            Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_const",
-                              [ Value.Integer IntegerKind.Usize 1 ],
-                              []
-                            |),
-                            [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 1 ]
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                      Value.Array [ mk_str (| "gas price is less than basefee" |) ]
-                                    |)
-                                  |)
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array [ mk_str (| "gas price is less than basefee" |) ]
                                 |)
                               |)
-                            ]
+                            |)
                           |)
                         ]
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::CallerGasLimitMoreThanBlock"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::CallerGasLimitMoreThanBlock"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_fmt",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                        Ty.path "core::fmt::Arguments",
                         M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_fmt",
-                          [],
+                          Ty.path "core::fmt::Arguments",
+                          "new_const",
+                          [ Value.Integer IntegerKind.Usize 1 ],
                           []
                         |),
                         [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.call_closure (|
-                            Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_const",
-                              [ Value.Integer IntegerKind.Usize 1 ],
-                              []
-                            |),
-                            [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 1 ]
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                      Value.Array
-                                        [
-                                          mk_str (|
-                                            "caller gas limit exceeds the block gas limit"
-                                          |)
-                                        ]
-                                    |)
-                                  |)
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array
+                                    [ mk_str (| "caller gas limit exceeds the block gas limit" |) ]
                                 |)
                               |)
-                            ]
+                            |)
                           |)
                         ]
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::CallGasCostMoreThanGasLimit"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::CallGasCostMoreThanGasLimit"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_fmt",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                        Ty.path "core::fmt::Arguments",
                         M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_fmt",
-                          [],
+                          Ty.path "core::fmt::Arguments",
+                          "new_const",
+                          [ Value.Integer IntegerKind.Usize 1 ],
                           []
                         |),
                         [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.call_closure (|
-                            Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_const",
-                              [ Value.Integer IntegerKind.Usize 1 ],
-                              []
-                            |),
-                            [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 1 ]
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                      Value.Array
-                                        [ mk_str (| "call gas cost exceeds the gas limit" |) ]
-                                    |)
-                                  |)
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array [ mk_str (| "call gas cost exceeds the gas limit" |) ]
                                 |)
                               |)
-                            ]
+                            |)
                           |)
                         ]
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::RejectCallerWithCode"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::RejectCallerWithCode"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_fmt",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                        Ty.path "core::fmt::Arguments",
                         M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_fmt",
-                          [],
+                          Ty.path "core::fmt::Arguments",
+                          "new_const",
+                          [ Value.Integer IntegerKind.Usize 1 ],
                           []
                         |),
                         [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.call_closure (|
-                            Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_const",
-                              [ Value.Integer IntegerKind.Usize 1 ],
-                              []
-                            |),
-                            [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 1 ]
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                      Value.Array
-                                        [
-                                          mk_str (|
-                                            "reject transactions from senders with deployed code"
-                                          |)
-                                        ]
-                                    |)
-                                  |)
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array
+                                    [
+                                      mk_str (|
+                                        "reject transactions from senders with deployed code"
+                                      |)
+                                    ]
                                 |)
                               |)
-                            ]
+                            |)
                           |)
                         ]
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::LackOfFundForMaxFee",
-                        "fee"
-                      |) in
-                    let γ1_1 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::LackOfFundForMaxFee",
-                        "balance"
-                      |) in
-                    let fee :=
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "ruint::Uint")
-                                  [
-                                    Value.Integer IntegerKind.Usize 256;
-                                    Value.Integer IntegerKind.Usize 4
-                                  ]
-                                  [];
-                                Ty.path "alloc::alloc::Global"
-                              ]
-                          ],
-                        γ1_0
-                      |) in
-                    let balance :=
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "ruint::Uint")
-                                  [
-                                    Value.Integer IntegerKind.Usize 256;
-                                    Value.Integer IntegerKind.Usize 4
-                                  ]
-                                  [];
-                                Ty.path "alloc::alloc::Global"
-                              ]
-                          ],
-                        γ1_1
-                      |) in
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::LackOfFundForMaxFee",
+                      "fee"
+                    |) in
+                  let γ1_1 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::LackOfFundForMaxFee",
+                      "balance"
+                    |) in
+                  let fee :=
                     M.alloc (|
                       Ty.apply
-                        (Ty.path "core::result::Result")
+                        (Ty.path "&")
                         []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::boxed::Box")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
+                                [];
+                              Ty.path "alloc::alloc::Global"
+                            ]
+                        ],
+                      γ1_0
+                    |) in
+                  let balance :=
+                    M.alloc (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::boxed::Box")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
+                                [];
+                              Ty.path "alloc::alloc::Global"
+                            ]
+                        ],
+                      γ1_1
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_fmt",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                        Ty.path "core::fmt::Arguments",
                         M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_fmt",
-                          [],
+                          Ty.path "core::fmt::Arguments",
+                          "new_v1",
+                          [ Value.Integer IntegerKind.Usize 3; Value.Integer IntegerKind.Usize 2 ],
                           []
                         |),
                         [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.call_closure (|
-                            Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_v1",
-                              [ Value.Integer IntegerKind.Usize 3; Value.Integer IntegerKind.Usize 2
-                              ],
-                              []
-                            |),
-                            [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 3 ]
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                      Value.Array
-                                        [
-                                          mk_str (| "lack of funds (" |);
-                                          mk_str (| ") for max fee (" |);
-                                          mk_str (| ")" |)
-                                        ]
-                                    |)
-                                  |)
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 3 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array
+                                    [
+                                      mk_str (| "lack of funds (" |);
+                                      mk_str (| ") for max fee (" |);
+                                      mk_str (| ")" |)
+                                    ]
                                 |)
-                              |);
+                              |)
+                            |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 2 ]
-                                        [ Ty.path "core::fmt::rt::Argument" ],
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_display",
-                                              [],
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 2 ]
+                                    [ Ty.path "core::fmt::rt::Argument" ],
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [],
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
                                               [
                                                 Ty.apply
-                                                  (Ty.path "&")
+                                                  (Ty.path "alloc::boxed::Box")
                                                   []
                                                   [
                                                     Ty.apply
-                                                      (Ty.path "alloc::boxed::Box")
-                                                      []
+                                                      (Ty.path "ruint::Uint")
                                                       [
-                                                        Ty.apply
-                                                          (Ty.path "ruint::Uint")
-                                                          [
-                                                            Value.Integer IntegerKind.Usize 256;
-                                                            Value.Integer IntegerKind.Usize 4
-                                                          ]
-                                                          [];
-                                                        Ty.path "alloc::alloc::Global"
+                                                        Value.Integer IntegerKind.Usize 256;
+                                                        Value.Integer IntegerKind.Usize 4
                                                       ]
+                                                      [];
+                                                    Ty.path "alloc::alloc::Global"
                                                   ]
                                               ]
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (|
-                                                  M.borrow (| Pointer.Kind.Ref, balance |)
-                                                |)
-                                              |)
-                                            ]
-                                          |);
-                                          M.call_closure (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_display",
-                                              [],
+                                          ]
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.borrow (| Pointer.Kind.Ref, balance |) |)
+                                          |)
+                                        ]
+                                      |);
+                                      M.call_closure (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [],
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
                                               [
                                                 Ty.apply
-                                                  (Ty.path "&")
+                                                  (Ty.path "alloc::boxed::Box")
                                                   []
                                                   [
                                                     Ty.apply
-                                                      (Ty.path "alloc::boxed::Box")
-                                                      []
+                                                      (Ty.path "ruint::Uint")
                                                       [
-                                                        Ty.apply
-                                                          (Ty.path "ruint::Uint")
-                                                          [
-                                                            Value.Integer IntegerKind.Usize 256;
-                                                            Value.Integer IntegerKind.Usize 4
-                                                          ]
-                                                          [];
-                                                        Ty.path "alloc::alloc::Global"
+                                                        Value.Integer IntegerKind.Usize 256;
+                                                        Value.Integer IntegerKind.Usize 4
                                                       ]
+                                                      [];
+                                                    Ty.path "alloc::alloc::Global"
                                                   ]
                                               ]
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| M.borrow (| Pointer.Kind.Ref, fee |) |)
-                                              |)
-                                            ]
+                                          ]
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.borrow (| Pointer.Kind.Ref, fee |) |)
                                           |)
                                         ]
-                                    |)
-                                  |)
+                                      |)
+                                    ]
                                 |)
                               |)
-                            ]
+                            |)
                           |)
                         ]
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::OverflowPaymentInTransaction"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::OverflowPaymentInTransaction"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_fmt",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                        Ty.path "core::fmt::Arguments",
                         M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_fmt",
-                          [],
+                          Ty.path "core::fmt::Arguments",
+                          "new_const",
+                          [ Value.Integer IntegerKind.Usize 1 ],
                           []
                         |),
                         [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.call_closure (|
-                            Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_const",
-                              [ Value.Integer IntegerKind.Usize 1 ],
-                              []
-                            |),
-                            [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 1 ]
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                      Value.Array [ mk_str (| "overflow payment in transaction" |) ]
-                                    |)
-                                  |)
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array [ mk_str (| "overflow payment in transaction" |) ]
                                 |)
                               |)
-                            ]
+                            |)
                           |)
                         ]
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::NonceOverflowInTransaction"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::NonceOverflowInTransaction"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_fmt",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                        Ty.path "core::fmt::Arguments",
                         M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_fmt",
-                          [],
+                          Ty.path "core::fmt::Arguments",
+                          "new_const",
+                          [ Value.Integer IntegerKind.Usize 1 ],
                           []
                         |),
                         [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.call_closure (|
-                            Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_const",
-                              [ Value.Integer IntegerKind.Usize 1 ],
-                              []
-                            |),
-                            [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 1 ]
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                      Value.Array [ mk_str (| "nonce overflow in transaction" |) ]
-                                    |)
-                                  |)
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array [ mk_str (| "nonce overflow in transaction" |) ]
                                 |)
                               |)
-                            ]
+                            |)
                           |)
                         ]
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::NonceTooHigh",
-                        "tx"
-                      |) in
-                    let γ1_1 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::NonceTooHigh",
-                        "state"
-                      |) in
-                    let tx := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
-                    let state := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_1 |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::NonceTooHigh",
+                      "tx"
+                    |) in
+                  let γ1_1 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::NonceTooHigh",
+                      "state"
+                    |) in
+                  let tx := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
+                  let state := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_1 |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_fmt",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                        Ty.path "core::fmt::Arguments",
                         M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_fmt",
-                          [],
+                          Ty.path "core::fmt::Arguments",
+                          "new_v1",
+                          [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 2 ],
                           []
                         |),
                         [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.call_closure (|
-                            Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_v1",
-                              [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 2
-                              ],
-                              []
-                            |),
-                            [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 2 ]
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                      Value.Array
-                                        [ mk_str (| "nonce " |); mk_str (| " too high, expected " |)
-                                        ]
-                                    |)
-                                  |)
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 2 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array
+                                    [ mk_str (| "nonce " |); mk_str (| " too high, expected " |) ]
                                 |)
-                              |);
+                              |)
+                            |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 2 ]
-                                        [ Ty.path "core::fmt::rt::Argument" ],
-                                      Value.Array
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 2 ]
+                                    [ Ty.path "core::fmt::rt::Argument" ],
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [],
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ]
+                                        |),
                                         [
-                                          M.call_closure (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_display",
-                                              [],
-                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ]
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| M.borrow (| Pointer.Kind.Ref, tx |) |)
-                                              |)
-                                            ]
-                                          |);
-                                          M.call_closure (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_display",
-                                              [],
-                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ]
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| M.borrow (| Pointer.Kind.Ref, state |) |)
-                                              |)
-                                            ]
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.borrow (| Pointer.Kind.Ref, tx |) |)
                                           |)
                                         ]
-                                    |)
-                                  |)
-                                |)
-                              |)
-                            ]
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::NonceTooLow",
-                        "tx"
-                      |) in
-                    let γ1_1 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::NonceTooLow",
-                        "state"
-                      |) in
-                    let tx := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
-                    let state := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_1 |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_fmt",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.call_closure (|
-                            Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_v1",
-                              [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 2
-                              ],
-                              []
-                            |),
-                            [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 2 ]
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                      Value.Array
-                                        [ mk_str (| "nonce " |); mk_str (| " too low, expected " |)
-                                        ]
-                                    |)
-                                  |)
-                                |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 2 ]
-                                        [ Ty.path "core::fmt::rt::Argument" ],
-                                      Value.Array
+                                      |);
+                                      M.call_closure (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [],
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ]
+                                        |),
                                         [
-                                          M.call_closure (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_display",
-                                              [],
-                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ]
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| M.borrow (| Pointer.Kind.Ref, tx |) |)
-                                              |)
-                                            ]
-                                          |);
-                                          M.call_closure (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_display",
-                                              [],
-                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ]
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| M.borrow (| Pointer.Kind.Ref, state |) |)
-                                              |)
-                                            ]
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.borrow (| Pointer.Kind.Ref, state |) |)
                                           |)
                                         ]
-                                    |)
-                                  |)
+                                      |)
+                                    ]
                                 |)
                               |)
-                            ]
+                            |)
                           |)
                         ]
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::CreateInitCodeSizeLimit"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::NonceTooLow",
+                      "tx"
+                    |) in
+                  let γ1_1 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::NonceTooLow",
+                      "state"
+                    |) in
+                  let tx := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
+                  let state := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_1 |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_fmt",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                        Ty.path "core::fmt::Arguments",
                         M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_fmt",
-                          [],
+                          Ty.path "core::fmt::Arguments",
+                          "new_v1",
+                          [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 2 ],
                           []
                         |),
                         [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.call_closure (|
-                            Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_const",
-                              [ Value.Integer IntegerKind.Usize 1 ],
-                              []
-                            |),
-                            [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 1 ]
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                      Value.Array [ mk_str (| "create initcode size limit" |) ]
-                                    |)
-                                  |)
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 2 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array
+                                    [ mk_str (| "nonce " |); mk_str (| " too low, expected " |) ]
                                 |)
                               |)
-                            ]
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::InvalidChainId"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_fmt",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.call_closure (|
-                            Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_const",
-                              [ Value.Integer IntegerKind.Usize 1 ],
-                              []
-                            |),
-                            [
+                            |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 1 ]
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                      Value.Array [ mk_str (| "invalid chain ID" |) ]
-                                    |)
-                                  |)
-                                |)
-                              |)
-                            ]
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::AccessListNotSupported"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_fmt",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.call_closure (|
-                            Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_const",
-                              [ Value.Integer IntegerKind.Usize 1 ],
-                              []
-                            |),
-                            [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 1 ]
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                      Value.Array [ mk_str (| "access list not supported" |) ]
-                                    |)
-                                  |)
-                                |)
-                              |)
-                            ]
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::MaxFeePerBlobGasNotSupported"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_fmt",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.call_closure (|
-                            Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_const",
-                              [ Value.Integer IntegerKind.Usize 1 ],
-                              []
-                            |),
-                            [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 1 ]
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                      Value.Array
-                                        [ mk_str (| "max fee per blob gas not supported" |) ]
-                                    |)
-                                  |)
-                                |)
-                              |)
-                            ]
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::BlobVersionedHashesNotSupported"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_fmt",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.call_closure (|
-                            Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_const",
-                              [ Value.Integer IntegerKind.Usize 1 ],
-                              []
-                            |),
-                            [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 1 ]
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                      Value.Array
-                                        [ mk_str (| "blob versioned hashes not supported" |) ]
-                                    |)
-                                  |)
-                                |)
-                              |)
-                            ]
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::BlobGasPriceGreaterThanMax"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_fmt",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.call_closure (|
-                            Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_const",
-                              [ Value.Integer IntegerKind.Usize 1 ],
-                              []
-                            |),
-                            [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 1 ]
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                      Value.Array
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 2 ]
+                                    [ Ty.path "core::fmt::rt::Argument" ],
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [],
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ]
+                                        |),
                                         [
-                                          mk_str (|
-                                            "blob gas price is greater than max fee per blob gas"
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.borrow (| Pointer.Kind.Ref, tx |) |)
                                           |)
                                         ]
-                                    |)
-                                  |)
-                                |)
-                              |)
-                            ]
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::EmptyBlobs"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_fmt",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.call_closure (|
-                            Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_const",
-                              [ Value.Integer IntegerKind.Usize 1 ],
-                              []
-                            |),
-                            [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 1 ]
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                      Value.Array [ mk_str (| "empty blobs" |) ]
-                                    |)
-                                  |)
-                                |)
-                              |)
-                            ]
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::BlobCreateTransaction"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_fmt",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.call_closure (|
-                            Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_const",
-                              [ Value.Integer IntegerKind.Usize 1 ],
-                              []
-                            |),
-                            [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 1 ]
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                      Value.Array [ mk_str (| "blob create transaction" |) ]
-                                    |)
-                                  |)
-                                |)
-                              |)
-                            ]
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::TooManyBlobs",
-                        "max"
-                      |) in
-                    let γ1_1 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::TooManyBlobs",
-                        "have"
-                      |) in
-                    let max := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ1_0 |) in
-                    let have := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ1_1 |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_fmt",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.call_closure (|
-                            Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_v1",
-                              [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 2
-                              ],
-                              []
-                            |),
-                            [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 2 ]
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                      Value.Array
+                                      |);
+                                      M.call_closure (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [],
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ]
+                                        |),
                                         [
-                                          mk_str (| "too many blobs, have " |);
-                                          mk_str (| ", max " |)
-                                        ]
-                                    |)
-                                  |)
-                                |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 2 ]
-                                        [ Ty.path "core::fmt::rt::Argument" ],
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_display",
-                                              [],
-                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ]
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| M.borrow (| Pointer.Kind.Ref, have |) |)
-                                              |)
-                                            ]
-                                          |);
-                                          M.call_closure (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_display",
-                                              [],
-                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ]
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| M.borrow (| Pointer.Kind.Ref, max |) |)
-                                              |)
-                                            ]
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.borrow (| Pointer.Kind.Ref, state |) |)
                                           |)
                                         ]
-                                    |)
-                                  |)
+                                      |)
+                                    ]
                                 |)
                               |)
-                            ]
+                            |)
                           |)
                         ]
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::BlobVersionNotSupported"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::CreateInitCodeSizeLimit"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_fmt",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                        Ty.path "core::fmt::Arguments",
                         M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_fmt",
-                          [],
+                          Ty.path "core::fmt::Arguments",
+                          "new_const",
+                          [ Value.Integer IntegerKind.Usize 1 ],
                           []
                         |),
                         [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.call_closure (|
-                            Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_const",
-                              [ Value.Integer IntegerKind.Usize 1 ],
-                              []
-                            |),
-                            [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 1 ]
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                      Value.Array [ mk_str (| "blob version not supported" |) ]
-                                    |)
-                                  |)
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array [ mk_str (| "create initcode size limit" |) ]
                                 |)
                               |)
-                            ]
+                            |)
                           |)
                         ]
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::EofCrateShouldHaveToAddress"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::InvalidChainId"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_fmt",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                        Ty.path "core::fmt::Arguments",
                         M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_fmt",
-                          [],
+                          Ty.path "core::fmt::Arguments",
+                          "new_const",
+                          [ Value.Integer IntegerKind.Usize 1 ],
                           []
                         |),
                         [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.call_closure (|
-                            Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_const",
-                              [ Value.Integer IntegerKind.Usize 1 ],
-                              []
-                            |),
-                            [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 1 ]
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                      Value.Array
-                                        [ mk_str (| "EOF crate should have `to` address" |) ]
-                                    |)
-                                  |)
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array [ mk_str (| "invalid chain ID" |) ]
                                 |)
                               |)
-                            ]
+                            |)
                           |)
                         ]
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::AuthorizationListNotSupported"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::AccessListNotSupported"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_fmt",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                        Ty.path "core::fmt::Arguments",
                         M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_fmt",
-                          [],
+                          Ty.path "core::fmt::Arguments",
+                          "new_const",
+                          [ Value.Integer IntegerKind.Usize 1 ],
                           []
                         |),
                         [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.call_closure (|
-                            Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_const",
-                              [ Value.Integer IntegerKind.Usize 1 ],
-                              []
-                            |),
-                            [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 1 ]
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                      Value.Array
-                                        [ mk_str (| "authorization list not supported" |) ]
-                                    |)
-                                  |)
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array [ mk_str (| "access list not supported" |) ]
                                 |)
                               |)
-                            ]
+                            |)
                           |)
                         ]
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::AuthorizationListInvalidFields"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::MaxFeePerBlobGasNotSupported"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_fmt",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                        Ty.path "core::fmt::Arguments",
                         M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_fmt",
-                          [],
+                          Ty.path "core::fmt::Arguments",
+                          "new_const",
+                          [ Value.Integer IntegerKind.Usize 1 ],
                           []
                         |),
                         [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.call_closure (|
-                            Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_const",
-                              [ Value.Integer IntegerKind.Usize 1 ],
-                              []
-                            |),
-                            [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 1 ]
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                      Value.Array
-                                        [ mk_str (| "authorization list tx has invalid fields" |) ]
-                                    |)
-                                  |)
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array [ mk_str (| "max fee per blob gas not supported" |) ]
                                 |)
                               |)
-                            ]
+                            |)
                           |)
                         ]
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::EmptyAuthorizationList"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::BlobVersionedHashesNotSupported"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_fmt",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                        Ty.path "core::fmt::Arguments",
                         M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_fmt",
-                          [],
+                          Ty.path "core::fmt::Arguments",
+                          "new_const",
+                          [ Value.Integer IntegerKind.Usize 1 ],
                           []
                         |),
                         [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.call_closure (|
-                            Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_const",
-                              [ Value.Integer IntegerKind.Usize 1 ],
-                              []
-                            |),
-                            [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 1 ]
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                      Value.Array [ mk_str (| "empty authorization list" |) ]
-                                    |)
-                                  |)
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array [ mk_str (| "blob versioned hashes not supported" |) ]
                                 |)
                               |)
-                            ]
+                            |)
                           |)
                         ]
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::Eip2930NotSupported"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::BlobGasPriceGreaterThanMax"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_fmt",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                        Ty.path "core::fmt::Arguments",
                         M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_fmt",
-                          [],
+                          Ty.path "core::fmt::Arguments",
+                          "new_const",
+                          [ Value.Integer IntegerKind.Usize 1 ],
                           []
                         |),
                         [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.call_closure (|
-                            Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_const",
-                              [ Value.Integer IntegerKind.Usize 1 ],
-                              []
-                            |),
-                            [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 1 ]
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                      Value.Array [ mk_str (| "Eip2930 is not supported" |) ]
-                                    |)
-                                  |)
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array
+                                    [
+                                      mk_str (|
+                                        "blob gas price is greater than max fee per blob gas"
+                                      |)
+                                    ]
                                 |)
                               |)
-                            ]
+                            |)
                           |)
                         ]
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::Eip1559NotSupported"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::EmptyBlobs"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_fmt",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                        Ty.path "core::fmt::Arguments",
                         M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_fmt",
-                          [],
+                          Ty.path "core::fmt::Arguments",
+                          "new_const",
+                          [ Value.Integer IntegerKind.Usize 1 ],
                           []
                         |),
                         [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.call_closure (|
-                            Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_const",
-                              [ Value.Integer IntegerKind.Usize 1 ],
-                              []
-                            |),
-                            [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 1 ]
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                      Value.Array [ mk_str (| "Eip1559 is not supported" |) ]
-                                    |)
-                                  |)
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array [ mk_str (| "empty blobs" |) ]
                                 |)
                               |)
-                            ]
+                            |)
                           |)
                         ]
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::Eip4844NotSupported"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::BlobCreateTransaction"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_fmt",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                        Ty.path "core::fmt::Arguments",
                         M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_fmt",
-                          [],
+                          Ty.path "core::fmt::Arguments",
+                          "new_const",
+                          [ Value.Integer IntegerKind.Usize 1 ],
                           []
                         |),
                         [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.call_closure (|
-                            Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_const",
-                              [ Value.Integer IntegerKind.Usize 1 ],
-                              []
-                            |),
-                            [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 1 ]
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                      Value.Array [ mk_str (| "Eip4844 is not supported" |) ]
-                                    |)
-                                  |)
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array [ mk_str (| "blob create transaction" |) ]
                                 |)
                               |)
-                            ]
+                            |)
                           |)
                         ]
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::Eip7702NotSupported"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::TooManyBlobs",
+                      "max"
+                    |) in
+                  let γ1_1 :=
+                    M.SubPointer.get_struct_record_field (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::TooManyBlobs",
+                      "have"
+                    |) in
+                  let max := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ1_0 |) in
+                  let have := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ1_1 |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_fmt",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                        Ty.path "core::fmt::Arguments",
                         M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_fmt",
-                          [],
+                          Ty.path "core::fmt::Arguments",
+                          "new_v1",
+                          [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 2 ],
                           []
                         |),
                         [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.call_closure (|
-                            Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_const",
-                              [ Value.Integer IntegerKind.Usize 1 ],
-                              []
-                            |),
-                            [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 1 ]
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                      Value.Array [ mk_str (| "Eip7702 is not supported" |) ]
-                                    |)
-                                  |)
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 2 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array
+                                    [ mk_str (| "too many blobs, have " |); mk_str (| ", max " |) ]
                                 |)
                               |)
-                            ]
+                            |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 2 ]
+                                    [ Ty.path "core::fmt::rt::Argument" ],
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [],
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ]
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.borrow (| Pointer.Kind.Ref, have |) |)
+                                          |)
+                                        ]
+                                      |);
+                                      M.call_closure (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [],
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ]
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.borrow (| Pointer.Kind.Ref, max |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    ]
+                                |)
+                              |)
+                            |)
                           |)
                         ]
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::InvalidAuthorizationList",
-                        0
-                      |) in
-                    let i :=
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::BlobVersionNotSupported"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_fmt",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.call_closure (|
+                        Ty.path "core::fmt::Arguments",
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::Arguments",
+                          "new_const",
+                          [ Value.Integer IntegerKind.Usize 1 ],
                           []
-                          [
-                            Ty.path
-                              "revm_specification::eip7702::authorization_list::InvalidAuthorization"
-                          ],
-                        γ1_0
-                      |) in
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array [ mk_str (| "blob version not supported" |) ]
+                                |)
+                              |)
+                            |)
+                          |)
+                        ]
+                      |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::EofCrateShouldHaveToAddress"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_fmt",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.call_closure (|
+                        Ty.path "core::fmt::Arguments",
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::Arguments",
+                          "new_const",
+                          [ Value.Integer IntegerKind.Usize 1 ],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array [ mk_str (| "EOF crate should have `to` address" |) ]
+                                |)
+                              |)
+                            |)
+                          |)
+                        ]
+                      |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::AuthorizationListNotSupported"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_fmt",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.call_closure (|
+                        Ty.path "core::fmt::Arguments",
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::Arguments",
+                          "new_const",
+                          [ Value.Integer IntegerKind.Usize 1 ],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array [ mk_str (| "authorization list not supported" |) ]
+                                |)
+                              |)
+                            |)
+                          |)
+                        ]
+                      |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::AuthorizationListInvalidFields"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_fmt",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.call_closure (|
+                        Ty.path "core::fmt::Arguments",
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::Arguments",
+                          "new_const",
+                          [ Value.Integer IntegerKind.Usize 1 ],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array
+                                    [ mk_str (| "authorization list tx has invalid fields" |) ]
+                                |)
+                              |)
+                            |)
+                          |)
+                        ]
+                      |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::EmptyAuthorizationList"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_fmt",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.call_closure (|
+                        Ty.path "core::fmt::Arguments",
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::Arguments",
+                          "new_const",
+                          [ Value.Integer IntegerKind.Usize 1 ],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array [ mk_str (| "empty authorization list" |) ]
+                                |)
+                              |)
+                            |)
+                          |)
+                        ]
+                      |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::Eip2930NotSupported"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_fmt",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.call_closure (|
+                        Ty.path "core::fmt::Arguments",
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::Arguments",
+                          "new_const",
+                          [ Value.Integer IntegerKind.Usize 1 ],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array [ mk_str (| "Eip2930 is not supported" |) ]
+                                |)
+                              |)
+                            |)
+                          |)
+                        ]
+                      |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::Eip1559NotSupported"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_fmt",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.call_closure (|
+                        Ty.path "core::fmt::Arguments",
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::Arguments",
+                          "new_const",
+                          [ Value.Integer IntegerKind.Usize 1 ],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array [ mk_str (| "Eip1559 is not supported" |) ]
+                                |)
+                              |)
+                            |)
+                          |)
+                        ]
+                      |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::Eip4844NotSupported"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_fmt",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.call_closure (|
+                        Ty.path "core::fmt::Arguments",
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::Arguments",
+                          "new_const",
+                          [ Value.Integer IntegerKind.Usize 1 ],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array [ mk_str (| "Eip4844 is not supported" |) ]
+                                |)
+                              |)
+                            |)
+                          |)
+                        ]
+                      |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::Eip7702NotSupported"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_fmt",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.call_closure (|
+                        Ty.path "core::fmt::Arguments",
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::Arguments",
+                          "new_const",
+                          [ Value.Integer IntegerKind.Usize 1 ],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array [ mk_str (| "Eip7702 is not supported" |) ]
+                                |)
+                              |)
+                            |)
+                          |)
+                        ]
+                      |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "revm_context_interface::result::InvalidTransaction::InvalidAuthorizationList",
+                      0
+                    |) in
+                  let i :=
                     M.alloc (|
                       Ty.apply
-                        (Ty.path "core::result::Result")
+                        (Ty.path "&")
                         []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_trait_method (|
-                          "core::fmt::Display",
+                        [
                           Ty.path
-                            "revm_specification::eip7702::authorization_list::InvalidAuthorization",
-                          [],
-                          [],
-                          "fmt",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| i |) |) |);
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
-                        ]
-                      |)
-                    |)))
-              ]
-            |)
+                            "revm_specification::eip7702::authorization_list::InvalidAuthorization"
+                        ],
+                      γ1_0
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_trait_method (|
+                      "core::fmt::Display",
+                      Ty.path
+                        "revm_specification::eip7702::authorization_list::InvalidAuthorization",
+                      [],
+                      [],
+                      "fmt",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| i |) |) |);
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                    ]
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -11690,43 +10720,35 @@ Module result.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.read (|
-                M.match_operator (|
-                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                  self,
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
-                        let _ :=
-                          M.is_struct_tuple (|
-                            γ,
-                            "revm_context_interface::result::InvalidHeader::PrevrandaoNotSet"
-                          |) in
-                        M.alloc (|
-                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "PrevrandaoNotSet" |) |)
-                          |)
-                        |)));
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
-                        let _ :=
-                          M.is_struct_tuple (|
-                            γ,
-                            "revm_context_interface::result::InvalidHeader::ExcessBlobGasNotSet"
-                          |) in
-                        M.alloc (|
-                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "ExcessBlobGasNotSet" |) |)
-                          |)
-                        |)))
-                  ]
-                |)
+              M.match_operator (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                self,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let _ :=
+                        M.is_struct_tuple (|
+                          γ,
+                          "revm_context_interface::result::InvalidHeader::PrevrandaoNotSet"
+                        |) in
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "PrevrandaoNotSet" |) |)
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let _ :=
+                        M.is_struct_tuple (|
+                          γ,
+                          "revm_context_interface::result::InvalidHeader::ExcessBlobGasNotSet"
+                        |) in
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "ExcessBlobGasNotSet" |) |)
+                      |)))
+                ]
               |)
             ]
           |)))
@@ -11977,126 +10999,112 @@ Module result.
             |) in
           let f :=
             M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidHeader::PrevrandaoNotSet"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+          M.match_operator (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidHeader::PrevrandaoNotSet"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_fmt",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                        Ty.path "core::fmt::Arguments",
                         M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_fmt",
-                          [],
+                          Ty.path "core::fmt::Arguments",
+                          "new_const",
+                          [ Value.Integer IntegerKind.Usize 1 ],
                           []
                         |),
                         [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.call_closure (|
-                            Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_const",
-                              [ Value.Integer IntegerKind.Usize 1 ],
-                              []
-                            |),
-                            [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 1 ]
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                      Value.Array [ mk_str (| "`prevrandao` not set" |) ]
-                                    |)
-                                  |)
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array [ mk_str (| "`prevrandao` not set" |) ]
                                 |)
                               |)
-                            ]
+                            |)
                           |)
                         ]
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidHeader::ExcessBlobGasNotSet"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::InvalidHeader::ExcessBlobGasNotSet"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_fmt",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                        Ty.path "core::fmt::Arguments",
                         M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_fmt",
-                          [],
+                          Ty.path "core::fmt::Arguments",
+                          "new_const",
+                          [ Value.Integer IntegerKind.Usize 1 ],
                           []
                         |),
                         [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.call_closure (|
-                            Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_const",
-                              [ Value.Integer IntegerKind.Usize 1 ],
-                              []
-                            |),
-                            [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 1 ]
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                      Value.Array [ mk_str (| "`excess_blob_gas` not set" |) ]
-                                    |)
-                                  |)
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array [ mk_str (| "`excess_blob_gas` not set" |) ]
                                 |)
                               |)
-                            ]
+                            |)
                           |)
                         ]
                       |)
-                    |)))
-              ]
-            |)
+                    ]
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -12169,64 +11177,50 @@ Module result.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.read (|
-                M.match_operator (|
-                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                  self,
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
-                        let _ :=
-                          M.is_struct_tuple (|
-                            γ,
-                            "revm_context_interface::result::SuccessReason::Stop"
-                          |) in
-                        M.alloc (|
-                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Stop" |) |) |)
-                        |)));
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
-                        let _ :=
-                          M.is_struct_tuple (|
-                            γ,
-                            "revm_context_interface::result::SuccessReason::Return"
-                          |) in
-                        M.alloc (|
-                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Return" |) |) |)
-                        |)));
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
-                        let _ :=
-                          M.is_struct_tuple (|
-                            γ,
-                            "revm_context_interface::result::SuccessReason::SelfDestruct"
-                          |) in
-                        M.alloc (|
-                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SelfDestruct" |) |) |)
-                        |)));
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
-                        let _ :=
-                          M.is_struct_tuple (|
-                            γ,
-                            "revm_context_interface::result::SuccessReason::EofReturnContract"
-                          |) in
-                        M.alloc (|
-                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "EofReturnContract" |) |)
-                          |)
-                        |)))
-                  ]
-                |)
+              M.match_operator (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                self,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let _ :=
+                        M.is_struct_tuple (|
+                          γ,
+                          "revm_context_interface::result::SuccessReason::Stop"
+                        |) in
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Stop" |) |) |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let _ :=
+                        M.is_struct_tuple (|
+                          γ,
+                          "revm_context_interface::result::SuccessReason::Return"
+                        |) in
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Return" |) |) |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let _ :=
+                        M.is_struct_tuple (|
+                          γ,
+                          "revm_context_interface::result::SuccessReason::SelfDestruct"
+                        |) in
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SelfDestruct" |) |) |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let _ :=
+                        M.is_struct_tuple (|
+                          γ,
+                          "revm_context_interface::result::SuccessReason::EofReturnContract"
+                        |) in
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "EofReturnContract" |) |)
+                      |)))
+                ]
               |)
             ]
           |)))
@@ -12608,772 +11602,608 @@ Module result.
             |) in
           let f :=
             M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_context_interface::result::HaltReason::OutOfGas",
-                        0
-                      |) in
-                    let __self_0 :=
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [ Ty.path "revm_context_interface::result::OutOfGasError" ],
-                        γ1_0
-                      |) in
+          M.match_operator (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "revm_context_interface::result::HaltReason::OutOfGas",
+                      0
+                    |) in
+                  let __self_0 :=
                     M.alloc (|
                       Ty.apply
-                        (Ty.path "core::result::Result")
+                        (Ty.path "&")
                         []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_tuple_field1_finish",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "OutOfGas" |) |) |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                            |))
-                        ]
+                        [ Ty.path "revm_context_interface::result::OutOfGasError" ],
+                      γ1_0
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "debug_tuple_field1_finish",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "OutOfGas" |) |) |);
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                        |))
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::HaltReason::OpcodeNotFound"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "OpcodeNotFound" |) |) |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::HaltReason::InvalidFEOpcode"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "InvalidFEOpcode" |) |) |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::HaltReason::InvalidJump"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "InvalidJump" |) |) |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::HaltReason::NotActivated"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "NotActivated" |) |) |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::HaltReason::StackUnderflow"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "StackUnderflow" |) |) |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::HaltReason::StackOverflow"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "StackOverflow" |) |) |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::HaltReason::OutOfOffset"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "OutOfOffset" |) |) |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::HaltReason::CreateCollision"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CreateCollision" |) |) |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::HaltReason::PrecompileError"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "PrecompileError" |) |) |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::HaltReason::NonceOverflow"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "NonceOverflow" |) |) |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::HaltReason::CreateContractSizeLimit"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "CreateContractSizeLimit" |) |)
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::HaltReason::OpcodeNotFound"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "OpcodeNotFound" |) |)
-                          |)
-                        ]
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::HaltReason::CreateContractStartingWithEF"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "CreateContractStartingWithEF" |) |)
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::HaltReason::InvalidFEOpcode"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "InvalidFEOpcode" |) |)
-                          |)
-                        ]
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::HaltReason::CreateInitCodeSizeLimit"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "CreateInitCodeSizeLimit" |) |)
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::HaltReason::InvalidJump"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "InvalidJump" |) |) |)
-                        ]
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::HaltReason::OverflowPayment"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "OverflowPayment" |) |) |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::HaltReason::StateChangeDuringStaticCall"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "StateChangeDuringStaticCall" |) |)
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::HaltReason::NotActivated"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "NotActivated" |) |) |)
-                        ]
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::HaltReason::CallNotAllowedInsideStatic"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "CallNotAllowedInsideStatic" |) |)
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::HaltReason::StackUnderflow"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "StackUnderflow" |) |)
-                          |)
-                        ]
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::HaltReason::OutOfFunds"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "OutOfFunds" |) |) |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::HaltReason::CallTooDeep"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CallTooDeep" |) |) |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::HaltReason::EofAuxDataOverflow"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "EofAuxDataOverflow" |) |)
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::HaltReason::StackOverflow"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "StackOverflow" |) |)
-                          |)
-                        ]
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::HaltReason::EofAuxDataTooSmall"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "EofAuxDataTooSmall" |) |)
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::HaltReason::OutOfOffset"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "OutOfOffset" |) |) |)
-                        ]
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::HaltReason::SubRoutineStackOverflow"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "SubRoutineStackOverflow" |) |)
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::HaltReason::CreateCollision"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "CreateCollision" |) |)
-                          |)
-                        ]
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "revm_context_interface::result::HaltReason::InvalidEXTCALLTarget"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "InvalidEXTCALLTarget" |) |)
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::HaltReason::PrecompileError"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "PrecompileError" |) |)
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::HaltReason::NonceOverflow"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "NonceOverflow" |) |)
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::HaltReason::CreateContractSizeLimit"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "CreateContractSizeLimit" |) |)
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::HaltReason::CreateContractStartingWithEF"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "CreateContractStartingWithEF" |) |)
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::HaltReason::CreateInitCodeSizeLimit"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "CreateInitCodeSizeLimit" |) |)
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::HaltReason::OverflowPayment"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "OverflowPayment" |) |)
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::HaltReason::StateChangeDuringStaticCall"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "StateChangeDuringStaticCall" |) |)
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::HaltReason::CallNotAllowedInsideStatic"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "CallNotAllowedInsideStatic" |) |)
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::HaltReason::OutOfFunds"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "OutOfFunds" |) |) |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::HaltReason::CallTooDeep"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CallTooDeep" |) |) |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::HaltReason::EofAuxDataOverflow"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "EofAuxDataOverflow" |) |)
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::HaltReason::EofAuxDataTooSmall"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "EofAuxDataTooSmall" |) |)
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::HaltReason::SubRoutineStackOverflow"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "SubRoutineStackOverflow" |) |)
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::HaltReason::InvalidEXTCALLTarget"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "InvalidEXTCALLTarget" |) |)
-                          |)
-                        ]
-                      |)
-                    |)))
-              ]
-            |)
+                    ]
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -13400,12 +12230,10 @@ Module result.
               Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::result::HaltReason" ],
               self
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.path "revm_context_interface::result::HaltReason",
-              Value.DeclaredButUndefined,
-              [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
-            |)
+          M.match_operator (|
+            Ty.path "revm_context_interface::result::HaltReason",
+            Value.DeclaredButUndefined,
+            [ fun γ => ltac:(M.monadic (M.read (| M.deref (| M.read (| self |) |) |))) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -13491,88 +12319,83 @@ Module result.
                   [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
                 |),
                 ltac:(M.monadic
-                  (M.read (|
-                    M.match_operator (|
-                      Ty.path "bool",
-                      M.alloc (|
-                        Ty.tuple
-                          [
-                            Ty.apply
-                              (Ty.path "&")
-                              []
-                              [ Ty.path "revm_context_interface::result::HaltReason" ];
-                            Ty.apply
-                              (Ty.path "&")
-                              []
-                              [ Ty.path "revm_context_interface::result::HaltReason" ]
-                          ],
-                        Value.Tuple [ M.read (| self |); M.read (| other |) ]
-                      |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                            let γ0_0 := M.read (| γ0_0 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ0_0,
-                                "revm_context_interface::result::HaltReason::OutOfGas",
-                                0
-                              |) in
-                            let __self_0 :=
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "revm_context_interface::result::OutOfGasError" ],
-                                γ2_0
-                              |) in
-                            let γ0_1 := M.read (| γ0_1 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ0_1,
-                                "revm_context_interface::result::HaltReason::OutOfGas",
-                                0
-                              |) in
-                            let __arg1_0 :=
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "revm_context_interface::result::OutOfGasError" ],
-                                γ2_0
-                              |) in
+                  (M.match_operator (|
+                    Ty.path "bool",
+                    M.alloc (|
+                      Ty.tuple
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "revm_context_interface::result::HaltReason" ];
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "revm_context_interface::result::HaltReason" ]
+                        ],
+                      Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                    |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                          let γ0_0 := M.read (| γ0_0 |) in
+                          let γ2_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ0_0,
+                              "revm_context_interface::result::HaltReason::OutOfGas",
+                              0
+                            |) in
+                          let __self_0 :=
                             M.alloc (|
-                              Ty.path "bool",
-                              M.call_closure (|
-                                Ty.path "bool",
-                                M.get_trait_method (|
-                                  "core::cmp::PartialEq",
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [ Ty.path "revm_context_interface::result::OutOfGasError" ],
-                                  [],
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [ Ty.path "revm_context_interface::result::OutOfGasError" ]
-                                  ],
-                                  "eq",
-                                  [],
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "revm_context_interface::result::OutOfGasError" ],
+                              γ2_0
+                            |) in
+                          let γ0_1 := M.read (| γ0_1 |) in
+                          let γ2_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ0_1,
+                              "revm_context_interface::result::HaltReason::OutOfGas",
+                              0
+                            |) in
+                          let __arg1_0 :=
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "revm_context_interface::result::OutOfGasError" ],
+                              γ2_0
+                            |) in
+                          M.call_closure (|
+                            Ty.path "bool",
+                            M.get_trait_method (|
+                              "core::cmp::PartialEq",
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "revm_context_interface::result::OutOfGasError" ],
+                              [],
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
                                   []
-                                |),
-                                [
-                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
-                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
-                                ]
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool true |)))
-                      ]
-                    |)
+                                  [ Ty.path "revm_context_interface::result::OutOfGasError" ]
+                              ],
+                              "eq",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                              M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                            ]
+                          |)));
+                      fun γ => ltac:(M.monadic (Value.Bool true))
+                    ]
                   |)))
               |)
             |)
@@ -13606,12 +12429,10 @@ Module result.
               Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::result::HaltReason" ],
               self
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.tuple [],
-              Value.DeclaredButUndefined,
-              [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
-            |)
+          M.match_operator (|
+            Ty.tuple [],
+            Value.DeclaredButUndefined,
+            [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -13671,29 +12492,29 @@ Module result.
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                 ]
               |) in
-            M.match_operator (|
+            M.alloc (|
               Ty.tuple [],
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_context_interface::result::HaltReason::OutOfGas",
-                        0
-                      |) in
-                    let __self_0 :=
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [ Ty.path "revm_context_interface::result::OutOfGasError" ],
-                        γ1_0
-                      |) in
-                    M.alloc (|
-                      Ty.tuple [],
+              M.match_operator (|
+                Ty.tuple [],
+                self,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let γ1_0 :=
+                        M.SubPointer.get_struct_tuple_field (|
+                          γ,
+                          "revm_context_interface::result::HaltReason::OutOfGas",
+                          0
+                        |) in
+                      let __self_0 :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "revm_context_interface::result::OutOfGasError" ],
+                          γ1_0
+                        |) in
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_trait_method (|
@@ -13709,10 +12530,10 @@ Module result.
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                         ]
-                      |)
-                    |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-              ]
+                      |)));
+                  fun γ => ltac:(M.monadic (Value.Tuple []))
+                ]
+              |)
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -13798,91 +12619,71 @@ Module result.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.read (|
-                M.match_operator (|
-                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                  self,
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
-                        let _ :=
-                          M.is_struct_tuple (|
-                            γ,
-                            "revm_context_interface::result::OutOfGasError::Basic"
-                          |) in
-                        M.alloc (|
-                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Basic" |) |) |)
-                        |)));
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
-                        let _ :=
-                          M.is_struct_tuple (|
-                            γ,
-                            "revm_context_interface::result::OutOfGasError::MemoryLimit"
-                          |) in
-                        M.alloc (|
-                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "MemoryLimit" |) |) |)
-                        |)));
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
-                        let _ :=
-                          M.is_struct_tuple (|
-                            γ,
-                            "revm_context_interface::result::OutOfGasError::Memory"
-                          |) in
-                        M.alloc (|
-                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Memory" |) |) |)
-                        |)));
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
-                        let _ :=
-                          M.is_struct_tuple (|
-                            γ,
-                            "revm_context_interface::result::OutOfGasError::Precompile"
-                          |) in
-                        M.alloc (|
-                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Precompile" |) |) |)
-                        |)));
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
-                        let _ :=
-                          M.is_struct_tuple (|
-                            γ,
-                            "revm_context_interface::result::OutOfGasError::InvalidOperand"
-                          |) in
-                        M.alloc (|
-                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "InvalidOperand" |) |)
-                          |)
-                        |)));
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
-                        let _ :=
-                          M.is_struct_tuple (|
-                            γ,
-                            "revm_context_interface::result::OutOfGasError::ReentrancySentry"
-                          |) in
-                        M.alloc (|
-                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "ReentrancySentry" |) |)
-                          |)
-                        |)))
-                  ]
-                |)
+              M.match_operator (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                self,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let _ :=
+                        M.is_struct_tuple (|
+                          γ,
+                          "revm_context_interface::result::OutOfGasError::Basic"
+                        |) in
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Basic" |) |) |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let _ :=
+                        M.is_struct_tuple (|
+                          γ,
+                          "revm_context_interface::result::OutOfGasError::MemoryLimit"
+                        |) in
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "MemoryLimit" |) |) |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let _ :=
+                        M.is_struct_tuple (|
+                          γ,
+                          "revm_context_interface::result::OutOfGasError::Memory"
+                        |) in
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Memory" |) |) |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let _ :=
+                        M.is_struct_tuple (|
+                          γ,
+                          "revm_context_interface::result::OutOfGasError::Precompile"
+                        |) in
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Precompile" |) |) |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let _ :=
+                        M.is_struct_tuple (|
+                          γ,
+                          "revm_context_interface::result::OutOfGasError::InvalidOperand"
+                        |) in
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "InvalidOperand" |) |)
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let _ :=
+                        M.is_struct_tuple (|
+                          γ,
+                          "revm_context_interface::result::OutOfGasError::ReentrancySentry"
+                        |) in
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| mk_str (| "ReentrancySentry" |) |)
+                      |)))
+                ]
               |)
             ]
           |)))

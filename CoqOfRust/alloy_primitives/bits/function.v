@@ -816,17 +816,33 @@ Module bits.
                 Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bits::function::Function" ],
                 self
               |) in
-            M.read (|
-              M.match_operator (|
+            M.match_operator (|
+              Ty.tuple
+                [
+                  Ty.path "alloy_primitives::bits::address::Address";
+                  Ty.apply
+                    (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                    [ Value.Integer IntegerKind.Usize 4 ]
+                    []
+                ],
+              M.alloc (|
                 Ty.tuple
                   [
-                    Ty.path "alloy_primitives::bits::address::Address";
                     Ty.apply
-                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                      [ Value.Integer IntegerKind.Usize 4 ]
+                      (Ty.path "&")
                       []
+                      [ Ty.path "alloy_primitives::bits::address::Address" ];
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                          [ Value.Integer IntegerKind.Usize 4 ]
+                          []
+                      ]
                   ],
-                M.alloc (|
+                M.call_closure (|
                   Ty.tuple
                     [
                       Ty.apply
@@ -843,75 +859,47 @@ Module bits.
                             []
                         ]
                     ],
-                  M.call_closure (|
-                    Ty.tuple
-                      [
+                  M.get_associated_function (|
+                    Ty.path "alloy_primitives::bits::function::Function",
+                    "as_address_and_selector",
+                    [],
+                    []
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                |)
+              |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let a :=
+                      M.copy (|
                         Ty.apply
                           (Ty.path "&")
                           []
-                          [ Ty.path "alloy_primitives::bits::address::Address" ];
+                          [ Ty.path "alloy_primitives::bits::address::Address" ],
+                        γ0_0
+                      |) in
+                    let s :=
+                      M.copy (|
                         Ty.apply
                           (Ty.path "&")
                           []
                           [
-                            Ty.apply
-                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                              [ Value.Integer IntegerKind.Usize 4 ]
-                              []
-                          ]
-                      ],
-                    M.get_associated_function (|
-                      Ty.path "alloy_primitives::bits::function::Function",
-                      "as_address_and_selector",
-                      [],
-                      []
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                  |)
-                |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                      let a :=
-                        M.copy (|
-                          Ty.apply
-                            (Ty.path "&")
-                            []
-                            [ Ty.path "alloy_primitives::bits::address::Address" ],
-                          γ0_0
-                        |) in
-                      let s :=
-                        M.copy (|
-                          Ty.apply
-                            (Ty.path "&")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                [ Value.Integer IntegerKind.Usize 4 ]
-                                []
-                            ],
-                          γ0_1
-                        |) in
-                      M.alloc (|
-                        Ty.tuple
-                          [
-                            Ty.path "alloy_primitives::bits::address::Address";
                             Ty.apply
                               (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
                               [ Value.Integer IntegerKind.Usize 4 ]
                               []
                           ],
-                        Value.Tuple
-                          [
-                            M.read (| M.deref (| M.read (| a |) |) |);
-                            M.read (| M.deref (| M.read (| s |) |) |)
-                          ]
-                      |)))
-                ]
-              |)
+                        γ0_1
+                      |) in
+                    Value.Tuple
+                      [
+                        M.read (| M.deref (| M.read (| a |) |) |);
+                        M.read (| M.deref (| M.read (| s |) |) |)
+                      ]))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

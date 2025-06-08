@@ -234,12 +234,10 @@ Module mem.
                 Ty.apply (Ty.path "&") [] [ Ty.path "core::mem::transmutability::Assume" ],
                 self
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.tuple [],
-                Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
-              |)
+            M.match_operator (|
+              Ty.tuple [],
+              Value.DeclaredButUndefined,
+              [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -267,12 +265,10 @@ Module mem.
                 Ty.apply (Ty.path "&") [] [ Ty.path "core::mem::transmutability::Assume" ],
                 self
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.path "core::mem::transmutability::Assume",
-                Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
-              |)
+            M.match_operator (|
+              Ty.path "core::mem::transmutability::Assume",
+              Value.DeclaredButUndefined,
+              [ fun γ => ltac:(M.monadic (M.read (| M.deref (| M.read (| self |) |) |))) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

@@ -168,25 +168,25 @@ Module array.
                   |),
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |) in
-              M.match_operator (|
+              M.alloc (|
                 Ty.path "bool",
-                b,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::result::Result::Ok",
-                          0
-                        |) in
-                      let b :=
-                        M.copy (|
-                          Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ U ] ],
-                          γ0_0
-                        |) in
-                      M.alloc (|
-                        Ty.path "bool",
+                M.match_operator (|
+                  Ty.path "bool",
+                  b,
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "core::result::Result::Ok",
+                            0
+                          |) in
+                        let b :=
+                          M.copy (|
+                            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ U ] ],
+                            γ0_0
+                          |) in
                         M.call_closure (|
                           Ty.path "bool",
                           M.get_trait_method (|
@@ -202,18 +202,18 @@ Module array.
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| b |) |) |)
                           ]
-                        |)
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::result::Result::Err",
-                          0
-                        |) in
-                      M.alloc (| Ty.path "bool", Value.Bool false |)))
-                ]
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "core::result::Result::Err",
+                            0
+                          |) in
+                        Value.Bool false))
+                  ]
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -277,25 +277,25 @@ Module array.
                   |),
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |) in
-              M.match_operator (|
+              M.alloc (|
                 Ty.path "bool",
-                b,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::result::Result::Ok",
-                          0
-                        |) in
-                      let b :=
-                        M.copy (|
-                          Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ U ] ],
-                          γ0_0
-                        |) in
-                      M.alloc (|
-                        Ty.path "bool",
+                M.match_operator (|
+                  Ty.path "bool",
+                  b,
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "core::result::Result::Ok",
+                            0
+                          |) in
+                        let b :=
+                          M.copy (|
+                            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ U ] ],
+                            γ0_0
+                          |) in
                         M.call_closure (|
                           Ty.path "bool",
                           M.get_trait_method (|
@@ -311,18 +311,18 @@ Module array.
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| b |) |) |)
                           ]
-                        |)
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::result::Result::Err",
-                          0
-                        |) in
-                      M.alloc (| Ty.path "bool", Value.Bool true |)))
-                ]
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "core::result::Result::Err",
+                            0
+                          |) in
+                        Value.Bool true))
+                  ]
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -400,25 +400,25 @@ Module array.
                   |),
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |) in
-              M.match_operator (|
+              M.alloc (|
                 Ty.path "bool",
-                b,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::result::Result::Ok",
-                          0
-                        |) in
-                      let b :=
-                        M.copy (|
-                          Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
-                          γ0_0
-                        |) in
-                      M.alloc (|
-                        Ty.path "bool",
+                M.match_operator (|
+                  Ty.path "bool",
+                  b,
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "core::result::Result::Ok",
+                            0
+                          |) in
+                        let b :=
+                          M.copy (|
+                            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
+                            γ0_0
+                          |) in
                         M.call_closure (|
                           Ty.path "bool",
                           M.get_trait_method (|
@@ -434,18 +434,18 @@ Module array.
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| b |) |) |);
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
                           ]
-                        |)
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::result::Result::Err",
-                          0
-                        |) in
-                      M.alloc (| Ty.path "bool", Value.Bool false |)))
-                ]
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "core::result::Result::Err",
+                            0
+                          |) in
+                        Value.Bool false))
+                  ]
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -509,25 +509,25 @@ Module array.
                   |),
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |) in
-              M.match_operator (|
+              M.alloc (|
                 Ty.path "bool",
-                b,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::result::Result::Ok",
-                          0
-                        |) in
-                      let b :=
-                        M.copy (|
-                          Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
-                          γ0_0
-                        |) in
-                      M.alloc (|
-                        Ty.path "bool",
+                M.match_operator (|
+                  Ty.path "bool",
+                  b,
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "core::result::Result::Ok",
+                            0
+                          |) in
+                        let b :=
+                          M.copy (|
+                            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
+                            γ0_0
+                          |) in
                         M.call_closure (|
                           Ty.path "bool",
                           M.get_trait_method (|
@@ -543,18 +543,18 @@ Module array.
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| b |) |) |);
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |)
                           ]
-                        |)
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::result::Result::Err",
-                          0
-                        |) in
-                      M.alloc (| Ty.path "bool", Value.Bool true |)))
-                ]
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "core::result::Result::Err",
+                            0
+                          |) in
+                        Value.Bool true))
+                  ]
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"

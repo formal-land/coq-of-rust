@@ -41,107 +41,188 @@ Module fmt.
               M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bytes::fmt::BytesRef" ], self |) in
             let f :=
               M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
-            M.read (|
-              M.catch_return
-                (Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]) (|
-                ltac:(M.monadic
-                  (M.alloc (|
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                    M.read (|
-                      let~ _ : Ty.tuple [] :=
-                        M.read (|
-                          M.match_operator (|
-                            Ty.tuple [],
-                            M.alloc (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ]) (|
+              ltac:(M.monadic
+                (M.read (|
+                  let~ _ : Ty.tuple [] :=
+                    M.match_operator (|
+                      Ty.tuple [],
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.path "core::convert::Infallible"; Ty.path "core::fmt::Error" ];
+                            Ty.tuple []
+                          ],
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
                               Ty.apply
-                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                (Ty.path "core::result::Result")
                                 []
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
+                                [ Ty.path "core::convert::Infallible"; Ty.path "core::fmt::Error" ];
+                              Ty.tuple []
+                            ],
+                          M.get_trait_method (|
+                            "core::ops::try_trait::Try",
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                            [],
+                            [],
+                            "branch",
+                            [],
+                            []
+                          |),
+                          [
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::Formatter",
+                                "write_fmt",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                                M.call_closure (|
+                                  Ty.path "core::fmt::Arguments",
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::Arguments",
+                                    "new_const",
+                                    [ Value.Integer IntegerKind.Usize 1 ],
                                     []
-                                    [
-                                      Ty.path "core::convert::Infallible";
-                                      Ty.path "core::fmt::Error"
-                                    ];
-                                  Ty.tuple []
-                                ],
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "core::ops::control_flow::ControlFlow")
-                                  []
+                                  |),
                                   [
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [
-                                        Ty.path "core::convert::Infallible";
-                                        Ty.path "core::fmt::Error"
-                                      ];
-                                    Ty.tuple []
-                                  ],
-                                M.get_trait_method (|
-                                  "core::ops::try_trait::Try",
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                                  [],
-                                  [],
-                                  "branch",
-                                  [],
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 1 ]
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                            Value.Array [ mk_str (| "b""" |) ]
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  ]
+                                |)
+                              ]
+                            |)
+                          ]
+                        |)
+                      |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "core::ops::control_flow::ControlFlow::Break",
+                                0
+                              |) in
+                            let residual :=
+                              M.copy (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
                                   []
-                                |),
-                                [
+                                  [ Ty.path "core::convert::Infallible"; Ty.path "core::fmt::Error"
+                                  ],
+                                γ0_0
+                              |) in
+                            M.never_to_any (|
+                              M.read (|
+                                M.return_ (|
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::Formatter",
-                                      "write_fmt",
+                                    M.get_trait_method (|
+                                      "core::ops::try_trait::FromResidual",
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                      [],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path "core::fmt::Error"
+                                          ]
+                                      ],
+                                      "from_residual",
                                       [],
                                       []
                                     |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.MutRef,
-                                        M.deref (| M.read (| f |) |)
-                                      |);
-                                      M.call_closure (|
-                                        Ty.path "core::fmt::Arguments",
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::Arguments",
-                                          "new_const",
-                                          [ Value.Integer IntegerKind.Usize 1 ],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (|
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.alloc (|
-                                                  Ty.apply
-                                                    (Ty.path "array")
-                                                    [ Value.Integer IntegerKind.Usize 1 ]
-                                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                                  Value.Array [ mk_str (| "b""" |) ]
-                                                |)
-                                              |)
-                                            |)
-                                          |)
-                                        ]
-                                      |)
-                                    ]
+                                    [ M.read (| residual |) ]
+                                  |)
+                                |)
+                              |)
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "core::ops::control_flow::ControlFlow::Continue",
+                                0
+                              |) in
+                            let val := M.copy (| Ty.tuple [], γ0_0 |) in
+                            M.read (| val |)))
+                      ]
+                    |) in
+                  let~ _ : Ty.tuple [] :=
+                    M.read (|
+                      M.use
+                        (M.alloc (|
+                          Ty.tuple [],
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (|
+                              Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
+                              M.call_closure (|
+                                Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
+                                M.get_trait_method (|
+                                  "core::iter::traits::collect::IntoIterator",
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                  [],
+                                  [],
+                                  "into_iter",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.read (|
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "bytes::fmt::BytesRef",
+                                      0
+                                    |)
                                   |)
                                 ]
                               |)
@@ -149,207 +230,118 @@ Module fmt.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Break",
-                                      0
-                                    |) in
-                                  let residual :=
+                                  (let iter :=
                                     M.copy (|
                                       Ty.apply
-                                        (Ty.path "core::result::Result")
+                                        (Ty.path "core::slice::iter::Iter")
                                         []
-                                        [
-                                          Ty.path "core::convert::Infallible";
-                                          Ty.path "core::fmt::Error"
-                                        ],
-                                      γ0_0
+                                        [ Ty.path "u8" ],
+                                      γ
                                     |) in
-                                  M.alloc (|
-                                    Ty.tuple [],
-                                    M.never_to_any (|
-                                      M.read (|
-                                        M.return_ (|
-                                          M.call_closure (|
-                                            Ty.apply
-                                              (Ty.path "core::result::Result")
-                                              []
-                                              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                                            M.get_trait_method (|
-                                              "core::ops::try_trait::FromResidual",
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                                              [],
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [
-                                                    Ty.path "core::convert::Infallible";
-                                                    Ty.path "core::fmt::Error"
-                                                  ]
-                                              ],
-                                              "from_residual",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.read (| residual |) ]
-                                          |)
-                                        |)
-                                      |)
-                                    |)
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Continue",
-                                      0
-                                    |) in
-                                  let val := M.copy (| Ty.tuple [], γ0_0 |) in
-                                  val))
-                            ]
-                          |)
-                        |) in
-                      let~ _ : Ty.tuple [] :=
-                        M.read (|
-                          M.use
-                            (M.match_operator (|
-                              Ty.tuple [],
-                              M.alloc (|
-                                Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
-                                M.call_closure (|
-                                  Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
-                                  M.get_trait_method (|
-                                    "core::iter::traits::collect::IntoIterator",
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                                    [],
-                                    [],
-                                    "into_iter",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.read (|
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "bytes::fmt::BytesRef",
-                                        0
-                                      |)
-                                    |)
-                                  ]
-                                |)
-                              |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let iter :=
-                                      M.copy (|
-                                        Ty.apply
-                                          (Ty.path "core::slice::iter::Iter")
-                                          []
-                                          [ Ty.path "u8" ],
-                                        γ
-                                      |) in
+                                  M.read (|
                                     M.loop (|
                                       Ty.tuple [],
                                       ltac:(M.monadic
                                         (let~ _ : Ty.tuple [] :=
-                                          M.read (|
-                                            M.match_operator (|
-                                              Ty.tuple [],
-                                              M.alloc (|
+                                          M.match_operator (|
+                                            Ty.tuple [],
+                                            M.alloc (|
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
+                                              M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
                                                   []
                                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
-                                                M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::iter::traits::iterator::Iterator",
                                                   Ty.apply
-                                                    (Ty.path "core::option::Option")
+                                                    (Ty.path "core::slice::iter::Iter")
                                                     []
-                                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
-                                                  M.get_trait_method (|
-                                                    "core::iter::traits::iterator::Iterator",
-                                                    Ty.apply
-                                                      (Ty.path "core::slice::iter::Iter")
-                                                      []
-                                                      [ Ty.path "u8" ],
-                                                    [],
-                                                    [],
-                                                    "next",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.borrow (|
-                                                      Pointer.Kind.MutRef,
-                                                      M.deref (|
-                                                        M.borrow (| Pointer.Kind.MutRef, iter |)
-                                                      |)
+                                                    [ Ty.path "u8" ],
+                                                  [],
+                                                  [],
+                                                  "next",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutRef,
+                                                    M.deref (|
+                                                      M.borrow (| Pointer.Kind.MutRef, iter |)
                                                     |)
-                                                  ]
-                                                |)
-                                              |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let _ :=
-                                                      M.is_struct_tuple (|
-                                                        γ,
-                                                        "core::option::Option::None"
-                                                      |) in
-                                                    M.alloc (|
-                                                      Ty.tuple [],
-                                                      M.never_to_any (| M.read (| M.break (||) |) |)
-                                                    |)));
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let γ0_0 :=
-                                                      M.SubPointer.get_struct_tuple_field (|
-                                                        γ,
-                                                        "core::option::Option::Some",
-                                                        0
-                                                      |) in
-                                                    let γ0_0 := M.read (| γ0_0 |) in
-                                                    let b := M.copy (| Ty.path "u8", γ0_0 |) in
-                                                    M.match_operator (|
-                                                      Ty.tuple [],
-                                                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                                                      [
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (let γ :=
-                                                              M.use
-                                                                (M.alloc (|
+                                                  |)
+                                                ]
+                                              |)
+                                            |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let _ :=
+                                                    M.is_struct_tuple (|
+                                                      γ,
+                                                      "core::option::Option::None"
+                                                    |) in
+                                                  M.never_to_any (| M.read (| M.break (||) |) |)));
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let γ0_0 :=
+                                                    M.SubPointer.get_struct_tuple_field (|
+                                                      γ,
+                                                      "core::option::Option::Some",
+                                                      0
+                                                    |) in
+                                                  let γ0_0 := M.read (| γ0_0 |) in
+                                                  let b := M.copy (| Ty.path "u8", γ0_0 |) in
+                                                  M.match_operator (|
+                                                    Ty.tuple [],
+                                                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                                                    [
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (let γ :=
+                                                            M.use
+                                                              (M.alloc (|
+                                                                Ty.path "bool",
+                                                                M.call_closure (|
                                                                   Ty.path "bool",
-                                                                  M.call_closure (|
-                                                                    Ty.path "bool",
-                                                                    BinOp.eq,
-                                                                    [
-                                                                      M.read (| b |);
-                                                                      M.read (|
-                                                                        UnsupportedLiteral
-                                                                      |)
-                                                                    ]
-                                                                  |)
-                                                                |)) in
-                                                            let _ :=
-                                                              is_constant_or_break_match (|
-                                                                M.read (| γ |),
-                                                                Value.Bool true
-                                                              |) in
+                                                                  BinOp.eq,
+                                                                  [
+                                                                    M.read (| b |);
+                                                                    M.read (| UnsupportedLiteral |)
+                                                                  ]
+                                                                |)
+                                                              |)) in
+                                                          let _ :=
+                                                            is_constant_or_break_match (|
+                                                              M.read (| γ |),
+                                                              Value.Bool true
+                                                            |) in
+                                                          M.read (|
                                                             let~ _ : Ty.tuple [] :=
-                                                              M.read (|
-                                                                M.match_operator (|
-                                                                  Ty.tuple [],
-                                                                  M.alloc (|
+                                                              M.match_operator (|
+                                                                Ty.tuple [],
+                                                                M.alloc (|
+                                                                  Ty.apply
+                                                                    (Ty.path
+                                                                      "core::ops::control_flow::ControlFlow")
+                                                                    []
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::convert::Infallible";
+                                                                          Ty.path "core::fmt::Error"
+                                                                        ];
+                                                                      Ty.tuple []
+                                                                    ],
+                                                                  M.call_closure (|
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::ops::control_flow::ControlFlow")
@@ -367,26 +359,24 @@ Module fmt.
                                                                           ];
                                                                         Ty.tuple []
                                                                       ],
-                                                                    M.call_closure (|
+                                                                    M.get_trait_method (|
+                                                                      "core::ops::try_trait::Try",
                                                                       Ty.apply
                                                                         (Ty.path
-                                                                          "core::ops::control_flow::ControlFlow")
+                                                                          "core::result::Result")
                                                                         []
                                                                         [
-                                                                          Ty.apply
-                                                                            (Ty.path
-                                                                              "core::result::Result")
-                                                                            []
-                                                                            [
-                                                                              Ty.path
-                                                                                "core::convert::Infallible";
-                                                                              Ty.path
-                                                                                "core::fmt::Error"
-                                                                            ];
-                                                                          Ty.tuple []
+                                                                          Ty.tuple [];
+                                                                          Ty.path "core::fmt::Error"
                                                                         ],
-                                                                      M.get_trait_method (|
-                                                                        "core::ops::try_trait::Try",
+                                                                      [],
+                                                                      [],
+                                                                      "branch",
+                                                                      [],
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.call_closure (|
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "core::result::Result")
@@ -396,226 +386,224 @@ Module fmt.
                                                                             Ty.path
                                                                               "core::fmt::Error"
                                                                           ],
-                                                                        [],
-                                                                        [],
-                                                                        "branch",
-                                                                        [],
-                                                                        []
-                                                                      |),
-                                                                      [
-                                                                        M.call_closure (|
+                                                                        M.get_associated_function (|
+                                                                          Ty.path
+                                                                            "core::fmt::Formatter",
+                                                                          "write_fmt",
+                                                                          [],
+                                                                          []
+                                                                        |),
+                                                                        [
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.MutRef,
+                                                                            M.deref (|
+                                                                              M.read (| f |)
+                                                                            |)
+                                                                          |);
+                                                                          M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::Arguments",
+                                                                            M.get_associated_function (|
+                                                                              Ty.path
+                                                                                "core::fmt::Arguments",
+                                                                              "new_const",
+                                                                              [
+                                                                                Value.Integer
+                                                                                  IntegerKind.Usize
+                                                                                  1
+                                                                              ],
+                                                                              []
+                                                                            |),
+                                                                            [
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                M.deref (|
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.alloc (|
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "array")
+                                                                                        [
+                                                                                          Value.Integer
+                                                                                            IntegerKind.Usize
+                                                                                            1
+                                                                                        ]
+                                                                                        [
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "&")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "str"
+                                                                                            ]
+                                                                                        ],
+                                                                                      Value.Array
+                                                                                        [
+                                                                                          mk_str (|
+                                                                                            "\n"
+                                                                                          |)
+                                                                                        ]
+                                                                                    |)
+                                                                                  |)
+                                                                                |)
+                                                                              |)
+                                                                            ]
+                                                                          |)
+                                                                        ]
+                                                                      |)
+                                                                    ]
+                                                                  |)
+                                                                |),
+                                                                [
+                                                                  fun γ =>
+                                                                    ltac:(M.monadic
+                                                                      (let γ0_0 :=
+                                                                        M.SubPointer.get_struct_tuple_field (|
+                                                                          γ,
+                                                                          "core::ops::control_flow::ControlFlow::Break",
+                                                                          0
+                                                                        |) in
+                                                                      let residual :=
+                                                                        M.copy (|
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "core::result::Result")
                                                                             []
                                                                             [
-                                                                              Ty.tuple [];
+                                                                              Ty.path
+                                                                                "core::convert::Infallible";
                                                                               Ty.path
                                                                                 "core::fmt::Error"
                                                                             ],
-                                                                          M.get_associated_function (|
-                                                                            Ty.path
-                                                                              "core::fmt::Formatter",
-                                                                            "write_fmt",
-                                                                            [],
-                                                                            []
-                                                                          |),
-                                                                          [
-                                                                            M.borrow (|
-                                                                              Pointer.Kind.MutRef,
-                                                                              M.deref (|
-                                                                                M.read (| f |)
-                                                                              |)
-                                                                            |);
+                                                                          γ0_0
+                                                                        |) in
+                                                                      M.never_to_any (|
+                                                                        M.read (|
+                                                                          M.return_ (|
                                                                             M.call_closure (|
-                                                                              Ty.path
-                                                                                "core::fmt::Arguments",
-                                                                              M.get_associated_function (|
-                                                                                Ty.path
-                                                                                  "core::fmt::Arguments",
-                                                                                "new_const",
-                                                                                [
-                                                                                  Value.Integer
-                                                                                    IntegerKind.Usize
-                                                                                    1
-                                                                                ],
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "core::result::Result")
                                                                                 []
-                                                                              |),
-                                                                              [
-                                                                                M.borrow (|
-                                                                                  Pointer.Kind.Ref,
-                                                                                  M.deref (|
-                                                                                    M.borrow (|
-                                                                                      Pointer.Kind.Ref,
-                                                                                      M.alloc (|
-                                                                                        Ty.apply
-                                                                                          (Ty.path
-                                                                                            "array")
-                                                                                          [
-                                                                                            Value.Integer
-                                                                                              IntegerKind.Usize
-                                                                                              1
-                                                                                          ]
-                                                                                          [
-                                                                                            Ty.apply
-                                                                                              (Ty.path
-                                                                                                "&")
-                                                                                              []
-                                                                                              [
-                                                                                                Ty.path
-                                                                                                  "str"
-                                                                                              ]
-                                                                                          ],
-                                                                                        Value.Array
-                                                                                          [
-                                                                                            mk_str (|
-                                                                                              "\n"
-                                                                                            |)
-                                                                                          ]
-                                                                                      |)
-                                                                                    |)
-                                                                                  |)
-                                                                                |)
-                                                                              ]
-                                                                            |)
-                                                                          ]
-                                                                        |)
-                                                                      ]
-                                                                    |)
-                                                                  |),
-                                                                  [
-                                                                    fun γ =>
-                                                                      ltac:(M.monadic
-                                                                        (let γ0_0 :=
-                                                                          M.SubPointer.get_struct_tuple_field (|
-                                                                            γ,
-                                                                            "core::ops::control_flow::ControlFlow::Break",
-                                                                            0
-                                                                          |) in
-                                                                        let residual :=
-                                                                          M.copy (|
-                                                                            Ty.apply
-                                                                              (Ty.path
-                                                                                "core::result::Result")
-                                                                              []
-                                                                              [
-                                                                                Ty.path
-                                                                                  "core::convert::Infallible";
-                                                                                Ty.path
-                                                                                  "core::fmt::Error"
-                                                                              ],
-                                                                            γ0_0
-                                                                          |) in
-                                                                        M.alloc (|
-                                                                          Ty.tuple [],
-                                                                          M.never_to_any (|
-                                                                            M.read (|
-                                                                              M.return_ (|
-                                                                                M.call_closure (|
+                                                                                [
+                                                                                  Ty.tuple [];
+                                                                                  Ty.path
+                                                                                    "core::fmt::Error"
+                                                                                ],
+                                                                              M.get_trait_method (|
+                                                                                "core::ops::try_trait::FromResidual",
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "core::result::Result")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.tuple [];
+                                                                                    Ty.path
+                                                                                      "core::fmt::Error"
+                                                                                  ],
+                                                                                [],
+                                                                                [
                                                                                   Ty.apply
                                                                                     (Ty.path
                                                                                       "core::result::Result")
                                                                                     []
                                                                                     [
-                                                                                      Ty.tuple [];
+                                                                                      Ty.path
+                                                                                        "core::convert::Infallible";
                                                                                       Ty.path
                                                                                         "core::fmt::Error"
-                                                                                    ],
-                                                                                  M.get_trait_method (|
-                                                                                    "core::ops::try_trait::FromResidual",
-                                                                                    Ty.apply
-                                                                                      (Ty.path
-                                                                                        "core::result::Result")
-                                                                                      []
-                                                                                      [
-                                                                                        Ty.tuple [];
-                                                                                        Ty.path
-                                                                                          "core::fmt::Error"
-                                                                                      ],
-                                                                                    [],
-                                                                                    [
-                                                                                      Ty.apply
-                                                                                        (Ty.path
-                                                                                          "core::result::Result")
-                                                                                        []
-                                                                                        [
-                                                                                          Ty.path
-                                                                                            "core::convert::Infallible";
-                                                                                          Ty.path
-                                                                                            "core::fmt::Error"
-                                                                                        ]
-                                                                                    ],
-                                                                                    "from_residual",
-                                                                                    [],
-                                                                                    []
-                                                                                  |),
-                                                                                  [
-                                                                                    M.read (|
-                                                                                      residual
-                                                                                    |)
-                                                                                  ]
+                                                                                    ]
+                                                                                ],
+                                                                                "from_residual",
+                                                                                [],
+                                                                                []
+                                                                              |),
+                                                                              [
+                                                                                M.read (|
+                                                                                  residual
                                                                                 |)
-                                                                              |)
+                                                                              ]
                                                                             |)
                                                                           |)
-                                                                        |)));
-                                                                    fun γ =>
-                                                                      ltac:(M.monadic
-                                                                        (let γ0_0 :=
-                                                                          M.SubPointer.get_struct_tuple_field (|
-                                                                            γ,
-                                                                            "core::ops::control_flow::ControlFlow::Continue",
-                                                                            0
-                                                                          |) in
-                                                                        let val :=
-                                                                          M.copy (|
-                                                                            Ty.tuple [],
-                                                                            γ0_0
-                                                                          |) in
-                                                                        val))
-                                                                  ]
-                                                                |)
+                                                                        |)
+                                                                      |)));
+                                                                  fun γ =>
+                                                                    ltac:(M.monadic
+                                                                      (let γ0_0 :=
+                                                                        M.SubPointer.get_struct_tuple_field (|
+                                                                          γ,
+                                                                          "core::ops::control_flow::ControlFlow::Continue",
+                                                                          0
+                                                                        |) in
+                                                                      let val :=
+                                                                        M.copy (|
+                                                                          Ty.tuple [],
+                                                                          γ0_0
+                                                                        |) in
+                                                                      M.read (| val |)))
+                                                                ]
                                                               |) in
                                                             M.alloc (|
                                                               Ty.tuple [],
                                                               Value.Tuple []
-                                                            |)));
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (M.match_operator (|
+                                                            |)
+                                                          |)));
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (M.match_operator (|
+                                                            Ty.tuple [],
+                                                            M.alloc (|
                                                               Ty.tuple [],
-                                                              M.alloc (|
-                                                                Ty.tuple [],
-                                                                Value.Tuple []
-                                                              |),
-                                                              [
-                                                                fun γ =>
-                                                                  ltac:(M.monadic
-                                                                    (let γ :=
-                                                                      M.use
-                                                                        (M.alloc (|
+                                                              Value.Tuple []
+                                                            |),
+                                                            [
+                                                              fun γ =>
+                                                                ltac:(M.monadic
+                                                                  (let γ :=
+                                                                    M.use
+                                                                      (M.alloc (|
+                                                                        Ty.path "bool",
+                                                                        M.call_closure (|
                                                                           Ty.path "bool",
-                                                                          M.call_closure (|
-                                                                            Ty.path "bool",
-                                                                            BinOp.eq,
-                                                                            [
-                                                                              M.read (| b |);
-                                                                              M.read (|
-                                                                                UnsupportedLiteral
-                                                                              |)
-                                                                            ]
-                                                                          |)
-                                                                        |)) in
-                                                                    let _ :=
-                                                                      is_constant_or_break_match (|
-                                                                        M.read (| γ |),
-                                                                        Value.Bool true
-                                                                      |) in
+                                                                          BinOp.eq,
+                                                                          [
+                                                                            M.read (| b |);
+                                                                            M.read (|
+                                                                              UnsupportedLiteral
+                                                                            |)
+                                                                          ]
+                                                                        |)
+                                                                      |)) in
+                                                                  let _ :=
+                                                                    is_constant_or_break_match (|
+                                                                      M.read (| γ |),
+                                                                      Value.Bool true
+                                                                    |) in
+                                                                  M.read (|
                                                                     let~ _ : Ty.tuple [] :=
-                                                                      M.read (|
-                                                                        M.match_operator (|
-                                                                          Ty.tuple [],
-                                                                          M.alloc (|
+                                                                      M.match_operator (|
+                                                                        Ty.tuple [],
+                                                                        M.alloc (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::ops::control_flow::ControlFlow")
+                                                                            []
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "core::result::Result")
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "core::convert::Infallible";
+                                                                                  Ty.path
+                                                                                    "core::fmt::Error"
+                                                                                ];
+                                                                              Ty.tuple []
+                                                                            ],
+                                                                          M.call_closure (|
                                                                             Ty.apply
                                                                               (Ty.path
                                                                                 "core::ops::control_flow::ControlFlow")
@@ -633,26 +621,25 @@ Module fmt.
                                                                                   ];
                                                                                 Ty.tuple []
                                                                               ],
-                                                                            M.call_closure (|
+                                                                            M.get_trait_method (|
+                                                                              "core::ops::try_trait::Try",
                                                                               Ty.apply
                                                                                 (Ty.path
-                                                                                  "core::ops::control_flow::ControlFlow")
+                                                                                  "core::result::Result")
                                                                                 []
                                                                                 [
-                                                                                  Ty.apply
-                                                                                    (Ty.path
-                                                                                      "core::result::Result")
-                                                                                    []
-                                                                                    [
-                                                                                      Ty.path
-                                                                                        "core::convert::Infallible";
-                                                                                      Ty.path
-                                                                                        "core::fmt::Error"
-                                                                                    ];
-                                                                                  Ty.tuple []
+                                                                                  Ty.tuple [];
+                                                                                  Ty.path
+                                                                                    "core::fmt::Error"
                                                                                 ],
-                                                                              M.get_trait_method (|
-                                                                                "core::ops::try_trait::Try",
+                                                                              [],
+                                                                              [],
+                                                                              "branch",
+                                                                              [],
+                                                                              []
+                                                                            |),
+                                                                            [
+                                                                              M.call_closure (|
                                                                                 Ty.apply
                                                                                   (Ty.path
                                                                                     "core::result::Result")
@@ -662,232 +649,226 @@ Module fmt.
                                                                                     Ty.path
                                                                                       "core::fmt::Error"
                                                                                   ],
-                                                                                [],
-                                                                                [],
-                                                                                "branch",
-                                                                                [],
-                                                                                []
-                                                                              |),
-                                                                              [
-                                                                                M.call_closure (|
+                                                                                M.get_associated_function (|
+                                                                                  Ty.path
+                                                                                    "core::fmt::Formatter",
+                                                                                  "write_fmt",
+                                                                                  [],
+                                                                                  []
+                                                                                |),
+                                                                                [
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.MutRef,
+                                                                                    M.deref (|
+                                                                                      M.read (| f |)
+                                                                                    |)
+                                                                                  |);
+                                                                                  M.call_closure (|
+                                                                                    Ty.path
+                                                                                      "core::fmt::Arguments",
+                                                                                    M.get_associated_function (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::Arguments",
+                                                                                      "new_const",
+                                                                                      [
+                                                                                        Value.Integer
+                                                                                          IntegerKind.Usize
+                                                                                          1
+                                                                                      ],
+                                                                                      []
+                                                                                    |),
+                                                                                    [
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        M.deref (|
+                                                                                          M.borrow (|
+                                                                                            Pointer.Kind.Ref,
+                                                                                            M.alloc (|
+                                                                                              Ty.apply
+                                                                                                (Ty.path
+                                                                                                  "array")
+                                                                                                [
+                                                                                                  Value.Integer
+                                                                                                    IntegerKind.Usize
+                                                                                                    1
+                                                                                                ]
+                                                                                                [
+                                                                                                  Ty.apply
+                                                                                                    (Ty.path
+                                                                                                      "&")
+                                                                                                    []
+                                                                                                    [
+                                                                                                      Ty.path
+                                                                                                        "str"
+                                                                                                    ]
+                                                                                                ],
+                                                                                              Value.Array
+                                                                                                [
+                                                                                                  mk_str (|
+                                                                                                    "\r"
+                                                                                                  |)
+                                                                                                ]
+                                                                                            |)
+                                                                                          |)
+                                                                                        |)
+                                                                                      |)
+                                                                                    ]
+                                                                                  |)
+                                                                                ]
+                                                                              |)
+                                                                            ]
+                                                                          |)
+                                                                        |),
+                                                                        [
+                                                                          fun γ =>
+                                                                            ltac:(M.monadic
+                                                                              (let γ0_0 :=
+                                                                                M.SubPointer.get_struct_tuple_field (|
+                                                                                  γ,
+                                                                                  "core::ops::control_flow::ControlFlow::Break",
+                                                                                  0
+                                                                                |) in
+                                                                              let residual :=
+                                                                                M.copy (|
                                                                                   Ty.apply
                                                                                     (Ty.path
                                                                                       "core::result::Result")
                                                                                     []
                                                                                     [
-                                                                                      Ty.tuple [];
+                                                                                      Ty.path
+                                                                                        "core::convert::Infallible";
                                                                                       Ty.path
                                                                                         "core::fmt::Error"
                                                                                     ],
-                                                                                  M.get_associated_function (|
-                                                                                    Ty.path
-                                                                                      "core::fmt::Formatter",
-                                                                                    "write_fmt",
-                                                                                    [],
-                                                                                    []
-                                                                                  |),
-                                                                                  [
-                                                                                    M.borrow (|
-                                                                                      Pointer.Kind.MutRef,
-                                                                                      M.deref (|
-                                                                                        M.read (|
-                                                                                          f
-                                                                                        |)
-                                                                                      |)
-                                                                                    |);
+                                                                                  γ0_0
+                                                                                |) in
+                                                                              M.never_to_any (|
+                                                                                M.read (|
+                                                                                  M.return_ (|
                                                                                     M.call_closure (|
-                                                                                      Ty.path
-                                                                                        "core::fmt::Arguments",
-                                                                                      M.get_associated_function (|
-                                                                                        Ty.path
-                                                                                          "core::fmt::Arguments",
-                                                                                        "new_const",
-                                                                                        [
-                                                                                          Value.Integer
-                                                                                            IntegerKind.Usize
-                                                                                            1
-                                                                                        ],
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "core::result::Result")
                                                                                         []
-                                                                                      |),
-                                                                                      [
-                                                                                        M.borrow (|
-                                                                                          Pointer.Kind.Ref,
-                                                                                          M.deref (|
-                                                                                            M.borrow (|
-                                                                                              Pointer.Kind.Ref,
-                                                                                              M.alloc (|
-                                                                                                Ty.apply
-                                                                                                  (Ty.path
-                                                                                                    "array")
-                                                                                                  [
-                                                                                                    Value.Integer
-                                                                                                      IntegerKind.Usize
-                                                                                                      1
-                                                                                                  ]
-                                                                                                  [
-                                                                                                    Ty.apply
-                                                                                                      (Ty.path
-                                                                                                        "&")
-                                                                                                      []
-                                                                                                      [
-                                                                                                        Ty.path
-                                                                                                          "str"
-                                                                                                      ]
-                                                                                                  ],
-                                                                                                Value.Array
-                                                                                                  [
-                                                                                                    mk_str (|
-                                                                                                      "\r"
-                                                                                                    |)
-                                                                                                  ]
-                                                                                              |)
-                                                                                            |)
-                                                                                          |)
-                                                                                        |)
-                                                                                      ]
-                                                                                    |)
-                                                                                  ]
-                                                                                |)
-                                                                              ]
-                                                                            |)
-                                                                          |),
-                                                                          [
-                                                                            fun γ =>
-                                                                              ltac:(M.monadic
-                                                                                (let γ0_0 :=
-                                                                                  M.SubPointer.get_struct_tuple_field (|
-                                                                                    γ,
-                                                                                    "core::ops::control_flow::ControlFlow::Break",
-                                                                                    0
-                                                                                  |) in
-                                                                                let residual :=
-                                                                                  M.copy (|
-                                                                                    Ty.apply
-                                                                                      (Ty.path
-                                                                                        "core::result::Result")
-                                                                                      []
-                                                                                      [
-                                                                                        Ty.path
-                                                                                          "core::convert::Infallible";
-                                                                                        Ty.path
-                                                                                          "core::fmt::Error"
-                                                                                      ],
-                                                                                    γ0_0
-                                                                                  |) in
-                                                                                M.alloc (|
-                                                                                  Ty.tuple [],
-                                                                                  M.never_to_any (|
-                                                                                    M.read (|
-                                                                                      M.return_ (|
-                                                                                        M.call_closure (|
+                                                                                        [
+                                                                                          Ty.tuple
+                                                                                            [];
+                                                                                          Ty.path
+                                                                                            "core::fmt::Error"
+                                                                                        ],
+                                                                                      M.get_trait_method (|
+                                                                                        "core::ops::try_trait::FromResidual",
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "core::result::Result")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.tuple
+                                                                                              [];
+                                                                                            Ty.path
+                                                                                              "core::fmt::Error"
+                                                                                          ],
+                                                                                        [],
+                                                                                        [
                                                                                           Ty.apply
                                                                                             (Ty.path
                                                                                               "core::result::Result")
                                                                                             []
                                                                                             [
-                                                                                              Ty.tuple
-                                                                                                [];
+                                                                                              Ty.path
+                                                                                                "core::convert::Infallible";
                                                                                               Ty.path
                                                                                                 "core::fmt::Error"
-                                                                                            ],
-                                                                                          M.get_trait_method (|
-                                                                                            "core::ops::try_trait::FromResidual",
-                                                                                            Ty.apply
-                                                                                              (Ty.path
-                                                                                                "core::result::Result")
-                                                                                              []
-                                                                                              [
-                                                                                                Ty.tuple
-                                                                                                  [];
-                                                                                                Ty.path
-                                                                                                  "core::fmt::Error"
-                                                                                              ],
-                                                                                            [],
-                                                                                            [
-                                                                                              Ty.apply
-                                                                                                (Ty.path
-                                                                                                  "core::result::Result")
-                                                                                                []
-                                                                                                [
-                                                                                                  Ty.path
-                                                                                                    "core::convert::Infallible";
-                                                                                                  Ty.path
-                                                                                                    "core::fmt::Error"
-                                                                                                ]
-                                                                                            ],
-                                                                                            "from_residual",
-                                                                                            [],
-                                                                                            []
-                                                                                          |),
-                                                                                          [
-                                                                                            M.read (|
-                                                                                              residual
-                                                                                            |)
-                                                                                          ]
+                                                                                            ]
+                                                                                        ],
+                                                                                        "from_residual",
+                                                                                        [],
+                                                                                        []
+                                                                                      |),
+                                                                                      [
+                                                                                        M.read (|
+                                                                                          residual
                                                                                         |)
-                                                                                      |)
+                                                                                      ]
                                                                                     |)
                                                                                   |)
-                                                                                |)));
-                                                                            fun γ =>
-                                                                              ltac:(M.monadic
-                                                                                (let γ0_0 :=
-                                                                                  M.SubPointer.get_struct_tuple_field (|
-                                                                                    γ,
-                                                                                    "core::ops::control_flow::ControlFlow::Continue",
-                                                                                    0
-                                                                                  |) in
-                                                                                let val :=
-                                                                                  M.copy (|
-                                                                                    Ty.tuple [],
-                                                                                    γ0_0
-                                                                                  |) in
-                                                                                val))
-                                                                          ]
-                                                                        |)
+                                                                                |)
+                                                                              |)));
+                                                                          fun γ =>
+                                                                            ltac:(M.monadic
+                                                                              (let γ0_0 :=
+                                                                                M.SubPointer.get_struct_tuple_field (|
+                                                                                  γ,
+                                                                                  "core::ops::control_flow::ControlFlow::Continue",
+                                                                                  0
+                                                                                |) in
+                                                                              let val :=
+                                                                                M.copy (|
+                                                                                  Ty.tuple [],
+                                                                                  γ0_0
+                                                                                |) in
+                                                                              M.read (| val |)))
+                                                                        ]
                                                                       |) in
                                                                     M.alloc (|
                                                                       Ty.tuple [],
                                                                       Value.Tuple []
-                                                                    |)));
-                                                                fun γ =>
-                                                                  ltac:(M.monadic
-                                                                    (M.match_operator (|
+                                                                    |)
+                                                                  |)));
+                                                              fun γ =>
+                                                                ltac:(M.monadic
+                                                                  (M.match_operator (|
+                                                                    Ty.tuple [],
+                                                                    M.alloc (|
                                                                       Ty.tuple [],
-                                                                      M.alloc (|
-                                                                        Ty.tuple [],
-                                                                        Value.Tuple []
-                                                                      |),
-                                                                      [
-                                                                        fun γ =>
-                                                                          ltac:(M.monadic
-                                                                            (let γ :=
-                                                                              M.use
-                                                                                (M.alloc (|
+                                                                      Value.Tuple []
+                                                                    |),
+                                                                    [
+                                                                      fun γ =>
+                                                                        ltac:(M.monadic
+                                                                          (let γ :=
+                                                                            M.use
+                                                                              (M.alloc (|
+                                                                                Ty.path "bool",
+                                                                                M.call_closure (|
                                                                                   Ty.path "bool",
-                                                                                  M.call_closure (|
-                                                                                    Ty.path "bool",
-                                                                                    BinOp.eq,
-                                                                                    [
-                                                                                      M.read (|
-                                                                                        b
-                                                                                      |);
-                                                                                      M.read (|
-                                                                                        UnsupportedLiteral
-                                                                                      |)
-                                                                                    ]
-                                                                                  |)
-                                                                                |)) in
-                                                                            let _ :=
-                                                                              is_constant_or_break_match (|
-                                                                                M.read (| γ |),
-                                                                                Value.Bool true
-                                                                              |) in
+                                                                                  BinOp.eq,
+                                                                                  [
+                                                                                    M.read (| b |);
+                                                                                    M.read (|
+                                                                                      UnsupportedLiteral
+                                                                                    |)
+                                                                                  ]
+                                                                                |)
+                                                                              |)) in
+                                                                          let _ :=
+                                                                            is_constant_or_break_match (|
+                                                                              M.read (| γ |),
+                                                                              Value.Bool true
+                                                                            |) in
+                                                                          M.read (|
                                                                             let~ _ : Ty.tuple [] :=
-                                                                              M.read (|
-                                                                                M.match_operator (|
-                                                                                  Ty.tuple [],
-                                                                                  M.alloc (|
+                                                                              M.match_operator (|
+                                                                                Ty.tuple [],
+                                                                                M.alloc (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::ops::control_flow::ControlFlow")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "core::result::Result")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "core::convert::Infallible";
+                                                                                          Ty.path
+                                                                                            "core::fmt::Error"
+                                                                                        ];
+                                                                                      Ty.tuple []
+                                                                                    ],
+                                                                                  M.call_closure (|
                                                                                     Ty.apply
                                                                                       (Ty.path
                                                                                         "core::ops::control_flow::ControlFlow")
@@ -905,27 +886,26 @@ Module fmt.
                                                                                           ];
                                                                                         Ty.tuple []
                                                                                       ],
-                                                                                    M.call_closure (|
+                                                                                    M.get_trait_method (|
+                                                                                      "core::ops::try_trait::Try",
                                                                                       Ty.apply
                                                                                         (Ty.path
-                                                                                          "core::ops::control_flow::ControlFlow")
+                                                                                          "core::result::Result")
                                                                                         []
                                                                                         [
-                                                                                          Ty.apply
-                                                                                            (Ty.path
-                                                                                              "core::result::Result")
-                                                                                            []
-                                                                                            [
-                                                                                              Ty.path
-                                                                                                "core::convert::Infallible";
-                                                                                              Ty.path
-                                                                                                "core::fmt::Error"
-                                                                                            ];
                                                                                           Ty.tuple
-                                                                                            []
+                                                                                            [];
+                                                                                          Ty.path
+                                                                                            "core::fmt::Error"
                                                                                         ],
-                                                                                      M.get_trait_method (|
-                                                                                        "core::ops::try_trait::Try",
+                                                                                      [],
+                                                                                      [],
+                                                                                      "branch",
+                                                                                      [],
+                                                                                      []
+                                                                                    |),
+                                                                                    [
+                                                                                      M.call_closure (|
                                                                                         Ty.apply
                                                                                           (Ty.path
                                                                                             "core::result::Result")
@@ -936,216 +916,210 @@ Module fmt.
                                                                                             Ty.path
                                                                                               "core::fmt::Error"
                                                                                           ],
-                                                                                        [],
-                                                                                        [],
-                                                                                        "branch",
-                                                                                        [],
-                                                                                        []
-                                                                                      |),
-                                                                                      [
-                                                                                        M.call_closure (|
+                                                                                        M.get_associated_function (|
+                                                                                          Ty.path
+                                                                                            "core::fmt::Formatter",
+                                                                                          "write_fmt",
+                                                                                          [],
+                                                                                          []
+                                                                                        |),
+                                                                                        [
+                                                                                          M.borrow (|
+                                                                                            Pointer.Kind.MutRef,
+                                                                                            M.deref (|
+                                                                                              M.read (|
+                                                                                                f
+                                                                                              |)
+                                                                                            |)
+                                                                                          |);
+                                                                                          M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "core::fmt::Arguments",
+                                                                                            M.get_associated_function (|
+                                                                                              Ty.path
+                                                                                                "core::fmt::Arguments",
+                                                                                              "new_const",
+                                                                                              [
+                                                                                                Value.Integer
+                                                                                                  IntegerKind.Usize
+                                                                                                  1
+                                                                                              ],
+                                                                                              []
+                                                                                            |),
+                                                                                            [
+                                                                                              M.borrow (|
+                                                                                                Pointer.Kind.Ref,
+                                                                                                M.deref (|
+                                                                                                  M.borrow (|
+                                                                                                    Pointer.Kind.Ref,
+                                                                                                    M.alloc (|
+                                                                                                      Ty.apply
+                                                                                                        (Ty.path
+                                                                                                          "array")
+                                                                                                        [
+                                                                                                          Value.Integer
+                                                                                                            IntegerKind.Usize
+                                                                                                            1
+                                                                                                        ]
+                                                                                                        [
+                                                                                                          Ty.apply
+                                                                                                            (Ty.path
+                                                                                                              "&")
+                                                                                                            []
+                                                                                                            [
+                                                                                                              Ty.path
+                                                                                                                "str"
+                                                                                                            ]
+                                                                                                        ],
+                                                                                                      Value.Array
+                                                                                                        [
+                                                                                                          mk_str (|
+                                                                                                            "\t"
+                                                                                                          |)
+                                                                                                        ]
+                                                                                                    |)
+                                                                                                  |)
+                                                                                                |)
+                                                                                              |)
+                                                                                            ]
+                                                                                          |)
+                                                                                        ]
+                                                                                      |)
+                                                                                    ]
+                                                                                  |)
+                                                                                |),
+                                                                                [
+                                                                                  fun γ =>
+                                                                                    ltac:(M.monadic
+                                                                                      (let γ0_0 :=
+                                                                                        M.SubPointer.get_struct_tuple_field (|
+                                                                                          γ,
+                                                                                          "core::ops::control_flow::ControlFlow::Break",
+                                                                                          0
+                                                                                        |) in
+                                                                                      let
+                                                                                            residual :=
+                                                                                        M.copy (|
                                                                                           Ty.apply
                                                                                             (Ty.path
                                                                                               "core::result::Result")
                                                                                             []
                                                                                             [
-                                                                                              Ty.tuple
-                                                                                                [];
+                                                                                              Ty.path
+                                                                                                "core::convert::Infallible";
                                                                                               Ty.path
                                                                                                 "core::fmt::Error"
                                                                                             ],
-                                                                                          M.get_associated_function (|
-                                                                                            Ty.path
-                                                                                              "core::fmt::Formatter",
-                                                                                            "write_fmt",
-                                                                                            [],
-                                                                                            []
-                                                                                          |),
-                                                                                          [
-                                                                                            M.borrow (|
-                                                                                              Pointer.Kind.MutRef,
-                                                                                              M.deref (|
-                                                                                                M.read (|
-                                                                                                  f
-                                                                                                |)
-                                                                                              |)
-                                                                                            |);
+                                                                                          γ0_0
+                                                                                        |) in
+                                                                                      M.never_to_any (|
+                                                                                        M.read (|
+                                                                                          M.return_ (|
                                                                                             M.call_closure (|
-                                                                                              Ty.path
-                                                                                                "core::fmt::Arguments",
-                                                                                              M.get_associated_function (|
-                                                                                                Ty.path
-                                                                                                  "core::fmt::Arguments",
-                                                                                                "new_const",
-                                                                                                [
-                                                                                                  Value.Integer
-                                                                                                    IntegerKind.Usize
-                                                                                                    1
-                                                                                                ],
+                                                                                              Ty.apply
+                                                                                                (Ty.path
+                                                                                                  "core::result::Result")
                                                                                                 []
-                                                                                              |),
-                                                                                              [
-                                                                                                M.borrow (|
-                                                                                                  Pointer.Kind.Ref,
-                                                                                                  M.deref (|
-                                                                                                    M.borrow (|
-                                                                                                      Pointer.Kind.Ref,
-                                                                                                      M.alloc (|
-                                                                                                        Ty.apply
-                                                                                                          (Ty.path
-                                                                                                            "array")
-                                                                                                          [
-                                                                                                            Value.Integer
-                                                                                                              IntegerKind.Usize
-                                                                                                              1
-                                                                                                          ]
-                                                                                                          [
-                                                                                                            Ty.apply
-                                                                                                              (Ty.path
-                                                                                                                "&")
-                                                                                                              []
-                                                                                                              [
-                                                                                                                Ty.path
-                                                                                                                  "str"
-                                                                                                              ]
-                                                                                                          ],
-                                                                                                        Value.Array
-                                                                                                          [
-                                                                                                            mk_str (|
-                                                                                                              "\t"
-                                                                                                            |)
-                                                                                                          ]
-                                                                                                      |)
-                                                                                                    |)
-                                                                                                  |)
-                                                                                                |)
-                                                                                              ]
-                                                                                            |)
-                                                                                          ]
-                                                                                        |)
-                                                                                      ]
-                                                                                    |)
-                                                                                  |),
-                                                                                  [
-                                                                                    fun γ =>
-                                                                                      ltac:(M.monadic
-                                                                                        (let γ0_0 :=
-                                                                                          M.SubPointer.get_struct_tuple_field (|
-                                                                                            γ,
-                                                                                            "core::ops::control_flow::ControlFlow::Break",
-                                                                                            0
-                                                                                          |) in
-                                                                                        let
-                                                                                              residual :=
-                                                                                          M.copy (|
-                                                                                            Ty.apply
-                                                                                              (Ty.path
-                                                                                                "core::result::Result")
-                                                                                              []
-                                                                                              [
-                                                                                                Ty.path
-                                                                                                  "core::convert::Infallible";
-                                                                                                Ty.path
-                                                                                                  "core::fmt::Error"
-                                                                                              ],
-                                                                                            γ0_0
-                                                                                          |) in
-                                                                                        M.alloc (|
-                                                                                          Ty.tuple
-                                                                                            [],
-                                                                                          M.never_to_any (|
-                                                                                            M.read (|
-                                                                                              M.return_ (|
-                                                                                                M.call_closure (|
+                                                                                                [
+                                                                                                  Ty.tuple
+                                                                                                    [];
+                                                                                                  Ty.path
+                                                                                                    "core::fmt::Error"
+                                                                                                ],
+                                                                                              M.get_trait_method (|
+                                                                                                "core::ops::try_trait::FromResidual",
+                                                                                                Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "core::result::Result")
+                                                                                                  []
+                                                                                                  [
+                                                                                                    Ty.tuple
+                                                                                                      [];
+                                                                                                    Ty.path
+                                                                                                      "core::fmt::Error"
+                                                                                                  ],
+                                                                                                [],
+                                                                                                [
                                                                                                   Ty.apply
                                                                                                     (Ty.path
                                                                                                       "core::result::Result")
                                                                                                     []
                                                                                                     [
-                                                                                                      Ty.tuple
-                                                                                                        [];
+                                                                                                      Ty.path
+                                                                                                        "core::convert::Infallible";
                                                                                                       Ty.path
                                                                                                         "core::fmt::Error"
-                                                                                                    ],
-                                                                                                  M.get_trait_method (|
-                                                                                                    "core::ops::try_trait::FromResidual",
-                                                                                                    Ty.apply
-                                                                                                      (Ty.path
-                                                                                                        "core::result::Result")
-                                                                                                      []
-                                                                                                      [
-                                                                                                        Ty.tuple
-                                                                                                          [];
-                                                                                                        Ty.path
-                                                                                                          "core::fmt::Error"
-                                                                                                      ],
-                                                                                                    [],
-                                                                                                    [
-                                                                                                      Ty.apply
-                                                                                                        (Ty.path
-                                                                                                          "core::result::Result")
-                                                                                                        []
-                                                                                                        [
-                                                                                                          Ty.path
-                                                                                                            "core::convert::Infallible";
-                                                                                                          Ty.path
-                                                                                                            "core::fmt::Error"
-                                                                                                        ]
-                                                                                                    ],
-                                                                                                    "from_residual",
-                                                                                                    [],
-                                                                                                    []
-                                                                                                  |),
-                                                                                                  [
-                                                                                                    M.read (|
-                                                                                                      residual
-                                                                                                    |)
-                                                                                                  ]
+                                                                                                    ]
+                                                                                                ],
+                                                                                                "from_residual",
+                                                                                                [],
+                                                                                                []
+                                                                                              |),
+                                                                                              [
+                                                                                                M.read (|
+                                                                                                  residual
                                                                                                 |)
-                                                                                              |)
+                                                                                              ]
                                                                                             |)
                                                                                           |)
-                                                                                        |)));
-                                                                                    fun γ =>
-                                                                                      ltac:(M.monadic
-                                                                                        (let γ0_0 :=
-                                                                                          M.SubPointer.get_struct_tuple_field (|
-                                                                                            γ,
-                                                                                            "core::ops::control_flow::ControlFlow::Continue",
-                                                                                            0
-                                                                                          |) in
-                                                                                        let val :=
-                                                                                          M.copy (|
-                                                                                            Ty.tuple
-                                                                                              [],
-                                                                                            γ0_0
-                                                                                          |) in
-                                                                                        val))
-                                                                                  ]
-                                                                                |)
+                                                                                        |)
+                                                                                      |)));
+                                                                                  fun γ =>
+                                                                                    ltac:(M.monadic
+                                                                                      (let γ0_0 :=
+                                                                                        M.SubPointer.get_struct_tuple_field (|
+                                                                                          γ,
+                                                                                          "core::ops::control_flow::ControlFlow::Continue",
+                                                                                          0
+                                                                                        |) in
+                                                                                      let val :=
+                                                                                        M.copy (|
+                                                                                          Ty.tuple
+                                                                                            [],
+                                                                                          γ0_0
+                                                                                        |) in
+                                                                                      M.read (|
+                                                                                        val
+                                                                                      |)))
+                                                                                ]
                                                                               |) in
                                                                             M.alloc (|
                                                                               Ty.tuple [],
                                                                               Value.Tuple []
-                                                                            |)));
-                                                                        fun γ =>
-                                                                          ltac:(M.monadic
-                                                                            (M.match_operator (|
+                                                                            |)
+                                                                          |)));
+                                                                      fun γ =>
+                                                                        ltac:(M.monadic
+                                                                          (M.match_operator (|
+                                                                            Ty.tuple [],
+                                                                            M.alloc (|
                                                                               Ty.tuple [],
-                                                                              M.alloc (|
-                                                                                Ty.tuple [],
-                                                                                Value.Tuple []
-                                                                              |),
-                                                                              [
-                                                                                fun γ =>
-                                                                                  ltac:(M.monadic
-                                                                                    (let γ :=
-                                                                                      M.use
-                                                                                        (M.alloc (|
-                                                                                          Ty.path
-                                                                                            "bool",
-                                                                                          LogicalOp.or (|
-                                                                                            M.call_closure (|
+                                                                              Value.Tuple []
+                                                                            |),
+                                                                            [
+                                                                              fun γ =>
+                                                                                ltac:(M.monadic
+                                                                                  (let γ :=
+                                                                                    M.use
+                                                                                      (M.alloc (|
+                                                                                        Ty.path
+                                                                                          "bool",
+                                                                                        LogicalOp.or (|
+                                                                                          M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "bool",
+                                                                                            BinOp.eq,
+                                                                                            [
+                                                                                              M.read (|
+                                                                                                b
+                                                                                              |);
+                                                                                              M.read (|
+                                                                                                UnsupportedLiteral
+                                                                                              |)
+                                                                                            ]
+                                                                                          |),
+                                                                                          ltac:(M.monadic
+                                                                                            (M.call_closure (|
                                                                                               Ty.path
                                                                                                 "bool",
                                                                                               BinOp.eq,
@@ -1157,39 +1131,43 @@ Module fmt.
                                                                                                   UnsupportedLiteral
                                                                                                 |)
                                                                                               ]
-                                                                                            |),
-                                                                                            ltac:(M.monadic
-                                                                                              (M.call_closure (|
-                                                                                                Ty.path
-                                                                                                  "bool",
-                                                                                                BinOp.eq,
-                                                                                                [
-                                                                                                  M.read (|
-                                                                                                    b
-                                                                                                  |);
-                                                                                                  M.read (|
-                                                                                                    UnsupportedLiteral
-                                                                                                  |)
-                                                                                                ]
-                                                                                              |)))
-                                                                                          |)
-                                                                                        |)) in
-                                                                                    let _ :=
-                                                                                      is_constant_or_break_match (|
-                                                                                        M.read (|
-                                                                                          γ
-                                                                                        |),
-                                                                                        Value.Bool
-                                                                                          true
-                                                                                      |) in
+                                                                                            |)))
+                                                                                        |)
+                                                                                      |)) in
+                                                                                  let _ :=
+                                                                                    is_constant_or_break_match (|
+                                                                                      M.read (|
+                                                                                        γ
+                                                                                      |),
+                                                                                      Value.Bool
+                                                                                        true
+                                                                                    |) in
+                                                                                  M.read (|
                                                                                     let~ _ :
                                                                                         Ty.tuple
                                                                                           [] :=
-                                                                                      M.read (|
-                                                                                        M.match_operator (|
-                                                                                          Ty.tuple
-                                                                                            [],
-                                                                                          M.alloc (|
+                                                                                      M.match_operator (|
+                                                                                        Ty.tuple [],
+                                                                                        M.alloc (|
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "core::ops::control_flow::ControlFlow")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.apply
+                                                                                                (Ty.path
+                                                                                                  "core::result::Result")
+                                                                                                []
+                                                                                                [
+                                                                                                  Ty.path
+                                                                                                    "core::convert::Infallible";
+                                                                                                  Ty.path
+                                                                                                    "core::fmt::Error"
+                                                                                                ];
+                                                                                              Ty.tuple
+                                                                                                []
+                                                                                            ],
+                                                                                          M.call_closure (|
                                                                                             Ty.apply
                                                                                               (Ty.path
                                                                                                 "core::ops::control_flow::ControlFlow")
@@ -1208,27 +1186,26 @@ Module fmt.
                                                                                                 Ty.tuple
                                                                                                   []
                                                                                               ],
-                                                                                            M.call_closure (|
+                                                                                            M.get_trait_method (|
+                                                                                              "core::ops::try_trait::Try",
                                                                                               Ty.apply
                                                                                                 (Ty.path
-                                                                                                  "core::ops::control_flow::ControlFlow")
+                                                                                                  "core::result::Result")
                                                                                                 []
                                                                                                 [
-                                                                                                  Ty.apply
-                                                                                                    (Ty.path
-                                                                                                      "core::result::Result")
-                                                                                                    []
-                                                                                                    [
-                                                                                                      Ty.path
-                                                                                                        "core::convert::Infallible";
-                                                                                                      Ty.path
-                                                                                                        "core::fmt::Error"
-                                                                                                    ];
                                                                                                   Ty.tuple
-                                                                                                    []
+                                                                                                    [];
+                                                                                                  Ty.path
+                                                                                                    "core::fmt::Error"
                                                                                                 ],
-                                                                                              M.get_trait_method (|
-                                                                                                "core::ops::try_trait::Try",
+                                                                                              [],
+                                                                                              [],
+                                                                                              "branch",
+                                                                                              [],
+                                                                                              []
+                                                                                            |),
+                                                                                            [
+                                                                                              M.call_closure (|
                                                                                                 Ty.apply
                                                                                                   (Ty.path
                                                                                                     "core::result::Result")
@@ -1239,311 +1216,308 @@ Module fmt.
                                                                                                     Ty.path
                                                                                                       "core::fmt::Error"
                                                                                                   ],
-                                                                                                [],
-                                                                                                [],
-                                                                                                "branch",
-                                                                                                [],
-                                                                                                []
-                                                                                              |),
-                                                                                              [
-                                                                                                M.call_closure (|
+                                                                                                M.get_associated_function (|
+                                                                                                  Ty.path
+                                                                                                    "core::fmt::Formatter",
+                                                                                                  "write_fmt",
+                                                                                                  [],
+                                                                                                  []
+                                                                                                |),
+                                                                                                [
+                                                                                                  M.borrow (|
+                                                                                                    Pointer.Kind.MutRef,
+                                                                                                    M.deref (|
+                                                                                                      M.read (|
+                                                                                                        f
+                                                                                                      |)
+                                                                                                    |)
+                                                                                                  |);
+                                                                                                  M.call_closure (|
+                                                                                                    Ty.path
+                                                                                                      "core::fmt::Arguments",
+                                                                                                    M.get_associated_function (|
+                                                                                                      Ty.path
+                                                                                                        "core::fmt::Arguments",
+                                                                                                      "new_v1",
+                                                                                                      [
+                                                                                                        Value.Integer
+                                                                                                          IntegerKind.Usize
+                                                                                                          1;
+                                                                                                        Value.Integer
+                                                                                                          IntegerKind.Usize
+                                                                                                          1
+                                                                                                      ],
+                                                                                                      []
+                                                                                                    |),
+                                                                                                    [
+                                                                                                      M.borrow (|
+                                                                                                        Pointer.Kind.Ref,
+                                                                                                        M.deref (|
+                                                                                                          M.borrow (|
+                                                                                                            Pointer.Kind.Ref,
+                                                                                                            M.alloc (|
+                                                                                                              Ty.apply
+                                                                                                                (Ty.path
+                                                                                                                  "array")
+                                                                                                                [
+                                                                                                                  Value.Integer
+                                                                                                                    IntegerKind.Usize
+                                                                                                                    1
+                                                                                                                ]
+                                                                                                                [
+                                                                                                                  Ty.apply
+                                                                                                                    (Ty.path
+                                                                                                                      "&")
+                                                                                                                    []
+                                                                                                                    [
+                                                                                                                      Ty.path
+                                                                                                                        "str"
+                                                                                                                    ]
+                                                                                                                ],
+                                                                                                              Value.Array
+                                                                                                                [
+                                                                                                                  mk_str (|
+                                                                                                                    "\"
+                                                                                                                  |)
+                                                                                                                ]
+                                                                                                            |)
+                                                                                                          |)
+                                                                                                        |)
+                                                                                                      |);
+                                                                                                      M.borrow (|
+                                                                                                        Pointer.Kind.Ref,
+                                                                                                        M.deref (|
+                                                                                                          M.borrow (|
+                                                                                                            Pointer.Kind.Ref,
+                                                                                                            M.alloc (|
+                                                                                                              Ty.apply
+                                                                                                                (Ty.path
+                                                                                                                  "array")
+                                                                                                                [
+                                                                                                                  Value.Integer
+                                                                                                                    IntegerKind.Usize
+                                                                                                                    1
+                                                                                                                ]
+                                                                                                                [
+                                                                                                                  Ty.path
+                                                                                                                    "core::fmt::rt::Argument"
+                                                                                                                ],
+                                                                                                              Value.Array
+                                                                                                                [
+                                                                                                                  M.call_closure (|
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                    M.get_associated_function (|
+                                                                                                                      Ty.path
+                                                                                                                        "core::fmt::rt::Argument",
+                                                                                                                      "new_display",
+                                                                                                                      [],
+                                                                                                                      [
+                                                                                                                        Ty.path
+                                                                                                                          "char"
+                                                                                                                      ]
+                                                                                                                    |),
+                                                                                                                    [
+                                                                                                                      M.borrow (|
+                                                                                                                        Pointer.Kind.Ref,
+                                                                                                                        M.deref (|
+                                                                                                                          M.borrow (|
+                                                                                                                            Pointer.Kind.Ref,
+                                                                                                                            M.alloc (|
+                                                                                                                              Ty.path
+                                                                                                                                "char",
+                                                                                                                              M.cast
+                                                                                                                                (Ty.path
+                                                                                                                                  "char")
+                                                                                                                                (M.read (|
+                                                                                                                                  b
+                                                                                                                                |))
+                                                                                                                            |)
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |)
+                                                                                                                    ]
+                                                                                                                  |)
+                                                                                                                ]
+                                                                                                            |)
+                                                                                                          |)
+                                                                                                        |)
+                                                                                                      |)
+                                                                                                    ]
+                                                                                                  |)
+                                                                                                ]
+                                                                                              |)
+                                                                                            ]
+                                                                                          |)
+                                                                                        |),
+                                                                                        [
+                                                                                          fun γ =>
+                                                                                            ltac:(M.monadic
+                                                                                              (let
+                                                                                                    γ0_0 :=
+                                                                                                M.SubPointer.get_struct_tuple_field (|
+                                                                                                  γ,
+                                                                                                  "core::ops::control_flow::ControlFlow::Break",
+                                                                                                  0
+                                                                                                |) in
+                                                                                              let
+                                                                                                    residual :=
+                                                                                                M.copy (|
                                                                                                   Ty.apply
                                                                                                     (Ty.path
                                                                                                       "core::result::Result")
                                                                                                     []
                                                                                                     [
-                                                                                                      Ty.tuple
-                                                                                                        [];
+                                                                                                      Ty.path
+                                                                                                        "core::convert::Infallible";
                                                                                                       Ty.path
                                                                                                         "core::fmt::Error"
                                                                                                     ],
-                                                                                                  M.get_associated_function (|
-                                                                                                    Ty.path
-                                                                                                      "core::fmt::Formatter",
-                                                                                                    "write_fmt",
-                                                                                                    [],
-                                                                                                    []
-                                                                                                  |),
-                                                                                                  [
-                                                                                                    M.borrow (|
-                                                                                                      Pointer.Kind.MutRef,
-                                                                                                      M.deref (|
-                                                                                                        M.read (|
-                                                                                                          f
-                                                                                                        |)
-                                                                                                      |)
-                                                                                                    |);
+                                                                                                  γ0_0
+                                                                                                |) in
+                                                                                              M.never_to_any (|
+                                                                                                M.read (|
+                                                                                                  M.return_ (|
                                                                                                     M.call_closure (|
-                                                                                                      Ty.path
-                                                                                                        "core::fmt::Arguments",
-                                                                                                      M.get_associated_function (|
-                                                                                                        Ty.path
-                                                                                                          "core::fmt::Arguments",
-                                                                                                        "new_v1",
-                                                                                                        [
-                                                                                                          Value.Integer
-                                                                                                            IntegerKind.Usize
-                                                                                                            1;
-                                                                                                          Value.Integer
-                                                                                                            IntegerKind.Usize
-                                                                                                            1
-                                                                                                        ],
+                                                                                                      Ty.apply
+                                                                                                        (Ty.path
+                                                                                                          "core::result::Result")
                                                                                                         []
-                                                                                                      |),
-                                                                                                      [
-                                                                                                        M.borrow (|
-                                                                                                          Pointer.Kind.Ref,
-                                                                                                          M.deref (|
-                                                                                                            M.borrow (|
-                                                                                                              Pointer.Kind.Ref,
-                                                                                                              M.alloc (|
-                                                                                                                Ty.apply
-                                                                                                                  (Ty.path
-                                                                                                                    "array")
-                                                                                                                  [
-                                                                                                                    Value.Integer
-                                                                                                                      IntegerKind.Usize
-                                                                                                                      1
-                                                                                                                  ]
-                                                                                                                  [
-                                                                                                                    Ty.apply
-                                                                                                                      (Ty.path
-                                                                                                                        "&")
-                                                                                                                      []
-                                                                                                                      [
-                                                                                                                        Ty.path
-                                                                                                                          "str"
-                                                                                                                      ]
-                                                                                                                  ],
-                                                                                                                Value.Array
-                                                                                                                  [
-                                                                                                                    mk_str (|
-                                                                                                                      "\"
-                                                                                                                    |)
-                                                                                                                  ]
-                                                                                                              |)
-                                                                                                            |)
-                                                                                                          |)
-                                                                                                        |);
-                                                                                                        M.borrow (|
-                                                                                                          Pointer.Kind.Ref,
-                                                                                                          M.deref (|
-                                                                                                            M.borrow (|
-                                                                                                              Pointer.Kind.Ref,
-                                                                                                              M.alloc (|
-                                                                                                                Ty.apply
-                                                                                                                  (Ty.path
-                                                                                                                    "array")
-                                                                                                                  [
-                                                                                                                    Value.Integer
-                                                                                                                      IntegerKind.Usize
-                                                                                                                      1
-                                                                                                                  ]
-                                                                                                                  [
-                                                                                                                    Ty.path
-                                                                                                                      "core::fmt::rt::Argument"
-                                                                                                                  ],
-                                                                                                                Value.Array
-                                                                                                                  [
-                                                                                                                    M.call_closure (|
-                                                                                                                      Ty.path
-                                                                                                                        "core::fmt::rt::Argument",
-                                                                                                                      M.get_associated_function (|
-                                                                                                                        Ty.path
-                                                                                                                          "core::fmt::rt::Argument",
-                                                                                                                        "new_display",
-                                                                                                                        [],
-                                                                                                                        [
-                                                                                                                          Ty.path
-                                                                                                                            "char"
-                                                                                                                        ]
-                                                                                                                      |),
-                                                                                                                      [
-                                                                                                                        M.borrow (|
-                                                                                                                          Pointer.Kind.Ref,
-                                                                                                                          M.deref (|
-                                                                                                                            M.borrow (|
-                                                                                                                              Pointer.Kind.Ref,
-                                                                                                                              M.alloc (|
-                                                                                                                                Ty.path
-                                                                                                                                  "char",
-                                                                                                                                M.cast
-                                                                                                                                  (Ty.path
-                                                                                                                                    "char")
-                                                                                                                                  (M.read (|
-                                                                                                                                    b
-                                                                                                                                  |))
-                                                                                                                              |)
-                                                                                                                            |)
-                                                                                                                          |)
-                                                                                                                        |)
-                                                                                                                      ]
-                                                                                                                    |)
-                                                                                                                  ]
-                                                                                                              |)
-                                                                                                            |)
-                                                                                                          |)
-                                                                                                        |)
-                                                                                                      ]
-                                                                                                    |)
-                                                                                                  ]
-                                                                                                |)
-                                                                                              ]
-                                                                                            |)
-                                                                                          |),
-                                                                                          [
-                                                                                            fun γ =>
-                                                                                              ltac:(M.monadic
-                                                                                                (let
-                                                                                                      γ0_0 :=
-                                                                                                  M.SubPointer.get_struct_tuple_field (|
-                                                                                                    γ,
-                                                                                                    "core::ops::control_flow::ControlFlow::Break",
-                                                                                                    0
-                                                                                                  |) in
-                                                                                                let
-                                                                                                      residual :=
-                                                                                                  M.copy (|
-                                                                                                    Ty.apply
-                                                                                                      (Ty.path
-                                                                                                        "core::result::Result")
-                                                                                                      []
-                                                                                                      [
-                                                                                                        Ty.path
-                                                                                                          "core::convert::Infallible";
-                                                                                                        Ty.path
-                                                                                                          "core::fmt::Error"
-                                                                                                      ],
-                                                                                                    γ0_0
-                                                                                                  |) in
-                                                                                                M.alloc (|
-                                                                                                  Ty.tuple
-                                                                                                    [],
-                                                                                                  M.never_to_any (|
-                                                                                                    M.read (|
-                                                                                                      M.return_ (|
-                                                                                                        M.call_closure (|
+                                                                                                        [
+                                                                                                          Ty.tuple
+                                                                                                            [];
+                                                                                                          Ty.path
+                                                                                                            "core::fmt::Error"
+                                                                                                        ],
+                                                                                                      M.get_trait_method (|
+                                                                                                        "core::ops::try_trait::FromResidual",
+                                                                                                        Ty.apply
+                                                                                                          (Ty.path
+                                                                                                            "core::result::Result")
+                                                                                                          []
+                                                                                                          [
+                                                                                                            Ty.tuple
+                                                                                                              [];
+                                                                                                            Ty.path
+                                                                                                              "core::fmt::Error"
+                                                                                                          ],
+                                                                                                        [],
+                                                                                                        [
                                                                                                           Ty.apply
                                                                                                             (Ty.path
                                                                                                               "core::result::Result")
                                                                                                             []
                                                                                                             [
-                                                                                                              Ty.tuple
-                                                                                                                [];
+                                                                                                              Ty.path
+                                                                                                                "core::convert::Infallible";
                                                                                                               Ty.path
                                                                                                                 "core::fmt::Error"
-                                                                                                            ],
-                                                                                                          M.get_trait_method (|
-                                                                                                            "core::ops::try_trait::FromResidual",
-                                                                                                            Ty.apply
-                                                                                                              (Ty.path
-                                                                                                                "core::result::Result")
-                                                                                                              []
-                                                                                                              [
-                                                                                                                Ty.tuple
-                                                                                                                  [];
-                                                                                                                Ty.path
-                                                                                                                  "core::fmt::Error"
-                                                                                                              ],
-                                                                                                            [],
-                                                                                                            [
-                                                                                                              Ty.apply
-                                                                                                                (Ty.path
-                                                                                                                  "core::result::Result")
-                                                                                                                []
-                                                                                                                [
-                                                                                                                  Ty.path
-                                                                                                                    "core::convert::Infallible";
-                                                                                                                  Ty.path
-                                                                                                                    "core::fmt::Error"
-                                                                                                                ]
-                                                                                                            ],
-                                                                                                            "from_residual",
-                                                                                                            [],
-                                                                                                            []
-                                                                                                          |),
-                                                                                                          [
-                                                                                                            M.read (|
-                                                                                                              residual
-                                                                                                            |)
-                                                                                                          ]
+                                                                                                            ]
+                                                                                                        ],
+                                                                                                        "from_residual",
+                                                                                                        [],
+                                                                                                        []
+                                                                                                      |),
+                                                                                                      [
+                                                                                                        M.read (|
+                                                                                                          residual
                                                                                                         |)
-                                                                                                      |)
+                                                                                                      ]
                                                                                                     |)
                                                                                                   |)
-                                                                                                |)));
-                                                                                            fun γ =>
-                                                                                              ltac:(M.monadic
-                                                                                                (let
-                                                                                                      γ0_0 :=
-                                                                                                  M.SubPointer.get_struct_tuple_field (|
-                                                                                                    γ,
-                                                                                                    "core::ops::control_flow::ControlFlow::Continue",
-                                                                                                    0
-                                                                                                  |) in
-                                                                                                let
-                                                                                                      val :=
-                                                                                                  M.copy (|
-                                                                                                    Ty.tuple
-                                                                                                      [],
-                                                                                                    γ0_0
-                                                                                                  |) in
-                                                                                                val))
-                                                                                          ]
-                                                                                        |)
+                                                                                                |)
+                                                                                              |)));
+                                                                                          fun γ =>
+                                                                                            ltac:(M.monadic
+                                                                                              (let
+                                                                                                    γ0_0 :=
+                                                                                                M.SubPointer.get_struct_tuple_field (|
+                                                                                                  γ,
+                                                                                                  "core::ops::control_flow::ControlFlow::Continue",
+                                                                                                  0
+                                                                                                |) in
+                                                                                              let
+                                                                                                    val :=
+                                                                                                M.copy (|
+                                                                                                  Ty.tuple
+                                                                                                    [],
+                                                                                                  γ0_0
+                                                                                                |) in
+                                                                                              M.read (|
+                                                                                                val
+                                                                                              |)))
+                                                                                        ]
                                                                                       |) in
                                                                                     M.alloc (|
                                                                                       Ty.tuple [],
                                                                                       Value.Tuple []
-                                                                                    |)));
-                                                                                fun γ =>
-                                                                                  ltac:(M.monadic
-                                                                                    (M.match_operator (|
+                                                                                    |)
+                                                                                  |)));
+                                                                              fun γ =>
+                                                                                ltac:(M.monadic
+                                                                                  (M.match_operator (|
+                                                                                    Ty.tuple [],
+                                                                                    M.alloc (|
                                                                                       Ty.tuple [],
-                                                                                      M.alloc (|
-                                                                                        Ty.tuple [],
-                                                                                        Value.Tuple
-                                                                                          []
-                                                                                      |),
-                                                                                      [
-                                                                                        fun γ =>
-                                                                                          ltac:(M.monadic
-                                                                                            (let
-                                                                                                  γ :=
-                                                                                              M.use
-                                                                                                (M.alloc (|
+                                                                                      Value.Tuple []
+                                                                                    |),
+                                                                                    [
+                                                                                      fun γ =>
+                                                                                        ltac:(M.monadic
+                                                                                          (let γ :=
+                                                                                            M.use
+                                                                                              (M.alloc (|
+                                                                                                Ty.path
+                                                                                                  "bool",
+                                                                                                M.call_closure (|
                                                                                                   Ty.path
                                                                                                     "bool",
-                                                                                                  M.call_closure (|
-                                                                                                    Ty.path
-                                                                                                      "bool",
-                                                                                                    BinOp.eq,
-                                                                                                    [
-                                                                                                      M.read (|
-                                                                                                        b
-                                                                                                      |);
-                                                                                                      M.read (|
-                                                                                                        UnsupportedLiteral
-                                                                                                      |)
-                                                                                                    ]
-                                                                                                  |)
-                                                                                                |)) in
-                                                                                            let _ :=
-                                                                                              is_constant_or_break_match (|
-                                                                                                M.read (|
-                                                                                                  γ
-                                                                                                |),
-                                                                                                Value.Bool
-                                                                                                  true
-                                                                                              |) in
+                                                                                                  BinOp.eq,
+                                                                                                  [
+                                                                                                    M.read (|
+                                                                                                      b
+                                                                                                    |);
+                                                                                                    M.read (|
+                                                                                                      UnsupportedLiteral
+                                                                                                    |)
+                                                                                                  ]
+                                                                                                |)
+                                                                                              |)) in
+                                                                                          let _ :=
+                                                                                            is_constant_or_break_match (|
+                                                                                              M.read (|
+                                                                                                γ
+                                                                                              |),
+                                                                                              Value.Bool
+                                                                                                true
+                                                                                            |) in
+                                                                                          M.read (|
                                                                                             let~ _ :
                                                                                                 Ty.tuple
                                                                                                   [] :=
-                                                                                              M.read (|
-                                                                                                M.match_operator (|
-                                                                                                  Ty.tuple
-                                                                                                    [],
-                                                                                                  M.alloc (|
+                                                                                              M.match_operator (|
+                                                                                                Ty.tuple
+                                                                                                  [],
+                                                                                                M.alloc (|
+                                                                                                  Ty.apply
+                                                                                                    (Ty.path
+                                                                                                      "core::ops::control_flow::ControlFlow")
+                                                                                                    []
+                                                                                                    [
+                                                                                                      Ty.apply
+                                                                                                        (Ty.path
+                                                                                                          "core::result::Result")
+                                                                                                        []
+                                                                                                        [
+                                                                                                          Ty.path
+                                                                                                            "core::convert::Infallible";
+                                                                                                          Ty.path
+                                                                                                            "core::fmt::Error"
+                                                                                                        ];
+                                                                                                      Ty.tuple
+                                                                                                        []
+                                                                                                    ],
+                                                                                                  M.call_closure (|
                                                                                                     Ty.apply
                                                                                                       (Ty.path
                                                                                                         "core::ops::control_flow::ControlFlow")
@@ -1562,27 +1536,26 @@ Module fmt.
                                                                                                         Ty.tuple
                                                                                                           []
                                                                                                       ],
-                                                                                                    M.call_closure (|
+                                                                                                    M.get_trait_method (|
+                                                                                                      "core::ops::try_trait::Try",
                                                                                                       Ty.apply
                                                                                                         (Ty.path
-                                                                                                          "core::ops::control_flow::ControlFlow")
+                                                                                                          "core::result::Result")
                                                                                                         []
                                                                                                         [
-                                                                                                          Ty.apply
-                                                                                                            (Ty.path
-                                                                                                              "core::result::Result")
-                                                                                                            []
-                                                                                                            [
-                                                                                                              Ty.path
-                                                                                                                "core::convert::Infallible";
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::Error"
-                                                                                                            ];
                                                                                                           Ty.tuple
-                                                                                                            []
+                                                                                                            [];
+                                                                                                          Ty.path
+                                                                                                            "core::fmt::Error"
                                                                                                         ],
-                                                                                                      M.get_trait_method (|
-                                                                                                        "core::ops::try_trait::Try",
+                                                                                                      [],
+                                                                                                      [],
+                                                                                                      "branch",
+                                                                                                      [],
+                                                                                                      []
+                                                                                                    |),
+                                                                                                    [
+                                                                                                      M.call_closure (|
                                                                                                         Ty.apply
                                                                                                           (Ty.path
                                                                                                             "core::result::Result")
@@ -1593,306 +1566,305 @@ Module fmt.
                                                                                                             Ty.path
                                                                                                               "core::fmt::Error"
                                                                                                           ],
-                                                                                                        [],
-                                                                                                        [],
-                                                                                                        "branch",
-                                                                                                        [],
-                                                                                                        []
-                                                                                                      |),
-                                                                                                      [
-                                                                                                        M.call_closure (|
+                                                                                                        M.get_associated_function (|
+                                                                                                          Ty.path
+                                                                                                            "core::fmt::Formatter",
+                                                                                                          "write_fmt",
+                                                                                                          [],
+                                                                                                          []
+                                                                                                        |),
+                                                                                                        [
+                                                                                                          M.borrow (|
+                                                                                                            Pointer.Kind.MutRef,
+                                                                                                            M.deref (|
+                                                                                                              M.read (|
+                                                                                                                f
+                                                                                                              |)
+                                                                                                            |)
+                                                                                                          |);
+                                                                                                          M.call_closure (|
+                                                                                                            Ty.path
+                                                                                                              "core::fmt::Arguments",
+                                                                                                            M.get_associated_function (|
+                                                                                                              Ty.path
+                                                                                                                "core::fmt::Arguments",
+                                                                                                              "new_const",
+                                                                                                              [
+                                                                                                                Value.Integer
+                                                                                                                  IntegerKind.Usize
+                                                                                                                  1
+                                                                                                              ],
+                                                                                                              []
+                                                                                                            |),
+                                                                                                            [
+                                                                                                              M.borrow (|
+                                                                                                                Pointer.Kind.Ref,
+                                                                                                                M.deref (|
+                                                                                                                  M.borrow (|
+                                                                                                                    Pointer.Kind.Ref,
+                                                                                                                    M.alloc (|
+                                                                                                                      Ty.apply
+                                                                                                                        (Ty.path
+                                                                                                                          "array")
+                                                                                                                        [
+                                                                                                                          Value.Integer
+                                                                                                                            IntegerKind.Usize
+                                                                                                                            1
+                                                                                                                        ]
+                                                                                                                        [
+                                                                                                                          Ty.apply
+                                                                                                                            (Ty.path
+                                                                                                                              "&")
+                                                                                                                            []
+                                                                                                                            [
+                                                                                                                              Ty.path
+                                                                                                                                "str"
+                                                                                                                            ]
+                                                                                                                        ],
+                                                                                                                      Value.Array
+                                                                                                                        [
+                                                                                                                          mk_str (|
+                                                                                                                            "\0"
+                                                                                                                          |)
+                                                                                                                        ]
+                                                                                                                    |)
+                                                                                                                  |)
+                                                                                                                |)
+                                                                                                              |)
+                                                                                                            ]
+                                                                                                          |)
+                                                                                                        ]
+                                                                                                      |)
+                                                                                                    ]
+                                                                                                  |)
+                                                                                                |),
+                                                                                                [
+                                                                                                  fun
+                                                                                                      γ =>
+                                                                                                    ltac:(M.monadic
+                                                                                                      (let
+                                                                                                            γ0_0 :=
+                                                                                                        M.SubPointer.get_struct_tuple_field (|
+                                                                                                          γ,
+                                                                                                          "core::ops::control_flow::ControlFlow::Break",
+                                                                                                          0
+                                                                                                        |) in
+                                                                                                      let
+                                                                                                            residual :=
+                                                                                                        M.copy (|
                                                                                                           Ty.apply
                                                                                                             (Ty.path
                                                                                                               "core::result::Result")
                                                                                                             []
                                                                                                             [
-                                                                                                              Ty.tuple
-                                                                                                                [];
+                                                                                                              Ty.path
+                                                                                                                "core::convert::Infallible";
                                                                                                               Ty.path
                                                                                                                 "core::fmt::Error"
                                                                                                             ],
-                                                                                                          M.get_associated_function (|
-                                                                                                            Ty.path
-                                                                                                              "core::fmt::Formatter",
-                                                                                                            "write_fmt",
-                                                                                                            [],
-                                                                                                            []
-                                                                                                          |),
-                                                                                                          [
-                                                                                                            M.borrow (|
-                                                                                                              Pointer.Kind.MutRef,
-                                                                                                              M.deref (|
-                                                                                                                M.read (|
-                                                                                                                  f
-                                                                                                                |)
-                                                                                                              |)
-                                                                                                            |);
+                                                                                                          γ0_0
+                                                                                                        |) in
+                                                                                                      M.never_to_any (|
+                                                                                                        M.read (|
+                                                                                                          M.return_ (|
                                                                                                             M.call_closure (|
-                                                                                                              Ty.path
-                                                                                                                "core::fmt::Arguments",
-                                                                                                              M.get_associated_function (|
-                                                                                                                Ty.path
-                                                                                                                  "core::fmt::Arguments",
-                                                                                                                "new_const",
-                                                                                                                [
-                                                                                                                  Value.Integer
-                                                                                                                    IntegerKind.Usize
-                                                                                                                    1
-                                                                                                                ],
+                                                                                                              Ty.apply
+                                                                                                                (Ty.path
+                                                                                                                  "core::result::Result")
                                                                                                                 []
-                                                                                                              |),
-                                                                                                              [
-                                                                                                                M.borrow (|
-                                                                                                                  Pointer.Kind.Ref,
-                                                                                                                  M.deref (|
-                                                                                                                    M.borrow (|
-                                                                                                                      Pointer.Kind.Ref,
-                                                                                                                      M.alloc (|
-                                                                                                                        Ty.apply
-                                                                                                                          (Ty.path
-                                                                                                                            "array")
-                                                                                                                          [
-                                                                                                                            Value.Integer
-                                                                                                                              IntegerKind.Usize
-                                                                                                                              1
-                                                                                                                          ]
-                                                                                                                          [
-                                                                                                                            Ty.apply
-                                                                                                                              (Ty.path
-                                                                                                                                "&")
-                                                                                                                              []
-                                                                                                                              [
-                                                                                                                                Ty.path
-                                                                                                                                  "str"
-                                                                                                                              ]
-                                                                                                                          ],
-                                                                                                                        Value.Array
-                                                                                                                          [
-                                                                                                                            mk_str (|
-                                                                                                                              "\0"
-                                                                                                                            |)
-                                                                                                                          ]
-                                                                                                                      |)
-                                                                                                                    |)
-                                                                                                                  |)
-                                                                                                                |)
-                                                                                                              ]
-                                                                                                            |)
-                                                                                                          ]
-                                                                                                        |)
-                                                                                                      ]
-                                                                                                    |)
-                                                                                                  |),
-                                                                                                  [
-                                                                                                    fun
-                                                                                                        γ =>
-                                                                                                      ltac:(M.monadic
-                                                                                                        (let
-                                                                                                              γ0_0 :=
-                                                                                                          M.SubPointer.get_struct_tuple_field (|
-                                                                                                            γ,
-                                                                                                            "core::ops::control_flow::ControlFlow::Break",
-                                                                                                            0
-                                                                                                          |) in
-                                                                                                        let
-                                                                                                              residual :=
-                                                                                                          M.copy (|
-                                                                                                            Ty.apply
-                                                                                                              (Ty.path
-                                                                                                                "core::result::Result")
-                                                                                                              []
-                                                                                                              [
-                                                                                                                Ty.path
-                                                                                                                  "core::convert::Infallible";
-                                                                                                                Ty.path
-                                                                                                                  "core::fmt::Error"
-                                                                                                              ],
-                                                                                                            γ0_0
-                                                                                                          |) in
-                                                                                                        M.alloc (|
-                                                                                                          Ty.tuple
-                                                                                                            [],
-                                                                                                          M.never_to_any (|
-                                                                                                            M.read (|
-                                                                                                              M.return_ (|
-                                                                                                                M.call_closure (|
+                                                                                                                [
+                                                                                                                  Ty.tuple
+                                                                                                                    [];
+                                                                                                                  Ty.path
+                                                                                                                    "core::fmt::Error"
+                                                                                                                ],
+                                                                                                              M.get_trait_method (|
+                                                                                                                "core::ops::try_trait::FromResidual",
+                                                                                                                Ty.apply
+                                                                                                                  (Ty.path
+                                                                                                                    "core::result::Result")
+                                                                                                                  []
+                                                                                                                  [
+                                                                                                                    Ty.tuple
+                                                                                                                      [];
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::Error"
+                                                                                                                  ],
+                                                                                                                [],
+                                                                                                                [
                                                                                                                   Ty.apply
                                                                                                                     (Ty.path
                                                                                                                       "core::result::Result")
                                                                                                                     []
                                                                                                                     [
-                                                                                                                      Ty.tuple
-                                                                                                                        [];
+                                                                                                                      Ty.path
+                                                                                                                        "core::convert::Infallible";
                                                                                                                       Ty.path
                                                                                                                         "core::fmt::Error"
-                                                                                                                    ],
-                                                                                                                  M.get_trait_method (|
-                                                                                                                    "core::ops::try_trait::FromResidual",
-                                                                                                                    Ty.apply
-                                                                                                                      (Ty.path
-                                                                                                                        "core::result::Result")
-                                                                                                                      []
-                                                                                                                      [
-                                                                                                                        Ty.tuple
-                                                                                                                          [];
-                                                                                                                        Ty.path
-                                                                                                                          "core::fmt::Error"
-                                                                                                                      ],
-                                                                                                                    [],
-                                                                                                                    [
-                                                                                                                      Ty.apply
-                                                                                                                        (Ty.path
-                                                                                                                          "core::result::Result")
-                                                                                                                        []
-                                                                                                                        [
-                                                                                                                          Ty.path
-                                                                                                                            "core::convert::Infallible";
-                                                                                                                          Ty.path
-                                                                                                                            "core::fmt::Error"
-                                                                                                                        ]
-                                                                                                                    ],
-                                                                                                                    "from_residual",
-                                                                                                                    [],
-                                                                                                                    []
-                                                                                                                  |),
-                                                                                                                  [
-                                                                                                                    M.read (|
-                                                                                                                      residual
-                                                                                                                    |)
-                                                                                                                  ]
+                                                                                                                    ]
+                                                                                                                ],
+                                                                                                                "from_residual",
+                                                                                                                [],
+                                                                                                                []
+                                                                                                              |),
+                                                                                                              [
+                                                                                                                M.read (|
+                                                                                                                  residual
                                                                                                                 |)
-                                                                                                              |)
+                                                                                                              ]
                                                                                                             |)
                                                                                                           |)
-                                                                                                        |)));
-                                                                                                    fun
-                                                                                                        γ =>
-                                                                                                      ltac:(M.monadic
-                                                                                                        (let
-                                                                                                              γ0_0 :=
-                                                                                                          M.SubPointer.get_struct_tuple_field (|
-                                                                                                            γ,
-                                                                                                            "core::ops::control_flow::ControlFlow::Continue",
-                                                                                                            0
-                                                                                                          |) in
-                                                                                                        let
-                                                                                                              val :=
-                                                                                                          M.copy (|
-                                                                                                            Ty.tuple
-                                                                                                              [],
-                                                                                                            γ0_0
-                                                                                                          |) in
-                                                                                                        val))
-                                                                                                  ]
-                                                                                                |)
+                                                                                                        |)
+                                                                                                      |)));
+                                                                                                  fun
+                                                                                                      γ =>
+                                                                                                    ltac:(M.monadic
+                                                                                                      (let
+                                                                                                            γ0_0 :=
+                                                                                                        M.SubPointer.get_struct_tuple_field (|
+                                                                                                          γ,
+                                                                                                          "core::ops::control_flow::ControlFlow::Continue",
+                                                                                                          0
+                                                                                                        |) in
+                                                                                                      let
+                                                                                                            val :=
+                                                                                                        M.copy (|
+                                                                                                          Ty.tuple
+                                                                                                            [],
+                                                                                                          γ0_0
+                                                                                                        |) in
+                                                                                                      M.read (|
+                                                                                                        val
+                                                                                                      |)))
+                                                                                                ]
                                                                                               |) in
                                                                                             M.alloc (|
                                                                                               Ty.tuple
                                                                                                 [],
                                                                                               Value.Tuple
                                                                                                 []
-                                                                                            |)));
-                                                                                        fun γ =>
-                                                                                          ltac:(M.monadic
-                                                                                            (M.match_operator (|
+                                                                                            |)
+                                                                                          |)));
+                                                                                      fun γ =>
+                                                                                        ltac:(M.monadic
+                                                                                          (M.match_operator (|
+                                                                                            Ty.tuple
+                                                                                              [],
+                                                                                            M.alloc (|
                                                                                               Ty.tuple
                                                                                                 [],
-                                                                                              M.alloc (|
-                                                                                                Ty.tuple
-                                                                                                  [],
-                                                                                                Value.Tuple
-                                                                                                  []
-                                                                                              |),
-                                                                                              [
-                                                                                                fun
-                                                                                                    γ =>
-                                                                                                  ltac:(M.monadic
-                                                                                                    (let
-                                                                                                          γ :=
-                                                                                                      M.use
-                                                                                                        (M.alloc (|
+                                                                                              Value.Tuple
+                                                                                                []
+                                                                                            |),
+                                                                                            [
+                                                                                              fun
+                                                                                                  γ =>
+                                                                                                ltac:(M.monadic
+                                                                                                  (let
+                                                                                                        γ :=
+                                                                                                    M.use
+                                                                                                      (M.alloc (|
+                                                                                                        Ty.path
+                                                                                                          "bool",
+                                                                                                        M.call_closure (|
                                                                                                           Ty.path
                                                                                                             "bool",
-                                                                                                          M.call_closure (|
-                                                                                                            Ty.path
-                                                                                                              "bool",
-                                                                                                            M.get_associated_function (|
-                                                                                                              Ty.apply
-                                                                                                                (Ty.path
-                                                                                                                  "core::ops::range::Range")
-                                                                                                                []
-                                                                                                                [
-                                                                                                                  Ty.path
-                                                                                                                    "u8"
-                                                                                                                ],
-                                                                                                              "contains",
-                                                                                                              [],
+                                                                                                          M.get_associated_function (|
+                                                                                                            Ty.apply
+                                                                                                              (Ty.path
+                                                                                                                "core::ops::range::Range")
+                                                                                                              []
                                                                                                               [
                                                                                                                 Ty.path
                                                                                                                   "u8"
-                                                                                                              ]
-                                                                                                            |),
+                                                                                                              ],
+                                                                                                            "contains",
+                                                                                                            [],
                                                                                                             [
-                                                                                                              M.borrow (|
-                                                                                                                Pointer.Kind.Ref,
-                                                                                                                M.alloc (|
-                                                                                                                  Ty.apply
-                                                                                                                    (Ty.path
-                                                                                                                      "core::ops::range::Range")
-                                                                                                                    []
-                                                                                                                    [
-                                                                                                                      Ty.path
-                                                                                                                        "u8"
-                                                                                                                    ],
-                                                                                                                  Value.mkStructRecord
-                                                                                                                    "core::ops::range::Range"
-                                                                                                                    []
-                                                                                                                    [
-                                                                                                                      Ty.path
-                                                                                                                        "u8"
-                                                                                                                    ]
-                                                                                                                    [
-                                                                                                                      ("start",
-                                                                                                                        Value.Integer
-                                                                                                                          IntegerKind.U8
-                                                                                                                          32);
-                                                                                                                      ("end_",
-                                                                                                                        Value.Integer
-                                                                                                                          IntegerKind.U8
-                                                                                                                          127)
-                                                                                                                    ]
-                                                                                                                |)
-                                                                                                              |);
-                                                                                                              M.borrow (|
-                                                                                                                Pointer.Kind.Ref,
-                                                                                                                M.deref (|
-                                                                                                                  M.borrow (|
-                                                                                                                    Pointer.Kind.Ref,
-                                                                                                                    b
-                                                                                                                  |)
+                                                                                                              Ty.path
+                                                                                                                "u8"
+                                                                                                            ]
+                                                                                                          |),
+                                                                                                          [
+                                                                                                            M.borrow (|
+                                                                                                              Pointer.Kind.Ref,
+                                                                                                              M.alloc (|
+                                                                                                                Ty.apply
+                                                                                                                  (Ty.path
+                                                                                                                    "core::ops::range::Range")
+                                                                                                                  []
+                                                                                                                  [
+                                                                                                                    Ty.path
+                                                                                                                      "u8"
+                                                                                                                  ],
+                                                                                                                Value.mkStructRecord
+                                                                                                                  "core::ops::range::Range"
+                                                                                                                  []
+                                                                                                                  [
+                                                                                                                    Ty.path
+                                                                                                                      "u8"
+                                                                                                                  ]
+                                                                                                                  [
+                                                                                                                    ("start",
+                                                                                                                      Value.Integer
+                                                                                                                        IntegerKind.U8
+                                                                                                                        32);
+                                                                                                                    ("end_",
+                                                                                                                      Value.Integer
+                                                                                                                        IntegerKind.U8
+                                                                                                                        127)
+                                                                                                                  ]
+                                                                                                              |)
+                                                                                                            |);
+                                                                                                            M.borrow (|
+                                                                                                              Pointer.Kind.Ref,
+                                                                                                              M.deref (|
+                                                                                                                M.borrow (|
+                                                                                                                  Pointer.Kind.Ref,
+                                                                                                                  b
                                                                                                                 |)
                                                                                                               |)
-                                                                                                            ]
-                                                                                                          |)
-                                                                                                        |)) in
-                                                                                                    let
-                                                                                                          _ :=
-                                                                                                      is_constant_or_break_match (|
-                                                                                                        M.read (|
-                                                                                                          γ
-                                                                                                        |),
-                                                                                                        Value.Bool
-                                                                                                          true
-                                                                                                      |) in
+                                                                                                            |)
+                                                                                                          ]
+                                                                                                        |)
+                                                                                                      |)) in
+                                                                                                  let
+                                                                                                        _ :=
+                                                                                                    is_constant_or_break_match (|
+                                                                                                      M.read (|
+                                                                                                        γ
+                                                                                                      |),
+                                                                                                      Value.Bool
+                                                                                                        true
+                                                                                                    |) in
+                                                                                                  M.read (|
                                                                                                     let~
                                                                                                           _ :
                                                                                                         Ty.tuple
                                                                                                           [] :=
-                                                                                                      M.read (|
-                                                                                                        M.match_operator (|
-                                                                                                          Ty.tuple
-                                                                                                            [],
-                                                                                                          M.alloc (|
+                                                                                                      M.match_operator (|
+                                                                                                        Ty.tuple
+                                                                                                          [],
+                                                                                                        M.alloc (|
+                                                                                                          Ty.apply
+                                                                                                            (Ty.path
+                                                                                                              "core::ops::control_flow::ControlFlow")
+                                                                                                            []
+                                                                                                            [
+                                                                                                              Ty.apply
+                                                                                                                (Ty.path
+                                                                                                                  "core::result::Result")
+                                                                                                                []
+                                                                                                                [
+                                                                                                                  Ty.path
+                                                                                                                    "core::convert::Infallible";
+                                                                                                                  Ty.path
+                                                                                                                    "core::fmt::Error"
+                                                                                                                ];
+                                                                                                              Ty.tuple
+                                                                                                                []
+                                                                                                            ],
+                                                                                                          M.call_closure (|
                                                                                                             Ty.apply
                                                                                                               (Ty.path
                                                                                                                 "core::ops::control_flow::ControlFlow")
@@ -1911,27 +1883,26 @@ Module fmt.
                                                                                                                 Ty.tuple
                                                                                                                   []
                                                                                                               ],
-                                                                                                            M.call_closure (|
+                                                                                                            M.get_trait_method (|
+                                                                                                              "core::ops::try_trait::Try",
                                                                                                               Ty.apply
                                                                                                                 (Ty.path
-                                                                                                                  "core::ops::control_flow::ControlFlow")
+                                                                                                                  "core::result::Result")
                                                                                                                 []
                                                                                                                 [
-                                                                                                                  Ty.apply
-                                                                                                                    (Ty.path
-                                                                                                                      "core::result::Result")
-                                                                                                                    []
-                                                                                                                    [
-                                                                                                                      Ty.path
-                                                                                                                        "core::convert::Infallible";
-                                                                                                                      Ty.path
-                                                                                                                        "core::fmt::Error"
-                                                                                                                    ];
                                                                                                                   Ty.tuple
-                                                                                                                    []
+                                                                                                                    [];
+                                                                                                                  Ty.path
+                                                                                                                    "core::fmt::Error"
                                                                                                                 ],
-                                                                                                              M.get_trait_method (|
-                                                                                                                "core::ops::try_trait::Try",
+                                                                                                              [],
+                                                                                                              [],
+                                                                                                              "branch",
+                                                                                                              [],
+                                                                                                              []
+                                                                                                            |),
+                                                                                                            [
+                                                                                                              M.call_closure (|
                                                                                                                 Ty.apply
                                                                                                                   (Ty.path
                                                                                                                     "core::result::Result")
@@ -1942,59 +1913,356 @@ Module fmt.
                                                                                                                     Ty.path
                                                                                                                       "core::fmt::Error"
                                                                                                                   ],
-                                                                                                                [],
-                                                                                                                [],
-                                                                                                                "branch",
-                                                                                                                [],
-                                                                                                                []
-                                                                                                              |),
-                                                                                                              [
-                                                                                                                M.call_closure (|
+                                                                                                                M.get_associated_function (|
+                                                                                                                  Ty.path
+                                                                                                                    "core::fmt::Formatter",
+                                                                                                                  "write_fmt",
+                                                                                                                  [],
+                                                                                                                  []
+                                                                                                                |),
+                                                                                                                [
+                                                                                                                  M.borrow (|
+                                                                                                                    Pointer.Kind.MutRef,
+                                                                                                                    M.deref (|
+                                                                                                                      M.read (|
+                                                                                                                        f
+                                                                                                                      |)
+                                                                                                                    |)
+                                                                                                                  |);
+                                                                                                                  M.call_closure (|
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::Arguments",
+                                                                                                                    M.get_associated_function (|
+                                                                                                                      Ty.path
+                                                                                                                        "core::fmt::Arguments",
+                                                                                                                      "new_v1",
+                                                                                                                      [
+                                                                                                                        Value.Integer
+                                                                                                                          IntegerKind.Usize
+                                                                                                                          1;
+                                                                                                                        Value.Integer
+                                                                                                                          IntegerKind.Usize
+                                                                                                                          1
+                                                                                                                      ],
+                                                                                                                      []
+                                                                                                                    |),
+                                                                                                                    [
+                                                                                                                      M.borrow (|
+                                                                                                                        Pointer.Kind.Ref,
+                                                                                                                        M.deref (|
+                                                                                                                          M.borrow (|
+                                                                                                                            Pointer.Kind.Ref,
+                                                                                                                            M.alloc (|
+                                                                                                                              Ty.apply
+                                                                                                                                (Ty.path
+                                                                                                                                  "array")
+                                                                                                                                [
+                                                                                                                                  Value.Integer
+                                                                                                                                    IntegerKind.Usize
+                                                                                                                                    1
+                                                                                                                                ]
+                                                                                                                                [
+                                                                                                                                  Ty.apply
+                                                                                                                                    (Ty.path
+                                                                                                                                      "&")
+                                                                                                                                    []
+                                                                                                                                    [
+                                                                                                                                      Ty.path
+                                                                                                                                        "str"
+                                                                                                                                    ]
+                                                                                                                                ],
+                                                                                                                              Value.Array
+                                                                                                                                [
+                                                                                                                                  mk_str (|
+                                                                                                                                    ""
+                                                                                                                                  |)
+                                                                                                                                ]
+                                                                                                                            |)
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |);
+                                                                                                                      M.borrow (|
+                                                                                                                        Pointer.Kind.Ref,
+                                                                                                                        M.deref (|
+                                                                                                                          M.borrow (|
+                                                                                                                            Pointer.Kind.Ref,
+                                                                                                                            M.alloc (|
+                                                                                                                              Ty.apply
+                                                                                                                                (Ty.path
+                                                                                                                                  "array")
+                                                                                                                                [
+                                                                                                                                  Value.Integer
+                                                                                                                                    IntegerKind.Usize
+                                                                                                                                    1
+                                                                                                                                ]
+                                                                                                                                [
+                                                                                                                                  Ty.path
+                                                                                                                                    "core::fmt::rt::Argument"
+                                                                                                                                ],
+                                                                                                                              Value.Array
+                                                                                                                                [
+                                                                                                                                  M.call_closure (|
+                                                                                                                                    Ty.path
+                                                                                                                                      "core::fmt::rt::Argument",
+                                                                                                                                    M.get_associated_function (|
+                                                                                                                                      Ty.path
+                                                                                                                                        "core::fmt::rt::Argument",
+                                                                                                                                      "new_display",
+                                                                                                                                      [],
+                                                                                                                                      [
+                                                                                                                                        Ty.path
+                                                                                                                                          "char"
+                                                                                                                                      ]
+                                                                                                                                    |),
+                                                                                                                                    [
+                                                                                                                                      M.borrow (|
+                                                                                                                                        Pointer.Kind.Ref,
+                                                                                                                                        M.deref (|
+                                                                                                                                          M.borrow (|
+                                                                                                                                            Pointer.Kind.Ref,
+                                                                                                                                            M.alloc (|
+                                                                                                                                              Ty.path
+                                                                                                                                                "char",
+                                                                                                                                              M.cast
+                                                                                                                                                (Ty.path
+                                                                                                                                                  "char")
+                                                                                                                                                (M.read (|
+                                                                                                                                                  b
+                                                                                                                                                |))
+                                                                                                                                            |)
+                                                                                                                                          |)
+                                                                                                                                        |)
+                                                                                                                                      |)
+                                                                                                                                    ]
+                                                                                                                                  |)
+                                                                                                                                ]
+                                                                                                                            |)
+                                                                                                                          |)
+                                                                                                                        |)
+                                                                                                                      |)
+                                                                                                                    ]
+                                                                                                                  |)
+                                                                                                                ]
+                                                                                                              |)
+                                                                                                            ]
+                                                                                                          |)
+                                                                                                        |),
+                                                                                                        [
+                                                                                                          fun
+                                                                                                              γ =>
+                                                                                                            ltac:(M.monadic
+                                                                                                              (let
+                                                                                                                    γ0_0 :=
+                                                                                                                M.SubPointer.get_struct_tuple_field (|
+                                                                                                                  γ,
+                                                                                                                  "core::ops::control_flow::ControlFlow::Break",
+                                                                                                                  0
+                                                                                                                |) in
+                                                                                                              let
+                                                                                                                    residual :=
+                                                                                                                M.copy (|
                                                                                                                   Ty.apply
                                                                                                                     (Ty.path
                                                                                                                       "core::result::Result")
                                                                                                                     []
                                                                                                                     [
-                                                                                                                      Ty.tuple
-                                                                                                                        [];
+                                                                                                                      Ty.path
+                                                                                                                        "core::convert::Infallible";
                                                                                                                       Ty.path
                                                                                                                         "core::fmt::Error"
                                                                                                                     ],
-                                                                                                                  M.get_associated_function (|
-                                                                                                                    Ty.path
-                                                                                                                      "core::fmt::Formatter",
-                                                                                                                    "write_fmt",
-                                                                                                                    [],
-                                                                                                                    []
-                                                                                                                  |),
-                                                                                                                  [
-                                                                                                                    M.borrow (|
-                                                                                                                      Pointer.Kind.MutRef,
-                                                                                                                      M.deref (|
-                                                                                                                        M.read (|
-                                                                                                                          f
-                                                                                                                        |)
-                                                                                                                      |)
-                                                                                                                    |);
+                                                                                                                  γ0_0
+                                                                                                                |) in
+                                                                                                              M.never_to_any (|
+                                                                                                                M.read (|
+                                                                                                                  M.return_ (|
                                                                                                                     M.call_closure (|
-                                                                                                                      Ty.path
-                                                                                                                        "core::fmt::Arguments",
-                                                                                                                      M.get_associated_function (|
-                                                                                                                        Ty.path
-                                                                                                                          "core::fmt::Arguments",
-                                                                                                                        "new_v1",
+                                                                                                                      Ty.apply
+                                                                                                                        (Ty.path
+                                                                                                                          "core::result::Result")
+                                                                                                                        []
                                                                                                                         [
-                                                                                                                          Value.Integer
-                                                                                                                            IntegerKind.Usize
-                                                                                                                            1;
-                                                                                                                          Value.Integer
-                                                                                                                            IntegerKind.Usize
-                                                                                                                            1
+                                                                                                                          Ty.tuple
+                                                                                                                            [];
+                                                                                                                          Ty.path
+                                                                                                                            "core::fmt::Error"
                                                                                                                         ],
+                                                                                                                      M.get_trait_method (|
+                                                                                                                        "core::ops::try_trait::FromResidual",
+                                                                                                                        Ty.apply
+                                                                                                                          (Ty.path
+                                                                                                                            "core::result::Result")
+                                                                                                                          []
+                                                                                                                          [
+                                                                                                                            Ty.tuple
+                                                                                                                              [];
+                                                                                                                            Ty.path
+                                                                                                                              "core::fmt::Error"
+                                                                                                                          ],
+                                                                                                                        [],
+                                                                                                                        [
+                                                                                                                          Ty.apply
+                                                                                                                            (Ty.path
+                                                                                                                              "core::result::Result")
+                                                                                                                            []
+                                                                                                                            [
+                                                                                                                              Ty.path
+                                                                                                                                "core::convert::Infallible";
+                                                                                                                              Ty.path
+                                                                                                                                "core::fmt::Error"
+                                                                                                                            ]
+                                                                                                                        ],
+                                                                                                                        "from_residual",
+                                                                                                                        [],
                                                                                                                         []
                                                                                                                       |),
                                                                                                                       [
-                                                                                                                        M.borrow (|
+                                                                                                                        M.read (|
+                                                                                                                          residual
+                                                                                                                        |)
+                                                                                                                      ]
+                                                                                                                    |)
+                                                                                                                  |)
+                                                                                                                |)
+                                                                                                              |)));
+                                                                                                          fun
+                                                                                                              γ =>
+                                                                                                            ltac:(M.monadic
+                                                                                                              (let
+                                                                                                                    γ0_0 :=
+                                                                                                                M.SubPointer.get_struct_tuple_field (|
+                                                                                                                  γ,
+                                                                                                                  "core::ops::control_flow::ControlFlow::Continue",
+                                                                                                                  0
+                                                                                                                |) in
+                                                                                                              let
+                                                                                                                    val :=
+                                                                                                                M.copy (|
+                                                                                                                  Ty.tuple
+                                                                                                                    [],
+                                                                                                                  γ0_0
+                                                                                                                |) in
+                                                                                                              M.read (|
+                                                                                                                val
+                                                                                                              |)))
+                                                                                                        ]
+                                                                                                      |) in
+                                                                                                    M.alloc (|
+                                                                                                      Ty.tuple
+                                                                                                        [],
+                                                                                                      Value.Tuple
+                                                                                                        []
+                                                                                                    |)
+                                                                                                  |)));
+                                                                                              fun
+                                                                                                  γ =>
+                                                                                                ltac:(M.monadic
+                                                                                                  (M.read (|
+                                                                                                    let~
+                                                                                                          _ :
+                                                                                                        Ty.tuple
+                                                                                                          [] :=
+                                                                                                      M.match_operator (|
+                                                                                                        Ty.tuple
+                                                                                                          [],
+                                                                                                        M.alloc (|
+                                                                                                          Ty.apply
+                                                                                                            (Ty.path
+                                                                                                              "core::ops::control_flow::ControlFlow")
+                                                                                                            []
+                                                                                                            [
+                                                                                                              Ty.apply
+                                                                                                                (Ty.path
+                                                                                                                  "core::result::Result")
+                                                                                                                []
+                                                                                                                [
+                                                                                                                  Ty.path
+                                                                                                                    "core::convert::Infallible";
+                                                                                                                  Ty.path
+                                                                                                                    "core::fmt::Error"
+                                                                                                                ];
+                                                                                                              Ty.tuple
+                                                                                                                []
+                                                                                                            ],
+                                                                                                          M.call_closure (|
+                                                                                                            Ty.apply
+                                                                                                              (Ty.path
+                                                                                                                "core::ops::control_flow::ControlFlow")
+                                                                                                              []
+                                                                                                              [
+                                                                                                                Ty.apply
+                                                                                                                  (Ty.path
+                                                                                                                    "core::result::Result")
+                                                                                                                  []
+                                                                                                                  [
+                                                                                                                    Ty.path
+                                                                                                                      "core::convert::Infallible";
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::Error"
+                                                                                                                  ];
+                                                                                                                Ty.tuple
+                                                                                                                  []
+                                                                                                              ],
+                                                                                                            M.get_trait_method (|
+                                                                                                              "core::ops::try_trait::Try",
+                                                                                                              Ty.apply
+                                                                                                                (Ty.path
+                                                                                                                  "core::result::Result")
+                                                                                                                []
+                                                                                                                [
+                                                                                                                  Ty.tuple
+                                                                                                                    [];
+                                                                                                                  Ty.path
+                                                                                                                    "core::fmt::Error"
+                                                                                                                ],
+                                                                                                              [],
+                                                                                                              [],
+                                                                                                              "branch",
+                                                                                                              [],
+                                                                                                              []
+                                                                                                            |),
+                                                                                                            [
+                                                                                                              M.call_closure (|
+                                                                                                                Ty.apply
+                                                                                                                  (Ty.path
+                                                                                                                    "core::result::Result")
+                                                                                                                  []
+                                                                                                                  [
+                                                                                                                    Ty.tuple
+                                                                                                                      [];
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::Error"
+                                                                                                                  ],
+                                                                                                                M.get_associated_function (|
+                                                                                                                  Ty.path
+                                                                                                                    "core::fmt::Formatter",
+                                                                                                                  "write_fmt",
+                                                                                                                  [],
+                                                                                                                  []
+                                                                                                                |),
+                                                                                                                [
+                                                                                                                  M.borrow (|
+                                                                                                                    Pointer.Kind.MutRef,
+                                                                                                                    M.deref (|
+                                                                                                                      M.read (|
+                                                                                                                        f
+                                                                                                                      |)
+                                                                                                                    |)
+                                                                                                                  |);
+                                                                                                                  M.call_closure (|
+                                                                                                                    Ty.path
+                                                                                                                      "core::fmt::Arguments",
+                                                                                                                    M.get_associated_function (|
+                                                                                                                      Ty.path
+                                                                                                                        "core::fmt::Arguments",
+                                                                                                                      "new_v1_formatted",
+                                                                                                                      [],
+                                                                                                                      []
+                                                                                                                    |),
+                                                                                                                    [
+                                                                                                                      (* Unsize *)
+                                                                                                                      M.pointer_coercion
+                                                                                                                        (M.borrow (|
                                                                                                                           Pointer.Kind.Ref,
                                                                                                                           M.deref (|
                                                                                                                             M.borrow (|
@@ -2021,14 +2289,16 @@ Module fmt.
                                                                                                                                 Value.Array
                                                                                                                                   [
                                                                                                                                     mk_str (|
-                                                                                                                                      ""
+                                                                                                                                      "\x"
                                                                                                                                     |)
                                                                                                                                   ]
                                                                                                                               |)
                                                                                                                             |)
                                                                                                                           |)
-                                                                                                                        |);
-                                                                                                                        M.borrow (|
+                                                                                                                        |));
+                                                                                                                      (* Unsize *)
+                                                                                                                      M.pointer_coercion
+                                                                                                                        (M.borrow (|
                                                                                                                           Pointer.Kind.Ref,
                                                                                                                           M.deref (|
                                                                                                                             M.borrow (|
@@ -2054,11 +2324,11 @@ Module fmt.
                                                                                                                                       M.get_associated_function (|
                                                                                                                                         Ty.path
                                                                                                                                           "core::fmt::rt::Argument",
-                                                                                                                                        "new_display",
+                                                                                                                                        "new_lower_hex",
                                                                                                                                         [],
                                                                                                                                         [
                                                                                                                                           Ty.path
-                                                                                                                                            "char"
+                                                                                                                                            "u8"
                                                                                                                                         ]
                                                                                                                                       |),
                                                                                                                                       [
@@ -2067,16 +2337,7 @@ Module fmt.
                                                                                                                                           M.deref (|
                                                                                                                                             M.borrow (|
                                                                                                                                               Pointer.Kind.Ref,
-                                                                                                                                              M.alloc (|
-                                                                                                                                                Ty.path
-                                                                                                                                                  "char",
-                                                                                                                                                M.cast
-                                                                                                                                                  (Ty.path
-                                                                                                                                                    "char")
-                                                                                                                                                  (M.read (|
-                                                                                                                                                    b
-                                                                                                                                                  |))
-                                                                                                                                              |)
+                                                                                                                                              b
                                                                                                                                             |)
                                                                                                                                           |)
                                                                                                                                         |)
@@ -2086,159 +2347,107 @@ Module fmt.
                                                                                                                               |)
                                                                                                                             |)
                                                                                                                           |)
-                                                                                                                        |)
-                                                                                                                      ]
-                                                                                                                    |)
-                                                                                                                  ]
-                                                                                                                |)
-                                                                                                              ]
-                                                                                                            |)
-                                                                                                          |),
-                                                                                                          [
-                                                                                                            fun
-                                                                                                                γ =>
-                                                                                                              ltac:(M.monadic
-                                                                                                                (let
-                                                                                                                      γ0_0 :=
-                                                                                                                  M.SubPointer.get_struct_tuple_field (|
-                                                                                                                    γ,
-                                                                                                                    "core::ops::control_flow::ControlFlow::Break",
-                                                                                                                    0
-                                                                                                                  |) in
-                                                                                                                let
-                                                                                                                      residual :=
-                                                                                                                  M.copy (|
-                                                                                                                    Ty.apply
-                                                                                                                      (Ty.path
-                                                                                                                        "core::result::Result")
-                                                                                                                      []
-                                                                                                                      [
-                                                                                                                        Ty.path
-                                                                                                                          "core::convert::Infallible";
-                                                                                                                        Ty.path
-                                                                                                                          "core::fmt::Error"
-                                                                                                                      ],
-                                                                                                                    γ0_0
-                                                                                                                  |) in
-                                                                                                                M.alloc (|
-                                                                                                                  Ty.tuple
-                                                                                                                    [],
-                                                                                                                  M.never_to_any (|
-                                                                                                                    M.read (|
-                                                                                                                      M.return_ (|
-                                                                                                                        M.call_closure (|
-                                                                                                                          Ty.apply
-                                                                                                                            (Ty.path
-                                                                                                                              "core::result::Result")
-                                                                                                                            []
-                                                                                                                            [
-                                                                                                                              Ty.tuple
-                                                                                                                                [];
-                                                                                                                              Ty.path
-                                                                                                                                "core::fmt::Error"
-                                                                                                                            ],
-                                                                                                                          M.get_trait_method (|
-                                                                                                                            "core::ops::try_trait::FromResidual",
-                                                                                                                            Ty.apply
-                                                                                                                              (Ty.path
-                                                                                                                                "core::result::Result")
-                                                                                                                              []
-                                                                                                                              [
-                                                                                                                                Ty.tuple
-                                                                                                                                  [];
-                                                                                                                                Ty.path
-                                                                                                                                  "core::fmt::Error"
-                                                                                                                              ],
-                                                                                                                            [],
-                                                                                                                            [
-                                                                                                                              Ty.apply
-                                                                                                                                (Ty.path
-                                                                                                                                  "core::result::Result")
-                                                                                                                                []
-                                                                                                                                [
-                                                                                                                                  Ty.path
-                                                                                                                                    "core::convert::Infallible";
-                                                                                                                                  Ty.path
-                                                                                                                                    "core::fmt::Error"
-                                                                                                                                ]
-                                                                                                                            ],
-                                                                                                                            "from_residual",
-                                                                                                                            [],
-                                                                                                                            []
-                                                                                                                          |),
-                                                                                                                          [
-                                                                                                                            M.read (|
-                                                                                                                              residual
+                                                                                                                        |));
+                                                                                                                      (* Unsize *)
+                                                                                                                      M.pointer_coercion
+                                                                                                                        (M.borrow (|
+                                                                                                                          Pointer.Kind.Ref,
+                                                                                                                          M.deref (|
+                                                                                                                            M.borrow (|
+                                                                                                                              Pointer.Kind.Ref,
+                                                                                                                              M.alloc (|
+                                                                                                                                Ty.apply
+                                                                                                                                  (Ty.path
+                                                                                                                                    "array")
+                                                                                                                                  [
+                                                                                                                                    Value.Integer
+                                                                                                                                      IntegerKind.Usize
+                                                                                                                                      1
+                                                                                                                                  ]
+                                                                                                                                  [
+                                                                                                                                    Ty.path
+                                                                                                                                      "core::fmt::rt::Placeholder"
+                                                                                                                                  ],
+                                                                                                                                Value.Array
+                                                                                                                                  [
+                                                                                                                                    M.call_closure (|
+                                                                                                                                      Ty.path
+                                                                                                                                        "core::fmt::rt::Placeholder",
+                                                                                                                                      M.get_associated_function (|
+                                                                                                                                        Ty.path
+                                                                                                                                          "core::fmt::rt::Placeholder",
+                                                                                                                                        "new",
+                                                                                                                                        [],
+                                                                                                                                        []
+                                                                                                                                      |),
+                                                                                                                                      [
+                                                                                                                                        Value.Integer
+                                                                                                                                          IntegerKind.Usize
+                                                                                                                                          0;
+                                                                                                                                        Value.UnicodeChar
+                                                                                                                                          32;
+                                                                                                                                        Value.StructTuple
+                                                                                                                                          "core::fmt::rt::Alignment::Unknown"
+                                                                                                                                          []
+                                                                                                                                          []
+                                                                                                                                          [];
+                                                                                                                                        Value.Integer
+                                                                                                                                          IntegerKind.U32
+                                                                                                                                          8;
+                                                                                                                                        Value.StructTuple
+                                                                                                                                          "core::fmt::rt::Count::Implied"
+                                                                                                                                          []
+                                                                                                                                          []
+                                                                                                                                          [];
+                                                                                                                                        Value.StructTuple
+                                                                                                                                          "core::fmt::rt::Count::Is"
+                                                                                                                                          []
+                                                                                                                                          []
+                                                                                                                                          [
+                                                                                                                                            Value.Integer
+                                                                                                                                              IntegerKind.Usize
+                                                                                                                                              2
+                                                                                                                                          ]
+                                                                                                                                      ]
+                                                                                                                                    |)
+                                                                                                                                  ]
+                                                                                                                              |)
                                                                                                                             |)
-                                                                                                                          ]
-                                                                                                                        |)
+                                                                                                                          |)
+                                                                                                                        |));
+                                                                                                                      M.call_closure (|
+                                                                                                                        Ty.path
+                                                                                                                          "core::fmt::rt::UnsafeArg",
+                                                                                                                        M.get_associated_function (|
+                                                                                                                          Ty.path
+                                                                                                                            "core::fmt::rt::UnsafeArg",
+                                                                                                                          "new",
+                                                                                                                          [],
+                                                                                                                          []
+                                                                                                                        |),
+                                                                                                                        []
                                                                                                                       |)
-                                                                                                                    |)
+                                                                                                                    ]
                                                                                                                   |)
-                                                                                                                |)));
-                                                                                                            fun
-                                                                                                                γ =>
-                                                                                                              ltac:(M.monadic
-                                                                                                                (let
-                                                                                                                      γ0_0 :=
-                                                                                                                  M.SubPointer.get_struct_tuple_field (|
-                                                                                                                    γ,
-                                                                                                                    "core::ops::control_flow::ControlFlow::Continue",
-                                                                                                                    0
-                                                                                                                  |) in
-                                                                                                                let
-                                                                                                                      val :=
-                                                                                                                  M.copy (|
-                                                                                                                    Ty.tuple
-                                                                                                                      [],
-                                                                                                                    γ0_0
-                                                                                                                  |) in
-                                                                                                                val))
-                                                                                                          ]
-                                                                                                        |)
-                                                                                                      |) in
-                                                                                                    M.alloc (|
-                                                                                                      Ty.tuple
-                                                                                                        [],
-                                                                                                      Value.Tuple
-                                                                                                        []
-                                                                                                    |)));
-                                                                                                fun
-                                                                                                    γ =>
-                                                                                                  ltac:(M.monadic
-                                                                                                    (let~
-                                                                                                          _ :
-                                                                                                        Ty.tuple
-                                                                                                          [] :=
-                                                                                                      M.read (|
-                                                                                                        M.match_operator (|
-                                                                                                          Ty.tuple
-                                                                                                            [],
-                                                                                                          M.alloc (|
-                                                                                                            Ty.apply
-                                                                                                              (Ty.path
-                                                                                                                "core::ops::control_flow::ControlFlow")
-                                                                                                              []
-                                                                                                              [
-                                                                                                                Ty.apply
-                                                                                                                  (Ty.path
-                                                                                                                    "core::result::Result")
-                                                                                                                  []
-                                                                                                                  [
-                                                                                                                    Ty.path
-                                                                                                                      "core::convert::Infallible";
-                                                                                                                    Ty.path
-                                                                                                                      "core::fmt::Error"
-                                                                                                                  ];
-                                                                                                                Ty.tuple
-                                                                                                                  []
-                                                                                                              ],
-                                                                                                            M.call_closure (|
-                                                                                                              Ty.apply
-                                                                                                                (Ty.path
-                                                                                                                  "core::ops::control_flow::ControlFlow")
-                                                                                                                []
-                                                                                                                [
+                                                                                                                ]
+                                                                                                              |)
+                                                                                                            ]
+                                                                                                          |)
+                                                                                                        |),
+                                                                                                        [
+                                                                                                          fun
+                                                                                                              γ =>
+                                                                                                            ltac:(M.monadic
+                                                                                                              (let
+                                                                                                                    γ0_0 :=
+                                                                                                                M.SubPointer.get_struct_tuple_field (|
+                                                                                                                  γ,
+                                                                                                                  "core::ops::control_flow::ControlFlow::Break",
+                                                                                                                  0
+                                                                                                                |) in
+                                                                                                              let
+                                                                                                                    residual :=
+                                                                                                                M.copy (|
                                                                                                                   Ty.apply
                                                                                                                     (Ty.path
                                                                                                                       "core::result::Result")
@@ -2248,545 +2457,268 @@ Module fmt.
                                                                                                                         "core::convert::Infallible";
                                                                                                                       Ty.path
                                                                                                                         "core::fmt::Error"
-                                                                                                                    ];
-                                                                                                                  Ty.tuple
-                                                                                                                    []
-                                                                                                                ],
-                                                                                                              M.get_trait_method (|
-                                                                                                                "core::ops::try_trait::Try",
-                                                                                                                Ty.apply
-                                                                                                                  (Ty.path
-                                                                                                                    "core::result::Result")
-                                                                                                                  []
-                                                                                                                  [
-                                                                                                                    Ty.tuple
-                                                                                                                      [];
-                                                                                                                    Ty.path
-                                                                                                                      "core::fmt::Error"
-                                                                                                                  ],
-                                                                                                                [],
-                                                                                                                [],
-                                                                                                                "branch",
-                                                                                                                [],
-                                                                                                                []
-                                                                                                              |),
-                                                                                                              [
-                                                                                                                M.call_closure (|
-                                                                                                                  Ty.apply
-                                                                                                                    (Ty.path
-                                                                                                                      "core::result::Result")
-                                                                                                                    []
-                                                                                                                    [
-                                                                                                                      Ty.tuple
-                                                                                                                        [];
-                                                                                                                      Ty.path
-                                                                                                                        "core::fmt::Error"
                                                                                                                     ],
-                                                                                                                  M.get_associated_function (|
-                                                                                                                    Ty.path
-                                                                                                                      "core::fmt::Formatter",
-                                                                                                                    "write_fmt",
-                                                                                                                    [],
-                                                                                                                    []
-                                                                                                                  |),
-                                                                                                                  [
-                                                                                                                    M.borrow (|
-                                                                                                                      Pointer.Kind.MutRef,
-                                                                                                                      M.deref (|
-                                                                                                                        M.read (|
-                                                                                                                          f
-                                                                                                                        |)
-                                                                                                                      |)
-                                                                                                                    |);
+                                                                                                                  γ0_0
+                                                                                                                |) in
+                                                                                                              M.never_to_any (|
+                                                                                                                M.read (|
+                                                                                                                  M.return_ (|
                                                                                                                     M.call_closure (|
-                                                                                                                      Ty.path
-                                                                                                                        "core::fmt::Arguments",
-                                                                                                                      M.get_associated_function (|
-                                                                                                                        Ty.path
-                                                                                                                          "core::fmt::Arguments",
-                                                                                                                        "new_v1_formatted",
-                                                                                                                        [],
+                                                                                                                      Ty.apply
+                                                                                                                        (Ty.path
+                                                                                                                          "core::result::Result")
                                                                                                                         []
-                                                                                                                      |),
-                                                                                                                      [
-                                                                                                                        (* Unsize *)
-                                                                                                                        M.pointer_coercion
-                                                                                                                          (M.borrow (|
-                                                                                                                            Pointer.Kind.Ref,
-                                                                                                                            M.deref (|
-                                                                                                                              M.borrow (|
-                                                                                                                                Pointer.Kind.Ref,
-                                                                                                                                M.alloc (|
-                                                                                                                                  Ty.apply
-                                                                                                                                    (Ty.path
-                                                                                                                                      "array")
-                                                                                                                                    [
-                                                                                                                                      Value.Integer
-                                                                                                                                        IntegerKind.Usize
-                                                                                                                                        1
-                                                                                                                                    ]
-                                                                                                                                    [
-                                                                                                                                      Ty.apply
-                                                                                                                                        (Ty.path
-                                                                                                                                          "&")
-                                                                                                                                        []
-                                                                                                                                        [
-                                                                                                                                          Ty.path
-                                                                                                                                            "str"
-                                                                                                                                        ]
-                                                                                                                                    ],
-                                                                                                                                  Value.Array
-                                                                                                                                    [
-                                                                                                                                      mk_str (|
-                                                                                                                                        "\x"
-                                                                                                                                      |)
-                                                                                                                                    ]
-                                                                                                                                |)
-                                                                                                                              |)
-                                                                                                                            |)
-                                                                                                                          |));
-                                                                                                                        (* Unsize *)
-                                                                                                                        M.pointer_coercion
-                                                                                                                          (M.borrow (|
-                                                                                                                            Pointer.Kind.Ref,
-                                                                                                                            M.deref (|
-                                                                                                                              M.borrow (|
-                                                                                                                                Pointer.Kind.Ref,
-                                                                                                                                M.alloc (|
-                                                                                                                                  Ty.apply
-                                                                                                                                    (Ty.path
-                                                                                                                                      "array")
-                                                                                                                                    [
-                                                                                                                                      Value.Integer
-                                                                                                                                        IntegerKind.Usize
-                                                                                                                                        1
-                                                                                                                                    ]
-                                                                                                                                    [
-                                                                                                                                      Ty.path
-                                                                                                                                        "core::fmt::rt::Argument"
-                                                                                                                                    ],
-                                                                                                                                  Value.Array
-                                                                                                                                    [
-                                                                                                                                      M.call_closure (|
-                                                                                                                                        Ty.path
-                                                                                                                                          "core::fmt::rt::Argument",
-                                                                                                                                        M.get_associated_function (|
-                                                                                                                                          Ty.path
-                                                                                                                                            "core::fmt::rt::Argument",
-                                                                                                                                          "new_lower_hex",
-                                                                                                                                          [],
-                                                                                                                                          [
-                                                                                                                                            Ty.path
-                                                                                                                                              "u8"
-                                                                                                                                          ]
-                                                                                                                                        |),
-                                                                                                                                        [
-                                                                                                                                          M.borrow (|
-                                                                                                                                            Pointer.Kind.Ref,
-                                                                                                                                            M.deref (|
-                                                                                                                                              M.borrow (|
-                                                                                                                                                Pointer.Kind.Ref,
-                                                                                                                                                b
-                                                                                                                                              |)
-                                                                                                                                            |)
-                                                                                                                                          |)
-                                                                                                                                        ]
-                                                                                                                                      |)
-                                                                                                                                    ]
-                                                                                                                                |)
-                                                                                                                              |)
-                                                                                                                            |)
-                                                                                                                          |));
-                                                                                                                        (* Unsize *)
-                                                                                                                        M.pointer_coercion
-                                                                                                                          (M.borrow (|
-                                                                                                                            Pointer.Kind.Ref,
-                                                                                                                            M.deref (|
-                                                                                                                              M.borrow (|
-                                                                                                                                Pointer.Kind.Ref,
-                                                                                                                                M.alloc (|
-                                                                                                                                  Ty.apply
-                                                                                                                                    (Ty.path
-                                                                                                                                      "array")
-                                                                                                                                    [
-                                                                                                                                      Value.Integer
-                                                                                                                                        IntegerKind.Usize
-                                                                                                                                        1
-                                                                                                                                    ]
-                                                                                                                                    [
-                                                                                                                                      Ty.path
-                                                                                                                                        "core::fmt::rt::Placeholder"
-                                                                                                                                    ],
-                                                                                                                                  Value.Array
-                                                                                                                                    [
-                                                                                                                                      M.call_closure (|
-                                                                                                                                        Ty.path
-                                                                                                                                          "core::fmt::rt::Placeholder",
-                                                                                                                                        M.get_associated_function (|
-                                                                                                                                          Ty.path
-                                                                                                                                            "core::fmt::rt::Placeholder",
-                                                                                                                                          "new",
-                                                                                                                                          [],
-                                                                                                                                          []
-                                                                                                                                        |),
-                                                                                                                                        [
-                                                                                                                                          Value.Integer
-                                                                                                                                            IntegerKind.Usize
-                                                                                                                                            0;
-                                                                                                                                          Value.UnicodeChar
-                                                                                                                                            32;
-                                                                                                                                          Value.StructTuple
-                                                                                                                                            "core::fmt::rt::Alignment::Unknown"
-                                                                                                                                            []
-                                                                                                                                            []
-                                                                                                                                            [];
-                                                                                                                                          Value.Integer
-                                                                                                                                            IntegerKind.U32
-                                                                                                                                            8;
-                                                                                                                                          Value.StructTuple
-                                                                                                                                            "core::fmt::rt::Count::Implied"
-                                                                                                                                            []
-                                                                                                                                            []
-                                                                                                                                            [];
-                                                                                                                                          Value.StructTuple
-                                                                                                                                            "core::fmt::rt::Count::Is"
-                                                                                                                                            []
-                                                                                                                                            []
-                                                                                                                                            [
-                                                                                                                                              Value.Integer
-                                                                                                                                                IntegerKind.Usize
-                                                                                                                                                2
-                                                                                                                                            ]
-                                                                                                                                        ]
-                                                                                                                                      |)
-                                                                                                                                    ]
-                                                                                                                                |)
-                                                                                                                              |)
-                                                                                                                            |)
-                                                                                                                          |));
-                                                                                                                        M.call_closure (|
+                                                                                                                        [
+                                                                                                                          Ty.tuple
+                                                                                                                            [];
                                                                                                                           Ty.path
-                                                                                                                            "core::fmt::rt::UnsafeArg",
-                                                                                                                          M.get_associated_function (|
-                                                                                                                            Ty.path
-                                                                                                                              "core::fmt::rt::UnsafeArg",
-                                                                                                                            "new",
-                                                                                                                            [],
-                                                                                                                            []
-                                                                                                                          |),
+                                                                                                                            "core::fmt::Error"
+                                                                                                                        ],
+                                                                                                                      M.get_trait_method (|
+                                                                                                                        "core::ops::try_trait::FromResidual",
+                                                                                                                        Ty.apply
+                                                                                                                          (Ty.path
+                                                                                                                            "core::result::Result")
                                                                                                                           []
-                                                                                                                        |)
-                                                                                                                      ]
-                                                                                                                    |)
-                                                                                                                  ]
-                                                                                                                |)
-                                                                                                              ]
-                                                                                                            |)
-                                                                                                          |),
-                                                                                                          [
-                                                                                                            fun
-                                                                                                                γ =>
-                                                                                                              ltac:(M.monadic
-                                                                                                                (let
-                                                                                                                      γ0_0 :=
-                                                                                                                  M.SubPointer.get_struct_tuple_field (|
-                                                                                                                    γ,
-                                                                                                                    "core::ops::control_flow::ControlFlow::Break",
-                                                                                                                    0
-                                                                                                                  |) in
-                                                                                                                let
-                                                                                                                      residual :=
-                                                                                                                  M.copy (|
-                                                                                                                    Ty.apply
-                                                                                                                      (Ty.path
-                                                                                                                        "core::result::Result")
-                                                                                                                      []
-                                                                                                                      [
-                                                                                                                        Ty.path
-                                                                                                                          "core::convert::Infallible";
-                                                                                                                        Ty.path
-                                                                                                                          "core::fmt::Error"
-                                                                                                                      ],
-                                                                                                                    γ0_0
-                                                                                                                  |) in
-                                                                                                                M.alloc (|
-                                                                                                                  Ty.tuple
-                                                                                                                    [],
-                                                                                                                  M.never_to_any (|
-                                                                                                                    M.read (|
-                                                                                                                      M.return_ (|
-                                                                                                                        M.call_closure (|
+                                                                                                                          [
+                                                                                                                            Ty.tuple
+                                                                                                                              [];
+                                                                                                                            Ty.path
+                                                                                                                              "core::fmt::Error"
+                                                                                                                          ],
+                                                                                                                        [],
+                                                                                                                        [
                                                                                                                           Ty.apply
                                                                                                                             (Ty.path
                                                                                                                               "core::result::Result")
                                                                                                                             []
                                                                                                                             [
-                                                                                                                              Ty.tuple
-                                                                                                                                [];
+                                                                                                                              Ty.path
+                                                                                                                                "core::convert::Infallible";
                                                                                                                               Ty.path
                                                                                                                                 "core::fmt::Error"
-                                                                                                                            ],
-                                                                                                                          M.get_trait_method (|
-                                                                                                                            "core::ops::try_trait::FromResidual",
-                                                                                                                            Ty.apply
-                                                                                                                              (Ty.path
-                                                                                                                                "core::result::Result")
-                                                                                                                              []
-                                                                                                                              [
-                                                                                                                                Ty.tuple
-                                                                                                                                  [];
-                                                                                                                                Ty.path
-                                                                                                                                  "core::fmt::Error"
-                                                                                                                              ],
-                                                                                                                            [],
-                                                                                                                            [
-                                                                                                                              Ty.apply
-                                                                                                                                (Ty.path
-                                                                                                                                  "core::result::Result")
-                                                                                                                                []
-                                                                                                                                [
-                                                                                                                                  Ty.path
-                                                                                                                                    "core::convert::Infallible";
-                                                                                                                                  Ty.path
-                                                                                                                                    "core::fmt::Error"
-                                                                                                                                ]
-                                                                                                                            ],
-                                                                                                                            "from_residual",
-                                                                                                                            [],
-                                                                                                                            []
-                                                                                                                          |),
-                                                                                                                          [
-                                                                                                                            M.read (|
-                                                                                                                              residual
-                                                                                                                            |)
-                                                                                                                          ]
+                                                                                                                            ]
+                                                                                                                        ],
+                                                                                                                        "from_residual",
+                                                                                                                        [],
+                                                                                                                        []
+                                                                                                                      |),
+                                                                                                                      [
+                                                                                                                        M.read (|
+                                                                                                                          residual
                                                                                                                         |)
-                                                                                                                      |)
+                                                                                                                      ]
                                                                                                                     |)
                                                                                                                   |)
-                                                                                                                |)));
-                                                                                                            fun
-                                                                                                                γ =>
-                                                                                                              ltac:(M.monadic
-                                                                                                                (let
-                                                                                                                      γ0_0 :=
-                                                                                                                  M.SubPointer.get_struct_tuple_field (|
-                                                                                                                    γ,
-                                                                                                                    "core::ops::control_flow::ControlFlow::Continue",
-                                                                                                                    0
-                                                                                                                  |) in
-                                                                                                                let
-                                                                                                                      val :=
-                                                                                                                  M.copy (|
-                                                                                                                    Ty.tuple
-                                                                                                                      [],
-                                                                                                                    γ0_0
-                                                                                                                  |) in
-                                                                                                                val))
-                                                                                                          ]
-                                                                                                        |)
+                                                                                                                |)
+                                                                                                              |)));
+                                                                                                          fun
+                                                                                                              γ =>
+                                                                                                            ltac:(M.monadic
+                                                                                                              (let
+                                                                                                                    γ0_0 :=
+                                                                                                                M.SubPointer.get_struct_tuple_field (|
+                                                                                                                  γ,
+                                                                                                                  "core::ops::control_flow::ControlFlow::Continue",
+                                                                                                                  0
+                                                                                                                |) in
+                                                                                                              let
+                                                                                                                    val :=
+                                                                                                                M.copy (|
+                                                                                                                  Ty.tuple
+                                                                                                                    [],
+                                                                                                                  γ0_0
+                                                                                                                |) in
+                                                                                                              M.read (|
+                                                                                                                val
+                                                                                                              |)))
+                                                                                                        ]
                                                                                                       |) in
                                                                                                     M.alloc (|
                                                                                                       Ty.tuple
                                                                                                         [],
                                                                                                       Value.Tuple
                                                                                                         []
-                                                                                                    |)))
-                                                                                              ]
-                                                                                            |)))
-                                                                                      ]
-                                                                                    |)))
-                                                                              ]
-                                                                            |)))
-                                                                      ]
-                                                                    |)))
-                                                              ]
-                                                            |)))
-                                                      ]
-                                                    |)))
-                                              ]
-                                            |)
+                                                                                                    |)
+                                                                                                  |)))
+                                                                                            ]
+                                                                                          |)))
+                                                                                    ]
+                                                                                  |)))
+                                                                            ]
+                                                                          |)))
+                                                                    ]
+                                                                  |)))
+                                                            ]
+                                                          |)))
+                                                    ]
+                                                  |)))
+                                            ]
                                           |) in
                                         M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                                    |)))
-                              ]
-                            |))
-                        |) in
-                      let~ _ : Ty.tuple [] :=
-                        M.read (|
-                          M.match_operator (|
-                            Ty.tuple [],
-                            M.alloc (|
+                                    |)
+                                  |)))
+                            ]
+                          |)
+                        |))
+                    |) in
+                  let~ _ : Ty.tuple [] :=
+                    M.match_operator (|
+                      Ty.tuple [],
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.path "core::convert::Infallible"; Ty.path "core::fmt::Error" ];
+                            Ty.tuple []
+                          ],
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
                               Ty.apply
-                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                (Ty.path "core::result::Result")
                                 []
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
+                                [ Ty.path "core::convert::Infallible"; Ty.path "core::fmt::Error" ];
+                              Ty.tuple []
+                            ],
+                          M.get_trait_method (|
+                            "core::ops::try_trait::Try",
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                            [],
+                            [],
+                            "branch",
+                            [],
+                            []
+                          |),
+                          [
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::Formatter",
+                                "write_fmt",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                                M.call_closure (|
+                                  Ty.path "core::fmt::Arguments",
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::Arguments",
+                                    "new_const",
+                                    [ Value.Integer IntegerKind.Usize 1 ],
                                     []
-                                    [
-                                      Ty.path "core::convert::Infallible";
-                                      Ty.path "core::fmt::Error"
-                                    ];
-                                  Ty.tuple []
-                                ],
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "core::ops::control_flow::ControlFlow")
-                                  []
+                                  |),
                                   [
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [
-                                        Ty.path "core::convert::Infallible";
-                                        Ty.path "core::fmt::Error"
-                                      ];
-                                    Ty.tuple []
-                                  ],
-                                M.get_trait_method (|
-                                  "core::ops::try_trait::Try",
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                                  [],
-                                  [],
-                                  "branch",
-                                  [],
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 1 ]
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                            Value.Array [ mk_str (| """" |) ]
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  ]
+                                |)
+                              ]
+                            |)
+                          ]
+                        |)
+                      |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "core::ops::control_flow::ControlFlow::Break",
+                                0
+                              |) in
+                            let residual :=
+                              M.copy (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
                                   []
-                                |),
-                                [
+                                  [ Ty.path "core::convert::Infallible"; Ty.path "core::fmt::Error"
+                                  ],
+                                γ0_0
+                              |) in
+                            M.never_to_any (|
+                              M.read (|
+                                M.return_ (|
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::result::Result")
                                       []
                                       [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::Formatter",
-                                      "write_fmt",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.MutRef,
-                                        M.deref (| M.read (| f |) |)
-                                      |);
-                                      M.call_closure (|
-                                        Ty.path "core::fmt::Arguments",
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::Arguments",
-                                          "new_const",
-                                          [ Value.Integer IntegerKind.Usize 1 ],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (|
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.alloc (|
-                                                  Ty.apply
-                                                    (Ty.path "array")
-                                                    [ Value.Integer IntegerKind.Usize 1 ]
-                                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                                  Value.Array [ mk_str (| """" |) ]
-                                                |)
-                                              |)
-                                            |)
-                                          |)
-                                        ]
-                                      |)
-                                    ]
-                                  |)
-                                ]
-                              |)
-                            |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Break",
-                                      0
-                                    |) in
-                                  let residual :=
-                                    M.copy (|
+                                    M.get_trait_method (|
+                                      "core::ops::try_trait::FromResidual",
                                       Ty.apply
                                         (Ty.path "core::result::Result")
                                         []
-                                        [
-                                          Ty.path "core::convert::Infallible";
-                                          Ty.path "core::fmt::Error"
-                                        ],
-                                      γ0_0
-                                    |) in
-                                  M.alloc (|
-                                    Ty.tuple [],
-                                    M.never_to_any (|
-                                      M.read (|
-                                        M.return_ (|
-                                          M.call_closure (|
-                                            Ty.apply
-                                              (Ty.path "core::result::Result")
-                                              []
-                                              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                                            M.get_trait_method (|
-                                              "core::ops::try_trait::FromResidual",
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                                              [],
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [
-                                                    Ty.path "core::convert::Infallible";
-                                                    Ty.path "core::fmt::Error"
-                                                  ]
-                                              ],
-                                              "from_residual",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.read (| residual |) ]
-                                          |)
-                                        |)
-                                      |)
-                                    |)
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::ops::control_flow::ControlFlow::Continue",
-                                      0
-                                    |) in
-                                  let val := M.copy (| Ty.tuple [], γ0_0 |) in
-                                  val))
-                            ]
-                          |)
-                        |) in
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ]
-                          [ Value.Tuple [] ]
-                      |)
-                    |)
-                  |)))
-              |)
+                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                      [],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path "core::fmt::Error"
+                                          ]
+                                      ],
+                                      "from_residual",
+                                      [],
+                                      []
+                                    |),
+                                    [ M.read (| residual |) ]
+                                  |)
+                                |)
+                              |)
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "core::ops::control_flow::ControlFlow::Continue",
+                                0
+                              |) in
+                            let val := M.copy (| Ty.tuple [], γ0_0 |) in
+                            M.read (| val |)))
+                      ]
+                    |) in
+                  M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                      [ Value.Tuple [] ]
+                  |)
+                |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

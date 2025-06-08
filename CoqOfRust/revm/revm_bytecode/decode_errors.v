@@ -42,20 +42,18 @@ Module decode_errors.
                 [ Ty.path "revm_bytecode::decode_errors::BytecodeDecodeError" ],
               self
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.path "revm_bytecode::decode_errors::BytecodeDecodeError",
-              Value.DeclaredButUndefined,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (M.match_operator (|
-                      Ty.path "revm_bytecode::decode_errors::BytecodeDecodeError",
-                      Value.DeclaredButUndefined,
-                      [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
-                    |)))
-              ]
-            |)
+          M.match_operator (|
+            Ty.path "revm_bytecode::decode_errors::BytecodeDecodeError",
+            Value.DeclaredButUndefined,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (M.match_operator (|
+                    Ty.path "revm_bytecode::decode_errors::BytecodeDecodeError",
+                    Value.DeclaredButUndefined,
+                    [ fun γ => ltac:(M.monadic (M.read (| M.deref (| M.read (| self |) |) |))) ]
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -99,103 +97,89 @@ Module decode_errors.
             |) in
           let f :=
             M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_bytecode::decode_errors::BytecodeDecodeError::Eof",
-                        0
-                      |) in
-                    let __self_0 :=
-                      M.alloc (|
-                        Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::EofDecodeError" ],
-                        γ1_0
-                      |) in
+          M.match_operator (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "revm_bytecode::decode_errors::BytecodeDecodeError::Eof",
+                      0
+                    |) in
+                  let __self_0 :=
+                    M.alloc (|
+                      Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::EofDecodeError" ],
+                      γ1_0
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "debug_tuple_field1_finish",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Eof" |) |) |);
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                        |))
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "revm_bytecode::decode_errors::BytecodeDecodeError::Eip7702",
+                      0
+                    |) in
+                  let __self_0 :=
                     M.alloc (|
                       Ty.apply
-                        (Ty.path "core::result::Result")
+                        (Ty.path "&")
                         []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_tuple_field1_finish",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Eof" |) |) |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                            |))
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_bytecode::decode_errors::BytecodeDecodeError::Eip7702",
-                        0
-                      |) in
-                    let __self_0 :=
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [ Ty.path "revm_bytecode::eip7702::Eip7702DecodeError" ],
-                        γ1_0
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_tuple_field1_finish",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Eip7702" |) |) |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                            |))
-                        ]
-                      |)
-                    |)))
-              ]
-            |)
+                        [ Ty.path "revm_bytecode::eip7702::Eip7702DecodeError" ],
+                      γ1_0
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "debug_tuple_field1_finish",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Eip7702" |) |) |);
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                        |))
+                    ]
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -257,26 +241,29 @@ Module decode_errors.
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                 ]
               |) in
-            M.match_operator (|
+            M.alloc (|
               Ty.tuple [],
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_bytecode::decode_errors::BytecodeDecodeError::Eof",
-                        0
-                      |) in
-                    let __self_0 :=
-                      M.alloc (|
-                        Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::EofDecodeError" ],
-                        γ1_0
-                      |) in
-                    M.alloc (|
-                      Ty.tuple [],
+              M.match_operator (|
+                Ty.tuple [],
+                self,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let γ1_0 :=
+                        M.SubPointer.get_struct_tuple_field (|
+                          γ,
+                          "revm_bytecode::decode_errors::BytecodeDecodeError::Eof",
+                          0
+                        |) in
+                      let __self_0 :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "revm_bytecode::eof::EofDecodeError" ],
+                          γ1_0
+                        |) in
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_trait_method (|
@@ -292,27 +279,24 @@ Module decode_errors.
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                         ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_bytecode::decode_errors::BytecodeDecodeError::Eip7702",
-                        0
-                      |) in
-                    let __self_0 :=
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [ Ty.path "revm_bytecode::eip7702::Eip7702DecodeError" ],
-                        γ1_0
-                      |) in
-                    M.alloc (|
-                      Ty.tuple [],
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let γ1_0 :=
+                        M.SubPointer.get_struct_tuple_field (|
+                          γ,
+                          "revm_bytecode::decode_errors::BytecodeDecodeError::Eip7702",
+                          0
+                        |) in
+                      let __self_0 :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "revm_bytecode::eip7702::Eip7702DecodeError" ],
+                          γ1_0
+                        |) in
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_trait_method (|
@@ -328,9 +312,9 @@ Module decode_errors.
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                         ]
-                      |)
-                    |)))
-              ]
+                      |)))
+                ]
+              |)
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -411,160 +395,149 @@ Module decode_errors.
                   [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
                 |),
                 ltac:(M.monadic
-                  (M.read (|
-                    M.match_operator (|
-                      Ty.path "bool",
-                      M.alloc (|
-                        Ty.tuple
-                          [
-                            Ty.apply
-                              (Ty.path "&")
-                              []
-                              [ Ty.path "revm_bytecode::decode_errors::BytecodeDecodeError" ];
-                            Ty.apply
-                              (Ty.path "&")
-                              []
-                              [ Ty.path "revm_bytecode::decode_errors::BytecodeDecodeError" ]
-                          ],
-                        Value.Tuple [ M.read (| self |); M.read (| other |) ]
-                      |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                            let γ0_0 := M.read (| γ0_0 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ0_0,
-                                "revm_bytecode::decode_errors::BytecodeDecodeError::Eof",
-                                0
-                              |) in
-                            let __self_0 :=
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "revm_bytecode::eof::EofDecodeError" ],
-                                γ2_0
-                              |) in
-                            let γ0_1 := M.read (| γ0_1 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ0_1,
-                                "revm_bytecode::decode_errors::BytecodeDecodeError::Eof",
-                                0
-                              |) in
-                            let __arg1_0 :=
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "revm_bytecode::eof::EofDecodeError" ],
-                                γ2_0
-                              |) in
+                  (M.match_operator (|
+                    Ty.path "bool",
+                    M.alloc (|
+                      Ty.tuple
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "revm_bytecode::decode_errors::BytecodeDecodeError" ];
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "revm_bytecode::decode_errors::BytecodeDecodeError" ]
+                        ],
+                      Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                    |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                          let γ0_0 := M.read (| γ0_0 |) in
+                          let γ2_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ0_0,
+                              "revm_bytecode::decode_errors::BytecodeDecodeError::Eof",
+                              0
+                            |) in
+                          let __self_0 :=
                             M.alloc (|
-                              Ty.path "bool",
-                              M.call_closure (|
-                                Ty.path "bool",
-                                M.get_trait_method (|
-                                  "core::cmp::PartialEq",
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [ Ty.path "revm_bytecode::eof::EofDecodeError" ],
-                                  [],
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [ Ty.path "revm_bytecode::eof::EofDecodeError" ]
-                                  ],
-                                  "eq",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
-                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
-                                ]
-                              |)
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                            let γ0_0 := M.read (| γ0_0 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ0_0,
-                                "revm_bytecode::decode_errors::BytecodeDecodeError::Eip7702",
-                                0
-                              |) in
-                            let __self_0 :=
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "revm_bytecode::eip7702::Eip7702DecodeError" ],
-                                γ2_0
-                              |) in
-                            let γ0_1 := M.read (| γ0_1 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ0_1,
-                                "revm_bytecode::decode_errors::BytecodeDecodeError::Eip7702",
-                                0
-                              |) in
-                            let __arg1_0 :=
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "revm_bytecode::eip7702::Eip7702DecodeError" ],
-                                γ2_0
-                              |) in
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "revm_bytecode::eof::EofDecodeError" ],
+                              γ2_0
+                            |) in
+                          let γ0_1 := M.read (| γ0_1 |) in
+                          let γ2_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ0_1,
+                              "revm_bytecode::decode_errors::BytecodeDecodeError::Eof",
+                              0
+                            |) in
+                          let __arg1_0 :=
                             M.alloc (|
-                              Ty.path "bool",
-                              M.call_closure (|
-                                Ty.path "bool",
-                                M.get_trait_method (|
-                                  "core::cmp::PartialEq",
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [ Ty.path "revm_bytecode::eip7702::Eip7702DecodeError" ],
-                                  [],
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [ Ty.path "revm_bytecode::eip7702::Eip7702DecodeError" ]
-                                  ],
-                                  "eq",
-                                  [],
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "revm_bytecode::eof::EofDecodeError" ],
+                              γ2_0
+                            |) in
+                          M.call_closure (|
+                            Ty.path "bool",
+                            M.get_trait_method (|
+                              "core::cmp::PartialEq",
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "revm_bytecode::eof::EofDecodeError" ],
+                              [],
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
                                   []
-                                |),
-                                [
-                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
-                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
-                                ]
-                              |)
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.alloc (|
-                              Ty.path "bool",
-                              M.never_to_any (|
-                                M.call_closure (|
-                                  Ty.path "never",
-                                  M.get_function (| "core::intrinsics::unreachable", [], [] |),
+                                  [ Ty.path "revm_bytecode::eof::EofDecodeError" ]
+                              ],
+                              "eq",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                              M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                            ]
+                          |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                          let γ0_0 := M.read (| γ0_0 |) in
+                          let γ2_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ0_0,
+                              "revm_bytecode::decode_errors::BytecodeDecodeError::Eip7702",
+                              0
+                            |) in
+                          let __self_0 :=
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "revm_bytecode::eip7702::Eip7702DecodeError" ],
+                              γ2_0
+                            |) in
+                          let γ0_1 := M.read (| γ0_1 |) in
+                          let γ2_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ0_1,
+                              "revm_bytecode::decode_errors::BytecodeDecodeError::Eip7702",
+                              0
+                            |) in
+                          let __arg1_0 :=
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "revm_bytecode::eip7702::Eip7702DecodeError" ],
+                              γ2_0
+                            |) in
+                          M.call_closure (|
+                            Ty.path "bool",
+                            M.get_trait_method (|
+                              "core::cmp::PartialEq",
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "revm_bytecode::eip7702::Eip7702DecodeError" ],
+                              [],
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
                                   []
-                                |)
-                              |)
-                            |)))
-                      ]
-                    |)
+                                  [ Ty.path "revm_bytecode::eip7702::Eip7702DecodeError" ]
+                              ],
+                              "eq",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                              M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                            ]
+                          |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.never_to_any (|
+                            M.call_closure (|
+                              Ty.path "never",
+                              M.get_function (| "core::intrinsics::unreachable", [], [] |),
+                              []
+                            |)
+                          |)))
+                    ]
                   |)))
               |)
             |)
@@ -602,20 +575,18 @@ Module decode_errors.
                 [ Ty.path "revm_bytecode::decode_errors::BytecodeDecodeError" ],
               self
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.tuple [],
-              Value.DeclaredButUndefined,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (M.match_operator (|
-                      Ty.tuple [],
-                      Value.DeclaredButUndefined,
-                      [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
-                    |)))
-              ]
-            |)
+          M.match_operator (|
+            Ty.tuple [],
+            Value.DeclaredButUndefined,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (M.match_operator (|
+                    Ty.tuple [],
+                    Value.DeclaredButUndefined,
+                    [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -675,56 +646,59 @@ Module decode_errors.
                 |),
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
-            M.match_operator (|
+            M.alloc (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
-              M.alloc (|
-                Ty.tuple
-                  [
-                    Ty.apply
-                      (Ty.path "&")
-                      []
-                      [ Ty.path "revm_bytecode::decode_errors::BytecodeDecodeError" ];
-                    Ty.apply
-                      (Ty.path "&")
-                      []
-                      [ Ty.path "revm_bytecode::decode_errors::BytecodeDecodeError" ]
-                  ],
-                Value.Tuple [ M.read (| self |); M.read (| other |) ]
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let γ0_0 := M.read (| γ0_0 |) in
-                    let γ2_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ0_0,
-                        "revm_bytecode::decode_errors::BytecodeDecodeError::Eof",
-                        0
-                      |) in
-                    let __self_0 :=
-                      M.alloc (|
-                        Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::EofDecodeError" ],
-                        γ2_0
-                      |) in
-                    let γ0_1 := M.read (| γ0_1 |) in
-                    let γ2_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ0_1,
-                        "revm_bytecode::decode_errors::BytecodeDecodeError::Eof",
-                        0
-                      |) in
-                    let __arg1_0 :=
-                      M.alloc (|
-                        Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::EofDecodeError" ],
-                        γ2_0
-                      |) in
-                    M.alloc (|
+              M.match_operator (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
+                M.alloc (|
+                  Ty.tuple
+                    [
                       Ty.apply
-                        (Ty.path "core::option::Option")
+                        (Ty.path "&")
                         []
-                        [ Ty.path "core::cmp::Ordering" ],
+                        [ Ty.path "revm_bytecode::decode_errors::BytecodeDecodeError" ];
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.path "revm_bytecode::decode_errors::BytecodeDecodeError" ]
+                    ],
+                  Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let γ0_0 := M.read (| γ0_0 |) in
+                      let γ2_0 :=
+                        M.SubPointer.get_struct_tuple_field (|
+                          γ0_0,
+                          "revm_bytecode::decode_errors::BytecodeDecodeError::Eof",
+                          0
+                        |) in
+                      let __self_0 :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "revm_bytecode::eof::EofDecodeError" ],
+                          γ2_0
+                        |) in
+                      let γ0_1 := M.read (| γ0_1 |) in
+                      let γ2_0 :=
+                        M.SubPointer.get_struct_tuple_field (|
+                          γ0_1,
+                          "revm_bytecode::decode_errors::BytecodeDecodeError::Eof",
+                          0
+                        |) in
+                      let __arg1_0 :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "revm_bytecode::eof::EofDecodeError" ],
+                          γ2_0
+                        |) in
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::option::Option")
@@ -743,47 +717,41 @@ Module decode_errors.
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __arg1_0 |) |) |)
                         ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let γ0_0 := M.read (| γ0_0 |) in
-                    let γ2_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ0_0,
-                        "revm_bytecode::decode_errors::BytecodeDecodeError::Eip7702",
-                        0
-                      |) in
-                    let __self_0 :=
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [ Ty.path "revm_bytecode::eip7702::Eip7702DecodeError" ],
-                        γ2_0
-                      |) in
-                    let γ0_1 := M.read (| γ0_1 |) in
-                    let γ2_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ0_1,
-                        "revm_bytecode::decode_errors::BytecodeDecodeError::Eip7702",
-                        0
-                      |) in
-                    let __arg1_0 :=
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [ Ty.path "revm_bytecode::eip7702::Eip7702DecodeError" ],
-                        γ2_0
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        []
-                        [ Ty.path "core::cmp::Ordering" ],
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let γ0_0 := M.read (| γ0_0 |) in
+                      let γ2_0 :=
+                        M.SubPointer.get_struct_tuple_field (|
+                          γ0_0,
+                          "revm_bytecode::decode_errors::BytecodeDecodeError::Eip7702",
+                          0
+                        |) in
+                      let __self_0 :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "revm_bytecode::eip7702::Eip7702DecodeError" ],
+                          γ2_0
+                        |) in
+                      let γ0_1 := M.read (| γ0_1 |) in
+                      let γ2_0 :=
+                        M.SubPointer.get_struct_tuple_field (|
+                          γ0_1,
+                          "revm_bytecode::decode_errors::BytecodeDecodeError::Eip7702",
+                          0
+                        |) in
+                      let __arg1_0 :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "revm_bytecode::eip7702::Eip7702DecodeError" ],
+                          γ2_0
+                        |) in
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::option::Option")
@@ -802,16 +770,10 @@ Module decode_errors.
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __arg1_0 |) |) |)
                         ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        []
-                        [ Ty.path "core::cmp::Ordering" ],
-                      M.call_closure (|
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.call_closure (|
                         Ty.apply
                           (Ty.path "core::option::Option")
                           []
@@ -835,9 +797,9 @@ Module decode_errors.
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __arg1_discr |) |)
                           |)
                         ]
-                      |)
-                    |)))
-              ]
+                      |)))
+                ]
+              |)
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -898,82 +860,90 @@ Module decode_errors.
                 |),
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
-            M.match_operator (|
+            M.alloc (|
               Ty.path "core::cmp::Ordering",
-              M.alloc (|
+              M.match_operator (|
                 Ty.path "core::cmp::Ordering",
-                M.call_closure (|
+                M.alloc (|
                   Ty.path "core::cmp::Ordering",
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], [], "cmp", [], [] |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
-                    |);
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (| M.borrow (| Pointer.Kind.Ref, __arg1_discr |) |)
-                    |)
-                  ]
-                |)
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
-                    M.match_operator (|
-                      Ty.path "core::cmp::Ordering",
-                      M.alloc (|
-                        Ty.tuple
-                          [
-                            Ty.apply
-                              (Ty.path "&")
-                              []
-                              [ Ty.path "revm_bytecode::decode_errors::BytecodeDecodeError" ];
-                            Ty.apply
-                              (Ty.path "&")
-                              []
-                              [ Ty.path "revm_bytecode::decode_errors::BytecodeDecodeError" ]
-                          ],
-                        Value.Tuple [ M.read (| self |); M.read (| other |) ]
-                      |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                            let γ0_0 := M.read (| γ0_0 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ0_0,
-                                "revm_bytecode::decode_errors::BytecodeDecodeError::Eof",
-                                0
-                              |) in
-                            let __self_0 :=
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "revm_bytecode::eof::EofDecodeError" ],
-                                γ2_0
-                              |) in
-                            let γ0_1 := M.read (| γ0_1 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ0_1,
-                                "revm_bytecode::decode_errors::BytecodeDecodeError::Eof",
-                                0
-                              |) in
-                            let __arg1_0 :=
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "revm_bytecode::eof::EofDecodeError" ],
-                                γ2_0
-                              |) in
-                            M.alloc (|
-                              Ty.path "core::cmp::Ordering",
+                  M.call_closure (|
+                    Ty.path "core::cmp::Ordering",
+                    M.get_trait_method (|
+                      "core::cmp::Ord",
+                      Ty.path "isize",
+                      [],
+                      [],
+                      "cmp",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.borrow (| Pointer.Kind.Ref, __arg1_discr |) |)
+                      |)
+                    ]
+                  |)
+                |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
+                      M.match_operator (|
+                        Ty.path "core::cmp::Ordering",
+                        M.alloc (|
+                          Ty.tuple
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "revm_bytecode::decode_errors::BytecodeDecodeError" ];
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "revm_bytecode::decode_errors::BytecodeDecodeError" ]
+                            ],
+                          Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                        |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                              let γ0_0 := M.read (| γ0_0 |) in
+                              let γ2_0 :=
+                                M.SubPointer.get_struct_tuple_field (|
+                                  γ0_0,
+                                  "revm_bytecode::decode_errors::BytecodeDecodeError::Eof",
+                                  0
+                                |) in
+                              let __self_0 :=
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "revm_bytecode::eof::EofDecodeError" ],
+                                  γ2_0
+                                |) in
+                              let γ0_1 := M.read (| γ0_1 |) in
+                              let γ2_0 :=
+                                M.SubPointer.get_struct_tuple_field (|
+                                  γ0_1,
+                                  "revm_bytecode::decode_errors::BytecodeDecodeError::Eof",
+                                  0
+                                |) in
+                              let __arg1_0 :=
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "revm_bytecode::eof::EofDecodeError" ],
+                                  γ2_0
+                                |) in
                               M.call_closure (|
                                 Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
@@ -995,44 +965,41 @@ Module decode_errors.
                                     M.deref (| M.read (| __arg1_0 |) |)
                                   |)
                                 ]
-                              |)
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                            let γ0_0 := M.read (| γ0_0 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ0_0,
-                                "revm_bytecode::decode_errors::BytecodeDecodeError::Eip7702",
-                                0
-                              |) in
-                            let __self_0 :=
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "revm_bytecode::eip7702::Eip7702DecodeError" ],
-                                γ2_0
-                              |) in
-                            let γ0_1 := M.read (| γ0_1 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ0_1,
-                                "revm_bytecode::decode_errors::BytecodeDecodeError::Eip7702",
-                                0
-                              |) in
-                            let __arg1_0 :=
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "revm_bytecode::eip7702::Eip7702DecodeError" ],
-                                γ2_0
-                              |) in
-                            M.alloc (|
-                              Ty.path "core::cmp::Ordering",
+                              |)));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                              let γ0_0 := M.read (| γ0_0 |) in
+                              let γ2_0 :=
+                                M.SubPointer.get_struct_tuple_field (|
+                                  γ0_0,
+                                  "revm_bytecode::decode_errors::BytecodeDecodeError::Eip7702",
+                                  0
+                                |) in
+                              let __self_0 :=
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "revm_bytecode::eip7702::Eip7702DecodeError" ],
+                                  γ2_0
+                                |) in
+                              let γ0_1 := M.read (| γ0_1 |) in
+                              let γ2_0 :=
+                                M.SubPointer.get_struct_tuple_field (|
+                                  γ0_1,
+                                  "revm_bytecode::decode_errors::BytecodeDecodeError::Eip7702",
+                                  0
+                                |) in
+                              let __arg1_0 :=
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "revm_bytecode::eip7702::Eip7702DecodeError" ],
+                                  γ2_0
+                                |) in
                               M.call_closure (|
                                 Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
@@ -1054,27 +1021,24 @@ Module decode_errors.
                                     M.deref (| M.read (| __arg1_0 |) |)
                                   |)
                                 ]
-                              |)
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.alloc (|
-                              Ty.path "core::cmp::Ordering",
-                              M.never_to_any (|
+                              |)));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (M.never_to_any (|
                                 M.call_closure (|
                                   Ty.path "never",
                                   M.get_function (| "core::intrinsics::unreachable", [], [] |),
                                   []
                                 |)
-                              |)
-                            |)))
-                      ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let cmp := M.copy (| Ty.path "core::cmp::Ordering", γ |) in
-                    cmp))
-              ]
+                              |)))
+                        ]
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let cmp := M.copy (| Ty.path "core::cmp::Ordering", γ |) in
+                      M.read (| cmp |)))
+                ]
+              |)
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1186,97 +1150,83 @@ Module decode_errors.
             |) in
           let f :=
             M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_bytecode::decode_errors::BytecodeDecodeError::Eof",
-                        0
-                      |) in
-                    let e :=
-                      M.alloc (|
-                        Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::EofDecodeError" ],
-                        γ1_0
-                      |) in
+          M.match_operator (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "revm_bytecode::decode_errors::BytecodeDecodeError::Eof",
+                      0
+                    |) in
+                  let e :=
+                    M.alloc (|
+                      Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::EofDecodeError" ],
+                      γ1_0
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_trait_method (|
+                      "core::fmt::Display",
+                      Ty.path "revm_bytecode::eof::EofDecodeError",
+                      [],
+                      [],
+                      "fmt",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| e |) |) |);
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "revm_bytecode::decode_errors::BytecodeDecodeError::Eip7702",
+                      0
+                    |) in
+                  let e :=
                     M.alloc (|
                       Ty.apply
-                        (Ty.path "core::result::Result")
+                        (Ty.path "&")
                         []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_trait_method (|
-                          "core::fmt::Display",
-                          Ty.path "revm_bytecode::eof::EofDecodeError",
-                          [],
-                          [],
-                          "fmt",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| e |) |) |);
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_bytecode::decode_errors::BytecodeDecodeError::Eip7702",
-                        0
-                      |) in
-                    let e :=
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [ Ty.path "revm_bytecode::eip7702::Eip7702DecodeError" ],
-                        γ1_0
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_trait_method (|
-                          "core::fmt::Display",
-                          Ty.path "revm_bytecode::eip7702::Eip7702DecodeError",
-                          [],
-                          [],
-                          "fmt",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| e |) |) |);
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
-                        ]
-                      |)
-                    |)))
-              ]
-            |)
+                        [ Ty.path "revm_bytecode::eip7702::Eip7702DecodeError" ],
+                      γ1_0
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_trait_method (|
+                      "core::fmt::Display",
+                      Ty.path "revm_bytecode::eip7702::Eip7702DecodeError",
+                      [],
+                      [],
+                      "fmt",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| e |) |) |);
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                    ]
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.

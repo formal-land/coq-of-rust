@@ -140,83 +140,68 @@ Module ptr.
         | [], [], [ ptr ] =>
           ltac:(M.monadic
             (let ptr := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], ptr |) in
-            M.read (|
-              M.match_operator (|
-                Ty.apply
-                  (Ty.path "core::option::Option")
-                  []
-                  [ Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ] ],
-                M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ :=
-                        M.alloc (|
-                          Ty.apply
-                            (Ty.path "core::option::Option")
-                            []
-                            [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ],
-                          M.call_closure (|
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ],
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                              "new",
-                              [],
-                              []
-                            |),
-                            [ M.read (| ptr |) ]
-                          |)
-                        |) in
-                      let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::option::Option::Some",
-                          0
-                        |) in
-                      let pointer :=
-                        M.copy (|
-                          Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                          γ0_0
-                        |) in
+            M.match_operator (|
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ] ],
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
                       M.alloc (|
                         Ty.apply
                           (Ty.path "core::option::Option")
                           []
-                          [ Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ] ],
-                        Value.StructTuple
-                          "core::option::Option::Some"
+                          [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ],
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ],
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                            "new",
+                            [],
+                            []
+                          |),
+                          [ M.read (| ptr |) ]
+                        |)
+                      |) in
+                    let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::option::Option::Some",
+                        0
+                      |) in
+                    let pointer :=
+                      M.copy (|
+                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                        γ0_0
+                      |) in
+                    Value.StructTuple
+                      "core::option::Option::Some"
+                      []
+                      [ Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ] ]
+                      [
+                        Value.mkStructRecord
+                          "core::ptr::unique::Unique"
                           []
-                          [ Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ] ]
+                          [ T ]
                           [
-                            Value.mkStructRecord
-                              "core::ptr::unique::Unique"
-                              []
-                              [ T ]
-                              [
-                                ("pointer", M.read (| pointer |));
-                                ("_marker",
-                                  Value.StructTuple "core::marker::PhantomData" [] [ T ] [])
-                              ]
+                            ("pointer", M.read (| pointer |));
+                            ("_marker", Value.StructTuple "core::marker::PhantomData" [] [ T ] [])
                           ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::option::Option")
-                          []
-                          [ Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ] ],
-                        Value.StructTuple
-                          "core::option::Option::None"
-                          []
-                          [ Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ] ]
-                          []
-                      |)))
-                ]
-              |)
+                      ]));
+                fun γ =>
+                  ltac:(M.monadic
+                    (Value.StructTuple
+                      "core::option::Option::None"
+                      []
+                      [ Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ] ]
+                      []))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

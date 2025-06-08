@@ -58,14 +58,14 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
   | [], [], [ event ] =>
     ltac:(M.monadic
       (let event := M.alloc (| Ty.path "enums::WebEvent", event |) in
-      M.read (|
-        M.match_operator (|
-          Ty.tuple [],
-          event,
-          [
-            fun γ =>
-              ltac:(M.monadic
-                (let _ := M.is_struct_tuple (| γ, "enums::WebEvent::PageLoad" |) in
+      M.match_operator (|
+        Ty.tuple [],
+        event,
+        [
+          fun γ =>
+            ltac:(M.monadic
+              (let _ := M.is_struct_tuple (| γ, "enums::WebEvent::PageLoad" |) in
+              M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.call_closure (|
                     Ty.tuple [],
@@ -111,10 +111,12 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                       |)
                     ]
                   |) in
-                M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-            fun γ =>
-              ltac:(M.monadic
-                (let _ := M.is_struct_tuple (| γ, "enums::WebEvent::PageUnload" |) in
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)
+              |)));
+          fun γ =>
+            ltac:(M.monadic
+              (let _ := M.is_struct_tuple (| γ, "enums::WebEvent::PageUnload" |) in
+              M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.call_closure (|
                     Ty.tuple [],
@@ -149,12 +151,14 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                       |)
                     ]
                   |) in
-                M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-            fun γ =>
-              ltac:(M.monadic
-                (let γ0_0 :=
-                  M.SubPointer.get_struct_tuple_field (| γ, "enums::WebEvent::KeyPress", 0 |) in
-                let c := M.copy (| Ty.path "char", γ0_0 |) in
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)
+              |)));
+          fun γ =>
+            ltac:(M.monadic
+              (let γ0_0 :=
+                M.SubPointer.get_struct_tuple_field (| γ, "enums::WebEvent::KeyPress", 0 |) in
+              let c := M.copy (| Ty.path "char", γ0_0 |) in
+              M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.call_closure (|
                     Ty.tuple [],
@@ -221,12 +225,14 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                       |)
                     ]
                   |) in
-                M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-            fun γ =>
-              ltac:(M.monadic
-                (let γ0_0 :=
-                  M.SubPointer.get_struct_tuple_field (| γ, "enums::WebEvent::Paste", 0 |) in
-                let s := M.copy (| Ty.path "alloc::string::String", γ0_0 |) in
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)
+              |)));
+          fun γ =>
+            ltac:(M.monadic
+              (let γ0_0 :=
+                M.SubPointer.get_struct_tuple_field (| γ, "enums::WebEvent::Paste", 0 |) in
+              let s := M.copy (| Ty.path "alloc::string::String", γ0_0 |) in
+              M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.call_closure (|
                     Ty.tuple [],
@@ -293,15 +299,17 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                       |)
                     ]
                   |) in
-                M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-            fun γ =>
-              ltac:(M.monadic
-                (let γ0_0 :=
-                  M.SubPointer.get_struct_record_field (| γ, "enums::WebEvent::Click", "x" |) in
-                let γ0_1 :=
-                  M.SubPointer.get_struct_record_field (| γ, "enums::WebEvent::Click", "y" |) in
-                let x := M.copy (| Ty.path "i64", γ0_0 |) in
-                let y := M.copy (| Ty.path "i64", γ0_1 |) in
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)
+              |)));
+          fun γ =>
+            ltac:(M.monadic
+              (let γ0_0 :=
+                M.SubPointer.get_struct_record_field (| γ, "enums::WebEvent::Click", "x" |) in
+              let γ0_1 :=
+                M.SubPointer.get_struct_record_field (| γ, "enums::WebEvent::Click", "y" |) in
+              let x := M.copy (| Ty.path "i64", γ0_0 |) in
+              let y := M.copy (| Ty.path "i64", γ0_1 |) in
+              M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.read (|
                     let~ _ : Ty.tuple [] :=
@@ -393,9 +401,9 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                       |) in
                     M.alloc (| Ty.tuple [], Value.Tuple [] |)
                   |) in
-                M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-          ]
-        |)
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)
+              |)))
+        ]
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

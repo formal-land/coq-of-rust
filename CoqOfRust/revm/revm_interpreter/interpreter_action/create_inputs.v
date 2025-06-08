@@ -569,48 +569,42 @@ Module interpreter_action.
                   [ Ty.path "revm_interpreter::interpreter_action::create_inputs::CreateInputs" ],
                 self
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.tuple [],
-                Value.DeclaredButUndefined,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.match_operator (|
-                        Ty.tuple [],
-                        Value.DeclaredButUndefined,
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (M.match_operator (|
-                                Ty.tuple [],
-                                Value.DeclaredButUndefined,
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (M.match_operator (|
-                                        Ty.tuple [],
-                                        Value.DeclaredButUndefined,
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (M.match_operator (|
-                                                Ty.tuple [],
-                                                Value.DeclaredButUndefined,
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                                                ]
-                                              |)))
-                                        ]
-                                      |)))
-                                ]
-                              |)))
-                        ]
-                      |)))
-                ]
-              |)
+            M.match_operator (|
+              Ty.tuple [],
+              Value.DeclaredButUndefined,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                      Ty.tuple [],
+                      Value.DeclaredButUndefined,
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              Ty.tuple [],
+                              Value.DeclaredButUndefined,
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (M.match_operator (|
+                                      Ty.tuple [],
+                                      Value.DeclaredButUndefined,
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (M.match_operator (|
+                                              Ty.tuple [],
+                                              Value.DeclaredButUndefined,
+                                              [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                      ]
+                    |)))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -834,122 +828,110 @@ Module interpreter_action.
                 self
               |) in
             let nonce := M.alloc (| Ty.path "u64", nonce |) in
-            M.read (|
-              M.match_operator (|
-                Ty.path "alloy_primitives::bits::address::Address",
-                M.SubPointer.get_struct_record_field (|
-                  M.deref (| M.read (| self |) |),
-                  "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                  "scheme"
-                |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let _ :=
-                        M.is_struct_tuple (|
-                          γ,
-                          "revm_context_interface::cfg::CreateScheme::Create"
-                        |) in
-                      M.alloc (|
+            M.match_operator (|
+              Ty.path "alloy_primitives::bits::address::Address",
+              M.SubPointer.get_struct_record_field (|
+                M.deref (| M.read (| self |) |),
+                "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                "scheme"
+              |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_context_interface::cfg::CreateScheme::Create"
+                      |) in
+                    M.call_closure (|
+                      Ty.path "alloy_primitives::bits::address::Address",
+                      M.get_associated_function (|
                         Ty.path "alloy_primitives::bits::address::Address",
+                        "create",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                            "caller"
+                          |)
+                        |);
+                        M.read (| nonce |)
+                      ]
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_record_field (|
+                        γ,
+                        "revm_context_interface::cfg::CreateScheme::Create2",
+                        "salt"
+                      |) in
+                    let salt :=
+                      M.copy (|
+                        Ty.apply
+                          (Ty.path "ruint::Uint")
+                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                          [],
+                        γ0_0
+                      |) in
+                    M.call_closure (|
+                      Ty.path "alloy_primitives::bits::address::Address",
+                      M.get_associated_function (|
+                        Ty.path "alloy_primitives::bits::address::Address",
+                        "create2_from_code",
+                        [],
+                        [
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 32 ]
+                            [ Ty.path "u8" ];
+                          Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ]
+                        ]
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                            "caller"
+                          |)
+                        |);
                         M.call_closure (|
-                          Ty.path "alloy_primitives::bits::address::Address",
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 32 ]
+                            [ Ty.path "u8" ],
                           M.get_associated_function (|
-                            Ty.path "alloy_primitives::bits::address::Address",
-                            "create",
-                            [],
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [
+                                Value.Integer IntegerKind.Usize 256;
+                                Value.Integer IntegerKind.Usize 4
+                              ]
+                              [],
+                            "to_be_bytes",
+                            [ Value.Integer IntegerKind.Usize 32 ],
                             []
                           |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                                "caller"
-                              |)
-                            |);
-                            M.read (| nonce |)
-                          ]
+                          [ M.borrow (| Pointer.Kind.Ref, salt |) ]
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                            "init_code"
+                          |)
                         |)
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_record_field (|
-                          γ,
-                          "revm_context_interface::cfg::CreateScheme::Create2",
-                          "salt"
-                        |) in
-                      let salt :=
-                        M.copy (|
-                          Ty.apply
-                            (Ty.path "ruint::Uint")
-                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
-                            ]
-                            [],
-                          γ0_0
-                        |) in
-                      M.alloc (|
-                        Ty.path "alloy_primitives::bits::address::Address",
-                        M.call_closure (|
-                          Ty.path "alloy_primitives::bits::address::Address",
-                          M.get_associated_function (|
-                            Ty.path "alloy_primitives::bits::address::Address",
-                            "create2_from_code",
-                            [],
-                            [
-                              Ty.apply
-                                (Ty.path "array")
-                                [ Value.Integer IntegerKind.Usize 32 ]
-                                [ Ty.path "u8" ];
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.path "alloy_primitives::bytes_::Bytes" ]
-                            ]
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                                "caller"
-                              |)
-                            |);
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "array")
-                                [ Value.Integer IntegerKind.Usize 32 ]
-                                [ Ty.path "u8" ],
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "ruint::Uint")
-                                  [
-                                    Value.Integer IntegerKind.Usize 256;
-                                    Value.Integer IntegerKind.Usize 4
-                                  ]
-                                  [],
-                                "to_be_bytes",
-                                [ Value.Integer IntegerKind.Usize 32 ],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, salt |) ]
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                                "init_code"
-                              |)
-                            |)
-                          ]
-                        |)
-                      |)))
-                ]
-              |)
+                      ]
+                    |)))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

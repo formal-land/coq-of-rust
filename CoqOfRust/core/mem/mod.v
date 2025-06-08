@@ -12,24 +12,22 @@ Module mem.
     | [], [ T ], [ t ] =>
       ltac:(M.monadic
         (let t := M.alloc (| T, t |) in
-        M.read (|
-          M.match_operator (|
-            Ty.tuple [],
-            M.alloc (|
+        M.match_operator (|
+          Ty.tuple [],
+          M.alloc (|
+            Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ],
+            M.call_closure (|
               Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ],
-              M.call_closure (|
+              M.get_associated_function (|
                 Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ],
-                M.get_associated_function (|
-                  Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ],
-                  "new",
-                  [],
-                  []
-                |),
-                [ M.read (| t |) ]
-              |)
-            |),
-            [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
-          |)
+                "new",
+                [],
+                []
+              |),
+              [ M.read (| t |) ]
+            |)
+          |),
+          [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -359,16 +357,16 @@ Module mem.
               []
             |) in
           let~ _ : Ty.tuple [] :=
-            M.read (|
-              M.match_operator (|
-                Ty.tuple [],
-                M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ :=
-                        M.use (M.alloc (| Ty.path "bool", UnOp.not (| Value.Bool false |) |)) in
-                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+            M.match_operator (|
+              Ty.tuple [],
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use (M.alloc (| Ty.path "bool", UnOp.not (| Value.Bool false |) |)) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.read (|
                       let~ _ : Ty.tuple [] :=
                         M.call_closure (|
                           Ty.tuple [],
@@ -393,10 +391,10 @@ Module mem.
                             Value.Integer IntegerKind.Usize 1
                           ]
                         |) in
-                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                ]
-              |)
+                      M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                    |)));
+                fun γ => ltac:(M.monadic (Value.Tuple []))
+              ]
             |) in
           M.alloc (|
             T,
@@ -583,113 +581,108 @@ Module mem.
         (let src := M.alloc (| Ty.apply (Ty.path "&") [] [ Src ], src |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
-            M.read (|
-              M.match_operator (|
-                Ty.tuple [],
-                M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ :=
-                        M.use
-                          (M.alloc (|
-                            Ty.path "bool",
-                            UnOp.not (|
-                              M.call_closure (|
-                                Ty.path "bool",
-                                BinOp.ge,
-                                [
-                                  M.call_closure (|
-                                    Ty.path "usize",
-                                    M.get_function (| "core::mem::size_of", [], [ Src ] |),
-                                    []
-                                  |);
-                                  M.call_closure (|
-                                    Ty.path "usize",
-                                    M.get_function (| "core::mem::size_of", [], [ Dst ] |),
-                                    []
-                                  |)
-                                ]
-                              |)
-                            |)
-                          |)) in
-                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (|
-                        Ty.tuple [],
-                        M.never_to_any (|
-                          M.call_closure (|
-                            Ty.path "never",
-                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
-                            [
-                              M.call_closure (|
-                                Ty.path "core::fmt::Arguments",
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::Arguments",
-                                  "new_const",
-                                  [ Value.Integer IntegerKind.Usize 1 ],
+            M.match_operator (|
+              Ty.tuple [],
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          Ty.path "bool",
+                          UnOp.not (|
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.ge,
+                              [
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_function (| "core::mem::size_of", [], [ Src ] |),
                                   []
-                                |),
-                                [
+                                |);
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_function (| "core::mem::size_of", [], [ Dst ] |),
+                                  []
+                                |)
+                              ]
+                            |)
+                          |)
+                        |)) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.never_to_any (|
+                      M.call_closure (|
+                        Ty.path "never",
+                        M.get_function (| "core::panicking::panic_fmt", [], [] |),
+                        [
+                          M.call_closure (|
+                            Ty.path "core::fmt::Arguments",
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::Arguments",
+                              "new_const",
+                              [ Value.Integer IntegerKind.Usize 1 ],
+                              []
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.deref (|
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.alloc (|
-                                          Ty.apply
-                                            (Ty.path "array")
-                                            [ Value.Integer IntegerKind.Usize 1 ]
-                                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                          Value.Array
-                                            [
-                                              mk_str (|
-                                                "cannot transmute_copy if Dst is larger than Src"
-                                              |)
-                                            ]
-                                        |)
-                                      |)
+                                    M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                      Value.Array
+                                        [
+                                          mk_str (|
+                                            "cannot transmute_copy if Dst is larger than Src"
+                                          |)
+                                        ]
                                     |)
                                   |)
-                                ]
+                                |)
                               |)
                             ]
                           |)
-                        |)
-                      |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                ]
-              |)
+                        ]
+                      |)
+                    |)));
+                fun γ => ltac:(M.monadic (Value.Tuple []))
+              ]
             |) in
-          M.match_operator (|
+          M.alloc (|
             Dst,
-            M.alloc (| Ty.tuple [], Value.Tuple [] |),
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ :=
-                    M.use
-                      (M.alloc (|
-                        Ty.path "bool",
-                        M.call_closure (|
+            M.match_operator (|
+              Dst,
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
                           Ty.path "bool",
-                          BinOp.gt,
-                          [
-                            M.call_closure (|
-                              Ty.path "usize",
-                              M.get_function (| "core::mem::align_of", [], [ Dst ] |),
-                              []
-                            |);
-                            M.call_closure (|
-                              Ty.path "usize",
-                              M.get_function (| "core::mem::align_of", [], [ Src ] |),
-                              []
-                            |)
-                          ]
-                        |)
-                      |)) in
-                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  M.alloc (|
-                    Dst,
+                          M.call_closure (|
+                            Ty.path "bool",
+                            BinOp.gt,
+                            [
+                              M.call_closure (|
+                                Ty.path "usize",
+                                M.get_function (| "core::mem::align_of", [], [ Dst ] |),
+                                []
+                              |);
+                              M.call_closure (|
+                                Ty.path "usize",
+                                M.get_function (| "core::mem::align_of", [], [ Src ] |),
+                                []
+                              |)
+                            ]
+                          |)
+                        |)) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.call_closure (|
                       Dst,
                       M.get_function (| "core::ptr::read_unaligned", [], [ Dst ] |),
@@ -707,13 +700,10 @@ Module mem.
                               |))
                           |))
                       ]
-                    |)
-                  |)));
-              fun γ =>
-                ltac:(M.monadic
-                  (M.alloc (|
-                    Dst,
-                    M.call_closure (|
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.call_closure (|
                       Dst,
                       M.get_function (| "core::ptr::read", [], [ Dst ] |),
                       [
@@ -730,9 +720,9 @@ Module mem.
                               |))
                           |))
                       ]
-                    |)
-                  |)))
-            ]
+                    |)))
+              ]
+            |)
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"

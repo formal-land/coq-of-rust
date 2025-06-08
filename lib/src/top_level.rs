@@ -919,13 +919,12 @@ fn compile_function_body(
             }),
             args: vec![Rc::new(Expr::Lambda {
                 args: vec![],
-                body: body_without_bindings.alloc(ret_ty.clone()),
+                body: body_without_bindings,
                 is_for_match: false,
                 form: LambdaForm::Function,
             })],
             kind: CallKind::Effectful,
         })
-        .read()
     } else {
         body_without_bindings
     };

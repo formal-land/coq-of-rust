@@ -18,58 +18,47 @@ Definition is_divisible_by (ε : list Value.t) (τ : list Ty.t) (α : list Value
     ltac:(M.monadic
       (let lhs := M.alloc (| Ty.path "u32", lhs |) in
       let rhs := M.alloc (| Ty.path "u32", rhs |) in
-      M.read (|
-        M.catch_return (Ty.path "bool") (|
-          ltac:(M.monadic
-            (M.alloc (|
+      M.catch_return (Ty.path "bool") (|
+        ltac:(M.monadic
+          (M.read (|
+            let~ _ : Ty.tuple [] :=
+              M.match_operator (|
+                Ty.tuple [],
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ :=
+                        M.use
+                          (M.alloc (|
+                            Ty.path "bool",
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.eq,
+                              [ M.read (| rhs |); Value.Integer IntegerKind.U32 0 ]
+                            |)
+                          |)) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      M.never_to_any (| M.read (| M.return_ (| Value.Bool false |) |) |)));
+                  fun γ => ltac:(M.monadic (Value.Tuple []))
+                ]
+              |) in
+            M.alloc (|
               Ty.path "bool",
-              M.read (|
-                let~ _ : Ty.tuple [] :=
-                  M.read (|
-                    M.match_operator (|
-                      Ty.tuple [],
-                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  Ty.path "bool",
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    BinOp.eq,
-                                    [ M.read (| rhs |); Value.Integer IntegerKind.U32 0 ]
-                                  |)
-                                |)) in
-                            let _ :=
-                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              Ty.tuple [],
-                              M.never_to_any (| M.read (| M.return_ (| Value.Bool false |) |) |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                      ]
-                    |)
-                  |) in
-                M.alloc (|
-                  Ty.path "bool",
+              M.call_closure (|
+                Ty.path "bool",
+                BinOp.eq,
+                [
                   M.call_closure (|
-                    Ty.path "bool",
-                    BinOp.eq,
-                    [
-                      M.call_closure (|
-                        Ty.path "u32",
-                        BinOp.Wrap.rem,
-                        [ M.read (| lhs |); M.read (| rhs |) ]
-                      |);
-                      Value.Integer IntegerKind.U32 0
-                    ]
-                  |)
-                |)
+                    Ty.path "u32",
+                    BinOp.Wrap.rem,
+                    [ M.read (| lhs |); M.read (| rhs |) ]
+                  |);
+                  Value.Integer IntegerKind.U32 0
+                ]
               |)
-            |)))
-        |)
+            |)
+          |)))
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
@@ -97,24 +86,24 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
   | [], [], [ n ] =>
     ltac:(M.monadic
       (let n := M.alloc (| Ty.path "u32", n |) in
-      M.read (|
-        M.match_operator (|
-          Ty.tuple [],
-          M.alloc (| Ty.tuple [], Value.Tuple [] |),
-          [
-            fun γ =>
-              ltac:(M.monadic
-                (let γ :=
-                  M.use
-                    (M.alloc (|
+      M.match_operator (|
+        Ty.tuple [],
+        M.alloc (| Ty.tuple [], Value.Tuple [] |),
+        [
+          fun γ =>
+            ltac:(M.monadic
+              (let γ :=
+                M.use
+                  (M.alloc (|
+                    Ty.path "bool",
+                    M.call_closure (|
                       Ty.path "bool",
-                      M.call_closure (|
-                        Ty.path "bool",
-                        M.get_function (| "functions::is_divisible_by", [], [] |),
-                        [ M.read (| n |); Value.Integer IntegerKind.U32 15 ]
-                      |)
-                    |)) in
-                let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      M.get_function (| "functions::is_divisible_by", [], [] |),
+                      [ M.read (| n |); Value.Integer IntegerKind.U32 15 ]
+                    |)
+                  |)) in
+              let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+              M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.read (|
                     let~ _ : Ty.tuple [] :=
@@ -153,26 +142,28 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                       |) in
                     M.alloc (| Ty.tuple [], Value.Tuple [] |)
                   |) in
-                M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-            fun γ =>
-              ltac:(M.monadic
-                (M.match_operator (|
-                  Ty.tuple [],
-                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ :=
-                          M.use
-                            (M.alloc (|
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)
+              |)));
+          fun γ =>
+            ltac:(M.monadic
+              (M.match_operator (|
+                Ty.tuple [],
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ :=
+                        M.use
+                          (M.alloc (|
+                            Ty.path "bool",
+                            M.call_closure (|
                               Ty.path "bool",
-                              M.call_closure (|
-                                Ty.path "bool",
-                                M.get_function (| "functions::is_divisible_by", [], [] |),
-                                [ M.read (| n |); Value.Integer IntegerKind.U32 3 ]
-                              |)
-                            |)) in
-                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              M.get_function (| "functions::is_divisible_by", [], [] |),
+                              [ M.read (| n |); Value.Integer IntegerKind.U32 3 ]
+                            |)
+                          |)) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      M.read (|
                         let~ _ : Ty.tuple [] :=
                           M.read (|
                             let~ _ : Ty.tuple [] :=
@@ -211,30 +202,29 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                               |) in
                             M.alloc (| Ty.tuple [], Value.Tuple [] |)
                           |) in
-                        M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                    fun γ =>
-                      ltac:(M.monadic
-                        (M.match_operator (|
-                          Ty.tuple [],
-                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ :=
-                                  M.use
-                                    (M.alloc (|
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        Ty.tuple [],
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.use
+                                  (M.alloc (|
+                                    Ty.path "bool",
+                                    M.call_closure (|
                                       Ty.path "bool",
-                                      M.call_closure (|
-                                        Ty.path "bool",
-                                        M.get_function (| "functions::is_divisible_by", [], [] |),
-                                        [ M.read (| n |); Value.Integer IntegerKind.U32 5 ]
-                                      |)
-                                    |)) in
-                                let _ :=
-                                  is_constant_or_break_match (|
-                                    M.read (| γ |),
-                                    Value.Bool true
-                                  |) in
+                                      M.get_function (| "functions::is_divisible_by", [], [] |),
+                                      [ M.read (| n |); Value.Integer IntegerKind.U32 5 ]
+                                    |)
+                                  |)) in
+                              let _ :=
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              M.read (|
                                 let~ _ : Ty.tuple [] :=
                                   M.read (|
                                     let~ _ : Ty.tuple [] :=
@@ -278,10 +268,12 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                       |) in
                                     M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                   |) in
-                                M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let~ _ : Ty.tuple [] :=
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                              |)));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (M.read (|
+                                let~ _ : Ty.tuple [] :=
                                   M.read (|
                                     let~ _ : Ty.tuple [] :=
                                       M.call_closure (|
@@ -362,13 +354,13 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                       |) in
                                     M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                   |) in
-                                M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                          ]
-                        |)))
-                  ]
-                |)))
-          ]
-        |)
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                              |)))
+                        ]
+                      |)))
+                ]
+              |)))
+        ]
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
@@ -391,105 +383,107 @@ Definition fizzbuzz_to (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
       (let n := M.alloc (| Ty.path "u32", n |) in
       M.read (|
         M.use
-          (M.match_operator (|
+          (M.alloc (|
             Ty.tuple [],
-            M.alloc (|
-              Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "u32" ],
-              M.call_closure (|
+            M.match_operator (|
+              Ty.tuple [],
+              M.alloc (|
                 Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "u32" ],
-                M.get_trait_method (|
-                  "core::iter::traits::collect::IntoIterator",
+                M.call_closure (|
                   Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "u32" ],
-                  [],
-                  [],
-                  "into_iter",
-                  [],
-                  []
-                |),
-                [
-                  M.call_closure (|
+                  M.get_trait_method (|
+                    "core::iter::traits::collect::IntoIterator",
                     Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "u32" ],
-                    M.get_associated_function (|
+                    [],
+                    [],
+                    "into_iter",
+                    [],
+                    []
+                  |),
+                  [
+                    M.call_closure (|
                       Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "u32" ],
-                      "new",
-                      [],
-                      []
-                    |),
-                    [ Value.Integer IntegerKind.U32 1; M.read (| n |) ]
-                  |)
-                ]
-              |)
-            |),
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let iter :=
-                    M.copy (|
-                      Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "u32" ],
-                      γ
-                    |) in
-                  M.loop (|
-                    Ty.tuple [],
-                    ltac:(M.monadic
-                      (let~ _ : Ty.tuple [] :=
-                        M.read (|
-                          M.match_operator (|
-                            Ty.tuple [],
-                            M.alloc (|
-                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
-                              M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "u32" ],
+                        "new",
+                        [],
+                        []
+                      |),
+                      [ Value.Integer IntegerKind.U32 1; M.read (| n |) ]
+                    |)
+                  ]
+                |)
+              |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let iter :=
+                      M.copy (|
+                        Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "u32" ],
+                        γ
+                      |) in
+                    M.read (|
+                      M.loop (|
+                        Ty.tuple [],
+                        ltac:(M.monadic
+                          (let~ _ : Ty.tuple [] :=
+                            M.match_operator (|
+                              Ty.tuple [],
+                              M.alloc (|
                                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
-                                M.get_trait_method (|
-                                  "core::iter::traits::iterator::Iterator",
-                                  Ty.apply
-                                    (Ty.path "core::ops::range::RangeInclusive")
+                                M.call_closure (|
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
+                                  M.get_trait_method (|
+                                    "core::iter::traits::iterator::Iterator",
+                                    Ty.apply
+                                      (Ty.path "core::ops::range::RangeInclusive")
+                                      []
+                                      [ Ty.path "u32" ],
+                                    [],
+                                    [],
+                                    "next",
+                                    [],
                                     []
-                                    [ Ty.path "u32" ],
-                                  [],
-                                  [],
-                                  "next",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.MutRef,
-                                    M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
-                                  |)
-                                ]
-                              |)
-                            |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let _ :=
-                                    M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                                  M.alloc (|
-                                    Ty.tuple [],
-                                    M.never_to_any (| M.read (| M.break (||) |) |)
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::option::Option::Some",
-                                      0
-                                    |) in
-                                  let n := M.copy (| Ty.path "u32", γ0_0 |) in
-                                  let~ _ : Ty.tuple [] :=
-                                    M.call_closure (|
-                                      Ty.tuple [],
-                                      M.get_function (| "functions::fizzbuzz", [], [] |),
-                                      [ M.read (| n |) ]
-                                    |) in
-                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                            ]
-                          |)
-                        |) in
-                      M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                  |)))
-            ]
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.borrow (| Pointer.Kind.MutRef, iter |) |)
+                                    |)
+                                  ]
+                                |)
+                              |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let _ :=
+                                      M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                    M.never_to_any (| M.read (| M.break (||) |) |)));
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 :=
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        γ,
+                                        "core::option::Option::Some",
+                                        0
+                                      |) in
+                                    let n := M.copy (| Ty.path "u32", γ0_0 |) in
+                                    M.read (|
+                                      let~ _ : Ty.tuple [] :=
+                                        M.call_closure (|
+                                          Ty.tuple [],
+                                          M.get_function (| "functions::fizzbuzz", [], [] |),
+                                          [ M.read (| n |) ]
+                                        |) in
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                                    |)))
+                              ]
+                            |) in
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)))
+                      |)
+                    |)))
+              ]
+            |)
           |))
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"

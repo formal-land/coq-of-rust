@@ -265,104 +265,92 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             ]
           |) in
         let~ _ : Ty.tuple [] :=
-          M.read (|
-            M.match_operator (|
-              Ty.tuple [],
-              M.alloc (| Ty.tuple [], Value.Tuple [] |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ :=
-                      M.use
-                        (M.alloc (|
-                          Ty.path "bool",
-                          UnOp.not (|
-                            M.call_closure (|
-                              Ty.path "bool",
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "std::collections::hash::set::HashSet")
-                                  []
-                                  [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ],
-                                "insert",
-                                [],
+          M.match_operator (|
+            Ty.tuple [],
+            M.alloc (| Ty.tuple [], Value.Tuple [] |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ :=
+                    M.use
+                      (M.alloc (|
+                        Ty.path "bool",
+                        UnOp.not (|
+                          M.call_closure (|
+                            Ty.path "bool",
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "std::collections::hash::set::HashSet")
                                 []
-                              |),
-                              [
-                                M.borrow (| Pointer.Kind.MutRef, a |);
-                                Value.Integer IntegerKind.I32 4
-                              ]
-                            |)
+                                [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ],
+                              "insert",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.MutRef, a |); Value.Integer IntegerKind.I32 4
+                            ]
                           |)
-                        |)) in
-                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.alloc (|
-                      Ty.tuple [],
-                      M.never_to_any (|
-                        M.call_closure (|
-                          Ty.path "never",
-                          M.get_function (| "core::panicking::panic", [], [] |),
-                          [ mk_str (| "assertion failed: a.insert(4)" |) ]
                         |)
-                      |)
-                    |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-              ]
-            |)
+                      |)) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  M.never_to_any (|
+                    M.call_closure (|
+                      Ty.path "never",
+                      M.get_function (| "core::panicking::panic", [], [] |),
+                      [ mk_str (| "assertion failed: a.insert(4)" |) ]
+                    |)
+                  |)));
+              fun γ => ltac:(M.monadic (Value.Tuple []))
+            ]
           |) in
         let~ _ : Ty.tuple [] :=
-          M.read (|
-            M.match_operator (|
-              Ty.tuple [],
-              M.alloc (| Ty.tuple [], Value.Tuple [] |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ :=
-                      M.use
-                        (M.alloc (|
-                          Ty.path "bool",
-                          UnOp.not (|
-                            M.call_closure (|
-                              Ty.path "bool",
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "std::collections::hash::set::HashSet")
-                                  []
-                                  [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ],
-                                "contains",
-                                [],
-                                [ Ty.path "i32" ]
-                              |),
-                              [
-                                M.borrow (| Pointer.Kind.Ref, a |);
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.alloc (| Ty.path "i32", Value.Integer IntegerKind.I32 4 |)
-                                    |)
+          M.match_operator (|
+            Ty.tuple [],
+            M.alloc (| Ty.tuple [], Value.Tuple [] |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ :=
+                    M.use
+                      (M.alloc (|
+                        Ty.path "bool",
+                        UnOp.not (|
+                          M.call_closure (|
+                            Ty.path "bool",
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "std::collections::hash::set::HashSet")
+                                []
+                                [ Ty.path "i32"; Ty.path "std::hash::random::RandomState" ],
+                              "contains",
+                              [],
+                              [ Ty.path "i32" ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, a |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (| Ty.path "i32", Value.Integer IntegerKind.I32 4 |)
                                   |)
                                 |)
-                              ]
-                            |)
+                              |)
+                            ]
                           |)
-                        |)) in
-                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.alloc (|
-                      Ty.tuple [],
-                      M.never_to_any (|
-                        M.call_closure (|
-                          Ty.path "never",
-                          M.get_function (| "core::panicking::panic", [], [] |),
-                          [ mk_str (| "assertion failed: a.contains(&4)" |) ]
                         |)
-                      |)
-                    |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-              ]
-            |)
+                      |)) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  M.never_to_any (|
+                    M.call_closure (|
+                      Ty.path "never",
+                      M.get_function (| "core::panicking::panic", [], [] |),
+                      [ mk_str (| "assertion failed: a.contains(&4)" |) ]
+                    |)
+                  |)));
+              fun γ => ltac:(M.monadic (Value.Tuple []))
+            ]
           |) in
         let~ _ : Ty.path "bool" :=
           M.call_closure (|

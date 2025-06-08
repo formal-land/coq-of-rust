@@ -194,96 +194,79 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
             self
           |) in
         let f := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
-        M.read (|
-          M.match_operator (|
-            Ty.apply
-              (Ty.path "core::result::Result")
-              []
-              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-            self,
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
-                  let γ1_0 :=
-                    M.SubPointer.get_struct_tuple_field (|
-                      γ,
-                      "scoping_rules_lifetimes_structs::Either::Num",
-                      0
-                    |) in
-                  let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i32" ], γ1_0 |) in
+        M.match_operator (|
+          Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+          self,
+          [
+            fun γ =>
+              ltac:(M.monadic
+                (let γ := M.read (| γ |) in
+                let γ1_0 :=
+                  M.SubPointer.get_struct_tuple_field (|
+                    γ,
+                    "scoping_rules_lifetimes_structs::Either::Num",
+                    0
+                  |) in
+                let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i32" ], γ1_0 |) in
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Formatter",
+                    "debug_tuple_field1_finish",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Num" |) |) |);
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                      |))
+                  ]
+                |)));
+            fun γ =>
+              ltac:(M.monadic
+                (let γ := M.read (| γ |) in
+                let γ1_0 :=
+                  M.SubPointer.get_struct_tuple_field (|
+                    γ,
+                    "scoping_rules_lifetimes_structs::Either::Ref",
+                    0
+                  |) in
+                let __self_0 :=
                   M.alloc (|
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                    M.call_closure (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.get_associated_function (|
-                        Ty.path "core::fmt::Formatter",
-                        "debug_tuple_field1_finish",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Num" |) |) |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                          |))
-                      ]
-                    |)
-                  |)));
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
-                  let γ1_0 :=
-                    M.SubPointer.get_struct_tuple_field (|
-                      γ,
-                      "scoping_rules_lifetimes_structs::Either::Ref",
-                      0
-                    |) in
-                  let __self_0 :=
-                    M.alloc (|
-                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ],
-                      γ1_0
-                    |) in
-                  M.alloc (|
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                    M.call_closure (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.get_associated_function (|
-                        Ty.path "core::fmt::Formatter",
-                        "debug_tuple_field1_finish",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Ref" |) |) |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                          |))
-                      ]
-                    |)
-                  |)))
-            ]
-          |)
+                    Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ],
+                    γ1_0
+                  |) in
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Formatter",
+                    "debug_tuple_field1_finish",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Ref" |) |) |);
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                      |))
+                  ]
+                |)))
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

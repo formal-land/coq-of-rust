@@ -265,44 +265,27 @@ Module iter.
                   self
                 |) in
               let n := M.alloc (| Ty.path "usize", n |) in
-              M.read (|
-                M.match_operator (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.tuple [];
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
-                    ],
-                  n,
+              M.match_operator (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
                   [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (M.alloc (|
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [
-                              Ty.tuple [];
-                              Ty.apply
-                                (Ty.path "core::num::nonzero::NonZero")
-                                []
-                                [ Ty.path "usize" ]
-                            ],
-                          Value.StructTuple
-                            "core::result::Result::Ok"
-                            []
-                            [
-                              Ty.tuple [];
-                              Ty.apply
-                                (Ty.path "core::num::nonzero::NonZero")
-                                []
-                                [ Ty.path "usize" ]
-                            ]
-                            [ Value.Tuple [] ]
-                        |)))
-                  ]
-                |)
+                    Ty.tuple [];
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                  ],
+                n,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (Value.StructTuple
+                        "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.tuple [];
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                        ]
+                        [ Value.Tuple [] ]))
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -327,46 +310,41 @@ Module iter.
                   self
                 |) in
               let n := M.alloc (| Ty.path "usize", n |) in
-              M.read (|
-                M.match_operator (|
-                  Ty.apply (Ty.path "core::option::Option") [] [ A ],
-                  n,
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (M.alloc (|
-                          Ty.apply (Ty.path "core::option::Option") [] [ A ],
-                          Value.StructTuple
-                            "core::option::Option::Some"
-                            []
-                            [ A ]
+              M.match_operator (|
+                Ty.apply (Ty.path "core::option::Option") [] [ A ],
+                n,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (Value.StructTuple
+                        "core::option::Option::Some"
+                        []
+                        [ A ]
+                        [
+                          M.call_closure (|
+                            A,
+                            M.get_trait_method (|
+                              "core::clone::Clone",
+                              A,
+                              [],
+                              [],
+                              "clone",
+                              [],
+                              []
+                            |),
                             [
-                              M.call_closure (|
-                                A,
-                                M.get_trait_method (|
-                                  "core::clone::Clone",
-                                  A,
-                                  [],
-                                  [],
-                                  "clone",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "core::iter::sources::repeat::Repeat",
-                                      "element"
-                                    |)
-                                  |)
-                                ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::iter::sources::repeat::Repeat",
+                                  "element"
+                                |)
                               |)
                             ]
-                        |)))
-                  ]
-                |)
+                          |)
+                        ]))
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -513,44 +491,27 @@ Module iter.
                   self
                 |) in
               let n := M.alloc (| Ty.path "usize", n |) in
-              M.read (|
-                M.match_operator (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.tuple [];
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
-                    ],
-                  n,
+              M.match_operator (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
                   [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (M.alloc (|
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [
-                              Ty.tuple [];
-                              Ty.apply
-                                (Ty.path "core::num::nonzero::NonZero")
-                                []
-                                [ Ty.path "usize" ]
-                            ],
-                          Value.StructTuple
-                            "core::result::Result::Ok"
-                            []
-                            [
-                              Ty.tuple [];
-                              Ty.apply
-                                (Ty.path "core::num::nonzero::NonZero")
-                                []
-                                [ Ty.path "usize" ]
-                            ]
-                            [ Value.Tuple [] ]
-                        |)))
-                  ]
-                |)
+                    Ty.tuple [];
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                  ],
+                n,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (Value.StructTuple
+                        "core::result::Result::Ok"
+                        []
+                        [
+                          Ty.tuple [];
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                        ]
+                        [ Value.Tuple [] ]))
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -575,46 +536,41 @@ Module iter.
                   self
                 |) in
               let n := M.alloc (| Ty.path "usize", n |) in
-              M.read (|
-                M.match_operator (|
-                  Ty.apply (Ty.path "core::option::Option") [] [ A ],
-                  n,
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (M.alloc (|
-                          Ty.apply (Ty.path "core::option::Option") [] [ A ],
-                          Value.StructTuple
-                            "core::option::Option::Some"
-                            []
-                            [ A ]
+              M.match_operator (|
+                Ty.apply (Ty.path "core::option::Option") [] [ A ],
+                n,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (Value.StructTuple
+                        "core::option::Option::Some"
+                        []
+                        [ A ]
+                        [
+                          M.call_closure (|
+                            A,
+                            M.get_trait_method (|
+                              "core::clone::Clone",
+                              A,
+                              [],
+                              [],
+                              "clone",
+                              [],
+                              []
+                            |),
                             [
-                              M.call_closure (|
-                                A,
-                                M.get_trait_method (|
-                                  "core::clone::Clone",
-                                  A,
-                                  [],
-                                  [],
-                                  "clone",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "core::iter::sources::repeat::Repeat",
-                                      "element"
-                                    |)
-                                  |)
-                                ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::iter::sources::repeat::Repeat",
+                                  "element"
+                                |)
                               |)
                             ]
-                        |)))
-                  ]
-                |)
+                          |)
+                        ]))
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.

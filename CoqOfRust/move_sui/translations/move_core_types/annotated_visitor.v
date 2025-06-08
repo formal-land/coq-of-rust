@@ -312,64 +312,57 @@ Module annotated_visitor.
                 [ Ty.path "move_core_types::annotated_visitor::VecDriver" ],
               driver
             |) in
-          M.read (|
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.tuple [];
-                  Ty.associated_in_trait
-                    "move_core_types::annotated_visitor::Traversal"
-                    []
-                    []
-                    Self
-                    "Error"
-                ]) (|
-              ltac:(M.monadic
-                (M.alloc (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.tuple [];
-                      Ty.associated_in_trait
-                        "move_core_types::annotated_visitor::Traversal"
-                        []
-                        []
-                        Self
-                        "Error"
-                    ],
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.tuple [];
+                Ty.associated_in_trait
+                  "move_core_types::annotated_visitor::Traversal"
+                  []
+                  []
+                  Self
+                  "Error"
+              ]) (|
+            ltac:(M.monadic
+              (M.read (|
+                let~ _ : Ty.tuple [] :=
                   M.read (|
-                    let~ _ : Ty.tuple [] :=
-                      M.read (|
-                        M.loop (|
+                    M.loop (|
+                      Ty.tuple [],
+                      ltac:(M.monadic
+                        (M.alloc (|
                           Ty.tuple [],
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              Ty.tuple [],
-                              M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ :=
-                                      M.use
-                                        (M.alloc (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
+                                        Ty.path "bool",
+                                        M.call_closure (|
                                           Ty.path "bool",
-                                          M.call_closure (|
-                                            Ty.path "bool",
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "core::option::Option")
-                                                []
-                                                [ Ty.tuple [] ],
-                                              "is_some",
-                                              [],
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
                                               []
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
+                                              [ Ty.tuple [] ],
+                                            "is_some",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.tuple [] ],
                                                 M.match_operator (|
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")
@@ -507,15 +500,24 @@ Module annotated_visitor.
                                                               ],
                                                             γ0_0
                                                           |) in
-                                                        M.alloc (|
-                                                          Ty.apply
-                                                            (Ty.path "core::option::Option")
-                                                            []
-                                                            [ Ty.tuple [] ],
-                                                          M.never_to_any (|
-                                                            M.read (|
-                                                              M.return_ (|
-                                                                M.call_closure (|
+                                                        M.never_to_any (|
+                                                          M.read (|
+                                                            M.return_ (|
+                                                              M.call_closure (|
+                                                                Ty.apply
+                                                                  (Ty.path "core::result::Result")
+                                                                  []
+                                                                  [
+                                                                    Ty.tuple [];
+                                                                    Ty.associated_in_trait
+                                                                      "move_core_types::annotated_visitor::Traversal"
+                                                                      []
+                                                                      []
+                                                                      Self
+                                                                      "Error"
+                                                                  ],
+                                                                M.get_trait_method (|
+                                                                  "core::ops::try_trait::FromResidual",
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
                                                                     []
@@ -528,44 +530,28 @@ Module annotated_visitor.
                                                                         Self
                                                                         "Error"
                                                                     ],
-                                                                  M.get_trait_method (|
-                                                                    "core::ops::try_trait::FromResidual",
+                                                                  [],
+                                                                  [
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::result::Result")
                                                                       []
                                                                       [
-                                                                        Ty.tuple [];
+                                                                        Ty.path
+                                                                          "core::convert::Infallible";
                                                                         Ty.associated_in_trait
                                                                           "move_core_types::annotated_visitor::Traversal"
                                                                           []
                                                                           []
                                                                           Self
                                                                           "Error"
-                                                                      ],
-                                                                    [],
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path
-                                                                          "core::result::Result")
-                                                                        []
-                                                                        [
-                                                                          Ty.path
-                                                                            "core::convert::Infallible";
-                                                                          Ty.associated_in_trait
-                                                                            "move_core_types::annotated_visitor::Traversal"
-                                                                            []
-                                                                            []
-                                                                            Self
-                                                                            "Error"
-                                                                        ]
-                                                                    ],
-                                                                    "from_residual",
-                                                                    [],
-                                                                    []
-                                                                  |),
-                                                                  [ M.read (| residual |) ]
-                                                                |)
+                                                                      ]
+                                                                  ],
+                                                                  "from_residual",
+                                                                  [],
+                                                                  []
+                                                                |),
+                                                                [ M.read (| residual |) ]
                                                               |)
                                                             |)
                                                           |)
@@ -586,65 +572,62 @@ Module annotated_visitor.
                                                               [ Ty.tuple [] ],
                                                             γ0_0
                                                           |) in
-                                                        val))
+                                                        M.read (| val |)))
                                                   ]
                                                 |)
                                               |)
-                                            ]
-                                          |)
-                                        |)) in
-                                    let _ :=
-                                      is_constant_or_break_match (|
-                                        M.read (| γ |),
-                                        Value.Bool true
-                                      |) in
-                                    M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (M.alloc (|
-                                      Ty.tuple [],
-                                      M.never_to_any (|
-                                        M.read (|
-                                          let~ _ : Ty.tuple [] :=
-                                            M.never_to_any (| M.read (| M.break (||) |) |) in
-                                          M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                                            |)
+                                          ]
                                         |)
-                                      |)
-                                    |)))
-                              ]
-                            |)))
-                        |)
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [
-                          Ty.tuple [];
-                          Ty.associated_in_trait
-                            "move_core_types::annotated_visitor::Traversal"
-                            []
-                            []
-                            Self
-                            "Error"
-                        ],
-                      Value.StructTuple
-                        "core::result::Result::Ok"
-                        []
-                        [
-                          Ty.tuple [];
-                          Ty.associated_in_trait
-                            "move_core_types::annotated_visitor::Traversal"
-                            []
-                            []
-                            Self
-                            "Error"
-                        ]
-                        [ Value.Tuple [] ]
+                                      |)) in
+                                  let _ :=
+                                    is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  Value.Tuple []));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (M.never_to_any (|
+                                    M.read (|
+                                      let~ _ : Ty.tuple [] :=
+                                        M.never_to_any (| M.read (| M.break (||) |) |) in
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                                    |)
+                                  |)))
+                            ]
+                          |)
+                        |)))
                     |)
-                  |)
-                |)))
-            |)
+                  |) in
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.tuple [];
+                      Ty.associated_in_trait
+                        "move_core_types::annotated_visitor::Traversal"
+                        []
+                        []
+                        Self
+                        "Error"
+                    ],
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.tuple [];
+                      Ty.associated_in_trait
+                        "move_core_types::annotated_visitor::Traversal"
+                        []
+                        []
+                        Self
+                        "Error"
+                    ]
+                    [ Value.Tuple [] ]
+                |)
+              |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -672,76 +655,81 @@ Module annotated_visitor.
                 [ Ty.path "move_core_types::annotated_visitor::StructDriver" ],
               driver
             |) in
-          M.read (|
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.tuple [];
-                  Ty.associated_in_trait
-                    "move_core_types::annotated_visitor::Traversal"
-                    []
-                    []
-                    Self
-                    "Error"
-                ]) (|
-              ltac:(M.monadic
-                (M.alloc (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.tuple [];
-                      Ty.associated_in_trait
-                        "move_core_types::annotated_visitor::Traversal"
-                        []
-                        []
-                        Self
-                        "Error"
-                    ],
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.tuple [];
+                Ty.associated_in_trait
+                  "move_core_types::annotated_visitor::Traversal"
+                  []
+                  []
+                  Self
+                  "Error"
+              ]) (|
+            ltac:(M.monadic
+              (M.read (|
+                let~ _ : Ty.tuple [] :=
                   M.read (|
-                    let~ _ : Ty.tuple [] :=
-                      M.read (|
-                        M.loop (|
+                    M.loop (|
+                      Ty.tuple [],
+                      ltac:(M.monadic
+                        (M.alloc (|
                           Ty.tuple [],
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              Ty.tuple [],
-                              M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ :=
-                                      M.use
-                                        (M.alloc (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
+                                        Ty.path "bool",
+                                        M.call_closure (|
                                           Ty.path "bool",
-                                          M.call_closure (|
-                                            Ty.path "bool",
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "core::option::Option")
-                                                []
-                                                [
-                                                  Ty.tuple
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "&")
-                                                        []
-                                                        [
-                                                          Ty.path
-                                                            "move_core_types::annotated_value::MoveFieldLayout"
-                                                        ];
-                                                      Ty.tuple []
-                                                    ]
-                                                ],
-                                              "is_some",
-                                              [],
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
                                               []
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
+                                              [
+                                                Ty.tuple
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_core_types::annotated_value::MoveFieldLayout"
+                                                      ];
+                                                    Ty.tuple []
+                                                  ]
+                                              ],
+                                            "is_some",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [
+                                                    Ty.tuple
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_core_types::annotated_value::MoveFieldLayout"
+                                                          ];
+                                                        Ty.tuple []
+                                                      ]
+                                                  ],
                                                 M.match_operator (|
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")
@@ -939,27 +927,24 @@ Module annotated_visitor.
                                                               ],
                                                             γ0_0
                                                           |) in
-                                                        M.alloc (|
-                                                          Ty.apply
-                                                            (Ty.path "core::option::Option")
-                                                            []
-                                                            [
-                                                              Ty.tuple
-                                                                [
-                                                                  Ty.apply
-                                                                    (Ty.path "&")
-                                                                    []
-                                                                    [
-                                                                      Ty.path
-                                                                        "move_core_types::annotated_value::MoveFieldLayout"
-                                                                    ];
-                                                                  Ty.tuple []
-                                                                ]
-                                                            ],
-                                                          M.never_to_any (|
-                                                            M.read (|
-                                                              M.return_ (|
-                                                                M.call_closure (|
+                                                        M.never_to_any (|
+                                                          M.read (|
+                                                            M.return_ (|
+                                                              M.call_closure (|
+                                                                Ty.apply
+                                                                  (Ty.path "core::result::Result")
+                                                                  []
+                                                                  [
+                                                                    Ty.tuple [];
+                                                                    Ty.associated_in_trait
+                                                                      "move_core_types::annotated_visitor::Traversal"
+                                                                      []
+                                                                      []
+                                                                      Self
+                                                                      "Error"
+                                                                  ],
+                                                                M.get_trait_method (|
+                                                                  "core::ops::try_trait::FromResidual",
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
                                                                     []
@@ -972,44 +957,28 @@ Module annotated_visitor.
                                                                         Self
                                                                         "Error"
                                                                     ],
-                                                                  M.get_trait_method (|
-                                                                    "core::ops::try_trait::FromResidual",
+                                                                  [],
+                                                                  [
                                                                     Ty.apply
                                                                       (Ty.path
                                                                         "core::result::Result")
                                                                       []
                                                                       [
-                                                                        Ty.tuple [];
+                                                                        Ty.path
+                                                                          "core::convert::Infallible";
                                                                         Ty.associated_in_trait
                                                                           "move_core_types::annotated_visitor::Traversal"
                                                                           []
                                                                           []
                                                                           Self
                                                                           "Error"
-                                                                      ],
-                                                                    [],
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path
-                                                                          "core::result::Result")
-                                                                        []
-                                                                        [
-                                                                          Ty.path
-                                                                            "core::convert::Infallible";
-                                                                          Ty.associated_in_trait
-                                                                            "move_core_types::annotated_visitor::Traversal"
-                                                                            []
-                                                                            []
-                                                                            Self
-                                                                            "Error"
-                                                                        ]
-                                                                    ],
-                                                                    "from_residual",
-                                                                    [],
-                                                                    []
-                                                                  |),
-                                                                  [ M.read (| residual |) ]
-                                                                |)
+                                                                      ]
+                                                                  ],
+                                                                  "from_residual",
+                                                                  [],
+                                                                  []
+                                                                |),
+                                                                [ M.read (| residual |) ]
                                                               |)
                                                             |)
                                                           |)
@@ -1042,65 +1011,62 @@ Module annotated_visitor.
                                                               ],
                                                             γ0_0
                                                           |) in
-                                                        val))
+                                                        M.read (| val |)))
                                                   ]
                                                 |)
                                               |)
-                                            ]
-                                          |)
-                                        |)) in
-                                    let _ :=
-                                      is_constant_or_break_match (|
-                                        M.read (| γ |),
-                                        Value.Bool true
-                                      |) in
-                                    M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (M.alloc (|
-                                      Ty.tuple [],
-                                      M.never_to_any (|
-                                        M.read (|
-                                          let~ _ : Ty.tuple [] :=
-                                            M.never_to_any (| M.read (| M.break (||) |) |) in
-                                          M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                                            |)
+                                          ]
                                         |)
-                                      |)
-                                    |)))
-                              ]
-                            |)))
-                        |)
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [
-                          Ty.tuple [];
-                          Ty.associated_in_trait
-                            "move_core_types::annotated_visitor::Traversal"
-                            []
-                            []
-                            Self
-                            "Error"
-                        ],
-                      Value.StructTuple
-                        "core::result::Result::Ok"
-                        []
-                        [
-                          Ty.tuple [];
-                          Ty.associated_in_trait
-                            "move_core_types::annotated_visitor::Traversal"
-                            []
-                            []
-                            Self
-                            "Error"
-                        ]
-                        [ Value.Tuple [] ]
+                                      |)) in
+                                  let _ :=
+                                    is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  Value.Tuple []));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (M.never_to_any (|
+                                    M.read (|
+                                      let~ _ : Ty.tuple [] :=
+                                        M.never_to_any (| M.read (| M.break (||) |) |) in
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                                    |)
+                                  |)))
+                            ]
+                          |)
+                        |)))
                     |)
-                  |)
-                |)))
-            |)
+                  |) in
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.tuple [];
+                      Ty.associated_in_trait
+                        "move_core_types::annotated_visitor::Traversal"
+                        []
+                        []
+                        Self
+                        "Error"
+                    ],
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.tuple [];
+                      Ty.associated_in_trait
+                        "move_core_types::annotated_visitor::Traversal"
+                        []
+                        []
+                        Self
+                        "Error"
+                    ]
+                    [ Value.Tuple [] ]
+                |)
+              |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1734,313 +1700,273 @@ Module annotated_visitor.
               Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ],
               __formatter
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "move_core_types::annotated_visitor::Error::UnexpectedEof"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+          M.match_operator (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "move_core_types::annotated_visitor::Error::UnexpectedEof"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_fmt",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| __formatter |) |) |);
                       M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                        Ty.path "core::fmt::Arguments",
                         M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_fmt",
-                          [],
+                          Ty.path "core::fmt::Arguments",
+                          "new_const",
+                          [ Value.Integer IntegerKind.Usize 1 ],
                           []
                         |),
                         [
                           M.borrow (|
-                            Pointer.Kind.MutRef,
-                            M.deref (| M.read (| __formatter |) |)
-                          |);
-                          M.call_closure (|
-                            Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_const",
-                              [ Value.Integer IntegerKind.Usize 1 ],
-                              []
-                            |),
-                            [
+                            Pointer.Kind.Ref,
+                            M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 1 ]
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                      Value.Array [ mk_str (| "unexpected end of input" |) ]
-                                    |)
-                                  |)
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array [ mk_str (| "unexpected end of input" |) ]
                                 |)
                               |)
-                            ]
+                            |)
                           |)
                         ]
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "move_core_types::annotated_visitor::Error::UnexpectedByte",
-                        0
-                      |) in
-                    let _0 := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u8" ], γ1_0 |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "move_core_types::annotated_visitor::Error::UnexpectedByte",
+                      0
+                    |) in
+                  let _0 := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u8" ], γ1_0 |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_fmt",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| __formatter |) |) |);
                       M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                        Ty.path "core::fmt::Arguments",
                         M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_fmt",
-                          [],
+                          Ty.path "core::fmt::Arguments",
+                          "new_v1",
+                          [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 1 ],
                           []
                         |),
                         [
                           M.borrow (|
-                            Pointer.Kind.MutRef,
-                            M.deref (| M.read (| __formatter |) |)
-                          |);
-                          M.call_closure (|
-                            Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_v1",
-                              [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 1
-                              ],
-                              []
-                            |),
-                            [
+                            Pointer.Kind.Ref,
+                            M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 1 ]
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                      Value.Array [ mk_str (| "unexpected byte: " |) ]
-                                    |)
-                                  |)
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array [ mk_str (| "unexpected byte: " |) ]
                                 |)
-                              |);
+                              |)
+                            |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 1 ]
-                                        [ Ty.path "core::fmt::rt::Argument" ],
-                                      Value.Array
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.path "core::fmt::rt::Argument" ],
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [],
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
+                                        |),
                                         [
-                                          M.call_closure (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_display",
-                                              [],
-                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
-                                            |),
-                                            [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
-                                                M.deref (|
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.alloc (|
+                                                M.alloc (|
+                                                  Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
+                                                  M.call_closure (|
+                                                    Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
+                                                    M.get_trait_method (|
+                                                      "thiserror::display::DisplayAsDisplay",
                                                       Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
-                                                      M.call_closure (|
-                                                        Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
-                                                        M.get_trait_method (|
-                                                          "thiserror::display::DisplayAsDisplay",
-                                                          Ty.apply
-                                                            (Ty.path "&")
-                                                            []
-                                                            [ Ty.path "u8" ],
-                                                          [],
-                                                          [],
-                                                          "as_display",
-                                                          [],
-                                                          []
-                                                        |),
-                                                        [ M.borrow (| Pointer.Kind.Ref, _0 |) ]
-                                                      |)
-                                                    |)
+                                                      [],
+                                                      [],
+                                                      "as_display",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [ M.borrow (| Pointer.Kind.Ref, _0 |) ]
                                                   |)
                                                 |)
                                               |)
-                                            ]
+                                            |)
                                           |)
                                         ]
-                                    |)
-                                  |)
+                                      |)
+                                    ]
                                 |)
                               |)
-                            ]
+                            |)
                           |)
                         ]
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "move_core_types::annotated_visitor::Error::TrailingBytes",
-                        0
-                      |) in
-                    let _0 := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ1_0 |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "move_core_types::annotated_visitor::Error::TrailingBytes",
+                      0
+                    |) in
+                  let _0 := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ1_0 |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_fmt",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| __formatter |) |) |);
                       M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                        Ty.path "core::fmt::Arguments",
                         M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_fmt",
-                          [],
+                          Ty.path "core::fmt::Arguments",
+                          "new_v1",
+                          [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1 ],
                           []
                         |),
                         [
                           M.borrow (|
-                            Pointer.Kind.MutRef,
-                            M.deref (| M.read (| __formatter |) |)
-                          |);
-                          M.call_closure (|
-                            Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_v1",
-                              [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1
-                              ],
-                              []
-                            |),
-                            [
+                            Pointer.Kind.Ref,
+                            M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 2 ]
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                      Value.Array
-                                        [
-                                          mk_str (| "trailing " |);
-                                          mk_str (| " byte(s) at the end of input" |)
-                                        ]
-                                    |)
-                                  |)
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 2 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array
+                                    [
+                                      mk_str (| "trailing " |);
+                                      mk_str (| " byte(s) at the end of input" |)
+                                    ]
                                 |)
-                              |);
+                              |)
+                            |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 1 ]
-                                        [ Ty.path "core::fmt::rt::Argument" ],
-                                      Value.Array
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.path "core::fmt::rt::Argument" ],
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [],
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ]
+                                        |),
                                         [
-                                          M.call_closure (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_display",
-                                              [],
-                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ]
-                                            |),
-                                            [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
-                                                M.deref (|
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.alloc (|
+                                                M.alloc (|
+                                                  Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
+                                                  M.call_closure (|
+                                                    Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
+                                                    M.get_trait_method (|
+                                                      "thiserror::display::DisplayAsDisplay",
                                                       Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
-                                                      M.call_closure (|
-                                                        Ty.apply
-                                                          (Ty.path "&")
-                                                          []
-                                                          [ Ty.path "usize" ],
-                                                        M.get_trait_method (|
-                                                          "thiserror::display::DisplayAsDisplay",
-                                                          Ty.apply
-                                                            (Ty.path "&")
-                                                            []
-                                                            [ Ty.path "usize" ],
-                                                          [],
-                                                          [],
-                                                          "as_display",
-                                                          [],
-                                                          []
-                                                        |),
-                                                        [ M.borrow (| Pointer.Kind.Ref, _0 |) ]
-                                                      |)
-                                                    |)
+                                                      [],
+                                                      [],
+                                                      "as_display",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [ M.borrow (| Pointer.Kind.Ref, _0 |) ]
                                                   |)
                                                 |)
                                               |)
-                                            ]
+                                            |)
                                           |)
                                         ]
-                                    |)
-                                  |)
+                                      |)
+                                    ]
                                 |)
                               |)
-                            ]
+                            |)
                           |)
                         ]
                       |)
-                    |)))
-              ]
-            |)
+                    ]
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2069,133 +1995,103 @@ Module annotated_visitor.
             |) in
           let f :=
             M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "move_core_types::annotated_visitor::Error::UnexpectedEof"
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "UnexpectedEof" |) |)
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "move_core_types::annotated_visitor::Error::UnexpectedByte",
-                        0
-                      |) in
-                    let __self_0 :=
-                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u8" ], γ1_0 |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_tuple_field1_finish",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "UnexpectedByte" |) |)
-                          |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                            |))
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "move_core_types::annotated_visitor::Error::TrailingBytes",
-                        0
-                      |) in
-                    let __self_0 :=
-                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ1_0 |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_tuple_field1_finish",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| mk_str (| "TrailingBytes" |) |)
-                          |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                            |))
-                        ]
-                      |)
-                    |)))
-              ]
-            |)
+          M.match_operator (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ,
+                      "move_core_types::annotated_visitor::Error::UnexpectedEof"
+                    |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "UnexpectedEof" |) |) |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "move_core_types::annotated_visitor::Error::UnexpectedByte",
+                      0
+                    |) in
+                  let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u8" ], γ1_0 |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "debug_tuple_field1_finish",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "UnexpectedByte" |) |) |);
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                        |))
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "move_core_types::annotated_visitor::Error::TrailingBytes",
+                      0
+                    |) in
+                  let __self_0 :=
+                    M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ1_0 |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "debug_tuple_field1_finish",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "TrailingBytes" |) |) |);
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                        |))
+                    ]
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2409,10 +2305,27 @@ Module annotated_visitor.
               self
             |) in
           let visitor := M.alloc (| Ty.apply (Ty.path "&mut") [] [ V ], visitor |) in
-          M.read (|
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [
+                    Ty.associated_in_trait
+                      "move_core_types::annotated_visitor::Visitor"
+                      []
+                      []
+                      V
+                      "Value"
+                  ];
+                Ty.associated_in_trait "move_core_types::annotated_visitor::Visitor" [] [] V "Error"
+              ]) (|
+            ltac:(M.monadic
+              (Value.StructTuple
+                "core::result::Result::Ok"
                 []
                 [
                   Ty.apply
@@ -2432,58 +2345,53 @@ Module annotated_visitor.
                     []
                     V
                     "Error"
-                ]) (|
-              ltac:(M.monadic
-                (M.alloc (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
+                ]
+                [
+                  M.match_operator (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [
+                        Ty.associated_in_trait
+                          "move_core_types::annotated_visitor::Visitor"
+                          []
+                          []
+                          V
+                          "Value"
+                      ],
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
                     [
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        []
-                        [
-                          Ty.associated_in_trait
-                            "move_core_types::annotated_visitor::Visitor"
-                            []
-                            []
-                            V
-                            "Value"
-                        ];
-                      Ty.associated_in_trait
-                        "move_core_types::annotated_visitor::Visitor"
-                        []
-                        []
-                        V
-                        "Error"
-                    ],
-                  Value.StructTuple
-                    "core::result::Result::Ok"
-                    []
-                    [
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        []
-                        [
-                          Ty.associated_in_trait
-                            "move_core_types::annotated_visitor::Visitor"
-                            []
-                            []
-                            V
-                            "Value"
-                        ];
-                      Ty.associated_in_trait
-                        "move_core_types::annotated_visitor::Visitor"
-                        []
-                        []
-                        V
-                        "Error"
-                    ]
-                    [
-                      M.read (|
-                        M.match_operator (|
-                          Ty.apply
-                            (Ty.path "core::option::Option")
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ :=
+                            M.use
+                              (M.alloc (|
+                                Ty.path "bool",
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.ge,
+                                  [
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_core_types::annotated_visitor::VecDriver",
+                                        "off"
+                                      |)
+                                    |);
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_core_types::annotated_visitor::VecDriver",
+                                        "len"
+                                      |)
+                                    |)
+                                  ]
+                                |)
+                              |)) in
+                          let _ :=
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          Value.StructTuple
+                            "core::option::Option::None"
                             []
                             [
                               Ty.associated_in_trait
@@ -2492,46 +2400,42 @@ Module annotated_visitor.
                                 []
                                 V
                                 "Value"
-                            ],
-                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ :=
-                                  M.use
-                                    (M.alloc (|
-                                      Ty.path "bool",
-                                      M.call_closure (|
-                                        Ty.path "bool",
-                                        BinOp.ge,
-                                        [
-                                          M.read (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.deref (| M.read (| self |) |),
-                                              "move_core_types::annotated_visitor::VecDriver",
-                                              "off"
-                                            |)
-                                          |);
-                                          M.read (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.deref (| M.read (| self |) |),
-                                              "move_core_types::annotated_visitor::VecDriver",
-                                              "len"
-                                            |)
-                                          |)
-                                        ]
-                                      |)
-                                    |)) in
-                                let _ :=
-                                  is_constant_or_break_match (|
-                                    M.read (| γ |),
-                                    Value.Bool true
-                                  |) in
+                            ]
+                            []));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.read (|
+                            let~ res :
+                                Ty.associated_in_trait
+                                  "move_core_types::annotated_visitor::Visitor"
+                                  []
+                                  []
+                                  V
+                                  "Value" :=
+                              M.match_operator (|
+                                Ty.associated_in_trait
+                                  "move_core_types::annotated_visitor::Visitor"
+                                  []
+                                  []
+                                  V
+                                  "Value",
                                 M.alloc (|
                                   Ty.apply
-                                    (Ty.path "core::option::Option")
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
                                     []
                                     [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.associated_in_trait
+                                            "move_core_types::annotated_visitor::Visitor"
+                                            []
+                                            []
+                                            V
+                                            "Error"
+                                        ];
                                       Ty.associated_in_trait
                                         "move_core_types::annotated_visitor::Visitor"
                                         []
@@ -2539,121 +2443,157 @@ Module annotated_visitor.
                                         V
                                         "Value"
                                     ],
-                                  Value.StructTuple
-                                    "core::option::Option::None"
-                                    []
-                                    [
-                                      Ty.associated_in_trait
-                                        "move_core_types::annotated_visitor::Visitor"
-                                        []
-                                        []
-                                        V
-                                        "Value"
-                                    ]
-                                    []
-                                |)));
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let~ res :
-                                    Ty.associated_in_trait
-                                      "move_core_types::annotated_visitor::Visitor"
+                                  M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::ops::control_flow::ControlFlow")
                                       []
-                                      []
-                                      V
-                                      "Value" :=
-                                  M.read (|
-                                    M.match_operator (|
-                                      Ty.associated_in_trait
-                                        "move_core_types::annotated_visitor::Visitor"
-                                        []
-                                        []
-                                        V
-                                        "Value",
-                                      M.alloc (|
+                                      [
                                         Ty.apply
-                                          (Ty.path "core::ops::control_flow::ControlFlow")
+                                          (Ty.path "core::result::Result")
                                           []
                                           [
-                                            Ty.apply
-                                              (Ty.path "core::result::Result")
-                                              []
-                                              [
-                                                Ty.path "core::convert::Infallible";
-                                                Ty.associated_in_trait
-                                                  "move_core_types::annotated_visitor::Visitor"
-                                                  []
-                                                  []
-                                                  V
-                                                  "Error"
-                                              ];
+                                            Ty.path "core::convert::Infallible";
                                             Ty.associated_in_trait
                                               "move_core_types::annotated_visitor::Visitor"
                                               []
                                               []
                                               V
-                                              "Value"
+                                              "Error"
+                                          ];
+                                        Ty.associated_in_trait
+                                          "move_core_types::annotated_visitor::Visitor"
+                                          []
+                                          []
+                                          V
+                                          "Value"
+                                      ],
+                                    M.get_trait_method (|
+                                      "core::ops::try_trait::Try",
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.associated_in_trait
+                                            "move_core_types::annotated_visitor::Visitor"
+                                            []
+                                            []
+                                            V
+                                            "Value";
+                                          Ty.associated_in_trait
+                                            "move_core_types::annotated_visitor::Visitor"
+                                            []
+                                            []
+                                            V
+                                            "Error"
+                                        ],
+                                      [],
+                                      [],
+                                      "branch",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.associated_in_trait
+                                              "move_core_types::annotated_visitor::Visitor"
+                                              []
+                                              []
+                                              V
+                                              "Value";
+                                            Ty.associated_in_trait
+                                              "move_core_types::annotated_visitor::Visitor"
+                                              []
+                                              []
+                                              V
+                                              "Error"
                                           ],
-                                        M.call_closure (|
+                                        M.get_function (|
+                                          "move_core_types::annotated_visitor::visit_value",
+                                          [],
+                                          [ V ]
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (|
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "move_core_types::annotated_visitor::VecDriver",
+                                                  "bytes"
+                                                |)
+                                              |)
+                                            |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "move_core_types::annotated_visitor::VecDriver",
+                                                  "layout"
+                                                |)
+                                              |)
+                                            |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.MutRef,
+                                            M.deref (| M.read (| visitor |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    ]
+                                  |)
+                                |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Break",
+                                          0
+                                        |) in
+                                      let residual :=
+                                        M.copy (|
                                           Ty.apply
-                                            (Ty.path "core::ops::control_flow::ControlFlow")
+                                            (Ty.path "core::result::Result")
                                             []
                                             [
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.path "core::convert::Infallible";
-                                                  Ty.associated_in_trait
-                                                    "move_core_types::annotated_visitor::Visitor"
-                                                    []
-                                                    []
-                                                    V
-                                                    "Error"
-                                                ];
+                                              Ty.path "core::convert::Infallible";
                                               Ty.associated_in_trait
                                                 "move_core_types::annotated_visitor::Visitor"
                                                 []
                                                 []
                                                 V
-                                                "Value"
+                                                "Error"
                                             ],
-                                          M.get_trait_method (|
-                                            "core::ops::try_trait::Try",
-                                            Ty.apply
-                                              (Ty.path "core::result::Result")
-                                              []
-                                              [
-                                                Ty.associated_in_trait
-                                                  "move_core_types::annotated_visitor::Visitor"
-                                                  []
-                                                  []
-                                                  V
-                                                  "Value";
-                                                Ty.associated_in_trait
-                                                  "move_core_types::annotated_visitor::Visitor"
-                                                  []
-                                                  []
-                                                  V
-                                                  "Error"
-                                              ],
-                                            [],
-                                            [],
-                                            "branch",
-                                            [],
-                                            []
-                                          |),
-                                          [
+                                          γ0_0
+                                        |) in
+                                      M.never_to_any (|
+                                        M.read (|
+                                          M.return_ (|
                                             M.call_closure (|
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
                                                 []
                                                 [
-                                                  Ty.associated_in_trait
-                                                    "move_core_types::annotated_visitor::Visitor"
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
                                                     []
-                                                    []
-                                                    V
-                                                    "Value";
+                                                    [
+                                                      Ty.associated_in_trait
+                                                        "move_core_types::annotated_visitor::Visitor"
+                                                        []
+                                                        []
+                                                        V
+                                                        "Value"
+                                                    ];
                                                   Ty.associated_in_trait
                                                     "move_core_types::annotated_visitor::Visitor"
                                                     []
@@ -2661,61 +2601,23 @@ Module annotated_visitor.
                                                     V
                                                     "Error"
                                                 ],
-                                              M.get_function (|
-                                                "move_core_types::annotated_visitor::visit_value",
-                                                [],
-                                                [ V ]
-                                              |),
-                                              [
-                                                M.borrow (|
-                                                  Pointer.Kind.MutRef,
-                                                  M.deref (|
-                                                    M.read (|
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        M.deref (| M.read (| self |) |),
-                                                        "move_core_types::annotated_visitor::VecDriver",
-                                                        "bytes"
-                                                      |)
-                                                    |)
-                                                  |)
-                                                |);
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (|
-                                                    M.read (|
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        M.deref (| M.read (| self |) |),
-                                                        "move_core_types::annotated_visitor::VecDriver",
-                                                        "layout"
-                                                      |)
-                                                    |)
-                                                  |)
-                                                |);
-                                                M.borrow (|
-                                                  Pointer.Kind.MutRef,
-                                                  M.deref (| M.read (| visitor |) |)
-                                                |)
-                                              ]
-                                            |)
-                                          ]
-                                        |)
-                                      |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ0_0 :=
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                γ,
-                                                "core::ops::control_flow::ControlFlow::Break",
-                                                0
-                                              |) in
-                                            let residual :=
-                                              M.copy (|
+                                              M.get_trait_method (|
+                                                "core::ops::try_trait::FromResidual",
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [
-                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.apply
+                                                      (Ty.path "core::option::Option")
+                                                      []
+                                                      [
+                                                        Ty.associated_in_trait
+                                                          "move_core_types::annotated_visitor::Visitor"
+                                                          []
+                                                          []
+                                                          V
+                                                          "Value"
+                                                      ];
                                                     Ty.associated_in_trait
                                                       "move_core_types::annotated_visitor::Visitor"
                                                       []
@@ -2723,158 +2625,95 @@ Module annotated_visitor.
                                                       V
                                                       "Error"
                                                   ],
-                                                γ0_0
-                                              |) in
-                                            M.alloc (|
-                                              Ty.associated_in_trait
-                                                "move_core_types::annotated_visitor::Visitor"
-                                                []
-                                                []
-                                                V
-                                                "Value",
-                                              M.never_to_any (|
-                                                M.read (|
-                                                  M.return_ (|
-                                                    M.call_closure (|
-                                                      Ty.apply
-                                                        (Ty.path "core::result::Result")
+                                                [],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.path "core::convert::Infallible";
+                                                      Ty.associated_in_trait
+                                                        "move_core_types::annotated_visitor::Visitor"
                                                         []
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "core::option::Option")
-                                                            []
-                                                            [
-                                                              Ty.associated_in_trait
-                                                                "move_core_types::annotated_visitor::Visitor"
-                                                                []
-                                                                []
-                                                                V
-                                                                "Value"
-                                                            ];
-                                                          Ty.associated_in_trait
-                                                            "move_core_types::annotated_visitor::Visitor"
-                                                            []
-                                                            []
-                                                            V
-                                                            "Error"
-                                                        ],
-                                                      M.get_trait_method (|
-                                                        "core::ops::try_trait::FromResidual",
-                                                        Ty.apply
-                                                          (Ty.path "core::result::Result")
-                                                          []
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "core::option::Option")
-                                                              []
-                                                              [
-                                                                Ty.associated_in_trait
-                                                                  "move_core_types::annotated_visitor::Visitor"
-                                                                  []
-                                                                  []
-                                                                  V
-                                                                  "Value"
-                                                              ];
-                                                            Ty.associated_in_trait
-                                                              "move_core_types::annotated_visitor::Visitor"
-                                                              []
-                                                              []
-                                                              V
-                                                              "Error"
-                                                          ],
-                                                        [],
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "core::result::Result")
-                                                            []
-                                                            [
-                                                              Ty.path "core::convert::Infallible";
-                                                              Ty.associated_in_trait
-                                                                "move_core_types::annotated_visitor::Visitor"
-                                                                []
-                                                                []
-                                                                V
-                                                                "Error"
-                                                            ]
-                                                        ],
-                                                        "from_residual",
-                                                        [],
                                                         []
-                                                      |),
-                                                      [ M.read (| residual |) ]
-                                                    |)
-                                                  |)
-                                                |)
-                                              |)
-                                            |)));
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ0_0 :=
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                γ,
-                                                "core::ops::control_flow::ControlFlow::Continue",
-                                                0
-                                              |) in
-                                            let val :=
-                                              M.copy (|
-                                                Ty.associated_in_trait
-                                                  "move_core_types::annotated_visitor::Visitor"
-                                                  []
-                                                  []
-                                                  V
-                                                  "Value",
-                                                γ0_0
-                                              |) in
-                                            val))
-                                      ]
-                                    |)
-                                  |) in
-                                let~ _ : Ty.tuple [] :=
-                                  let β :=
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "move_core_types::annotated_visitor::VecDriver",
-                                      "off"
-                                    |) in
-                                  M.write (|
-                                    β,
-                                    M.call_closure (|
-                                      Ty.path "u64",
-                                      BinOp.Wrap.add,
-                                      [ M.read (| β |); Value.Integer IntegerKind.U64 1 ]
-                                    |)
-                                  |) in
-                                M.alloc (|
-                                  Ty.apply
-                                    (Ty.path "core::option::Option")
+                                                        V
+                                                        "Error"
+                                                    ]
+                                                ],
+                                                "from_residual",
+                                                [],
+                                                []
+                                              |),
+                                              [ M.read (| residual |) ]
+                                            |)
+                                          |)
+                                        |)
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::ops::control_flow::ControlFlow::Continue",
+                                          0
+                                        |) in
+                                      let val :=
+                                        M.copy (|
+                                          Ty.associated_in_trait
+                                            "move_core_types::annotated_visitor::Visitor"
+                                            []
+                                            []
+                                            V
+                                            "Value",
+                                          γ0_0
+                                        |) in
+                                      M.read (| val |)))
+                                ]
+                              |) in
+                            let~ _ : Ty.tuple [] :=
+                              let β :=
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "move_core_types::annotated_visitor::VecDriver",
+                                  "off"
+                                |) in
+                              M.write (|
+                                β,
+                                M.call_closure (|
+                                  Ty.path "u64",
+                                  BinOp.Wrap.add,
+                                  [ M.read (| β |); Value.Integer IntegerKind.U64 1 ]
+                                |)
+                              |) in
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [
+                                  Ty.associated_in_trait
+                                    "move_core_types::annotated_visitor::Visitor"
                                     []
-                                    [
-                                      Ty.associated_in_trait
-                                        "move_core_types::annotated_visitor::Visitor"
-                                        []
-                                        []
-                                        V
-                                        "Value"
-                                    ],
-                                  Value.StructTuple
-                                    "core::option::Option::Some"
                                     []
-                                    [
-                                      Ty.associated_in_trait
-                                        "move_core_types::annotated_visitor::Visitor"
-                                        []
-                                        []
-                                        V
-                                        "Value"
-                                    ]
-                                    [ M.read (| res |) ]
-                                |)))
-                          ]
-                        |)
-                      |)
+                                    V
+                                    "Value"
+                                ],
+                              Value.StructTuple
+                                "core::option::Option::Some"
+                                []
+                                [
+                                  Ty.associated_in_trait
+                                    "move_core_types::annotated_visitor::Visitor"
+                                    []
+                                    []
+                                    V
+                                    "Value"
+                                ]
+                                [ M.read (| res |) ]
+                            |)
+                          |)))
                     ]
-                |)))
-            |)
+                  |)
+                ]))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3218,245 +3057,309 @@ Module annotated_visitor.
               self
             |) in
           let visitor := M.alloc (| Ty.apply (Ty.path "&mut") [] [ V ], visitor |) in
-          M.read (|
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [
+                    Ty.tuple
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "move_core_types::annotated_value::MoveFieldLayout" ];
+                        Ty.associated_in_trait
+                          "move_core_types::annotated_visitor::Visitor"
+                          []
+                          []
+                          V
+                          "Value"
+                      ]
+                  ];
+                Ty.associated_in_trait "move_core_types::annotated_visitor::Visitor" [] [] V "Error"
+              ]) (|
+            ltac:(M.monadic
+              (M.match_operator (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [
+                        Ty.tuple
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_core_types::annotated_value::MoveFieldLayout" ];
+                            Ty.associated_in_trait
+                              "move_core_types::annotated_visitor::Visitor"
+                              []
+                              []
+                              V
+                              "Value"
+                          ]
+                      ];
+                    Ty.associated_in_trait
+                      "move_core_types::annotated_visitor::Visitor"
+                      []
+                      []
+                      V
+                      "Error"
+                  ],
+                M.alloc (|
                   Ty.apply
                     (Ty.path "core::option::Option")
                     []
                     [
-                      Ty.tuple
-                        [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.path "move_core_types::annotated_value::MoveFieldLayout" ]
+                    ],
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "move_core_types::annotated_value::MoveFieldLayout" ]
+                      ],
+                    M.get_associated_function (|
+                      Ty.path "move_core_types::annotated_visitor::StructDriver",
+                      "peek_field",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                  |)
+                |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 :=
+                        M.SubPointer.get_struct_tuple_field (|
+                          γ,
+                          "core::option::Option::Some",
+                          0
+                        |) in
+                      let field :=
+                        M.copy (|
                           Ty.apply
                             (Ty.path "&")
                             []
-                            [ Ty.path "move_core_types::annotated_value::MoveFieldLayout" ];
-                          Ty.associated_in_trait
-                            "move_core_types::annotated_visitor::Visitor"
-                            []
-                            []
-                            V
-                            "Value"
-                        ]
-                    ];
-                  Ty.associated_in_trait
-                    "move_core_types::annotated_visitor::Visitor"
-                    []
-                    []
-                    V
-                    "Error"
-                ]) (|
-              ltac:(M.monadic
-                (M.alloc (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        []
-                        [
-                          Ty.tuple
-                            [
+                            [ Ty.path "move_core_types::annotated_value::MoveFieldLayout" ],
+                          γ0_0
+                        |) in
+                      M.read (|
+                        let~ res :
+                            Ty.associated_in_trait
+                              "move_core_types::annotated_visitor::Visitor"
+                              []
+                              []
+                              V
+                              "Value" :=
+                          M.match_operator (|
+                            Ty.associated_in_trait
+                              "move_core_types::annotated_visitor::Visitor"
+                              []
+                              []
+                              V
+                              "Value",
+                            M.alloc (|
                               Ty.apply
-                                (Ty.path "&")
+                                (Ty.path "core::ops::control_flow::ControlFlow")
                                 []
-                                [ Ty.path "move_core_types::annotated_value::MoveFieldLayout" ];
-                              Ty.associated_in_trait
-                                "move_core_types::annotated_visitor::Visitor"
-                                []
-                                []
-                                V
-                                "Value"
-                            ]
-                        ];
-                      Ty.associated_in_trait
-                        "move_core_types::annotated_visitor::Visitor"
-                        []
-                        []
-                        V
-                        "Error"
-                    ],
-                  M.read (|
-                    M.match_operator (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "core::option::Option")
-                            []
-                            [
-                              Ty.tuple
                                 [
                                   Ty.apply
-                                    (Ty.path "&")
+                                    (Ty.path "core::result::Result")
                                     []
-                                    [ Ty.path "move_core_types::annotated_value::MoveFieldLayout" ];
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.associated_in_trait
+                                        "move_core_types::annotated_visitor::Visitor"
+                                        []
+                                        []
+                                        V
+                                        "Error"
+                                    ];
                                   Ty.associated_in_trait
                                     "move_core_types::annotated_visitor::Visitor"
                                     []
                                     []
                                     V
                                     "Value"
-                                ]
-                            ];
-                          Ty.associated_in_trait
-                            "move_core_types::annotated_visitor::Visitor"
-                            []
-                            []
-                            V
-                            "Error"
-                        ],
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::option::Option")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "&")
-                              []
-                              [ Ty.path "move_core_types::annotated_value::MoveFieldLayout" ]
-                          ],
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::option::Option")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.path "move_core_types::annotated_value::MoveFieldLayout" ]
-                            ],
-                          M.get_associated_function (|
-                            Ty.path "move_core_types::annotated_visitor::StructDriver",
-                            "peek_field",
-                            [],
-                            []
-                          |),
-                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                        |)
-                      |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::option::Option::Some",
-                                0
-                              |) in
-                            let field :=
-                              M.copy (|
+                                ],
+                              M.call_closure (|
                                 Ty.apply
-                                  (Ty.path "&")
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
                                   []
-                                  [ Ty.path "move_core_types::annotated_value::MoveFieldLayout" ],
-                                γ0_0
-                              |) in
-                            let~ res :
-                                Ty.associated_in_trait
-                                  "move_core_types::annotated_visitor::Visitor"
-                                  []
-                                  []
-                                  V
-                                  "Value" :=
-                              M.read (|
-                                M.match_operator (|
-                                  Ty.associated_in_trait
-                                    "move_core_types::annotated_visitor::Visitor"
-                                    []
-                                    []
-                                    V
-                                    "Value",
-                                  M.alloc (|
+                                  [
                                     Ty.apply
-                                      (Ty.path "core::ops::control_flow::ControlFlow")
+                                      (Ty.path "core::result::Result")
                                       []
                                       [
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [
-                                            Ty.path "core::convert::Infallible";
-                                            Ty.associated_in_trait
-                                              "move_core_types::annotated_visitor::Visitor"
-                                              []
-                                              []
-                                              V
-                                              "Error"
-                                          ];
+                                        Ty.path "core::convert::Infallible";
                                         Ty.associated_in_trait
                                           "move_core_types::annotated_visitor::Visitor"
                                           []
                                           []
                                           V
-                                          "Value"
+                                          "Error"
+                                      ];
+                                    Ty.associated_in_trait
+                                      "move_core_types::annotated_visitor::Visitor"
+                                      []
+                                      []
+                                      V
+                                      "Value"
+                                  ],
+                                M.get_trait_method (|
+                                  "core::ops::try_trait::Try",
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.associated_in_trait
+                                        "move_core_types::annotated_visitor::Visitor"
+                                        []
+                                        []
+                                        V
+                                        "Value";
+                                      Ty.associated_in_trait
+                                        "move_core_types::annotated_visitor::Visitor"
+                                        []
+                                        []
+                                        V
+                                        "Error"
+                                    ],
+                                  [],
+                                  [],
+                                  "branch",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "move_core_types::annotated_visitor::Visitor"
+                                          []
+                                          []
+                                          V
+                                          "Value";
+                                        Ty.associated_in_trait
+                                          "move_core_types::annotated_visitor::Visitor"
+                                          []
+                                          []
+                                          V
+                                          "Error"
                                       ],
-                                    M.call_closure (|
+                                    M.get_function (|
+                                      "move_core_types::annotated_visitor::visit_value",
+                                      [],
+                                      [ V ]
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (|
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "move_core_types::annotated_visitor::StructDriver",
+                                              "bytes"
+                                            |)
+                                          |)
+                                        |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| field |) |),
+                                              "move_core_types::annotated_value::MoveFieldLayout",
+                                              "layout"
+                                            |)
+                                          |)
+                                        |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| visitor |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                              |)
+                            |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::ops::control_flow::ControlFlow::Break",
+                                      0
+                                    |) in
+                                  let residual :=
+                                    M.copy (|
                                       Ty.apply
-                                        (Ty.path "core::ops::control_flow::ControlFlow")
+                                        (Ty.path "core::result::Result")
                                         []
                                         [
-                                          Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            []
-                                            [
-                                              Ty.path "core::convert::Infallible";
-                                              Ty.associated_in_trait
-                                                "move_core_types::annotated_visitor::Visitor"
-                                                []
-                                                []
-                                                V
-                                                "Error"
-                                            ];
+                                          Ty.path "core::convert::Infallible";
                                           Ty.associated_in_trait
                                             "move_core_types::annotated_visitor::Visitor"
                                             []
                                             []
                                             V
-                                            "Value"
+                                            "Error"
                                         ],
-                                      M.get_trait_method (|
-                                        "core::ops::try_trait::Try",
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [
-                                            Ty.associated_in_trait
-                                              "move_core_types::annotated_visitor::Visitor"
-                                              []
-                                              []
-                                              V
-                                              "Value";
-                                            Ty.associated_in_trait
-                                              "move_core_types::annotated_visitor::Visitor"
-                                              []
-                                              []
-                                              V
-                                              "Error"
-                                          ],
-                                        [],
-                                        [],
-                                        "branch",
-                                        [],
-                                        []
-                                      |),
-                                      [
+                                      γ0_0
+                                    |) in
+                                  M.never_to_any (|
+                                    M.read (|
+                                      M.return_ (|
                                         M.call_closure (|
                                           Ty.apply
                                             (Ty.path "core::result::Result")
                                             []
                                             [
-                                              Ty.associated_in_trait
-                                                "move_core_types::annotated_visitor::Visitor"
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
                                                 []
-                                                []
-                                                V
-                                                "Value";
+                                                [
+                                                  Ty.tuple
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_core_types::annotated_value::MoveFieldLayout"
+                                                        ];
+                                                      Ty.associated_in_trait
+                                                        "move_core_types::annotated_visitor::Visitor"
+                                                        []
+                                                        []
+                                                        V
+                                                        "Value"
+                                                    ]
+                                                ];
                                               Ty.associated_in_trait
                                                 "move_core_types::annotated_visitor::Visitor"
                                                 []
@@ -3464,62 +3367,33 @@ Module annotated_visitor.
                                                 V
                                                 "Error"
                                             ],
-                                          M.get_function (|
-                                            "move_core_types::annotated_visitor::visit_value",
-                                            [],
-                                            [ V ]
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.MutRef,
-                                              M.deref (|
-                                                M.read (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.deref (| M.read (| self |) |),
-                                                    "move_core_types::annotated_visitor::StructDriver",
-                                                    "bytes"
-                                                  |)
-                                                |)
-                                              |)
-                                            |);
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (|
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.deref (| M.read (| field |) |),
-                                                    "move_core_types::annotated_value::MoveFieldLayout",
-                                                    "layout"
-                                                  |)
-                                                |)
-                                              |)
-                                            |);
-                                            M.borrow (|
-                                              Pointer.Kind.MutRef,
-                                              M.deref (| M.read (| visitor |) |)
-                                            |)
-                                          ]
-                                        |)
-                                      ]
-                                    |)
-                                  |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let γ0_0 :=
-                                          M.SubPointer.get_struct_tuple_field (|
-                                            γ,
-                                            "core::ops::control_flow::ControlFlow::Break",
-                                            0
-                                          |) in
-                                        let residual :=
-                                          M.copy (|
+                                          M.get_trait_method (|
+                                            "core::ops::try_trait::FromResidual",
                                             Ty.apply
                                               (Ty.path "core::result::Result")
                                               []
                                               [
-                                                Ty.path "core::convert::Infallible";
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [
+                                                    Ty.tuple
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_core_types::annotated_value::MoveFieldLayout"
+                                                          ];
+                                                        Ty.associated_in_trait
+                                                          "move_core_types::annotated_visitor::Visitor"
+                                                          []
+                                                          []
+                                                          V
+                                                          "Value"
+                                                      ]
+                                                  ];
                                                 Ty.associated_in_trait
                                                   "move_core_types::annotated_visitor::Visitor"
                                                   []
@@ -3527,251 +3401,168 @@ Module annotated_visitor.
                                                   V
                                                   "Error"
                                               ],
-                                            γ0_0
-                                          |) in
-                                        M.alloc (|
-                                          Ty.associated_in_trait
-                                            "move_core_types::annotated_visitor::Visitor"
-                                            []
-                                            []
-                                            V
-                                            "Value",
-                                          M.never_to_any (|
-                                            M.read (|
-                                              M.return_ (|
-                                                M.call_closure (|
-                                                  Ty.apply
-                                                    (Ty.path "core::result::Result")
+                                            [],
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path "core::convert::Infallible";
+                                                  Ty.associated_in_trait
+                                                    "move_core_types::annotated_visitor::Visitor"
                                                     []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "core::option::Option")
-                                                        []
-                                                        [
-                                                          Ty.tuple
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "&")
-                                                                []
-                                                                [
-                                                                  Ty.path
-                                                                    "move_core_types::annotated_value::MoveFieldLayout"
-                                                                ];
-                                                              Ty.associated_in_trait
-                                                                "move_core_types::annotated_visitor::Visitor"
-                                                                []
-                                                                []
-                                                                V
-                                                                "Value"
-                                                            ]
-                                                        ];
-                                                      Ty.associated_in_trait
-                                                        "move_core_types::annotated_visitor::Visitor"
-                                                        []
-                                                        []
-                                                        V
-                                                        "Error"
-                                                    ],
-                                                  M.get_trait_method (|
-                                                    "core::ops::try_trait::FromResidual",
-                                                    Ty.apply
-                                                      (Ty.path "core::result::Result")
-                                                      []
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "core::option::Option")
-                                                          []
-                                                          [
-                                                            Ty.tuple
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path "&")
-                                                                  []
-                                                                  [
-                                                                    Ty.path
-                                                                      "move_core_types::annotated_value::MoveFieldLayout"
-                                                                  ];
-                                                                Ty.associated_in_trait
-                                                                  "move_core_types::annotated_visitor::Visitor"
-                                                                  []
-                                                                  []
-                                                                  V
-                                                                  "Value"
-                                                              ]
-                                                          ];
-                                                        Ty.associated_in_trait
-                                                          "move_core_types::annotated_visitor::Visitor"
-                                                          []
-                                                          []
-                                                          V
-                                                          "Error"
-                                                      ],
-                                                    [],
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "core::result::Result")
-                                                        []
-                                                        [
-                                                          Ty.path "core::convert::Infallible";
-                                                          Ty.associated_in_trait
-                                                            "move_core_types::annotated_visitor::Visitor"
-                                                            []
-                                                            []
-                                                            V
-                                                            "Error"
-                                                        ]
-                                                    ],
-                                                    "from_residual",
-                                                    [],
                                                     []
-                                                  |),
-                                                  [ M.read (| residual |) ]
-                                                |)
-                                              |)
-                                            |)
-                                          |)
-                                        |)));
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let γ0_0 :=
-                                          M.SubPointer.get_struct_tuple_field (|
-                                            γ,
-                                            "core::ops::control_flow::ControlFlow::Continue",
-                                            0
-                                          |) in
-                                        let val :=
-                                          M.copy (|
-                                            Ty.associated_in_trait
-                                              "move_core_types::annotated_visitor::Visitor"
-                                              []
-                                              []
-                                              V
-                                              "Value",
-                                            γ0_0
-                                          |) in
-                                        val))
-                                  ]
-                                |)
-                              |) in
-                            let~ _ : Ty.tuple [] :=
-                              let β :=
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "move_core_types::annotated_visitor::StructDriver",
-                                  "off"
-                                |) in
-                              M.write (|
-                                β,
-                                M.call_closure (|
-                                  Ty.path "usize",
-                                  BinOp.Wrap.add,
-                                  [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
-                                |)
-                              |) in
-                            M.alloc (|
+                                                    V
+                                                    "Error"
+                                                ]
+                                            ],
+                                            "from_residual",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.read (| residual |) ]
+                                        |)
+                                      |)
+                                    |)
+                                  |)));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::ops::control_flow::ControlFlow::Continue",
+                                      0
+                                    |) in
+                                  let val :=
+                                    M.copy (|
+                                      Ty.associated_in_trait
+                                        "move_core_types::annotated_visitor::Visitor"
+                                        []
+                                        []
+                                        V
+                                        "Value",
+                                      γ0_0
+                                    |) in
+                                  M.read (| val |)))
+                            ]
+                          |) in
+                        let~ _ : Ty.tuple [] :=
+                          let β :=
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "move_core_types::annotated_visitor::StructDriver",
+                              "off"
+                            |) in
+                          M.write (|
+                            β,
+                            M.call_closure (|
+                              Ty.path "usize",
+                              BinOp.Wrap.add,
+                              [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
+                            |)
+                          |) in
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
                               Ty.apply
-                                (Ty.path "core::result::Result")
+                                (Ty.path "core::option::Option")
                                 []
                                 [
-                                  Ty.apply
-                                    (Ty.path "core::option::Option")
-                                    []
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
                                         [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.path
-                                                "move_core_types::annotated_value::MoveFieldLayout"
-                                            ];
-                                          Ty.associated_in_trait
-                                            "move_core_types::annotated_visitor::Visitor"
-                                            []
-                                            []
-                                            V
-                                            "Value"
-                                        ]
-                                    ];
-                                  Ty.associated_in_trait
-                                    "move_core_types::annotated_visitor::Visitor"
-                                    []
-                                    []
-                                    V
-                                    "Error"
-                                ],
+                                          Ty.path
+                                            "move_core_types::annotated_value::MoveFieldLayout"
+                                        ];
+                                      Ty.associated_in_trait
+                                        "move_core_types::annotated_visitor::Visitor"
+                                        []
+                                        []
+                                        V
+                                        "Value"
+                                    ]
+                                ];
+                              Ty.associated_in_trait
+                                "move_core_types::annotated_visitor::Visitor"
+                                []
+                                []
+                                V
+                                "Error"
+                            ],
+                          Value.StructTuple
+                            "core::result::Result::Ok"
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [
+                                  Ty.tuple
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.path
+                                            "move_core_types::annotated_value::MoveFieldLayout"
+                                        ];
+                                      Ty.associated_in_trait
+                                        "move_core_types::annotated_visitor::Visitor"
+                                        []
+                                        []
+                                        V
+                                        "Value"
+                                    ]
+                                ];
+                              Ty.associated_in_trait
+                                "move_core_types::annotated_visitor::Visitor"
+                                []
+                                []
+                                V
+                                "Error"
+                            ]
+                            [
                               Value.StructTuple
-                                "core::result::Result::Ok"
+                                "core::option::Option::Some"
                                 []
                                 [
-                                  Ty.apply
-                                    (Ty.path "core::option::Option")
-                                    []
+                                  Ty.tuple
                                     [
-                                      Ty.tuple
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
                                         [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.path
-                                                "move_core_types::annotated_value::MoveFieldLayout"
-                                            ];
-                                          Ty.associated_in_trait
-                                            "move_core_types::annotated_visitor::Visitor"
-                                            []
-                                            []
-                                            V
-                                            "Value"
-                                        ]
-                                    ];
-                                  Ty.associated_in_trait
-                                    "move_core_types::annotated_visitor::Visitor"
-                                    []
-                                    []
-                                    V
-                                    "Error"
+                                          Ty.path
+                                            "move_core_types::annotated_value::MoveFieldLayout"
+                                        ];
+                                      Ty.associated_in_trait
+                                        "move_core_types::annotated_visitor::Visitor"
+                                        []
+                                        []
+                                        V
+                                        "Value"
+                                    ]
                                 ]
                                 [
-                                  Value.StructTuple
-                                    "core::option::Option::Some"
-                                    []
+                                  Value.Tuple
                                     [
-                                      Ty.tuple
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.path
-                                                "move_core_types::annotated_value::MoveFieldLayout"
-                                            ];
-                                          Ty.associated_in_trait
-                                            "move_core_types::annotated_visitor::Visitor"
-                                            []
-                                            []
-                                            V
-                                            "Value"
-                                        ]
-                                    ]
-                                    [
-                                      Value.Tuple
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| field |) |)
-                                          |);
-                                          M.read (| res |)
-                                        ]
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| field |) |)
+                                      |);
+                                      M.read (| res |)
                                     ]
                                 ]
-                            |)))
-                      ]
-                    |)
-                  |)
-                |)))
-            |)
+                            ]
+                        |)
+                      |)))
+                ]
+              |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4212,71 +4003,342 @@ Module annotated_visitor.
             layout
           |) in
         let visitor := M.alloc (| Ty.apply (Ty.path "&mut") [] [ V ], visitor |) in
-        M.read (|
-          M.catch_return
-            (Ty.apply
-              (Ty.path "core::result::Result")
-              []
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.associated_in_trait "move_core_types::annotated_visitor::Visitor" [] [] V "Value";
+              Ty.associated_in_trait "move_core_types::annotated_visitor::Visitor" [] [] V "Error"
+            ]) (|
+          ltac:(M.monadic
+            (M.match_operator (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.associated_in_trait
+                    "move_core_types::annotated_visitor::Visitor"
+                    []
+                    []
+                    V
+                    "Value";
+                  Ty.associated_in_trait
+                    "move_core_types::annotated_visitor::Visitor"
+                    []
+                    []
+                    V
+                    "Error"
+                ],
+              layout,
               [
-                Ty.associated_in_trait
-                  "move_core_types::annotated_visitor::Visitor"
-                  []
-                  []
-                  V
-                  "Value";
-                Ty.associated_in_trait "move_core_types::annotated_visitor::Visitor" [] [] V "Error"
-              ]) (|
-            ltac:(M.monadic
-              (M.alloc (|
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [
-                    Ty.associated_in_trait
-                      "move_core_types::annotated_visitor::Visitor"
-                      []
-                      []
-                      V
-                      "Value";
-                    Ty.associated_in_trait
-                      "move_core_types::annotated_visitor::Visitor"
-                      []
-                      []
-                      V
-                      "Error"
-                  ],
-                M.read (|
-                  M.match_operator (|
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [
-                        Ty.associated_in_trait
-                          "move_core_types::annotated_visitor::Visitor"
-                          []
-                          []
-                          V
-                          "Value";
-                        Ty.associated_in_trait
-                          "move_core_types::annotated_visitor::Visitor"
-                          []
-                          []
-                          V
-                          "Error"
-                      ],
-                    layout,
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
-                          let _ :=
-                            M.is_struct_tuple (|
-                              γ,
-                              "move_core_types::annotated_value::MoveTypeLayout::Bool"
-                            |) in
-                          M.match_operator (|
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "move_core_types::annotated_value::MoveTypeLayout::Bool"
+                      |) in
+                    M.match_operator (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.associated_in_trait
+                            "move_core_types::annotated_visitor::Visitor"
+                            []
+                            []
+                            V
+                            "Value";
+                          Ty.associated_in_trait
+                            "move_core_types::annotated_visitor::Visitor"
+                            []
+                            []
+                            V
+                            "Error"
+                        ],
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 1 ]
+                          [ Ty.path "u8" ],
+                        M.match_operator (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 1 ]
+                            [ Ty.path "u8" ],
+                          M.alloc (|
                             Ty.apply
-                              (Ty.path "core::result::Result")
+                              (Ty.path "core::ops::control_flow::ControlFlow")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.path "core::convert::Infallible";
+                                    Ty.path "move_core_types::annotated_visitor::Error"
+                                  ];
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                  [ Ty.path "u8" ]
+                              ],
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_core_types::annotated_visitor::Error"
+                                    ];
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.path "u8" ]
+                                ],
+                              M.get_trait_method (|
+                                "core::ops::try_trait::Try",
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 1 ]
+                                      [ Ty.path "u8" ];
+                                    Ty.path "move_core_types::annotated_visitor::Error"
+                                  ],
+                                [],
+                                [],
+                                "branch",
+                                [],
+                                []
+                              |),
+                              [
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.path "u8" ];
+                                      Ty.path "move_core_types::annotated_visitor::Error"
+                                    ],
+                                  M.get_function (|
+                                    "move_core_types::annotated_visitor::read_exact",
+                                    [ Value.Integer IntegerKind.Usize 1 ],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| bytes |) |)
+                                    |)
+                                  ]
+                                |)
+                              ]
+                            |)
+                          |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ0_0 :=
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    γ,
+                                    "core::ops::control_flow::ControlFlow::Break",
+                                    0
+                                  |) in
+                                let residual :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "move_core_types::annotated_visitor::Error"
+                                      ],
+                                    γ0_0
+                                  |) in
+                                M.never_to_any (|
+                                  M.read (|
+                                    M.return_ (|
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.associated_in_trait
+                                              "move_core_types::annotated_visitor::Visitor"
+                                              []
+                                              []
+                                              V
+                                              "Value";
+                                            Ty.associated_in_trait
+                                              "move_core_types::annotated_visitor::Visitor"
+                                              []
+                                              []
+                                              V
+                                              "Error"
+                                          ],
+                                        M.get_trait_method (|
+                                          "core::ops::try_trait::FromResidual",
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.associated_in_trait
+                                                "move_core_types::annotated_visitor::Visitor"
+                                                []
+                                                []
+                                                V
+                                                "Value";
+                                              Ty.associated_in_trait
+                                                "move_core_types::annotated_visitor::Visitor"
+                                                []
+                                                []
+                                                V
+                                                "Error"
+                                            ],
+                                          [],
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.path "core::convert::Infallible";
+                                                Ty.path "move_core_types::annotated_visitor::Error"
+                                              ]
+                                          ],
+                                          "from_residual",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| residual |) ]
+                                      |)
+                                    |)
+                                  |)
+                                |)));
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ0_0 :=
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    γ,
+                                    "core::ops::control_flow::ControlFlow::Continue",
+                                    0
+                                  |) in
+                                let val :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 1 ]
+                                      [ Ty.path "u8" ],
+                                    γ0_0
+                                  |) in
+                                M.read (| val |)))
+                          ]
+                        |)
+                      |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                            let _ :=
+                              is_constant_or_break_match (|
+                                M.read (| γ0_0 |),
+                                Value.Integer IntegerKind.U8 0
+                              |) in
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.associated_in_trait
+                                    "move_core_types::annotated_visitor::Visitor"
+                                    []
+                                    []
+                                    V
+                                    "Value";
+                                  Ty.associated_in_trait
+                                    "move_core_types::annotated_visitor::Visitor"
+                                    []
+                                    []
+                                    V
+                                    "Error"
+                                ],
+                              M.get_trait_method (|
+                                "move_core_types::annotated_visitor::Visitor",
+                                V,
+                                [],
+                                [],
+                                "visit_bool",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| visitor |) |)
+                                |);
+                                Value.Bool false
+                              ]
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                            let _ :=
+                              is_constant_or_break_match (|
+                                M.read (| γ0_0 |),
+                                Value.Integer IntegerKind.U8 1
+                              |) in
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.associated_in_trait
+                                    "move_core_types::annotated_visitor::Visitor"
+                                    []
+                                    []
+                                    V
+                                    "Value";
+                                  Ty.associated_in_trait
+                                    "move_core_types::annotated_visitor::Visitor"
+                                    []
+                                    []
+                                    V
+                                    "Error"
+                                ],
+                              M.get_trait_method (|
+                                "move_core_types::annotated_visitor::Visitor",
+                                V,
+                                [],
+                                [],
+                                "visit_bool",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| visitor |) |)
+                                |);
+                                Value.Bool true
+                              ]
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                            let b := M.copy (| Ty.path "u8", γ0_0 |) in
+                            Value.StructTuple
+                              "core::result::Result::Err"
                               []
                               [
                                 Ty.associated_in_trait
@@ -4291,7 +4353,83 @@ Module annotated_visitor.
                                   []
                                   V
                                   "Error"
-                              ],
+                              ]
+                              [
+                                M.call_closure (|
+                                  Ty.associated_in_trait
+                                    "move_core_types::annotated_visitor::Visitor"
+                                    []
+                                    []
+                                    V
+                                    "Error",
+                                  M.get_trait_method (|
+                                    "core::convert::Into",
+                                    Ty.path "move_core_types::annotated_visitor::Error",
+                                    [],
+                                    [
+                                      Ty.associated_in_trait
+                                        "move_core_types::annotated_visitor::Visitor"
+                                        []
+                                        []
+                                        V
+                                        "Error"
+                                    ],
+                                    "into",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    Value.StructTuple
+                                      "move_core_types::annotated_visitor::Error::UnexpectedByte"
+                                      []
+                                      []
+                                      [ M.read (| b |) ]
+                                  ]
+                                |)
+                              ]))
+                      ]
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "move_core_types::annotated_value::MoveTypeLayout::U8"
+                      |) in
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.associated_in_trait
+                            "move_core_types::annotated_visitor::Visitor"
+                            []
+                            []
+                            V
+                            "Value";
+                          Ty.associated_in_trait
+                            "move_core_types::annotated_visitor::Visitor"
+                            []
+                            []
+                            V
+                            "Error"
+                        ],
+                      M.get_trait_method (|
+                        "move_core_types::annotated_visitor::Visitor",
+                        V,
+                        [],
+                        [],
+                        "visit_u8",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| visitor |) |) |);
+                        M.call_closure (|
+                          Ty.path "u8",
+                          M.get_associated_function (| Ty.path "u8", "from_le_bytes", [], [] |),
+                          [
                             M.match_operator (|
                               Ty.apply
                                 (Ty.path "array")
@@ -4396,15 +4534,29 @@ Module annotated_visitor.
                                           ],
                                         γ0_0
                                       |) in
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 1 ]
-                                        [ Ty.path "u8" ],
-                                      M.never_to_any (|
-                                        M.read (|
-                                          M.return_ (|
-                                            M.call_closure (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.associated_in_trait
+                                                  "move_core_types::annotated_visitor::Visitor"
+                                                  []
+                                                  []
+                                                  V
+                                                  "Value";
+                                                Ty.associated_in_trait
+                                                  "move_core_types::annotated_visitor::Visitor"
+                                                  []
+                                                  []
+                                                  V
+                                                  "Error"
+                                              ],
+                                            M.get_trait_method (|
+                                              "core::ops::try_trait::FromResidual",
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
                                                 []
@@ -4422,42 +4574,22 @@ Module annotated_visitor.
                                                     V
                                                     "Error"
                                                 ],
-                                              M.get_trait_method (|
-                                                "core::ops::try_trait::FromResidual",
+                                              [],
+                                              [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
                                                   []
                                                   [
-                                                    Ty.associated_in_trait
-                                                      "move_core_types::annotated_visitor::Visitor"
-                                                      []
-                                                      []
-                                                      V
-                                                      "Value";
-                                                    Ty.associated_in_trait
-                                                      "move_core_types::annotated_visitor::Visitor"
-                                                      []
-                                                      []
-                                                      V
-                                                      "Error"
-                                                  ],
-                                                [],
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::result::Result")
-                                                    []
-                                                    [
-                                                      Ty.path "core::convert::Infallible";
-                                                      Ty.path
-                                                        "move_core_types::annotated_visitor::Error"
-                                                    ]
-                                                ],
-                                                "from_residual",
-                                                [],
-                                                []
-                                              |),
-                                              [ M.read (| residual |) ]
-                                            |)
+                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.path
+                                                      "move_core_types::annotated_visitor::Error"
+                                                  ]
+                                              ],
+                                              "from_residual",
+                                              [],
+                                              []
+                                            |),
+                                            [ M.read (| residual |) ]
                                           |)
                                         |)
                                       |)
@@ -4478,304 +4610,199 @@ Module annotated_visitor.
                                           [ Ty.path "u8" ],
                                         γ0_0
                                       |) in
-                                    val))
+                                    M.read (| val |)))
                               ]
-                            |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
-                                  let _ :=
-                                    is_constant_or_break_match (|
-                                      M.read (| γ0_0 |),
-                                      Value.Integer IntegerKind.U8 0
-                                    |) in
-                                  M.alloc (|
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [
-                                        Ty.associated_in_trait
-                                          "move_core_types::annotated_visitor::Visitor"
-                                          []
-                                          []
-                                          V
-                                          "Value";
-                                        Ty.associated_in_trait
-                                          "move_core_types::annotated_visitor::Visitor"
-                                          []
-                                          []
-                                          V
-                                          "Error"
-                                      ],
-                                    M.call_closure (|
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [
-                                          Ty.associated_in_trait
-                                            "move_core_types::annotated_visitor::Visitor"
-                                            []
-                                            []
-                                            V
-                                            "Value";
-                                          Ty.associated_in_trait
-                                            "move_core_types::annotated_visitor::Visitor"
-                                            []
-                                            []
-                                            V
-                                            "Error"
-                                        ],
-                                      M.get_trait_method (|
-                                        "move_core_types::annotated_visitor::Visitor",
-                                        V,
-                                        [],
-                                        [],
-                                        "visit_bool",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.MutRef,
-                                          M.deref (| M.read (| visitor |) |)
-                                        |);
-                                        Value.Bool false
-                                      ]
-                                    |)
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
-                                  let _ :=
-                                    is_constant_or_break_match (|
-                                      M.read (| γ0_0 |),
-                                      Value.Integer IntegerKind.U8 1
-                                    |) in
-                                  M.alloc (|
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [
-                                        Ty.associated_in_trait
-                                          "move_core_types::annotated_visitor::Visitor"
-                                          []
-                                          []
-                                          V
-                                          "Value";
-                                        Ty.associated_in_trait
-                                          "move_core_types::annotated_visitor::Visitor"
-                                          []
-                                          []
-                                          V
-                                          "Error"
-                                      ],
-                                    M.call_closure (|
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [
-                                          Ty.associated_in_trait
-                                            "move_core_types::annotated_visitor::Visitor"
-                                            []
-                                            []
-                                            V
-                                            "Value";
-                                          Ty.associated_in_trait
-                                            "move_core_types::annotated_visitor::Visitor"
-                                            []
-                                            []
-                                            V
-                                            "Error"
-                                        ],
-                                      M.get_trait_method (|
-                                        "move_core_types::annotated_visitor::Visitor",
-                                        V,
-                                        [],
-                                        [],
-                                        "visit_bool",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.MutRef,
-                                          M.deref (| M.read (| visitor |) |)
-                                        |);
-                                        Value.Bool true
-                                      ]
-                                    |)
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
-                                  let b := M.copy (| Ty.path "u8", γ0_0 |) in
-                                  M.alloc (|
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [
-                                        Ty.associated_in_trait
-                                          "move_core_types::annotated_visitor::Visitor"
-                                          []
-                                          []
-                                          V
-                                          "Value";
-                                        Ty.associated_in_trait
-                                          "move_core_types::annotated_visitor::Visitor"
-                                          []
-                                          []
-                                          V
-                                          "Error"
-                                      ],
-                                    Value.StructTuple
-                                      "core::result::Result::Err"
-                                      []
-                                      [
-                                        Ty.associated_in_trait
-                                          "move_core_types::annotated_visitor::Visitor"
-                                          []
-                                          []
-                                          V
-                                          "Value";
-                                        Ty.associated_in_trait
-                                          "move_core_types::annotated_visitor::Visitor"
-                                          []
-                                          []
-                                          V
-                                          "Error"
-                                      ]
-                                      [
-                                        M.call_closure (|
-                                          Ty.associated_in_trait
-                                            "move_core_types::annotated_visitor::Visitor"
-                                            []
-                                            []
-                                            V
-                                            "Error",
-                                          M.get_trait_method (|
-                                            "core::convert::Into",
-                                            Ty.path "move_core_types::annotated_visitor::Error",
-                                            [],
-                                            [
-                                              Ty.associated_in_trait
-                                                "move_core_types::annotated_visitor::Visitor"
-                                                []
-                                                []
-                                                V
-                                                "Error"
-                                            ],
-                                            "into",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            Value.StructTuple
-                                              "move_core_types::annotated_visitor::Error::UnexpectedByte"
-                                              []
-                                              []
-                                              [ M.read (| b |) ]
-                                          ]
-                                        |)
-                                      ]
-                                  |)))
-                            ]
-                          |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
-                          let _ :=
-                            M.is_struct_tuple (|
-                              γ,
-                              "move_core_types::annotated_value::MoveTypeLayout::U8"
-                            |) in
-                          M.alloc (|
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [
-                                Ty.associated_in_trait
-                                  "move_core_types::annotated_visitor::Visitor"
-                                  []
-                                  []
-                                  V
-                                  "Value";
-                                Ty.associated_in_trait
-                                  "move_core_types::annotated_visitor::Visitor"
-                                  []
-                                  []
-                                  V
-                                  "Error"
-                              ],
-                            M.call_closure (|
+                            |)
+                          ]
+                        |)
+                      ]
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "move_core_types::annotated_value::MoveTypeLayout::U16"
+                      |) in
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.associated_in_trait
+                            "move_core_types::annotated_visitor::Visitor"
+                            []
+                            []
+                            V
+                            "Value";
+                          Ty.associated_in_trait
+                            "move_core_types::annotated_visitor::Visitor"
+                            []
+                            []
+                            V
+                            "Error"
+                        ],
+                      M.get_trait_method (|
+                        "move_core_types::annotated_visitor::Visitor",
+                        V,
+                        [],
+                        [],
+                        "visit_u16",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| visitor |) |) |);
+                        M.call_closure (|
+                          Ty.path "u16",
+                          M.get_associated_function (| Ty.path "u16", "from_le_bytes", [], [] |),
+                          [
+                            M.match_operator (|
                               Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [
-                                  Ty.associated_in_trait
-                                    "move_core_types::annotated_visitor::Visitor"
-                                    []
-                                    []
-                                    V
-                                    "Value";
-                                  Ty.associated_in_trait
-                                    "move_core_types::annotated_visitor::Visitor"
-                                    []
-                                    []
-                                    V
-                                    "Error"
-                                ],
-                              M.get_trait_method (|
-                                "move_core_types::annotated_visitor::Visitor",
-                                V,
-                                [],
-                                [],
-                                "visit_u8",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.MutRef,
-                                  M.deref (| M.read (| visitor |) |)
-                                |);
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.path "u8" ],
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "move_core_types::annotated_visitor::Error"
+                                      ];
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 2 ]
+                                      [ Ty.path "u8" ]
+                                  ],
                                 M.call_closure (|
-                                  Ty.path "u8",
-                                  M.get_associated_function (|
-                                    Ty.path "u8",
-                                    "from_le_bytes",
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "move_core_types::annotated_visitor::Error"
+                                        ];
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 2 ]
+                                        [ Ty.path "u8" ]
+                                    ],
+                                  M.get_trait_method (|
+                                    "core::ops::try_trait::Try",
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 2 ]
+                                          [ Ty.path "u8" ];
+                                        Ty.path "move_core_types::annotated_visitor::Error"
+                                      ],
+                                    [],
+                                    [],
+                                    "branch",
                                     [],
                                     []
                                   |),
                                   [
-                                    M.read (|
-                                      M.match_operator (|
-                                        Ty.apply
-                                          (Ty.path "array")
-                                          [ Value.Integer IntegerKind.Usize 1 ]
-                                          [ Ty.path "u8" ],
-                                        M.alloc (|
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
                                           Ty.apply
-                                            (Ty.path "core::ops::control_flow::ControlFlow")
-                                            []
-                                            [
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 2 ]
+                                            [ Ty.path "u8" ];
+                                          Ty.path "move_core_types::annotated_visitor::Error"
+                                        ],
+                                      M.get_function (|
+                                        "move_core_types::annotated_visitor::read_exact",
+                                        [ Value.Integer IntegerKind.Usize 2 ],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| bytes |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  ]
+                                |)
+                              |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 :=
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        γ,
+                                        "core::ops::control_flow::ControlFlow::Break",
+                                        0
+                                      |) in
+                                    let residual :=
+                                      M.copy (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path "move_core_types::annotated_visitor::Error"
+                                          ],
+                                        γ0_0
+                                      |) in
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.associated_in_trait
+                                                  "move_core_types::annotated_visitor::Visitor"
+                                                  []
+                                                  []
+                                                  V
+                                                  "Value";
+                                                Ty.associated_in_trait
+                                                  "move_core_types::annotated_visitor::Visitor"
+                                                  []
+                                                  []
+                                                  V
+                                                  "Error"
+                                              ],
+                                            M.get_trait_method (|
+                                              "core::ops::try_trait::FromResidual",
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
                                                 []
                                                 [
-                                                  Ty.path "core::convert::Infallible";
-                                                  Ty.path
-                                                    "move_core_types::annotated_visitor::Error"
-                                                ];
-                                              Ty.apply
-                                                (Ty.path "array")
-                                                [ Value.Integer IntegerKind.Usize 1 ]
-                                                [ Ty.path "u8" ]
-                                            ],
-                                          M.call_closure (|
-                                            Ty.apply
-                                              (Ty.path "core::ops::control_flow::ControlFlow")
-                                              []
+                                                  Ty.associated_in_trait
+                                                    "move_core_types::annotated_visitor::Visitor"
+                                                    []
+                                                    []
+                                                    V
+                                                    "Value";
+                                                  Ty.associated_in_trait
+                                                    "move_core_types::annotated_visitor::Visitor"
+                                                    []
+                                                    []
+                                                    V
+                                                    "Error"
+                                                ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -4784,266 +4811,226 @@ Module annotated_visitor.
                                                     Ty.path "core::convert::Infallible";
                                                     Ty.path
                                                       "move_core_types::annotated_visitor::Error"
-                                                  ];
-                                                Ty.apply
-                                                  (Ty.path "array")
-                                                  [ Value.Integer IntegerKind.Usize 1 ]
-                                                  [ Ty.path "u8" ]
+                                                  ]
                                               ],
-                                            M.get_trait_method (|
-                                              "core::ops::try_trait::Try",
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "array")
-                                                    [ Value.Integer IntegerKind.Usize 1 ]
-                                                    [ Ty.path "u8" ];
-                                                  Ty.path
-                                                    "move_core_types::annotated_visitor::Error"
-                                                ],
-                                              [],
-                                              [],
-                                              "branch",
+                                              "from_residual",
                                               [],
                                               []
                                             |),
-                                            [
-                                              M.call_closure (|
-                                                Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "array")
-                                                      [ Value.Integer IntegerKind.Usize 1 ]
-                                                      [ Ty.path "u8" ];
-                                                    Ty.path
-                                                      "move_core_types::annotated_visitor::Error"
-                                                  ],
-                                                M.get_function (|
-                                                  "move_core_types::annotated_visitor::read_exact",
-                                                  [ Value.Integer IntegerKind.Usize 1 ],
-                                                  []
-                                                |),
-                                                [
-                                                  M.borrow (|
-                                                    Pointer.Kind.MutRef,
-                                                    M.deref (| M.read (| bytes |) |)
-                                                  |)
-                                                ]
-                                              |)
-                                            ]
+                                            [ M.read (| residual |) ]
                                           |)
-                                        |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let γ0_0 :=
-                                                M.SubPointer.get_struct_tuple_field (|
-                                                  γ,
-                                                  "core::ops::control_flow::ControlFlow::Break",
-                                                  0
-                                                |) in
-                                              let residual :=
-                                                M.copy (|
-                                                  Ty.apply
-                                                    (Ty.path "core::result::Result")
-                                                    []
-                                                    [
-                                                      Ty.path "core::convert::Infallible";
-                                                      Ty.path
-                                                        "move_core_types::annotated_visitor::Error"
-                                                    ],
-                                                  γ0_0
-                                                |) in
-                                              M.alloc (|
-                                                Ty.apply
-                                                  (Ty.path "array")
-                                                  [ Value.Integer IntegerKind.Usize 1 ]
-                                                  [ Ty.path "u8" ],
-                                                M.never_to_any (|
-                                                  M.read (|
-                                                    M.return_ (|
-                                                      M.call_closure (|
-                                                        Ty.apply
-                                                          (Ty.path "core::result::Result")
-                                                          []
-                                                          [
-                                                            Ty.associated_in_trait
-                                                              "move_core_types::annotated_visitor::Visitor"
-                                                              []
-                                                              []
-                                                              V
-                                                              "Value";
-                                                            Ty.associated_in_trait
-                                                              "move_core_types::annotated_visitor::Visitor"
-                                                              []
-                                                              []
-                                                              V
-                                                              "Error"
-                                                          ],
-                                                        M.get_trait_method (|
-                                                          "core::ops::try_trait::FromResidual",
-                                                          Ty.apply
-                                                            (Ty.path "core::result::Result")
-                                                            []
-                                                            [
-                                                              Ty.associated_in_trait
-                                                                "move_core_types::annotated_visitor::Visitor"
-                                                                []
-                                                                []
-                                                                V
-                                                                "Value";
-                                                              Ty.associated_in_trait
-                                                                "move_core_types::annotated_visitor::Visitor"
-                                                                []
-                                                                []
-                                                                V
-                                                                "Error"
-                                                            ],
-                                                          [],
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "core::result::Result")
-                                                              []
-                                                              [
-                                                                Ty.path "core::convert::Infallible";
-                                                                Ty.path
-                                                                  "move_core_types::annotated_visitor::Error"
-                                                              ]
-                                                          ],
-                                                          "from_residual",
-                                                          [],
-                                                          []
-                                                        |),
-                                                        [ M.read (| residual |) ]
-                                                      |)
-                                                    |)
-                                                  |)
-                                                |)
-                                              |)));
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let γ0_0 :=
-                                                M.SubPointer.get_struct_tuple_field (|
-                                                  γ,
-                                                  "core::ops::control_flow::ControlFlow::Continue",
-                                                  0
-                                                |) in
-                                              let val :=
-                                                M.copy (|
-                                                  Ty.apply
-                                                    (Ty.path "array")
-                                                    [ Value.Integer IntegerKind.Usize 1 ]
-                                                    [ Ty.path "u8" ],
-                                                  γ0_0
-                                                |) in
-                                              val))
-                                        ]
+                                        |)
                                       |)
-                                    |)
-                                  ]
-                                |)
-                              ]
-                            |)
-                          |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
-                          let _ :=
-                            M.is_struct_tuple (|
-                              γ,
-                              "move_core_types::annotated_value::MoveTypeLayout::U16"
-                            |) in
-                          M.alloc (|
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [
-                                Ty.associated_in_trait
-                                  "move_core_types::annotated_visitor::Visitor"
-                                  []
-                                  []
-                                  V
-                                  "Value";
-                                Ty.associated_in_trait
-                                  "move_core_types::annotated_visitor::Visitor"
-                                  []
-                                  []
-                                  V
-                                  "Error"
-                              ],
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [
-                                  Ty.associated_in_trait
-                                    "move_core_types::annotated_visitor::Visitor"
-                                    []
-                                    []
-                                    V
-                                    "Value";
-                                  Ty.associated_in_trait
-                                    "move_core_types::annotated_visitor::Visitor"
-                                    []
-                                    []
-                                    V
-                                    "Error"
-                                ],
-                              M.get_trait_method (|
-                                "move_core_types::annotated_visitor::Visitor",
-                                V,
-                                [],
-                                [],
-                                "visit_u16",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.MutRef,
-                                  M.deref (| M.read (| visitor |) |)
-                                |);
-                                M.call_closure (|
-                                  Ty.path "u16",
-                                  M.get_associated_function (|
-                                    Ty.path "u16",
-                                    "from_le_bytes",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.read (|
-                                      M.match_operator (|
+                                    |)));
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 :=
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        γ,
+                                        "core::ops::control_flow::ControlFlow::Continue",
+                                        0
+                                      |) in
+                                    let val :=
+                                      M.copy (|
                                         Ty.apply
                                           (Ty.path "array")
                                           [ Value.Integer IntegerKind.Usize 2 ]
                                           [ Ty.path "u8" ],
-                                        M.alloc (|
+                                        γ0_0
+                                      |) in
+                                    M.read (| val |)))
+                              ]
+                            |)
+                          ]
+                        |)
+                      ]
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "move_core_types::annotated_value::MoveTypeLayout::U32"
+                      |) in
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.associated_in_trait
+                            "move_core_types::annotated_visitor::Visitor"
+                            []
+                            []
+                            V
+                            "Value";
+                          Ty.associated_in_trait
+                            "move_core_types::annotated_visitor::Visitor"
+                            []
+                            []
+                            V
+                            "Error"
+                        ],
+                      M.get_trait_method (|
+                        "move_core_types::annotated_visitor::Visitor",
+                        V,
+                        [],
+                        [],
+                        "visit_u32",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| visitor |) |) |);
+                        M.call_closure (|
+                          Ty.path "u32",
+                          M.get_associated_function (| Ty.path "u32", "from_le_bytes", [], [] |),
+                          [
+                            M.match_operator (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 4 ]
+                                [ Ty.path "u8" ],
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "move_core_types::annotated_visitor::Error"
+                                      ];
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 4 ]
+                                      [ Ty.path "u8" ]
+                                  ],
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "move_core_types::annotated_visitor::Error"
+                                        ];
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 4 ]
+                                        [ Ty.path "u8" ]
+                                    ],
+                                  M.get_trait_method (|
+                                    "core::ops::try_trait::Try",
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 4 ]
+                                          [ Ty.path "u8" ];
+                                        Ty.path "move_core_types::annotated_visitor::Error"
+                                      ],
+                                    [],
+                                    [],
+                                    "branch",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
                                           Ty.apply
-                                            (Ty.path "core::ops::control_flow::ControlFlow")
-                                            []
-                                            [
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 4 ]
+                                            [ Ty.path "u8" ];
+                                          Ty.path "move_core_types::annotated_visitor::Error"
+                                        ],
+                                      M.get_function (|
+                                        "move_core_types::annotated_visitor::read_exact",
+                                        [ Value.Integer IntegerKind.Usize 4 ],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| bytes |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  ]
+                                |)
+                              |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 :=
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        γ,
+                                        "core::ops::control_flow::ControlFlow::Break",
+                                        0
+                                      |) in
+                                    let residual :=
+                                      M.copy (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path "move_core_types::annotated_visitor::Error"
+                                          ],
+                                        γ0_0
+                                      |) in
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.associated_in_trait
+                                                  "move_core_types::annotated_visitor::Visitor"
+                                                  []
+                                                  []
+                                                  V
+                                                  "Value";
+                                                Ty.associated_in_trait
+                                                  "move_core_types::annotated_visitor::Visitor"
+                                                  []
+                                                  []
+                                                  V
+                                                  "Error"
+                                              ],
+                                            M.get_trait_method (|
+                                              "core::ops::try_trait::FromResidual",
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
                                                 []
                                                 [
-                                                  Ty.path "core::convert::Infallible";
-                                                  Ty.path
-                                                    "move_core_types::annotated_visitor::Error"
-                                                ];
-                                              Ty.apply
-                                                (Ty.path "array")
-                                                [ Value.Integer IntegerKind.Usize 2 ]
-                                                [ Ty.path "u8" ]
-                                            ],
-                                          M.call_closure (|
-                                            Ty.apply
-                                              (Ty.path "core::ops::control_flow::ControlFlow")
-                                              []
+                                                  Ty.associated_in_trait
+                                                    "move_core_types::annotated_visitor::Visitor"
+                                                    []
+                                                    []
+                                                    V
+                                                    "Value";
+                                                  Ty.associated_in_trait
+                                                    "move_core_types::annotated_visitor::Visitor"
+                                                    []
+                                                    []
+                                                    V
+                                                    "Error"
+                                                ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -5052,266 +5039,226 @@ Module annotated_visitor.
                                                     Ty.path "core::convert::Infallible";
                                                     Ty.path
                                                       "move_core_types::annotated_visitor::Error"
-                                                  ];
-                                                Ty.apply
-                                                  (Ty.path "array")
-                                                  [ Value.Integer IntegerKind.Usize 2 ]
-                                                  [ Ty.path "u8" ]
+                                                  ]
                                               ],
-                                            M.get_trait_method (|
-                                              "core::ops::try_trait::Try",
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "array")
-                                                    [ Value.Integer IntegerKind.Usize 2 ]
-                                                    [ Ty.path "u8" ];
-                                                  Ty.path
-                                                    "move_core_types::annotated_visitor::Error"
-                                                ],
-                                              [],
-                                              [],
-                                              "branch",
+                                              "from_residual",
                                               [],
                                               []
                                             |),
-                                            [
-                                              M.call_closure (|
-                                                Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "array")
-                                                      [ Value.Integer IntegerKind.Usize 2 ]
-                                                      [ Ty.path "u8" ];
-                                                    Ty.path
-                                                      "move_core_types::annotated_visitor::Error"
-                                                  ],
-                                                M.get_function (|
-                                                  "move_core_types::annotated_visitor::read_exact",
-                                                  [ Value.Integer IntegerKind.Usize 2 ],
-                                                  []
-                                                |),
-                                                [
-                                                  M.borrow (|
-                                                    Pointer.Kind.MutRef,
-                                                    M.deref (| M.read (| bytes |) |)
-                                                  |)
-                                                ]
-                                              |)
-                                            ]
+                                            [ M.read (| residual |) ]
                                           |)
-                                        |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let γ0_0 :=
-                                                M.SubPointer.get_struct_tuple_field (|
-                                                  γ,
-                                                  "core::ops::control_flow::ControlFlow::Break",
-                                                  0
-                                                |) in
-                                              let residual :=
-                                                M.copy (|
-                                                  Ty.apply
-                                                    (Ty.path "core::result::Result")
-                                                    []
-                                                    [
-                                                      Ty.path "core::convert::Infallible";
-                                                      Ty.path
-                                                        "move_core_types::annotated_visitor::Error"
-                                                    ],
-                                                  γ0_0
-                                                |) in
-                                              M.alloc (|
-                                                Ty.apply
-                                                  (Ty.path "array")
-                                                  [ Value.Integer IntegerKind.Usize 2 ]
-                                                  [ Ty.path "u8" ],
-                                                M.never_to_any (|
-                                                  M.read (|
-                                                    M.return_ (|
-                                                      M.call_closure (|
-                                                        Ty.apply
-                                                          (Ty.path "core::result::Result")
-                                                          []
-                                                          [
-                                                            Ty.associated_in_trait
-                                                              "move_core_types::annotated_visitor::Visitor"
-                                                              []
-                                                              []
-                                                              V
-                                                              "Value";
-                                                            Ty.associated_in_trait
-                                                              "move_core_types::annotated_visitor::Visitor"
-                                                              []
-                                                              []
-                                                              V
-                                                              "Error"
-                                                          ],
-                                                        M.get_trait_method (|
-                                                          "core::ops::try_trait::FromResidual",
-                                                          Ty.apply
-                                                            (Ty.path "core::result::Result")
-                                                            []
-                                                            [
-                                                              Ty.associated_in_trait
-                                                                "move_core_types::annotated_visitor::Visitor"
-                                                                []
-                                                                []
-                                                                V
-                                                                "Value";
-                                                              Ty.associated_in_trait
-                                                                "move_core_types::annotated_visitor::Visitor"
-                                                                []
-                                                                []
-                                                                V
-                                                                "Error"
-                                                            ],
-                                                          [],
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "core::result::Result")
-                                                              []
-                                                              [
-                                                                Ty.path "core::convert::Infallible";
-                                                                Ty.path
-                                                                  "move_core_types::annotated_visitor::Error"
-                                                              ]
-                                                          ],
-                                                          "from_residual",
-                                                          [],
-                                                          []
-                                                        |),
-                                                        [ M.read (| residual |) ]
-                                                      |)
-                                                    |)
-                                                  |)
-                                                |)
-                                              |)));
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let γ0_0 :=
-                                                M.SubPointer.get_struct_tuple_field (|
-                                                  γ,
-                                                  "core::ops::control_flow::ControlFlow::Continue",
-                                                  0
-                                                |) in
-                                              let val :=
-                                                M.copy (|
-                                                  Ty.apply
-                                                    (Ty.path "array")
-                                                    [ Value.Integer IntegerKind.Usize 2 ]
-                                                    [ Ty.path "u8" ],
-                                                  γ0_0
-                                                |) in
-                                              val))
-                                        ]
+                                        |)
                                       |)
-                                    |)
-                                  ]
-                                |)
-                              ]
-                            |)
-                          |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
-                          let _ :=
-                            M.is_struct_tuple (|
-                              γ,
-                              "move_core_types::annotated_value::MoveTypeLayout::U32"
-                            |) in
-                          M.alloc (|
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [
-                                Ty.associated_in_trait
-                                  "move_core_types::annotated_visitor::Visitor"
-                                  []
-                                  []
-                                  V
-                                  "Value";
-                                Ty.associated_in_trait
-                                  "move_core_types::annotated_visitor::Visitor"
-                                  []
-                                  []
-                                  V
-                                  "Error"
-                              ],
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [
-                                  Ty.associated_in_trait
-                                    "move_core_types::annotated_visitor::Visitor"
-                                    []
-                                    []
-                                    V
-                                    "Value";
-                                  Ty.associated_in_trait
-                                    "move_core_types::annotated_visitor::Visitor"
-                                    []
-                                    []
-                                    V
-                                    "Error"
-                                ],
-                              M.get_trait_method (|
-                                "move_core_types::annotated_visitor::Visitor",
-                                V,
-                                [],
-                                [],
-                                "visit_u32",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.MutRef,
-                                  M.deref (| M.read (| visitor |) |)
-                                |);
-                                M.call_closure (|
-                                  Ty.path "u32",
-                                  M.get_associated_function (|
-                                    Ty.path "u32",
-                                    "from_le_bytes",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.read (|
-                                      M.match_operator (|
+                                    |)));
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 :=
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        γ,
+                                        "core::ops::control_flow::ControlFlow::Continue",
+                                        0
+                                      |) in
+                                    let val :=
+                                      M.copy (|
                                         Ty.apply
                                           (Ty.path "array")
                                           [ Value.Integer IntegerKind.Usize 4 ]
                                           [ Ty.path "u8" ],
-                                        M.alloc (|
+                                        γ0_0
+                                      |) in
+                                    M.read (| val |)))
+                              ]
+                            |)
+                          ]
+                        |)
+                      ]
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "move_core_types::annotated_value::MoveTypeLayout::U64"
+                      |) in
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.associated_in_trait
+                            "move_core_types::annotated_visitor::Visitor"
+                            []
+                            []
+                            V
+                            "Value";
+                          Ty.associated_in_trait
+                            "move_core_types::annotated_visitor::Visitor"
+                            []
+                            []
+                            V
+                            "Error"
+                        ],
+                      M.get_trait_method (|
+                        "move_core_types::annotated_visitor::Visitor",
+                        V,
+                        [],
+                        [],
+                        "visit_u64",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| visitor |) |) |);
+                        M.call_closure (|
+                          Ty.path "u64",
+                          M.get_associated_function (| Ty.path "u64", "from_le_bytes", [], [] |),
+                          [
+                            M.match_operator (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 8 ]
+                                [ Ty.path "u8" ],
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "move_core_types::annotated_visitor::Error"
+                                      ];
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 8 ]
+                                      [ Ty.path "u8" ]
+                                  ],
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "move_core_types::annotated_visitor::Error"
+                                        ];
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 8 ]
+                                        [ Ty.path "u8" ]
+                                    ],
+                                  M.get_trait_method (|
+                                    "core::ops::try_trait::Try",
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 8 ]
+                                          [ Ty.path "u8" ];
+                                        Ty.path "move_core_types::annotated_visitor::Error"
+                                      ],
+                                    [],
+                                    [],
+                                    "branch",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
                                           Ty.apply
-                                            (Ty.path "core::ops::control_flow::ControlFlow")
-                                            []
-                                            [
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 8 ]
+                                            [ Ty.path "u8" ];
+                                          Ty.path "move_core_types::annotated_visitor::Error"
+                                        ],
+                                      M.get_function (|
+                                        "move_core_types::annotated_visitor::read_exact",
+                                        [ Value.Integer IntegerKind.Usize 8 ],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| bytes |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  ]
+                                |)
+                              |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 :=
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        γ,
+                                        "core::ops::control_flow::ControlFlow::Break",
+                                        0
+                                      |) in
+                                    let residual :=
+                                      M.copy (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path "move_core_types::annotated_visitor::Error"
+                                          ],
+                                        γ0_0
+                                      |) in
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.associated_in_trait
+                                                  "move_core_types::annotated_visitor::Visitor"
+                                                  []
+                                                  []
+                                                  V
+                                                  "Value";
+                                                Ty.associated_in_trait
+                                                  "move_core_types::annotated_visitor::Visitor"
+                                                  []
+                                                  []
+                                                  V
+                                                  "Error"
+                                              ],
+                                            M.get_trait_method (|
+                                              "core::ops::try_trait::FromResidual",
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
                                                 []
                                                 [
-                                                  Ty.path "core::convert::Infallible";
-                                                  Ty.path
-                                                    "move_core_types::annotated_visitor::Error"
-                                                ];
-                                              Ty.apply
-                                                (Ty.path "array")
-                                                [ Value.Integer IntegerKind.Usize 4 ]
-                                                [ Ty.path "u8" ]
-                                            ],
-                                          M.call_closure (|
-                                            Ty.apply
-                                              (Ty.path "core::ops::control_flow::ControlFlow")
-                                              []
+                                                  Ty.associated_in_trait
+                                                    "move_core_types::annotated_visitor::Visitor"
+                                                    []
+                                                    []
+                                                    V
+                                                    "Value";
+                                                  Ty.associated_in_trait
+                                                    "move_core_types::annotated_visitor::Visitor"
+                                                    []
+                                                    []
+                                                    V
+                                                    "Error"
+                                                ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -5320,266 +5267,226 @@ Module annotated_visitor.
                                                     Ty.path "core::convert::Infallible";
                                                     Ty.path
                                                       "move_core_types::annotated_visitor::Error"
-                                                  ];
-                                                Ty.apply
-                                                  (Ty.path "array")
-                                                  [ Value.Integer IntegerKind.Usize 4 ]
-                                                  [ Ty.path "u8" ]
+                                                  ]
                                               ],
-                                            M.get_trait_method (|
-                                              "core::ops::try_trait::Try",
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "array")
-                                                    [ Value.Integer IntegerKind.Usize 4 ]
-                                                    [ Ty.path "u8" ];
-                                                  Ty.path
-                                                    "move_core_types::annotated_visitor::Error"
-                                                ],
-                                              [],
-                                              [],
-                                              "branch",
+                                              "from_residual",
                                               [],
                                               []
                                             |),
-                                            [
-                                              M.call_closure (|
-                                                Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "array")
-                                                      [ Value.Integer IntegerKind.Usize 4 ]
-                                                      [ Ty.path "u8" ];
-                                                    Ty.path
-                                                      "move_core_types::annotated_visitor::Error"
-                                                  ],
-                                                M.get_function (|
-                                                  "move_core_types::annotated_visitor::read_exact",
-                                                  [ Value.Integer IntegerKind.Usize 4 ],
-                                                  []
-                                                |),
-                                                [
-                                                  M.borrow (|
-                                                    Pointer.Kind.MutRef,
-                                                    M.deref (| M.read (| bytes |) |)
-                                                  |)
-                                                ]
-                                              |)
-                                            ]
+                                            [ M.read (| residual |) ]
                                           |)
-                                        |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let γ0_0 :=
-                                                M.SubPointer.get_struct_tuple_field (|
-                                                  γ,
-                                                  "core::ops::control_flow::ControlFlow::Break",
-                                                  0
-                                                |) in
-                                              let residual :=
-                                                M.copy (|
-                                                  Ty.apply
-                                                    (Ty.path "core::result::Result")
-                                                    []
-                                                    [
-                                                      Ty.path "core::convert::Infallible";
-                                                      Ty.path
-                                                        "move_core_types::annotated_visitor::Error"
-                                                    ],
-                                                  γ0_0
-                                                |) in
-                                              M.alloc (|
-                                                Ty.apply
-                                                  (Ty.path "array")
-                                                  [ Value.Integer IntegerKind.Usize 4 ]
-                                                  [ Ty.path "u8" ],
-                                                M.never_to_any (|
-                                                  M.read (|
-                                                    M.return_ (|
-                                                      M.call_closure (|
-                                                        Ty.apply
-                                                          (Ty.path "core::result::Result")
-                                                          []
-                                                          [
-                                                            Ty.associated_in_trait
-                                                              "move_core_types::annotated_visitor::Visitor"
-                                                              []
-                                                              []
-                                                              V
-                                                              "Value";
-                                                            Ty.associated_in_trait
-                                                              "move_core_types::annotated_visitor::Visitor"
-                                                              []
-                                                              []
-                                                              V
-                                                              "Error"
-                                                          ],
-                                                        M.get_trait_method (|
-                                                          "core::ops::try_trait::FromResidual",
-                                                          Ty.apply
-                                                            (Ty.path "core::result::Result")
-                                                            []
-                                                            [
-                                                              Ty.associated_in_trait
-                                                                "move_core_types::annotated_visitor::Visitor"
-                                                                []
-                                                                []
-                                                                V
-                                                                "Value";
-                                                              Ty.associated_in_trait
-                                                                "move_core_types::annotated_visitor::Visitor"
-                                                                []
-                                                                []
-                                                                V
-                                                                "Error"
-                                                            ],
-                                                          [],
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "core::result::Result")
-                                                              []
-                                                              [
-                                                                Ty.path "core::convert::Infallible";
-                                                                Ty.path
-                                                                  "move_core_types::annotated_visitor::Error"
-                                                              ]
-                                                          ],
-                                                          "from_residual",
-                                                          [],
-                                                          []
-                                                        |),
-                                                        [ M.read (| residual |) ]
-                                                      |)
-                                                    |)
-                                                  |)
-                                                |)
-                                              |)));
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let γ0_0 :=
-                                                M.SubPointer.get_struct_tuple_field (|
-                                                  γ,
-                                                  "core::ops::control_flow::ControlFlow::Continue",
-                                                  0
-                                                |) in
-                                              let val :=
-                                                M.copy (|
-                                                  Ty.apply
-                                                    (Ty.path "array")
-                                                    [ Value.Integer IntegerKind.Usize 4 ]
-                                                    [ Ty.path "u8" ],
-                                                  γ0_0
-                                                |) in
-                                              val))
-                                        ]
+                                        |)
                                       |)
-                                    |)
-                                  ]
-                                |)
-                              ]
-                            |)
-                          |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
-                          let _ :=
-                            M.is_struct_tuple (|
-                              γ,
-                              "move_core_types::annotated_value::MoveTypeLayout::U64"
-                            |) in
-                          M.alloc (|
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [
-                                Ty.associated_in_trait
-                                  "move_core_types::annotated_visitor::Visitor"
-                                  []
-                                  []
-                                  V
-                                  "Value";
-                                Ty.associated_in_trait
-                                  "move_core_types::annotated_visitor::Visitor"
-                                  []
-                                  []
-                                  V
-                                  "Error"
-                              ],
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [
-                                  Ty.associated_in_trait
-                                    "move_core_types::annotated_visitor::Visitor"
-                                    []
-                                    []
-                                    V
-                                    "Value";
-                                  Ty.associated_in_trait
-                                    "move_core_types::annotated_visitor::Visitor"
-                                    []
-                                    []
-                                    V
-                                    "Error"
-                                ],
-                              M.get_trait_method (|
-                                "move_core_types::annotated_visitor::Visitor",
-                                V,
-                                [],
-                                [],
-                                "visit_u64",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.MutRef,
-                                  M.deref (| M.read (| visitor |) |)
-                                |);
-                                M.call_closure (|
-                                  Ty.path "u64",
-                                  M.get_associated_function (|
-                                    Ty.path "u64",
-                                    "from_le_bytes",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.read (|
-                                      M.match_operator (|
+                                    |)));
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 :=
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        γ,
+                                        "core::ops::control_flow::ControlFlow::Continue",
+                                        0
+                                      |) in
+                                    let val :=
+                                      M.copy (|
                                         Ty.apply
                                           (Ty.path "array")
                                           [ Value.Integer IntegerKind.Usize 8 ]
                                           [ Ty.path "u8" ],
-                                        M.alloc (|
+                                        γ0_0
+                                      |) in
+                                    M.read (| val |)))
+                              ]
+                            |)
+                          ]
+                        |)
+                      ]
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "move_core_types::annotated_value::MoveTypeLayout::U128"
+                      |) in
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.associated_in_trait
+                            "move_core_types::annotated_visitor::Visitor"
+                            []
+                            []
+                            V
+                            "Value";
+                          Ty.associated_in_trait
+                            "move_core_types::annotated_visitor::Visitor"
+                            []
+                            []
+                            V
+                            "Error"
+                        ],
+                      M.get_trait_method (|
+                        "move_core_types::annotated_visitor::Visitor",
+                        V,
+                        [],
+                        [],
+                        "visit_u128",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| visitor |) |) |);
+                        M.call_closure (|
+                          Ty.path "u128",
+                          M.get_associated_function (| Ty.path "u128", "from_le_bytes", [], [] |),
+                          [
+                            M.match_operator (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 16 ]
+                                [ Ty.path "u8" ],
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "move_core_types::annotated_visitor::Error"
+                                      ];
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 16 ]
+                                      [ Ty.path "u8" ]
+                                  ],
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "move_core_types::annotated_visitor::Error"
+                                        ];
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 16 ]
+                                        [ Ty.path "u8" ]
+                                    ],
+                                  M.get_trait_method (|
+                                    "core::ops::try_trait::Try",
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 16 ]
+                                          [ Ty.path "u8" ];
+                                        Ty.path "move_core_types::annotated_visitor::Error"
+                                      ],
+                                    [],
+                                    [],
+                                    "branch",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
                                           Ty.apply
-                                            (Ty.path "core::ops::control_flow::ControlFlow")
-                                            []
-                                            [
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 16 ]
+                                            [ Ty.path "u8" ];
+                                          Ty.path "move_core_types::annotated_visitor::Error"
+                                        ],
+                                      M.get_function (|
+                                        "move_core_types::annotated_visitor::read_exact",
+                                        [ Value.Integer IntegerKind.Usize 16 ],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| bytes |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  ]
+                                |)
+                              |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 :=
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        γ,
+                                        "core::ops::control_flow::ControlFlow::Break",
+                                        0
+                                      |) in
+                                    let residual :=
+                                      M.copy (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path "move_core_types::annotated_visitor::Error"
+                                          ],
+                                        γ0_0
+                                      |) in
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.associated_in_trait
+                                                  "move_core_types::annotated_visitor::Visitor"
+                                                  []
+                                                  []
+                                                  V
+                                                  "Value";
+                                                Ty.associated_in_trait
+                                                  "move_core_types::annotated_visitor::Visitor"
+                                                  []
+                                                  []
+                                                  V
+                                                  "Error"
+                                              ],
+                                            M.get_trait_method (|
+                                              "core::ops::try_trait::FromResidual",
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
                                                 []
                                                 [
-                                                  Ty.path "core::convert::Infallible";
-                                                  Ty.path
-                                                    "move_core_types::annotated_visitor::Error"
-                                                ];
-                                              Ty.apply
-                                                (Ty.path "array")
-                                                [ Value.Integer IntegerKind.Usize 8 ]
-                                                [ Ty.path "u8" ]
-                                            ],
-                                          M.call_closure (|
-                                            Ty.apply
-                                              (Ty.path "core::ops::control_flow::ControlFlow")
-                                              []
+                                                  Ty.associated_in_trait
+                                                    "move_core_types::annotated_visitor::Visitor"
+                                                    []
+                                                    []
+                                                    V
+                                                    "Value";
+                                                  Ty.associated_in_trait
+                                                    "move_core_types::annotated_visitor::Visitor"
+                                                    []
+                                                    []
+                                                    V
+                                                    "Error"
+                                                ],
+                                              [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
@@ -5588,245 +5495,119 @@ Module annotated_visitor.
                                                     Ty.path "core::convert::Infallible";
                                                     Ty.path
                                                       "move_core_types::annotated_visitor::Error"
-                                                  ];
-                                                Ty.apply
-                                                  (Ty.path "array")
-                                                  [ Value.Integer IntegerKind.Usize 8 ]
-                                                  [ Ty.path "u8" ]
+                                                  ]
                                               ],
-                                            M.get_trait_method (|
-                                              "core::ops::try_trait::Try",
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "array")
-                                                    [ Value.Integer IntegerKind.Usize 8 ]
-                                                    [ Ty.path "u8" ];
-                                                  Ty.path
-                                                    "move_core_types::annotated_visitor::Error"
-                                                ],
-                                              [],
-                                              [],
-                                              "branch",
+                                              "from_residual",
                                               [],
                                               []
                                             |),
-                                            [
-                                              M.call_closure (|
-                                                Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "array")
-                                                      [ Value.Integer IntegerKind.Usize 8 ]
-                                                      [ Ty.path "u8" ];
-                                                    Ty.path
-                                                      "move_core_types::annotated_visitor::Error"
-                                                  ],
-                                                M.get_function (|
-                                                  "move_core_types::annotated_visitor::read_exact",
-                                                  [ Value.Integer IntegerKind.Usize 8 ],
-                                                  []
-                                                |),
-                                                [
-                                                  M.borrow (|
-                                                    Pointer.Kind.MutRef,
-                                                    M.deref (| M.read (| bytes |) |)
-                                                  |)
-                                                ]
-                                              |)
-                                            ]
+                                            [ M.read (| residual |) ]
                                           |)
-                                        |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let γ0_0 :=
-                                                M.SubPointer.get_struct_tuple_field (|
-                                                  γ,
-                                                  "core::ops::control_flow::ControlFlow::Break",
-                                                  0
-                                                |) in
-                                              let residual :=
-                                                M.copy (|
-                                                  Ty.apply
-                                                    (Ty.path "core::result::Result")
-                                                    []
-                                                    [
-                                                      Ty.path "core::convert::Infallible";
-                                                      Ty.path
-                                                        "move_core_types::annotated_visitor::Error"
-                                                    ],
-                                                  γ0_0
-                                                |) in
-                                              M.alloc (|
-                                                Ty.apply
-                                                  (Ty.path "array")
-                                                  [ Value.Integer IntegerKind.Usize 8 ]
-                                                  [ Ty.path "u8" ],
-                                                M.never_to_any (|
-                                                  M.read (|
-                                                    M.return_ (|
-                                                      M.call_closure (|
-                                                        Ty.apply
-                                                          (Ty.path "core::result::Result")
-                                                          []
-                                                          [
-                                                            Ty.associated_in_trait
-                                                              "move_core_types::annotated_visitor::Visitor"
-                                                              []
-                                                              []
-                                                              V
-                                                              "Value";
-                                                            Ty.associated_in_trait
-                                                              "move_core_types::annotated_visitor::Visitor"
-                                                              []
-                                                              []
-                                                              V
-                                                              "Error"
-                                                          ],
-                                                        M.get_trait_method (|
-                                                          "core::ops::try_trait::FromResidual",
-                                                          Ty.apply
-                                                            (Ty.path "core::result::Result")
-                                                            []
-                                                            [
-                                                              Ty.associated_in_trait
-                                                                "move_core_types::annotated_visitor::Visitor"
-                                                                []
-                                                                []
-                                                                V
-                                                                "Value";
-                                                              Ty.associated_in_trait
-                                                                "move_core_types::annotated_visitor::Visitor"
-                                                                []
-                                                                []
-                                                                V
-                                                                "Error"
-                                                            ],
-                                                          [],
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "core::result::Result")
-                                                              []
-                                                              [
-                                                                Ty.path "core::convert::Infallible";
-                                                                Ty.path
-                                                                  "move_core_types::annotated_visitor::Error"
-                                                              ]
-                                                          ],
-                                                          "from_residual",
-                                                          [],
-                                                          []
-                                                        |),
-                                                        [ M.read (| residual |) ]
-                                                      |)
-                                                    |)
-                                                  |)
-                                                |)
-                                              |)));
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let γ0_0 :=
-                                                M.SubPointer.get_struct_tuple_field (|
-                                                  γ,
-                                                  "core::ops::control_flow::ControlFlow::Continue",
-                                                  0
-                                                |) in
-                                              let val :=
-                                                M.copy (|
-                                                  Ty.apply
-                                                    (Ty.path "array")
-                                                    [ Value.Integer IntegerKind.Usize 8 ]
-                                                    [ Ty.path "u8" ],
-                                                  γ0_0
-                                                |) in
-                                              val))
-                                        ]
+                                        |)
                                       |)
-                                    |)
-                                  ]
-                                |)
-                              ]
-                            |)
-                          |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
-                          let _ :=
-                            M.is_struct_tuple (|
-                              γ,
-                              "move_core_types::annotated_value::MoveTypeLayout::U128"
-                            |) in
-                          M.alloc (|
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [
-                                Ty.associated_in_trait
-                                  "move_core_types::annotated_visitor::Visitor"
-                                  []
-                                  []
-                                  V
-                                  "Value";
-                                Ty.associated_in_trait
-                                  "move_core_types::annotated_visitor::Visitor"
-                                  []
-                                  []
-                                  V
-                                  "Error"
-                              ],
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [
-                                  Ty.associated_in_trait
-                                    "move_core_types::annotated_visitor::Visitor"
-                                    []
-                                    []
-                                    V
-                                    "Value";
-                                  Ty.associated_in_trait
-                                    "move_core_types::annotated_visitor::Visitor"
-                                    []
-                                    []
-                                    V
-                                    "Error"
-                                ],
-                              M.get_trait_method (|
-                                "move_core_types::annotated_visitor::Visitor",
-                                V,
-                                [],
-                                [],
-                                "visit_u128",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.MutRef,
-                                  M.deref (| M.read (| visitor |) |)
-                                |);
-                                M.call_closure (|
-                                  Ty.path "u128",
-                                  M.get_associated_function (|
-                                    Ty.path "u128",
-                                    "from_le_bytes",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.read (|
-                                      M.match_operator (|
+                                    |)));
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 :=
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        γ,
+                                        "core::ops::control_flow::ControlFlow::Continue",
+                                        0
+                                      |) in
+                                    let val :=
+                                      M.copy (|
                                         Ty.apply
                                           (Ty.path "array")
                                           [ Value.Integer IntegerKind.Usize 16 ]
                                           [ Ty.path "u8" ],
-                                        M.alloc (|
+                                        γ0_0
+                                      |) in
+                                    M.read (| val |)))
+                              ]
+                            |)
+                          ]
+                        |)
+                      ]
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "move_core_types::annotated_value::MoveTypeLayout::U256"
+                      |) in
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.associated_in_trait
+                            "move_core_types::annotated_visitor::Visitor"
+                            []
+                            []
+                            V
+                            "Value";
+                          Ty.associated_in_trait
+                            "move_core_types::annotated_visitor::Visitor"
+                            []
+                            []
+                            V
+                            "Error"
+                        ],
+                      M.get_trait_method (|
+                        "move_core_types::annotated_visitor::Visitor",
+                        V,
+                        [],
+                        [],
+                        "visit_u256",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| visitor |) |) |);
+                        M.call_closure (|
+                          Ty.path "move_core_types::u256::U256",
+                          M.get_associated_function (|
+                            Ty.path "move_core_types::u256::U256",
+                            "from_le_bytes",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 32 ]
+                                      [ Ty.path "u8" ],
+                                    M.match_operator (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 32 ]
+                                        [ Ty.path "u8" ],
+                                      M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "core::ops::control_flow::ControlFlow")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.path "core::convert::Infallible";
+                                                Ty.path "move_core_types::annotated_visitor::Error"
+                                              ];
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 32 ]
+                                              [ Ty.path "u8" ]
+                                          ],
+                                        M.call_closure (|
                                           Ty.apply
                                             (Ty.path "core::ops::control_flow::ControlFlow")
                                             []
@@ -5841,14 +5622,66 @@ Module annotated_visitor.
                                                 ];
                                               Ty.apply
                                                 (Ty.path "array")
-                                                [ Value.Integer IntegerKind.Usize 16 ]
+                                                [ Value.Integer IntegerKind.Usize 32 ]
                                                 [ Ty.path "u8" ]
                                             ],
-                                          M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::ops::try_trait::Try",
                                             Ty.apply
-                                              (Ty.path "core::ops::control_flow::ControlFlow")
+                                              (Ty.path "core::result::Result")
                                               []
                                               [
+                                                Ty.apply
+                                                  (Ty.path "array")
+                                                  [ Value.Integer IntegerKind.Usize 32 ]
+                                                  [ Ty.path "u8" ];
+                                                Ty.path "move_core_types::annotated_visitor::Error"
+                                              ],
+                                            [],
+                                            [],
+                                            "branch",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "array")
+                                                    [ Value.Integer IntegerKind.Usize 32 ]
+                                                    [ Ty.path "u8" ];
+                                                  Ty.path
+                                                    "move_core_types::annotated_visitor::Error"
+                                                ],
+                                              M.get_function (|
+                                                "move_core_types::annotated_visitor::read_exact",
+                                                [ Value.Integer IntegerKind.Usize 32 ],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (| M.read (| bytes |) |)
+                                                |)
+                                              ]
+                                            |)
+                                          ]
+                                        |)
+                                      |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let γ0_0 :=
+                                              M.SubPointer.get_struct_tuple_field (|
+                                                γ,
+                                                "core::ops::control_flow::ControlFlow::Break",
+                                                0
+                                              |) in
+                                            let residual :=
+                                              M.copy (|
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
                                                   []
@@ -5856,1012 +5689,165 @@ Module annotated_visitor.
                                                     Ty.path "core::convert::Infallible";
                                                     Ty.path
                                                       "move_core_types::annotated_visitor::Error"
-                                                  ];
-                                                Ty.apply
-                                                  (Ty.path "array")
-                                                  [ Value.Integer IntegerKind.Usize 16 ]
-                                                  [ Ty.path "u8" ]
-                                              ],
-                                            M.get_trait_method (|
-                                              "core::ops::try_trait::Try",
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "array")
-                                                    [ Value.Integer IntegerKind.Usize 16 ]
-                                                    [ Ty.path "u8" ];
-                                                  Ty.path
-                                                    "move_core_types::annotated_visitor::Error"
-                                                ],
-                                              [],
-                                              [],
-                                              "branch",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.call_closure (|
-                                                Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "array")
-                                                      [ Value.Integer IntegerKind.Usize 16 ]
-                                                      [ Ty.path "u8" ];
-                                                    Ty.path
-                                                      "move_core_types::annotated_visitor::Error"
                                                   ],
-                                                M.get_function (|
-                                                  "move_core_types::annotated_visitor::read_exact",
-                                                  [ Value.Integer IntegerKind.Usize 16 ],
-                                                  []
-                                                |),
-                                                [
-                                                  M.borrow (|
-                                                    Pointer.Kind.MutRef,
-                                                    M.deref (| M.read (| bytes |) |)
-                                                  |)
-                                                ]
-                                              |)
-                                            ]
-                                          |)
-                                        |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let γ0_0 :=
-                                                M.SubPointer.get_struct_tuple_field (|
-                                                  γ,
-                                                  "core::ops::control_flow::ControlFlow::Break",
-                                                  0
-                                                |) in
-                                              let residual :=
-                                                M.copy (|
-                                                  Ty.apply
-                                                    (Ty.path "core::result::Result")
-                                                    []
-                                                    [
-                                                      Ty.path "core::convert::Infallible";
-                                                      Ty.path
-                                                        "move_core_types::annotated_visitor::Error"
-                                                    ],
-                                                  γ0_0
-                                                |) in
-                                              M.alloc (|
-                                                Ty.apply
-                                                  (Ty.path "array")
-                                                  [ Value.Integer IntegerKind.Usize 16 ]
-                                                  [ Ty.path "u8" ],
-                                                M.never_to_any (|
-                                                  M.read (|
-                                                    M.return_ (|
-                                                      M.call_closure (|
-                                                        Ty.apply
-                                                          (Ty.path "core::result::Result")
-                                                          []
-                                                          [
-                                                            Ty.associated_in_trait
-                                                              "move_core_types::annotated_visitor::Visitor"
-                                                              []
-                                                              []
-                                                              V
-                                                              "Value";
-                                                            Ty.associated_in_trait
-                                                              "move_core_types::annotated_visitor::Visitor"
-                                                              []
-                                                              []
-                                                              V
-                                                              "Error"
-                                                          ],
-                                                        M.get_trait_method (|
-                                                          "core::ops::try_trait::FromResidual",
-                                                          Ty.apply
-                                                            (Ty.path "core::result::Result")
-                                                            []
-                                                            [
-                                                              Ty.associated_in_trait
-                                                                "move_core_types::annotated_visitor::Visitor"
-                                                                []
-                                                                []
-                                                                V
-                                                                "Value";
-                                                              Ty.associated_in_trait
-                                                                "move_core_types::annotated_visitor::Visitor"
-                                                                []
-                                                                []
-                                                                V
-                                                                "Error"
-                                                            ],
-                                                          [],
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "core::result::Result")
-                                                              []
-                                                              [
-                                                                Ty.path "core::convert::Infallible";
-                                                                Ty.path
-                                                                  "move_core_types::annotated_visitor::Error"
-                                                              ]
-                                                          ],
-                                                          "from_residual",
-                                                          [],
-                                                          []
-                                                        |),
-                                                        [ M.read (| residual |) ]
-                                                      |)
-                                                    |)
-                                                  |)
-                                                |)
-                                              |)));
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let γ0_0 :=
-                                                M.SubPointer.get_struct_tuple_field (|
-                                                  γ,
-                                                  "core::ops::control_flow::ControlFlow::Continue",
-                                                  0
-                                                |) in
-                                              let val :=
-                                                M.copy (|
-                                                  Ty.apply
-                                                    (Ty.path "array")
-                                                    [ Value.Integer IntegerKind.Usize 16 ]
-                                                    [ Ty.path "u8" ],
-                                                  γ0_0
-                                                |) in
-                                              val))
-                                        ]
-                                      |)
-                                    |)
-                                  ]
-                                |)
-                              ]
-                            |)
-                          |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
-                          let _ :=
-                            M.is_struct_tuple (|
-                              γ,
-                              "move_core_types::annotated_value::MoveTypeLayout::U256"
-                            |) in
-                          M.alloc (|
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [
-                                Ty.associated_in_trait
-                                  "move_core_types::annotated_visitor::Visitor"
-                                  []
-                                  []
-                                  V
-                                  "Value";
-                                Ty.associated_in_trait
-                                  "move_core_types::annotated_visitor::Visitor"
-                                  []
-                                  []
-                                  V
-                                  "Error"
-                              ],
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [
-                                  Ty.associated_in_trait
-                                    "move_core_types::annotated_visitor::Visitor"
-                                    []
-                                    []
-                                    V
-                                    "Value";
-                                  Ty.associated_in_trait
-                                    "move_core_types::annotated_visitor::Visitor"
-                                    []
-                                    []
-                                    V
-                                    "Error"
-                                ],
-                              M.get_trait_method (|
-                                "move_core_types::annotated_visitor::Visitor",
-                                V,
-                                [],
-                                [],
-                                "visit_u256",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.MutRef,
-                                  M.deref (| M.read (| visitor |) |)
-                                |);
-                                M.call_closure (|
-                                  Ty.path "move_core_types::u256::U256",
-                                  M.get_associated_function (|
-                                    Ty.path "move_core_types::u256::U256",
-                                    "from_le_bytes",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (|
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.match_operator (|
-                                            Ty.apply
-                                              (Ty.path "array")
-                                              [ Value.Integer IntegerKind.Usize 32 ]
-                                              [ Ty.path "u8" ],
-                                            M.alloc (|
-                                              Ty.apply
-                                                (Ty.path "core::ops::control_flow::ControlFlow")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::result::Result")
-                                                    []
-                                                    [
-                                                      Ty.path "core::convert::Infallible";
-                                                      Ty.path
-                                                        "move_core_types::annotated_visitor::Error"
-                                                    ];
-                                                  Ty.apply
-                                                    (Ty.path "array")
-                                                    [ Value.Integer IntegerKind.Usize 32 ]
-                                                    [ Ty.path "u8" ]
-                                                ],
-                                              M.call_closure (|
-                                                Ty.apply
-                                                  (Ty.path "core::ops::control_flow::ControlFlow")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::result::Result")
-                                                      []
-                                                      [
-                                                        Ty.path "core::convert::Infallible";
-                                                        Ty.path
-                                                          "move_core_types::annotated_visitor::Error"
-                                                      ];
-                                                    Ty.apply
-                                                      (Ty.path "array")
-                                                      [ Value.Integer IntegerKind.Usize 32 ]
-                                                      [ Ty.path "u8" ]
-                                                  ],
-                                                M.get_trait_method (|
-                                                  "core::ops::try_trait::Try",
-                                                  Ty.apply
-                                                    (Ty.path "core::result::Result")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "array")
-                                                        [ Value.Integer IntegerKind.Usize 32 ]
-                                                        [ Ty.path "u8" ];
-                                                      Ty.path
-                                                        "move_core_types::annotated_visitor::Error"
-                                                    ],
-                                                  [],
-                                                  [],
-                                                  "branch",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
+                                                γ0_0
+                                              |) in
+                                            M.never_to_any (|
+                                              M.read (|
+                                                M.return_ (|
                                                   M.call_closure (|
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
                                                       []
                                                       [
-                                                        Ty.apply
-                                                          (Ty.path "array")
-                                                          [ Value.Integer IntegerKind.Usize 32 ]
-                                                          [ Ty.path "u8" ];
-                                                        Ty.path
-                                                          "move_core_types::annotated_visitor::Error"
+                                                        Ty.associated_in_trait
+                                                          "move_core_types::annotated_visitor::Visitor"
+                                                          []
+                                                          []
+                                                          V
+                                                          "Value";
+                                                        Ty.associated_in_trait
+                                                          "move_core_types::annotated_visitor::Visitor"
+                                                          []
+                                                          []
+                                                          V
+                                                          "Error"
                                                       ],
-                                                    M.get_function (|
-                                                      "move_core_types::annotated_visitor::read_exact",
-                                                      [ Value.Integer IntegerKind.Usize 32 ],
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.borrow (|
-                                                        Pointer.Kind.MutRef,
-                                                        M.deref (| M.read (| bytes |) |)
-                                                      |)
-                                                    ]
-                                                  |)
-                                                ]
-                                              |)
-                                            |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let γ0_0 :=
-                                                    M.SubPointer.get_struct_tuple_field (|
-                                                      γ,
-                                                      "core::ops::control_flow::ControlFlow::Break",
-                                                      0
-                                                    |) in
-                                                  let residual :=
-                                                    M.copy (|
+                                                    M.get_trait_method (|
+                                                      "core::ops::try_trait::FromResidual",
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
                                                         []
                                                         [
-                                                          Ty.path "core::convert::Infallible";
-                                                          Ty.path
-                                                            "move_core_types::annotated_visitor::Error"
+                                                          Ty.associated_in_trait
+                                                            "move_core_types::annotated_visitor::Visitor"
+                                                            []
+                                                            []
+                                                            V
+                                                            "Value";
+                                                          Ty.associated_in_trait
+                                                            "move_core_types::annotated_visitor::Visitor"
+                                                            []
+                                                            []
+                                                            V
+                                                            "Error"
                                                         ],
-                                                      γ0_0
-                                                    |) in
-                                                  M.alloc (|
-                                                    Ty.apply
-                                                      (Ty.path "array")
-                                                      [ Value.Integer IntegerKind.Usize 32 ]
-                                                      [ Ty.path "u8" ],
-                                                    M.never_to_any (|
-                                                      M.read (|
-                                                        M.return_ (|
-                                                          M.call_closure (|
-                                                            Ty.apply
-                                                              (Ty.path "core::result::Result")
-                                                              []
-                                                              [
-                                                                Ty.associated_in_trait
-                                                                  "move_core_types::annotated_visitor::Visitor"
-                                                                  []
-                                                                  []
-                                                                  V
-                                                                  "Value";
-                                                                Ty.associated_in_trait
-                                                                  "move_core_types::annotated_visitor::Visitor"
-                                                                  []
-                                                                  []
-                                                                  V
-                                                                  "Error"
-                                                              ],
-                                                            M.get_trait_method (|
-                                                              "core::ops::try_trait::FromResidual",
-                                                              Ty.apply
-                                                                (Ty.path "core::result::Result")
-                                                                []
-                                                                [
-                                                                  Ty.associated_in_trait
-                                                                    "move_core_types::annotated_visitor::Visitor"
-                                                                    []
-                                                                    []
-                                                                    V
-                                                                    "Value";
-                                                                  Ty.associated_in_trait
-                                                                    "move_core_types::annotated_visitor::Visitor"
-                                                                    []
-                                                                    []
-                                                                    V
-                                                                    "Error"
-                                                                ],
-                                                              [],
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path "core::result::Result")
-                                                                  []
-                                                                  [
-                                                                    Ty.path
-                                                                      "core::convert::Infallible";
-                                                                    Ty.path
-                                                                      "move_core_types::annotated_visitor::Error"
-                                                                  ]
-                                                              ],
-                                                              "from_residual",
-                                                              [],
-                                                              []
-                                                            |),
-                                                            [ M.read (| residual |) ]
-                                                          |)
-                                                        |)
-                                                      |)
-                                                    |)
-                                                  |)));
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let γ0_0 :=
-                                                    M.SubPointer.get_struct_tuple_field (|
-                                                      γ,
-                                                      "core::ops::control_flow::ControlFlow::Continue",
-                                                      0
-                                                    |) in
-                                                  let val :=
-                                                    M.copy (|
-                                                      Ty.apply
-                                                        (Ty.path "array")
-                                                        [ Value.Integer IntegerKind.Usize 32 ]
-                                                        [ Ty.path "u8" ],
-                                                      γ0_0
-                                                    |) in
-                                                  val))
-                                            ]
-                                          |)
-                                        |)
-                                      |)
-                                    |)
-                                  ]
-                                |)
-                              ]
-                            |)
-                          |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
-                          let _ :=
-                            M.is_struct_tuple (|
-                              γ,
-                              "move_core_types::annotated_value::MoveTypeLayout::Address"
-                            |) in
-                          M.alloc (|
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [
-                                Ty.associated_in_trait
-                                  "move_core_types::annotated_visitor::Visitor"
-                                  []
-                                  []
-                                  V
-                                  "Value";
-                                Ty.associated_in_trait
-                                  "move_core_types::annotated_visitor::Visitor"
-                                  []
-                                  []
-                                  V
-                                  "Error"
-                              ],
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [
-                                  Ty.associated_in_trait
-                                    "move_core_types::annotated_visitor::Visitor"
-                                    []
-                                    []
-                                    V
-                                    "Value";
-                                  Ty.associated_in_trait
-                                    "move_core_types::annotated_visitor::Visitor"
-                                    []
-                                    []
-                                    V
-                                    "Error"
-                                ],
-                              M.get_trait_method (|
-                                "move_core_types::annotated_visitor::Visitor",
-                                V,
-                                [],
-                                [],
-                                "visit_address",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.MutRef,
-                                  M.deref (| M.read (| visitor |) |)
-                                |);
-                                M.call_closure (|
-                                  Ty.path "move_core_types::account_address::AccountAddress",
-                                  M.get_associated_function (|
-                                    Ty.path "move_core_types::account_address::AccountAddress",
-                                    "new",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.read (|
-                                      M.match_operator (|
-                                        Ty.apply
-                                          (Ty.path "array")
-                                          [ Value.Integer IntegerKind.Usize 32 ]
-                                          [ Ty.path "u8" ],
-                                        M.alloc (|
-                                          Ty.apply
-                                            (Ty.path "core::ops::control_flow::ControlFlow")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.path "core::convert::Infallible";
-                                                  Ty.path
-                                                    "move_core_types::annotated_visitor::Error"
-                                                ];
-                                              Ty.apply
-                                                (Ty.path "array")
-                                                [ Value.Integer IntegerKind.Usize 32 ]
-                                                [ Ty.path "u8" ]
-                                            ],
-                                          M.call_closure (|
-                                            Ty.apply
-                                              (Ty.path "core::ops::control_flow::ControlFlow")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [
-                                                    Ty.path "core::convert::Infallible";
-                                                    Ty.path
-                                                      "move_core_types::annotated_visitor::Error"
-                                                  ];
-                                                Ty.apply
-                                                  (Ty.path "array")
-                                                  [ Value.Integer IntegerKind.Usize 32 ]
-                                                  [ Ty.path "u8" ]
-                                              ],
-                                            M.get_trait_method (|
-                                              "core::ops::try_trait::Try",
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "array")
-                                                    [ Value.Integer IntegerKind.Usize 32 ]
-                                                    [ Ty.path "u8" ];
-                                                  Ty.path
-                                                    "move_core_types::annotated_visitor::Error"
-                                                ],
-                                              [],
-                                              [],
-                                              "branch",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.call_closure (|
-                                                Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "array")
-                                                      [ Value.Integer IntegerKind.Usize 32 ]
-                                                      [ Ty.path "u8" ];
-                                                    Ty.path
-                                                      "move_core_types::annotated_visitor::Error"
-                                                  ],
-                                                M.get_function (|
-                                                  "move_core_types::annotated_visitor::read_exact",
-                                                  [ Value.Integer IntegerKind.Usize 32 ],
-                                                  []
-                                                |),
-                                                [
-                                                  M.borrow (|
-                                                    Pointer.Kind.MutRef,
-                                                    M.deref (| M.read (| bytes |) |)
-                                                  |)
-                                                ]
-                                              |)
-                                            ]
-                                          |)
-                                        |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let γ0_0 :=
-                                                M.SubPointer.get_struct_tuple_field (|
-                                                  γ,
-                                                  "core::ops::control_flow::ControlFlow::Break",
-                                                  0
-                                                |) in
-                                              let residual :=
-                                                M.copy (|
-                                                  Ty.apply
-                                                    (Ty.path "core::result::Result")
-                                                    []
-                                                    [
-                                                      Ty.path "core::convert::Infallible";
-                                                      Ty.path
-                                                        "move_core_types::annotated_visitor::Error"
-                                                    ],
-                                                  γ0_0
-                                                |) in
-                                              M.alloc (|
-                                                Ty.apply
-                                                  (Ty.path "array")
-                                                  [ Value.Integer IntegerKind.Usize 32 ]
-                                                  [ Ty.path "u8" ],
-                                                M.never_to_any (|
-                                                  M.read (|
-                                                    M.return_ (|
-                                                      M.call_closure (|
+                                                      [],
+                                                      [
                                                         Ty.apply
                                                           (Ty.path "core::result::Result")
                                                           []
                                                           [
-                                                            Ty.associated_in_trait
-                                                              "move_core_types::annotated_visitor::Visitor"
-                                                              []
-                                                              []
-                                                              V
-                                                              "Value";
-                                                            Ty.associated_in_trait
-                                                              "move_core_types::annotated_visitor::Visitor"
-                                                              []
-                                                              []
-                                                              V
-                                                              "Error"
-                                                          ],
-                                                        M.get_trait_method (|
-                                                          "core::ops::try_trait::FromResidual",
-                                                          Ty.apply
-                                                            (Ty.path "core::result::Result")
-                                                            []
-                                                            [
-                                                              Ty.associated_in_trait
-                                                                "move_core_types::annotated_visitor::Visitor"
-                                                                []
-                                                                []
-                                                                V
-                                                                "Value";
-                                                              Ty.associated_in_trait
-                                                                "move_core_types::annotated_visitor::Visitor"
-                                                                []
-                                                                []
-                                                                V
-                                                                "Error"
-                                                            ],
-                                                          [],
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "core::result::Result")
-                                                              []
-                                                              [
-                                                                Ty.path "core::convert::Infallible";
-                                                                Ty.path
-                                                                  "move_core_types::annotated_visitor::Error"
-                                                              ]
-                                                          ],
-                                                          "from_residual",
-                                                          [],
-                                                          []
-                                                        |),
-                                                        [ M.read (| residual |) ]
-                                                      |)
-                                                    |)
+                                                            Ty.path "core::convert::Infallible";
+                                                            Ty.path
+                                                              "move_core_types::annotated_visitor::Error"
+                                                          ]
+                                                      ],
+                                                      "from_residual",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [ M.read (| residual |) ]
                                                   |)
                                                 |)
-                                              |)));
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let γ0_0 :=
-                                                M.SubPointer.get_struct_tuple_field (|
-                                                  γ,
-                                                  "core::ops::control_flow::ControlFlow::Continue",
-                                                  0
-                                                |) in
-                                              let val :=
-                                                M.copy (|
-                                                  Ty.apply
-                                                    (Ty.path "array")
-                                                    [ Value.Integer IntegerKind.Usize 32 ]
-                                                    [ Ty.path "u8" ],
-                                                  γ0_0
-                                                |) in
-                                              val))
-                                        ]
-                                      |)
-                                    |)
-                                  ]
-                                |)
-                              ]
-                            |)
-                          |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
-                          let _ :=
-                            M.is_struct_tuple (|
-                              γ,
-                              "move_core_types::annotated_value::MoveTypeLayout::Signer"
-                            |) in
-                          M.alloc (|
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [
-                                Ty.associated_in_trait
-                                  "move_core_types::annotated_visitor::Visitor"
-                                  []
-                                  []
-                                  V
-                                  "Value";
-                                Ty.associated_in_trait
-                                  "move_core_types::annotated_visitor::Visitor"
-                                  []
-                                  []
-                                  V
-                                  "Error"
-                              ],
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [
-                                  Ty.associated_in_trait
-                                    "move_core_types::annotated_visitor::Visitor"
-                                    []
-                                    []
-                                    V
-                                    "Value";
-                                  Ty.associated_in_trait
-                                    "move_core_types::annotated_visitor::Visitor"
-                                    []
-                                    []
-                                    V
-                                    "Error"
-                                ],
-                              M.get_trait_method (|
-                                "move_core_types::annotated_visitor::Visitor",
-                                V,
-                                [],
-                                [],
-                                "visit_signer",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.MutRef,
-                                  M.deref (| M.read (| visitor |) |)
-                                |);
-                                M.call_closure (|
-                                  Ty.path "move_core_types::account_address::AccountAddress",
-                                  M.get_associated_function (|
-                                    Ty.path "move_core_types::account_address::AccountAddress",
-                                    "new",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.read (|
-                                      M.match_operator (|
-                                        Ty.apply
-                                          (Ty.path "array")
-                                          [ Value.Integer IntegerKind.Usize 32 ]
-                                          [ Ty.path "u8" ],
-                                        M.alloc (|
-                                          Ty.apply
-                                            (Ty.path "core::ops::control_flow::ControlFlow")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.path "core::convert::Infallible";
-                                                  Ty.path
-                                                    "move_core_types::annotated_visitor::Error"
-                                                ];
-                                              Ty.apply
-                                                (Ty.path "array")
-                                                [ Value.Integer IntegerKind.Usize 32 ]
-                                                [ Ty.path "u8" ]
-                                            ],
-                                          M.call_closure (|
-                                            Ty.apply
-                                              (Ty.path "core::ops::control_flow::ControlFlow")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [
-                                                    Ty.path "core::convert::Infallible";
-                                                    Ty.path
-                                                      "move_core_types::annotated_visitor::Error"
-                                                  ];
-                                                Ty.apply
-                                                  (Ty.path "array")
-                                                  [ Value.Integer IntegerKind.Usize 32 ]
-                                                  [ Ty.path "u8" ]
-                                              ],
-                                            M.get_trait_method (|
-                                              "core::ops::try_trait::Try",
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "array")
-                                                    [ Value.Integer IntegerKind.Usize 32 ]
-                                                    [ Ty.path "u8" ];
-                                                  Ty.path
-                                                    "move_core_types::annotated_visitor::Error"
-                                                ],
-                                              [],
-                                              [],
-                                              "branch",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.call_closure (|
-                                                Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "array")
-                                                      [ Value.Integer IntegerKind.Usize 32 ]
-                                                      [ Ty.path "u8" ];
-                                                    Ty.path
-                                                      "move_core_types::annotated_visitor::Error"
-                                                  ],
-                                                M.get_function (|
-                                                  "move_core_types::annotated_visitor::read_exact",
-                                                  [ Value.Integer IntegerKind.Usize 32 ],
-                                                  []
-                                                |),
-                                                [
-                                                  M.borrow (|
-                                                    Pointer.Kind.MutRef,
-                                                    M.deref (| M.read (| bytes |) |)
-                                                  |)
-                                                ]
                                               |)
-                                            ]
-                                          |)
-                                        |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let γ0_0 :=
-                                                M.SubPointer.get_struct_tuple_field (|
-                                                  γ,
-                                                  "core::ops::control_flow::ControlFlow::Break",
-                                                  0
-                                                |) in
-                                              let residual :=
-                                                M.copy (|
-                                                  Ty.apply
-                                                    (Ty.path "core::result::Result")
-                                                    []
-                                                    [
-                                                      Ty.path "core::convert::Infallible";
-                                                      Ty.path
-                                                        "move_core_types::annotated_visitor::Error"
-                                                    ],
-                                                  γ0_0
-                                                |) in
-                                              M.alloc (|
+                                            |)));
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let γ0_0 :=
+                                              M.SubPointer.get_struct_tuple_field (|
+                                                γ,
+                                                "core::ops::control_flow::ControlFlow::Continue",
+                                                0
+                                              |) in
+                                            let val :=
+                                              M.copy (|
                                                 Ty.apply
                                                   (Ty.path "array")
                                                   [ Value.Integer IntegerKind.Usize 32 ]
                                                   [ Ty.path "u8" ],
-                                                M.never_to_any (|
-                                                  M.read (|
-                                                    M.return_ (|
-                                                      M.call_closure (|
-                                                        Ty.apply
-                                                          (Ty.path "core::result::Result")
-                                                          []
-                                                          [
-                                                            Ty.associated_in_trait
-                                                              "move_core_types::annotated_visitor::Visitor"
-                                                              []
-                                                              []
-                                                              V
-                                                              "Value";
-                                                            Ty.associated_in_trait
-                                                              "move_core_types::annotated_visitor::Visitor"
-                                                              []
-                                                              []
-                                                              V
-                                                              "Error"
-                                                          ],
-                                                        M.get_trait_method (|
-                                                          "core::ops::try_trait::FromResidual",
-                                                          Ty.apply
-                                                            (Ty.path "core::result::Result")
-                                                            []
-                                                            [
-                                                              Ty.associated_in_trait
-                                                                "move_core_types::annotated_visitor::Visitor"
-                                                                []
-                                                                []
-                                                                V
-                                                                "Value";
-                                                              Ty.associated_in_trait
-                                                                "move_core_types::annotated_visitor::Visitor"
-                                                                []
-                                                                []
-                                                                V
-                                                                "Error"
-                                                            ],
-                                                          [],
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "core::result::Result")
-                                                              []
-                                                              [
-                                                                Ty.path "core::convert::Infallible";
-                                                                Ty.path
-                                                                  "move_core_types::annotated_visitor::Error"
-                                                              ]
-                                                          ],
-                                                          "from_residual",
-                                                          [],
-                                                          []
-                                                        |),
-                                                        [ M.read (| residual |) ]
-                                                      |)
-                                                    |)
-                                                  |)
-                                                |)
-                                              |)));
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let γ0_0 :=
-                                                M.SubPointer.get_struct_tuple_field (|
-                                                  γ,
-                                                  "core::ops::control_flow::ControlFlow::Continue",
-                                                  0
-                                                |) in
-                                              let val :=
-                                                M.copy (|
-                                                  Ty.apply
-                                                    (Ty.path "array")
-                                                    [ Value.Integer IntegerKind.Usize 32 ]
-                                                    [ Ty.path "u8" ],
-                                                  γ0_0
-                                                |) in
-                                              val))
-                                        ]
-                                      |)
+                                                γ0_0
+                                              |) in
+                                            M.read (| val |)))
+                                      ]
                                     |)
-                                  ]
+                                  |)
                                 |)
-                              ]
+                              |)
                             |)
-                          |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
-                          let γ1_0 :=
-                            M.SubPointer.get_struct_tuple_field (|
-                              γ,
-                              "move_core_types::annotated_value::MoveTypeLayout::Vector",
-                              0
-                            |) in
-                          let l :=
-                            M.alloc (|
+                          ]
+                        |)
+                      ]
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "move_core_types::annotated_value::MoveTypeLayout::Address"
+                      |) in
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.associated_in_trait
+                            "move_core_types::annotated_visitor::Visitor"
+                            []
+                            []
+                            V
+                            "Value";
+                          Ty.associated_in_trait
+                            "move_core_types::annotated_visitor::Visitor"
+                            []
+                            []
+                            V
+                            "Error"
+                        ],
+                      M.get_trait_method (|
+                        "move_core_types::annotated_visitor::Visitor",
+                        V,
+                        [],
+                        [],
+                        "visit_address",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| visitor |) |) |);
+                        M.call_closure (|
+                          Ty.path "move_core_types::account_address::AccountAddress",
+                          M.get_associated_function (|
+                            Ty.path "move_core_types::account_address::AccountAddress",
+                            "new",
+                            [],
+                            []
+                          |),
+                          [
+                            M.match_operator (|
                               Ty.apply
-                                (Ty.path "&")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "alloc::boxed::Box")
-                                    []
-                                    [
-                                      Ty.path "move_core_types::annotated_value::MoveTypeLayout";
-                                      Ty.path "alloc::alloc::Global"
-                                    ]
-                                ],
-                              γ1_0
-                            |) in
-                          let~ len : Ty.path "u64" :=
-                            M.read (|
-                              M.match_operator (|
-                                Ty.path "u64",
-                                M.alloc (|
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 32 ]
+                                [ Ty.path "u8" ],
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "move_core_types::annotated_visitor::Error"
+                                      ];
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 32 ]
+                                      [ Ty.path "u8" ]
+                                  ],
+                                M.call_closure (|
                                   Ty.apply
                                     (Ty.path "core::ops::control_flow::ControlFlow")
                                     []
@@ -6873,280 +5859,228 @@ Module annotated_visitor.
                                           Ty.path "core::convert::Infallible";
                                           Ty.path "move_core_types::annotated_visitor::Error"
                                         ];
-                                      Ty.path "u64"
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 32 ]
+                                        [ Ty.path "u8" ]
                                     ],
-                                  M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::try_trait::Try",
                                     Ty.apply
-                                      (Ty.path "core::ops::control_flow::ControlFlow")
+                                      (Ty.path "core::result::Result")
                                       []
                                       [
                                         Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [
-                                            Ty.path "core::convert::Infallible";
-                                            Ty.path "move_core_types::annotated_visitor::Error"
-                                          ];
-                                        Ty.path "u64"
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 32 ]
+                                          [ Ty.path "u8" ];
+                                        Ty.path "move_core_types::annotated_visitor::Error"
                                       ],
-                                    M.get_trait_method (|
-                                      "core::ops::try_trait::Try",
+                                    [],
+                                    [],
+                                    "branch",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.call_closure (|
                                       Ty.apply
                                         (Ty.path "core::result::Result")
                                         []
                                         [
-                                          Ty.path "u64";
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 32 ]
+                                            [ Ty.path "u8" ];
                                           Ty.path "move_core_types::annotated_visitor::Error"
                                         ],
-                                      [],
-                                      [],
-                                      "branch",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [
-                                            Ty.path "u64";
-                                            Ty.path "move_core_types::annotated_visitor::Error"
-                                          ],
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            []
-                                            [ Ty.path "u64"; Ty.path "leb128::read::Error" ],
-                                          "map_err",
-                                          [],
-                                          [
-                                            Ty.path "move_core_types::annotated_visitor::Error";
-                                            Ty.function
-                                              [ Ty.tuple [ Ty.path "leb128::read::Error" ] ]
-                                              (Ty.path "move_core_types::annotated_visitor::Error")
-                                          ]
-                                        |),
-                                        [
-                                          M.call_closure (|
-                                            Ty.apply
-                                              (Ty.path "core::result::Result")
-                                              []
-                                              [ Ty.path "u64"; Ty.path "leb128::read::Error" ],
-                                            M.get_function (|
-                                              "leb128::read::unsigned",
-                                              [],
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                              ]
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.MutRef,
-                                                M.deref (| M.read (| bytes |) |)
-                                              |)
-                                            ]
-                                          |);
-                                          M.closure
-                                            (fun γ =>
-                                              ltac:(M.monadic
-                                                match γ with
-                                                | [ α0 ] =>
-                                                  ltac:(M.monadic
-                                                    (M.match_operator (|
-                                                      Ty.function
-                                                        [ Ty.tuple [ Ty.path "leb128::read::Error" ]
-                                                        ]
-                                                        (Ty.path
-                                                          "move_core_types::annotated_visitor::Error"),
-                                                      M.alloc (|
-                                                        Ty.path "leb128::read::Error",
-                                                        α0
-                                                      |),
-                                                      [
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (Value.StructTuple
-                                                              "move_core_types::annotated_visitor::Error::UnexpectedEof"
-                                                              []
-                                                              []
-                                                              []))
-                                                      ]
-                                                    |)))
-                                                | _ => M.impossible "wrong number of arguments"
-                                                end))
-                                        ]
-                                      |)
-                                    ]
-                                  |)
-                                |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ0_0 :=
-                                        M.SubPointer.get_struct_tuple_field (|
-                                          γ,
-                                          "core::ops::control_flow::ControlFlow::Break",
-                                          0
-                                        |) in
-                                      let residual :=
-                                        M.copy (|
-                                          Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            []
-                                            [
-                                              Ty.path "core::convert::Infallible";
-                                              Ty.path "move_core_types::annotated_visitor::Error"
-                                            ],
-                                          γ0_0
-                                        |) in
-                                      M.alloc (|
-                                        Ty.path "u64",
-                                        M.never_to_any (|
-                                          M.read (|
-                                            M.return_ (|
-                                              M.call_closure (|
-                                                Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [
-                                                    Ty.associated_in_trait
-                                                      "move_core_types::annotated_visitor::Visitor"
-                                                      []
-                                                      []
-                                                      V
-                                                      "Value";
-                                                    Ty.associated_in_trait
-                                                      "move_core_types::annotated_visitor::Visitor"
-                                                      []
-                                                      []
-                                                      V
-                                                      "Error"
-                                                  ],
-                                                M.get_trait_method (|
-                                                  "core::ops::try_trait::FromResidual",
-                                                  Ty.apply
-                                                    (Ty.path "core::result::Result")
-                                                    []
-                                                    [
-                                                      Ty.associated_in_trait
-                                                        "move_core_types::annotated_visitor::Visitor"
-                                                        []
-                                                        []
-                                                        V
-                                                        "Value";
-                                                      Ty.associated_in_trait
-                                                        "move_core_types::annotated_visitor::Visitor"
-                                                        []
-                                                        []
-                                                        V
-                                                        "Error"
-                                                    ],
-                                                  [],
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::result::Result")
-                                                      []
-                                                      [
-                                                        Ty.path "core::convert::Infallible";
-                                                        Ty.path
-                                                          "move_core_types::annotated_visitor::Error"
-                                                      ]
-                                                  ],
-                                                  "from_residual",
-                                                  [],
-                                                  []
-                                                |),
-                                                [ M.read (| residual |) ]
-                                              |)
-                                            |)
-                                          |)
-                                        |)
-                                      |)));
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ0_0 :=
-                                        M.SubPointer.get_struct_tuple_field (|
-                                          γ,
-                                          "core::ops::control_flow::ControlFlow::Continue",
-                                          0
-                                        |) in
-                                      let val := M.copy (| Ty.path "u64", γ0_0 |) in
-                                      val))
-                                ]
-                              |)
-                            |) in
-                          let~ driver : Ty.path "move_core_types::annotated_visitor::VecDriver" :=
-                            M.call_closure (|
-                              Ty.path "move_core_types::annotated_visitor::VecDriver",
-                              M.get_associated_function (|
-                                Ty.path "move_core_types::annotated_visitor::VecDriver",
-                                "new",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.MutRef,
-                                  M.deref (| M.read (| bytes |) |)
-                                |);
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.call_closure (|
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.path "move_core_types::annotated_value::MoveTypeLayout"
-                                        ],
-                                      M.get_trait_method (|
-                                        "core::convert::AsRef",
-                                        Ty.apply
-                                          (Ty.path "alloc::boxed::Box")
-                                          []
-                                          [
-                                            Ty.path
-                                              "move_core_types::annotated_value::MoveTypeLayout";
-                                            Ty.path "alloc::alloc::Global"
-                                          ],
-                                        [],
-                                        [ Ty.path "move_core_types::annotated_value::MoveTypeLayout"
-                                        ],
-                                        "as_ref",
-                                        [],
+                                      M.get_function (|
+                                        "move_core_types::annotated_visitor::read_exact",
+                                        [ Value.Integer IntegerKind.Usize 32 ],
                                         []
                                       |),
                                       [
                                         M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (| M.read (| l |) |)
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| bytes |) |)
                                         |)
                                       ]
                                     |)
-                                  |)
-                                |);
-                                M.read (| len |)
+                                  ]
+                                |)
+                              |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 :=
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        γ,
+                                        "core::ops::control_flow::ControlFlow::Break",
+                                        0
+                                      |) in
+                                    let residual :=
+                                      M.copy (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path "move_core_types::annotated_visitor::Error"
+                                          ],
+                                        γ0_0
+                                      |) in
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.associated_in_trait
+                                                  "move_core_types::annotated_visitor::Visitor"
+                                                  []
+                                                  []
+                                                  V
+                                                  "Value";
+                                                Ty.associated_in_trait
+                                                  "move_core_types::annotated_visitor::Visitor"
+                                                  []
+                                                  []
+                                                  V
+                                                  "Error"
+                                              ],
+                                            M.get_trait_method (|
+                                              "core::ops::try_trait::FromResidual",
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.associated_in_trait
+                                                    "move_core_types::annotated_visitor::Visitor"
+                                                    []
+                                                    []
+                                                    V
+                                                    "Value";
+                                                  Ty.associated_in_trait
+                                                    "move_core_types::annotated_visitor::Visitor"
+                                                    []
+                                                    []
+                                                    V
+                                                    "Error"
+                                                ],
+                                              [],
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [
+                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.path
+                                                      "move_core_types::annotated_visitor::Error"
+                                                  ]
+                                              ],
+                                              "from_residual",
+                                              [],
+                                              []
+                                            |),
+                                            [ M.read (| residual |) ]
+                                          |)
+                                        |)
+                                      |)
+                                    |)));
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 :=
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        γ,
+                                        "core::ops::control_flow::ControlFlow::Continue",
+                                        0
+                                      |) in
+                                    let val :=
+                                      M.copy (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 32 ]
+                                          [ Ty.path "u8" ],
+                                        γ0_0
+                                      |) in
+                                    M.read (| val |)))
                               ]
-                            |) in
-                          let~ res :
-                              Ty.associated_in_trait
-                                "move_core_types::annotated_visitor::Visitor"
-                                []
-                                []
-                                V
-                                "Value" :=
-                            M.read (|
-                              M.match_operator (|
-                                Ty.associated_in_trait
-                                  "move_core_types::annotated_visitor::Visitor"
+                            |)
+                          ]
+                        |)
+                      ]
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "move_core_types::annotated_value::MoveTypeLayout::Signer"
+                      |) in
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.associated_in_trait
+                            "move_core_types::annotated_visitor::Visitor"
+                            []
+                            []
+                            V
+                            "Value";
+                          Ty.associated_in_trait
+                            "move_core_types::annotated_visitor::Visitor"
+                            []
+                            []
+                            V
+                            "Error"
+                        ],
+                      M.get_trait_method (|
+                        "move_core_types::annotated_visitor::Visitor",
+                        V,
+                        [],
+                        [],
+                        "visit_signer",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| visitor |) |) |);
+                        M.call_closure (|
+                          Ty.path "move_core_types::account_address::AccountAddress",
+                          M.get_associated_function (|
+                            Ty.path "move_core_types::account_address::AccountAddress",
+                            "new",
+                            [],
+                            []
+                          |),
+                          [
+                            M.match_operator (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 32 ]
+                                [ Ty.path "u8" ],
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
                                   []
-                                  []
-                                  V
-                                  "Value",
-                                M.alloc (|
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "move_core_types::annotated_visitor::Error"
+                                      ];
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 32 ]
+                                      [ Ty.path "u8" ]
+                                  ],
+                                M.call_closure (|
                                   Ty.apply
                                     (Ty.path "core::ops::control_flow::ControlFlow")
                                     []
@@ -7156,70 +6090,331 @@ Module annotated_visitor.
                                         []
                                         [
                                           Ty.path "core::convert::Infallible";
-                                          Ty.associated_in_trait
-                                            "move_core_types::annotated_visitor::Visitor"
-                                            []
-                                            []
-                                            V
-                                            "Error"
+                                          Ty.path "move_core_types::annotated_visitor::Error"
                                         ];
-                                      Ty.associated_in_trait
-                                        "move_core_types::annotated_visitor::Visitor"
-                                        []
-                                        []
-                                        V
-                                        "Value"
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 32 ]
+                                        [ Ty.path "u8" ]
                                     ],
-                                  M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::try_trait::Try",
                                     Ty.apply
-                                      (Ty.path "core::ops::control_flow::ControlFlow")
+                                      (Ty.path "core::result::Result")
                                       []
                                       [
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 32 ]
+                                          [ Ty.path "u8" ];
+                                        Ty.path "move_core_types::annotated_visitor::Error"
+                                      ],
+                                    [],
+                                    [],
+                                    "branch",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 32 ]
+                                            [ Ty.path "u8" ];
+                                          Ty.path "move_core_types::annotated_visitor::Error"
+                                        ],
+                                      M.get_function (|
+                                        "move_core_types::annotated_visitor::read_exact",
+                                        [ Value.Integer IntegerKind.Usize 32 ],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| bytes |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  ]
+                                |)
+                              |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 :=
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        γ,
+                                        "core::ops::control_flow::ControlFlow::Break",
+                                        0
+                                      |) in
+                                    let residual :=
+                                      M.copy (|
                                         Ty.apply
                                           (Ty.path "core::result::Result")
                                           []
                                           [
                                             Ty.path "core::convert::Infallible";
-                                            Ty.associated_in_trait
-                                              "move_core_types::annotated_visitor::Visitor"
+                                            Ty.path "move_core_types::annotated_visitor::Error"
+                                          ],
+                                        γ0_0
+                                      |) in
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
                                               []
+                                              [
+                                                Ty.associated_in_trait
+                                                  "move_core_types::annotated_visitor::Visitor"
+                                                  []
+                                                  []
+                                                  V
+                                                  "Value";
+                                                Ty.associated_in_trait
+                                                  "move_core_types::annotated_visitor::Visitor"
+                                                  []
+                                                  []
+                                                  V
+                                                  "Error"
+                                              ],
+                                            M.get_trait_method (|
+                                              "core::ops::try_trait::FromResidual",
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.associated_in_trait
+                                                    "move_core_types::annotated_visitor::Visitor"
+                                                    []
+                                                    []
+                                                    V
+                                                    "Value";
+                                                  Ty.associated_in_trait
+                                                    "move_core_types::annotated_visitor::Visitor"
+                                                    []
+                                                    []
+                                                    V
+                                                    "Error"
+                                                ],
+                                              [],
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [
+                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.path
+                                                      "move_core_types::annotated_visitor::Error"
+                                                  ]
+                                              ],
+                                              "from_residual",
+                                              [],
                                               []
-                                              V
-                                              "Error"
-                                          ];
-                                        Ty.associated_in_trait
-                                          "move_core_types::annotated_visitor::Visitor"
-                                          []
-                                          []
-                                          V
-                                          "Value"
-                                      ],
-                                    M.get_trait_method (|
-                                      "core::ops::try_trait::Try",
+                                            |),
+                                            [ M.read (| residual |) ]
+                                          |)
+                                        |)
+                                      |)
+                                    |)));
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 :=
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        γ,
+                                        "core::ops::control_flow::ControlFlow::Continue",
+                                        0
+                                      |) in
+                                    let val :=
+                                      M.copy (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 32 ]
+                                          [ Ty.path "u8" ],
+                                        γ0_0
+                                      |) in
+                                    M.read (| val |)))
+                              ]
+                            |)
+                          ]
+                        |)
+                      ]
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "move_core_types::annotated_value::MoveTypeLayout::Vector",
+                        0
+                      |) in
+                    let l :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
+                                Ty.path "move_core_types::annotated_value::MoveTypeLayout";
+                                Ty.path "alloc::alloc::Global"
+                              ]
+                          ],
+                        γ1_0
+                      |) in
+                    M.read (|
+                      let~ len : Ty.path "u64" :=
+                        M.match_operator (|
+                          Ty.path "u64",
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::ops::control_flow::ControlFlow")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.path "core::convert::Infallible";
+                                    Ty.path "move_core_types::annotated_visitor::Error"
+                                  ];
+                                Ty.path "u64"
+                              ],
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_core_types::annotated_visitor::Error"
+                                    ];
+                                  Ty.path "u64"
+                                ],
+                              M.get_trait_method (|
+                                "core::ops::try_trait::Try",
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.path "u64";
+                                    Ty.path "move_core_types::annotated_visitor::Error"
+                                  ],
+                                [],
+                                [],
+                                "branch",
+                                [],
+                                []
+                              |),
+                              [
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "u64";
+                                      Ty.path "move_core_types::annotated_visitor::Error"
+                                    ],
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u64"; Ty.path "leb128::read::Error" ],
+                                    "map_err",
+                                    [],
+                                    [
+                                      Ty.path "move_core_types::annotated_visitor::Error";
+                                      Ty.function
+                                        [ Ty.tuple [ Ty.path "leb128::read::Error" ] ]
+                                        (Ty.path "move_core_types::annotated_visitor::Error")
+                                    ]
+                                  |),
+                                  [
+                                    M.call_closure (|
                                       Ty.apply
                                         (Ty.path "core::result::Result")
                                         []
+                                        [ Ty.path "u64"; Ty.path "leb128::read::Error" ],
+                                      M.get_function (|
+                                        "leb128::read::unsigned",
+                                        [],
                                         [
-                                          Ty.associated_in_trait
-                                            "move_core_types::annotated_visitor::Visitor"
+                                          Ty.apply
+                                            (Ty.path "&")
                                             []
-                                            []
-                                            V
-                                            "Value";
-                                          Ty.associated_in_trait
-                                            "move_core_types::annotated_visitor::Visitor"
-                                            []
-                                            []
-                                            V
-                                            "Error"
-                                        ],
-                                      [],
-                                      [],
-                                      "branch",
-                                      [],
+                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                        ]
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| bytes |) |)
+                                        |)
+                                      ]
+                                    |);
+                                    M.closure
+                                      (fun γ =>
+                                        ltac:(M.monadic
+                                          match γ with
+                                          | [ α0 ] =>
+                                            ltac:(M.monadic
+                                              (M.match_operator (|
+                                                Ty.function
+                                                  [ Ty.tuple [ Ty.path "leb128::read::Error" ] ]
+                                                  (Ty.path
+                                                    "move_core_types::annotated_visitor::Error"),
+                                                M.alloc (| Ty.path "leb128::read::Error", α0 |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (Value.StructTuple
+                                                        "move_core_types::annotated_visitor::Error::UnexpectedEof"
+                                                        []
+                                                        []
+                                                        []))
+                                                ]
+                                              |)))
+                                          | _ => M.impossible "wrong number of arguments"
+                                          end))
+                                  ]
+                                |)
+                              ]
+                            |)
+                          |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ0_0 :=
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    γ,
+                                    "core::ops::control_flow::ControlFlow::Break",
+                                    0
+                                  |) in
+                                let residual :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
                                       []
-                                    |),
-                                    [
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "move_core_types::annotated_visitor::Error"
+                                      ],
+                                    γ0_0
+                                  |) in
+                                M.never_to_any (|
+                                  M.read (|
+                                    M.return_ (|
                                       M.call_closure (|
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -7239,44 +6434,17 @@ Module annotated_visitor.
                                               "Error"
                                           ],
                                         M.get_trait_method (|
-                                          "move_core_types::annotated_visitor::Visitor",
-                                          V,
-                                          [],
-                                          [],
-                                          "visit_vector",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.MutRef,
-                                            M.deref (| M.read (| visitor |) |)
-                                          |);
-                                          M.borrow (|
-                                            Pointer.Kind.MutRef,
-                                            M.deref (| M.borrow (| Pointer.Kind.MutRef, driver |) |)
-                                          |)
-                                        ]
-                                      |)
-                                    ]
-                                  |)
-                                |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ0_0 :=
-                                        M.SubPointer.get_struct_tuple_field (|
-                                          γ,
-                                          "core::ops::control_flow::ControlFlow::Break",
-                                          0
-                                        |) in
-                                      let residual :=
-                                        M.copy (|
+                                          "core::ops::try_trait::FromResidual",
                                           Ty.apply
                                             (Ty.path "core::result::Result")
                                             []
                                             [
-                                              Ty.path "core::convert::Infallible";
+                                              Ty.associated_in_trait
+                                                "move_core_types::annotated_visitor::Visitor"
+                                                []
+                                                []
+                                                V
+                                                "Value";
                                               Ty.associated_in_trait
                                                 "move_core_types::annotated_visitor::Visitor"
                                                 []
@@ -7284,116 +6452,335 @@ Module annotated_visitor.
                                                 V
                                                 "Error"
                                             ],
-                                          γ0_0
-                                        |) in
-                                      M.alloc (|
+                                          [],
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.path "core::convert::Infallible";
+                                                Ty.path "move_core_types::annotated_visitor::Error"
+                                              ]
+                                          ],
+                                          "from_residual",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| residual |) ]
+                                      |)
+                                    |)
+                                  |)
+                                |)));
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ0_0 :=
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    γ,
+                                    "core::ops::control_flow::ControlFlow::Continue",
+                                    0
+                                  |) in
+                                let val := M.copy (| Ty.path "u64", γ0_0 |) in
+                                M.read (| val |)))
+                          ]
+                        |) in
+                      let~ driver : Ty.path "move_core_types::annotated_visitor::VecDriver" :=
+                        M.call_closure (|
+                          Ty.path "move_core_types::annotated_visitor::VecDriver",
+                          M.get_associated_function (|
+                            Ty.path "move_core_types::annotated_visitor::VecDriver",
+                            "new",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| bytes |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_core_types::annotated_value::MoveTypeLayout" ],
+                                  M.get_trait_method (|
+                                    "core::convert::AsRef",
+                                    Ty.apply
+                                      (Ty.path "alloc::boxed::Box")
+                                      []
+                                      [
+                                        Ty.path "move_core_types::annotated_value::MoveTypeLayout";
+                                        Ty.path "alloc::alloc::Global"
+                                      ],
+                                    [],
+                                    [ Ty.path "move_core_types::annotated_value::MoveTypeLayout" ],
+                                    "as_ref",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| l |) |) |) ]
+                                |)
+                              |)
+                            |);
+                            M.read (| len |)
+                          ]
+                        |) in
+                      let~ res :
+                          Ty.associated_in_trait
+                            "move_core_types::annotated_visitor::Visitor"
+                            []
+                            []
+                            V
+                            "Value" :=
+                        M.match_operator (|
+                          Ty.associated_in_trait
+                            "move_core_types::annotated_visitor::Visitor"
+                            []
+                            []
+                            V
+                            "Value",
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::ops::control_flow::ControlFlow")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.path "core::convert::Infallible";
+                                    Ty.associated_in_trait
+                                      "move_core_types::annotated_visitor::Visitor"
+                                      []
+                                      []
+                                      V
+                                      "Error"
+                                  ];
+                                Ty.associated_in_trait
+                                  "move_core_types::annotated_visitor::Visitor"
+                                  []
+                                  []
+                                  V
+                                  "Value"
+                              ],
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.associated_in_trait
+                                        "move_core_types::annotated_visitor::Visitor"
+                                        []
+                                        []
+                                        V
+                                        "Error"
+                                    ];
+                                  Ty.associated_in_trait
+                                    "move_core_types::annotated_visitor::Visitor"
+                                    []
+                                    []
+                                    V
+                                    "Value"
+                                ],
+                              M.get_trait_method (|
+                                "core::ops::try_trait::Try",
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.associated_in_trait
+                                      "move_core_types::annotated_visitor::Visitor"
+                                      []
+                                      []
+                                      V
+                                      "Value";
+                                    Ty.associated_in_trait
+                                      "move_core_types::annotated_visitor::Visitor"
+                                      []
+                                      []
+                                      V
+                                      "Error"
+                                  ],
+                                [],
+                                [],
+                                "branch",
+                                [],
+                                []
+                              |),
+                              [
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.associated_in_trait
+                                        "move_core_types::annotated_visitor::Visitor"
+                                        []
+                                        []
+                                        V
+                                        "Value";
+                                      Ty.associated_in_trait
+                                        "move_core_types::annotated_visitor::Visitor"
+                                        []
+                                        []
+                                        V
+                                        "Error"
+                                    ],
+                                  M.get_trait_method (|
+                                    "move_core_types::annotated_visitor::Visitor",
+                                    V,
+                                    [],
+                                    [],
+                                    "visit_vector",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| visitor |) |)
+                                    |);
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.borrow (| Pointer.Kind.MutRef, driver |) |)
+                                    |)
+                                  ]
+                                |)
+                              ]
+                            |)
+                          |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ0_0 :=
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    γ,
+                                    "core::ops::control_flow::ControlFlow::Break",
+                                    0
+                                  |) in
+                                let residual :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
                                         Ty.associated_in_trait
                                           "move_core_types::annotated_visitor::Visitor"
                                           []
                                           []
                                           V
-                                          "Value",
-                                        M.never_to_any (|
-                                          M.read (|
-                                            M.return_ (|
-                                              M.call_closure (|
-                                                Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [
-                                                    Ty.associated_in_trait
-                                                      "move_core_types::annotated_visitor::Visitor"
-                                                      []
-                                                      []
-                                                      V
-                                                      "Value";
-                                                    Ty.associated_in_trait
-                                                      "move_core_types::annotated_visitor::Visitor"
-                                                      []
-                                                      []
-                                                      V
-                                                      "Error"
-                                                  ],
-                                                M.get_trait_method (|
-                                                  "core::ops::try_trait::FromResidual",
-                                                  Ty.apply
-                                                    (Ty.path "core::result::Result")
-                                                    []
-                                                    [
-                                                      Ty.associated_in_trait
-                                                        "move_core_types::annotated_visitor::Visitor"
-                                                        []
-                                                        []
-                                                        V
-                                                        "Value";
-                                                      Ty.associated_in_trait
-                                                        "move_core_types::annotated_visitor::Visitor"
-                                                        []
-                                                        []
-                                                        V
-                                                        "Error"
-                                                    ],
-                                                  [],
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::result::Result")
-                                                      []
-                                                      [
-                                                        Ty.path "core::convert::Infallible";
-                                                        Ty.associated_in_trait
-                                                          "move_core_types::annotated_visitor::Visitor"
-                                                          []
-                                                          []
-                                                          V
-                                                          "Error"
-                                                      ]
-                                                  ],
-                                                  "from_residual",
-                                                  [],
-                                                  []
-                                                |),
-                                                [ M.read (| residual |) ]
-                                              |)
-                                            |)
-                                          |)
-                                        |)
-                                      |)));
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ0_0 :=
-                                        M.SubPointer.get_struct_tuple_field (|
-                                          γ,
-                                          "core::ops::control_flow::ControlFlow::Continue",
-                                          0
-                                        |) in
-                                      let val :=
-                                        M.copy (|
-                                          Ty.associated_in_trait
-                                            "move_core_types::annotated_visitor::Visitor"
+                                          "Error"
+                                      ],
+                                    γ0_0
+                                  |) in
+                                M.never_to_any (|
+                                  M.read (|
+                                    M.return_ (|
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.associated_in_trait
+                                              "move_core_types::annotated_visitor::Visitor"
+                                              []
+                                              []
+                                              V
+                                              "Value";
+                                            Ty.associated_in_trait
+                                              "move_core_types::annotated_visitor::Visitor"
+                                              []
+                                              []
+                                              V
+                                              "Error"
+                                          ],
+                                        M.get_trait_method (|
+                                          "core::ops::try_trait::FromResidual",
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
                                             []
-                                            []
-                                            V
-                                            "Value",
-                                          γ0_0
-                                        |) in
-                                      val))
-                                ]
-                              |)
-                            |) in
-                          let~ _ : Ty.tuple [] :=
-                            M.read (|
-                              M.loop (|
+                                            [
+                                              Ty.associated_in_trait
+                                                "move_core_types::annotated_visitor::Visitor"
+                                                []
+                                                []
+                                                V
+                                                "Value";
+                                              Ty.associated_in_trait
+                                                "move_core_types::annotated_visitor::Visitor"
+                                                []
+                                                []
+                                                V
+                                                "Error"
+                                            ],
+                                          [],
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.path "core::convert::Infallible";
+                                                Ty.associated_in_trait
+                                                  "move_core_types::annotated_visitor::Visitor"
+                                                  []
+                                                  []
+                                                  V
+                                                  "Error"
+                                              ]
+                                          ],
+                                          "from_residual",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| residual |) ]
+                                      |)
+                                    |)
+                                  |)
+                                |)));
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ0_0 :=
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    γ,
+                                    "core::ops::control_flow::ControlFlow::Continue",
+                                    0
+                                  |) in
+                                let val :=
+                                  M.copy (|
+                                    Ty.associated_in_trait
+                                      "move_core_types::annotated_visitor::Visitor"
+                                      []
+                                      []
+                                      V
+                                      "Value",
+                                    γ0_0
+                                  |) in
+                                M.read (| val |)))
+                          ]
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.read (|
+                          M.loop (|
+                            Ty.tuple [],
+                            ltac:(M.monadic
+                              (M.alloc (|
                                 Ty.tuple [],
-                                ltac:(M.monadic
-                                  (M.match_operator (|
-                                    Ty.tuple [],
-                                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let γ :=
-                                            M.use
-                                              (M.match_operator (|
+                                M.match_operator (|
+                                  Ty.tuple [],
+                                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ :=
+                                          M.use
+                                            (M.alloc (|
+                                              Ty.path "bool",
+                                              M.match_operator (|
                                                 Ty.path "bool",
                                                 M.alloc (|
                                                   Ty.apply
@@ -7486,12 +6873,29 @@ Module annotated_visitor.
                                                             ],
                                                           γ0_0
                                                         |) in
-                                                      M.alloc (|
-                                                        Ty.path "bool",
-                                                        M.never_to_any (|
-                                                          M.read (|
-                                                            M.return_ (|
-                                                              M.call_closure (|
+                                                      M.never_to_any (|
+                                                        M.read (|
+                                                          M.return_ (|
+                                                            M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.associated_in_trait
+                                                                    "move_core_types::annotated_visitor::Visitor"
+                                                                    []
+                                                                    []
+                                                                    V
+                                                                    "Value";
+                                                                  Ty.associated_in_trait
+                                                                    "move_core_types::annotated_visitor::Visitor"
+                                                                    []
+                                                                    []
+                                                                    V
+                                                                    "Error"
+                                                                ],
+                                                              M.get_trait_method (|
+                                                                "core::ops::try_trait::FromResidual",
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
                                                                   []
@@ -7509,44 +6913,23 @@ Module annotated_visitor.
                                                                       V
                                                                       "Error"
                                                                   ],
-                                                                M.get_trait_method (|
-                                                                  "core::ops::try_trait::FromResidual",
+                                                                [],
+                                                                [
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
                                                                     []
                                                                     [
-                                                                      Ty.associated_in_trait
-                                                                        "move_core_types::annotated_visitor::Visitor"
-                                                                        []
-                                                                        []
-                                                                        V
-                                                                        "Value";
-                                                                      Ty.associated_in_trait
-                                                                        "move_core_types::annotated_visitor::Visitor"
-                                                                        []
-                                                                        []
-                                                                        V
-                                                                        "Error"
-                                                                    ],
-                                                                  [],
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path
-                                                                        "core::result::Result")
-                                                                      []
-                                                                      [
-                                                                        Ty.path
-                                                                          "core::convert::Infallible";
-                                                                        Ty.path
-                                                                          "move_core_types::annotated_visitor::Error"
-                                                                      ]
-                                                                  ],
-                                                                  "from_residual",
-                                                                  [],
-                                                                  []
-                                                                |),
-                                                                [ M.read (| residual |) ]
-                                                              |)
+                                                                      Ty.path
+                                                                        "core::convert::Infallible";
+                                                                      Ty.path
+                                                                        "move_core_types::annotated_visitor::Error"
+                                                                    ]
+                                                                ],
+                                                                "from_residual",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [ M.read (| residual |) ]
                                                             |)
                                                           |)
                                                         |)
@@ -7561,144 +6944,116 @@ Module annotated_visitor.
                                                         |) in
                                                       let val :=
                                                         M.copy (| Ty.path "bool", γ0_0 |) in
-                                                      val))
+                                                      M.read (| val |)))
                                                 ]
-                                              |)) in
-                                          let _ :=
-                                            is_constant_or_break_match (|
-                                              M.read (| γ |),
-                                              Value.Bool true
-                                            |) in
-                                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (M.alloc (|
-                                            Ty.tuple [],
-                                            M.never_to_any (|
-                                              M.read (|
-                                                let~ _ : Ty.tuple [] :=
-                                                  M.never_to_any (| M.read (| M.break (||) |) |) in
-                                                M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                               |)
-                                            |)
-                                          |)))
-                                    ]
-                                  |)))
-                              |)
-                            |) in
-                          M.alloc (|
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [
-                                Ty.associated_in_trait
-                                  "move_core_types::annotated_visitor::Visitor"
-                                  []
-                                  []
-                                  V
-                                  "Value";
-                                Ty.associated_in_trait
-                                  "move_core_types::annotated_visitor::Visitor"
-                                  []
-                                  []
-                                  V
-                                  "Error"
-                              ],
-                            Value.StructTuple
-                              "core::result::Result::Ok"
-                              []
-                              [
-                                Ty.associated_in_trait
-                                  "move_core_types::annotated_visitor::Visitor"
-                                  []
-                                  []
-                                  V
-                                  "Value";
-                                Ty.associated_in_trait
-                                  "move_core_types::annotated_visitor::Visitor"
-                                  []
-                                  []
-                                  V
-                                  "Error"
-                              ]
-                              [ M.read (| res |) ]
-                          |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ := M.read (| γ |) in
-                          let γ1_0 :=
-                            M.SubPointer.get_struct_tuple_field (|
-                              γ,
-                              "move_core_types::annotated_value::MoveTypeLayout::Struct",
-                              0
-                            |) in
-                          let l :=
-                            M.alloc (|
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.path "move_core_types::annotated_value::MoveStructLayout" ],
-                              γ1_0
-                            |) in
-                          M.alloc (|
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [
-                                Ty.associated_in_trait
-                                  "move_core_types::annotated_visitor::Visitor"
-                                  []
-                                  []
-                                  V
-                                  "Value";
-                                Ty.associated_in_trait
-                                  "move_core_types::annotated_visitor::Visitor"
-                                  []
-                                  []
-                                  V
-                                  "Error"
-                              ],
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [
-                                  Ty.associated_in_trait
-                                    "move_core_types::annotated_visitor::Visitor"
-                                    []
-                                    []
-                                    V
-                                    "Value";
-                                  Ty.associated_in_trait
-                                    "move_core_types::annotated_visitor::Visitor"
-                                    []
-                                    []
-                                    V
-                                    "Error"
-                                ],
-                              M.get_function (|
-                                "move_core_types::annotated_visitor::visit_struct",
-                                [],
-                                [ V ]
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.MutRef,
-                                  M.deref (| M.read (| bytes |) |)
-                                |);
-                                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| l |) |) |);
-                                M.borrow (|
-                                  Pointer.Kind.MutRef,
-                                  M.deref (| M.read (| visitor |) |)
+                                            |)) in
+                                        let _ :=
+                                          is_constant_or_break_match (|
+                                            M.read (| γ |),
+                                            Value.Bool true
+                                          |) in
+                                        Value.Tuple []));
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (M.never_to_any (|
+                                          M.read (|
+                                            let~ _ : Ty.tuple [] :=
+                                              M.never_to_any (| M.read (| M.break (||) |) |) in
+                                            M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                                          |)
+                                        |)))
+                                  ]
                                 |)
-                              ]
-                            |)
-                          |)))
-                    ]
-                  |)
-                |)
-              |)))
-          |)
+                              |)))
+                          |)
+                        |) in
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.associated_in_trait
+                              "move_core_types::annotated_visitor::Visitor"
+                              []
+                              []
+                              V
+                              "Value";
+                            Ty.associated_in_trait
+                              "move_core_types::annotated_visitor::Visitor"
+                              []
+                              []
+                              V
+                              "Error"
+                          ],
+                        Value.StructTuple
+                          "core::result::Result::Ok"
+                          []
+                          [
+                            Ty.associated_in_trait
+                              "move_core_types::annotated_visitor::Visitor"
+                              []
+                              []
+                              V
+                              "Value";
+                            Ty.associated_in_trait
+                              "move_core_types::annotated_visitor::Visitor"
+                              []
+                              []
+                              V
+                              "Error"
+                          ]
+                          [ M.read (| res |) ]
+                      |)
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "move_core_types::annotated_value::MoveTypeLayout::Struct",
+                        0
+                      |) in
+                    let l :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "move_core_types::annotated_value::MoveStructLayout" ],
+                        γ1_0
+                      |) in
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.associated_in_trait
+                            "move_core_types::annotated_visitor::Visitor"
+                            []
+                            []
+                            V
+                            "Value";
+                          Ty.associated_in_trait
+                            "move_core_types::annotated_visitor::Visitor"
+                            []
+                            []
+                            V
+                            "Error"
+                        ],
+                      M.get_function (|
+                        "move_core_types::annotated_visitor::visit_struct",
+                        [],
+                        [ V ]
+                      |),
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| bytes |) |) |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| l |) |) |);
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| visitor |) |) |)
+                      ]
+                    |)))
+              ]
+            |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -7741,143 +7096,184 @@ Module annotated_visitor.
             layout
           |) in
         let visitor := M.alloc (| Ty.apply (Ty.path "&mut") [] [ V ], visitor |) in
-        M.read (|
-          M.catch_return
-            (Ty.apply
-              (Ty.path "core::result::Result")
-              []
-              [
-                Ty.associated_in_trait
-                  "move_core_types::annotated_visitor::Visitor"
-                  []
-                  []
-                  V
-                  "Value";
-                Ty.associated_in_trait "move_core_types::annotated_visitor::Visitor" [] [] V "Error"
-              ]) (|
-            ltac:(M.monadic
-              (M.alloc (|
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.associated_in_trait "move_core_types::annotated_visitor::Visitor" [] [] V "Value";
+              Ty.associated_in_trait "move_core_types::annotated_visitor::Visitor" [] [] V "Error"
+            ]) (|
+          ltac:(M.monadic
+            (M.read (|
+              let~ driver : Ty.path "move_core_types::annotated_visitor::StructDriver" :=
+                M.call_closure (|
+                  Ty.path "move_core_types::annotated_visitor::StructDriver",
+                  M.get_associated_function (|
+                    Ty.path "move_core_types::annotated_visitor::StructDriver",
+                    "new",
+                    [],
+                    []
+                  |),
                   [
-                    Ty.associated_in_trait
-                      "move_core_types::annotated_visitor::Visitor"
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| bytes |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| layout |) |) |)
+                  ]
+                |) in
+              let~ res :
+                  Ty.associated_in_trait
+                    "move_core_types::annotated_visitor::Visitor"
+                    []
+                    []
+                    V
+                    "Value" :=
+                M.match_operator (|
+                  Ty.associated_in_trait
+                    "move_core_types::annotated_visitor::Visitor"
+                    []
+                    []
+                    V
+                    "Value",
+                  M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::ops::control_flow::ControlFlow")
                       []
-                      []
-                      V
-                      "Value";
-                    Ty.associated_in_trait
-                      "move_core_types::annotated_visitor::Visitor"
-                      []
-                      []
-                      V
-                      "Error"
-                  ],
-                M.read (|
-                  let~ driver : Ty.path "move_core_types::annotated_visitor::StructDriver" :=
-                    M.call_closure (|
-                      Ty.path "move_core_types::annotated_visitor::StructDriver",
-                      M.get_associated_function (|
-                        Ty.path "move_core_types::annotated_visitor::StructDriver",
-                        "new",
-                        [],
-                        []
-                      |),
                       [
-                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| bytes |) |) |);
-                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| layout |) |) |)
-                      ]
-                    |) in
-                  let~ res :
-                      Ty.associated_in_trait
-                        "move_core_types::annotated_visitor::Visitor"
-                        []
-                        []
-                        V
-                        "Value" :=
-                    M.read (|
-                      M.match_operator (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.path "core::convert::Infallible";
+                            Ty.associated_in_trait
+                              "move_core_types::annotated_visitor::Visitor"
+                              []
+                              []
+                              V
+                              "Error"
+                          ];
                         Ty.associated_in_trait
                           "move_core_types::annotated_visitor::Visitor"
                           []
                           []
                           V
-                          "Value",
-                        M.alloc (|
+                          "Value"
+                      ],
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::ops::control_flow::ControlFlow")
+                        []
+                        [
                           Ty.apply
-                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            (Ty.path "core::result::Result")
                             []
                             [
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [
-                                  Ty.path "core::convert::Infallible";
-                                  Ty.associated_in_trait
-                                    "move_core_types::annotated_visitor::Visitor"
-                                    []
-                                    []
-                                    V
-                                    "Error"
-                                ];
+                              Ty.path "core::convert::Infallible";
                               Ty.associated_in_trait
                                 "move_core_types::annotated_visitor::Visitor"
                                 []
                                 []
                                 V
-                                "Value"
+                                "Error"
+                            ];
+                          Ty.associated_in_trait
+                            "move_core_types::annotated_visitor::Visitor"
+                            []
+                            []
+                            V
+                            "Value"
+                        ],
+                      M.get_trait_method (|
+                        "core::ops::try_trait::Try",
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.associated_in_trait
+                              "move_core_types::annotated_visitor::Visitor"
+                              []
+                              []
+                              V
+                              "Value";
+                            Ty.associated_in_trait
+                              "move_core_types::annotated_visitor::Visitor"
+                              []
+                              []
+                              V
+                              "Error"
+                          ],
+                        [],
+                        [],
+                        "branch",
+                        [],
+                        []
+                      |),
+                      [
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "move_core_types::annotated_visitor::Visitor"
+                                []
+                                []
+                                V
+                                "Value";
+                              Ty.associated_in_trait
+                                "move_core_types::annotated_visitor::Visitor"
+                                []
+                                []
+                                V
+                                "Error"
                             ],
-                          M.call_closure (|
+                          M.get_trait_method (|
+                            "move_core_types::annotated_visitor::Visitor",
+                            V,
+                            [],
+                            [],
+                            "visit_struct",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| visitor |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, driver |) |)
+                            |)
+                          ]
+                        |)
+                      ]
+                    |)
+                  |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "core::ops::control_flow::ControlFlow::Break",
+                            0
+                          |) in
+                        let residual :=
+                          M.copy (|
                             Ty.apply
-                              (Ty.path "core::ops::control_flow::ControlFlow")
+                              (Ty.path "core::result::Result")
                               []
                               [
-                                Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  []
-                                  [
-                                    Ty.path "core::convert::Infallible";
-                                    Ty.associated_in_trait
-                                      "move_core_types::annotated_visitor::Visitor"
-                                      []
-                                      []
-                                      V
-                                      "Error"
-                                  ];
+                                Ty.path "core::convert::Infallible";
                                 Ty.associated_in_trait
                                   "move_core_types::annotated_visitor::Visitor"
                                   []
                                   []
                                   V
-                                  "Value"
+                                  "Error"
                               ],
-                            M.get_trait_method (|
-                              "core::ops::try_trait::Try",
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [
-                                  Ty.associated_in_trait
-                                    "move_core_types::annotated_visitor::Visitor"
-                                    []
-                                    []
-                                    V
-                                    "Value";
-                                  Ty.associated_in_trait
-                                    "move_core_types::annotated_visitor::Visitor"
-                                    []
-                                    []
-                                    V
-                                    "Error"
-                                ],
-                              [],
-                              [],
-                              "branch",
-                              [],
-                              []
-                            |),
-                            [
+                            γ0_0
+                          |) in
+                        M.never_to_any (|
+                          M.read (|
+                            M.return_ (|
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
@@ -7897,44 +7293,17 @@ Module annotated_visitor.
                                       "Error"
                                   ],
                                 M.get_trait_method (|
-                                  "move_core_types::annotated_visitor::Visitor",
-                                  V,
-                                  [],
-                                  [],
-                                  "visit_struct",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.MutRef,
-                                    M.deref (| M.read (| visitor |) |)
-                                  |);
-                                  M.borrow (|
-                                    Pointer.Kind.MutRef,
-                                    M.deref (| M.borrow (| Pointer.Kind.MutRef, driver |) |)
-                                  |)
-                                ]
-                              |)
-                            ]
-                          |)
-                        |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::ops::control_flow::ControlFlow::Break",
-                                  0
-                                |) in
-                              let residual :=
-                                M.copy (|
+                                  "core::ops::try_trait::FromResidual",
                                   Ty.apply
                                     (Ty.path "core::result::Result")
                                     []
                                     [
-                                      Ty.path "core::convert::Infallible";
+                                      Ty.associated_in_trait
+                                        "move_core_types::annotated_visitor::Visitor"
+                                        []
+                                        []
+                                        V
+                                        "Value";
                                       Ty.associated_in_trait
                                         "move_core_types::annotated_visitor::Visitor"
                                         []
@@ -7942,139 +7311,103 @@ Module annotated_visitor.
                                         V
                                         "Error"
                                     ],
-                                  γ0_0
-                                |) in
-                              M.alloc (|
-                                Ty.associated_in_trait
-                                  "move_core_types::annotated_visitor::Visitor"
-                                  []
-                                  []
-                                  V
-                                  "Value",
-                                M.never_to_any (|
-                                  M.read (|
-                                    M.return_ (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
+                                  [],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.associated_in_trait
+                                          "move_core_types::annotated_visitor::Visitor"
                                           []
-                                          [
-                                            Ty.associated_in_trait
-                                              "move_core_types::annotated_visitor::Visitor"
-                                              []
-                                              []
-                                              V
-                                              "Value";
-                                            Ty.associated_in_trait
-                                              "move_core_types::annotated_visitor::Visitor"
-                                              []
-                                              []
-                                              V
-                                              "Error"
-                                          ],
-                                        M.get_trait_method (|
-                                          "core::ops::try_trait::FromResidual",
+                                          []
+                                          V
+                                          "Error"
+                                      ]
+                                  ],
+                                  "from_residual",
+                                  [],
+                                  []
+                                |),
+                                [ M.read (| residual |) ]
+                              |)
+                            |)
+                          |)
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "core::ops::control_flow::ControlFlow::Continue",
+                            0
+                          |) in
+                        let val :=
+                          M.copy (|
+                            Ty.associated_in_trait
+                              "move_core_types::annotated_visitor::Visitor"
+                              []
+                              []
+                              V
+                              "Value",
+                            γ0_0
+                          |) in
+                        M.read (| val |)))
+                  ]
+                |) in
+              let~ _ : Ty.tuple [] :=
+                M.read (|
+                  M.loop (|
+                    Ty.tuple [],
+                    ltac:(M.monadic
+                      (M.alloc (|
+                        Ty.tuple [],
+                        M.match_operator (|
+                          Ty.tuple [],
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ :=
+                                  M.use
+                                    (M.alloc (|
+                                      Ty.path "bool",
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        M.get_associated_function (|
                                           Ty.apply
-                                            (Ty.path "core::result::Result")
+                                            (Ty.path "core::option::Option")
                                             []
                                             [
-                                              Ty.associated_in_trait
-                                                "move_core_types::annotated_visitor::Visitor"
+                                              Ty.apply
+                                                (Ty.path "&")
                                                 []
-                                                []
-                                                V
-                                                "Value";
-                                              Ty.associated_in_trait
-                                                "move_core_types::annotated_visitor::Visitor"
-                                                []
-                                                []
-                                                V
-                                                "Error"
+                                                [
+                                                  Ty.path
+                                                    "move_core_types::annotated_value::MoveFieldLayout"
+                                                ]
                                             ],
-                                          [],
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::result::Result")
-                                              []
-                                              [
-                                                Ty.path "core::convert::Infallible";
-                                                Ty.associated_in_trait
-                                                  "move_core_types::annotated_visitor::Visitor"
-                                                  []
-                                                  []
-                                                  V
-                                                  "Error"
-                                              ]
-                                          ],
-                                          "from_residual",
+                                          "is_some",
                                           [],
                                           []
                                         |),
-                                        [ M.read (| residual |) ]
-                                      |)
-                                    |)
-                                  |)
-                                |)
-                              |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::ops::control_flow::ControlFlow::Continue",
-                                  0
-                                |) in
-                              let val :=
-                                M.copy (|
-                                  Ty.associated_in_trait
-                                    "move_core_types::annotated_visitor::Visitor"
-                                    []
-                                    []
-                                    V
-                                    "Value",
-                                  γ0_0
-                                |) in
-                              val))
-                        ]
-                      |)
-                    |) in
-                  let~ _ : Ty.tuple [] :=
-                    M.read (|
-                      M.loop (|
-                        Ty.tuple [],
-                        ltac:(M.monadic
-                          (M.match_operator (|
-                            Ty.tuple [],
-                            M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ :=
-                                    M.use
-                                      (M.alloc (|
-                                        Ty.path "bool",
-                                        M.call_closure (|
-                                          Ty.path "bool",
-                                          M.get_associated_function (|
-                                            Ty.apply
-                                              (Ty.path "core::option::Option")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_core_types::annotated_value::MoveFieldLayout"
-                                                  ]
-                                              ],
-                                            "is_some",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_core_types::annotated_value::MoveFieldLayout"
+                                                    ]
+                                                ],
                                               M.match_operator (|
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -8223,23 +7556,29 @@ Module annotated_visitor.
                                                             ],
                                                           γ0_0
                                                         |) in
-                                                      M.alloc (|
-                                                        Ty.apply
-                                                          (Ty.path "core::option::Option")
-                                                          []
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "&")
-                                                              []
-                                                              [
-                                                                Ty.path
-                                                                  "move_core_types::annotated_value::MoveFieldLayout"
-                                                              ]
-                                                          ],
-                                                        M.never_to_any (|
-                                                          M.read (|
-                                                            M.return_ (|
-                                                              M.call_closure (|
+                                                      M.never_to_any (|
+                                                        M.read (|
+                                                          M.return_ (|
+                                                            M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.associated_in_trait
+                                                                    "move_core_types::annotated_visitor::Visitor"
+                                                                    []
+                                                                    []
+                                                                    V
+                                                                    "Value";
+                                                                  Ty.associated_in_trait
+                                                                    "move_core_types::annotated_visitor::Visitor"
+                                                                    []
+                                                                    []
+                                                                    V
+                                                                    "Error"
+                                                                ],
+                                                              M.get_trait_method (|
+                                                                "core::ops::try_trait::FromResidual",
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
                                                                   []
@@ -8257,44 +7596,23 @@ Module annotated_visitor.
                                                                       V
                                                                       "Error"
                                                                   ],
-                                                                M.get_trait_method (|
-                                                                  "core::ops::try_trait::FromResidual",
+                                                                [],
+                                                                [
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
                                                                     []
                                                                     [
-                                                                      Ty.associated_in_trait
-                                                                        "move_core_types::annotated_visitor::Visitor"
-                                                                        []
-                                                                        []
-                                                                        V
-                                                                        "Value";
-                                                                      Ty.associated_in_trait
-                                                                        "move_core_types::annotated_visitor::Visitor"
-                                                                        []
-                                                                        []
-                                                                        V
-                                                                        "Error"
-                                                                    ],
-                                                                  [],
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path
-                                                                        "core::result::Result")
-                                                                      []
-                                                                      [
-                                                                        Ty.path
-                                                                          "core::convert::Infallible";
-                                                                        Ty.path
-                                                                          "move_core_types::annotated_visitor::Error"
-                                                                      ]
-                                                                  ],
-                                                                  "from_residual",
-                                                                  [],
-                                                                  []
-                                                                |),
-                                                                [ M.read (| residual |) ]
-                                                              |)
+                                                                      Ty.path
+                                                                        "core::convert::Infallible";
+                                                                      Ty.path
+                                                                        "move_core_types::annotated_visitor::Error"
+                                                                    ]
+                                                                ],
+                                                                "from_residual",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [ M.read (| residual |) ]
                                                             |)
                                                           |)
                                                         |)
@@ -8323,75 +7641,72 @@ Module annotated_visitor.
                                                             ],
                                                           γ0_0
                                                         |) in
-                                                      val))
+                                                      M.read (| val |)))
                                                 ]
                                               |)
                                             |)
-                                          ]
-                                        |)
-                                      |)) in
-                                  let _ :=
-                                    is_constant_or_break_match (|
-                                      M.read (| γ |),
-                                      Value.Bool true
-                                    |) in
-                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (M.alloc (|
-                                    Ty.tuple [],
-                                    M.never_to_any (|
-                                      M.read (|
-                                        let~ _ : Ty.tuple [] :=
-                                          M.never_to_any (| M.read (| M.break (||) |) |) in
-                                        M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                                          |)
+                                        ]
                                       |)
-                                    |)
-                                  |)))
-                            ]
-                          |)))
-                      |)
-                    |) in
-                  M.alloc (|
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [
-                        Ty.associated_in_trait
-                          "move_core_types::annotated_visitor::Visitor"
-                          []
-                          []
-                          V
-                          "Value";
-                        Ty.associated_in_trait
-                          "move_core_types::annotated_visitor::Visitor"
-                          []
-                          []
-                          V
-                          "Error"
-                      ],
-                    Value.StructTuple
-                      "core::result::Result::Ok"
-                      []
-                      [
-                        Ty.associated_in_trait
-                          "move_core_types::annotated_visitor::Visitor"
-                          []
-                          []
-                          V
-                          "Value";
-                        Ty.associated_in_trait
-                          "move_core_types::annotated_visitor::Visitor"
-                          []
-                          []
-                          V
-                          "Error"
-                      ]
-                      [ M.read (| res |) ]
+                                    |)) in
+                                let _ :=
+                                  is_constant_or_break_match (|
+                                    M.read (| γ |),
+                                    Value.Bool true
+                                  |) in
+                                Value.Tuple []));
+                            fun γ =>
+                              ltac:(M.monadic
+                                (M.never_to_any (|
+                                  M.read (|
+                                    let~ _ : Ty.tuple [] :=
+                                      M.never_to_any (| M.read (| M.break (||) |) |) in
+                                    M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                                  |)
+                                |)))
+                          ]
+                        |)
+                      |)))
                   |)
-                |)
-              |)))
-          |)
+                |) in
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.associated_in_trait
+                      "move_core_types::annotated_visitor::Visitor"
+                      []
+                      []
+                      V
+                      "Value";
+                    Ty.associated_in_trait
+                      "move_core_types::annotated_visitor::Visitor"
+                      []
+                      []
+                      V
+                      "Error"
+                  ],
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.associated_in_trait
+                      "move_core_types::annotated_visitor::Visitor"
+                      []
+                      []
+                      V
+                      "Value";
+                    Ty.associated_in_trait
+                      "move_core_types::annotated_visitor::Visitor"
+                      []
+                      []
+                      V
+                      "Error"
+                  ]
+                  [ M.read (| res |) ]
+              |)
+            |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -8422,17 +7737,212 @@ Module annotated_visitor.
               [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] ],
             bytes
           |) in
-        M.read (|
-          M.catch_return
-            (Ty.apply
-              (Ty.path "core::result::Result")
-              []
-              [
-                Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ];
-                Ty.path "move_core_types::annotated_visitor::Error"
-              ]) (|
-            ltac:(M.monadic
-              (M.alloc (|
+        M.catch_return
+          (Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ];
+              Ty.path "move_core_types::annotated_visitor::Error"
+            ]) (|
+          ltac:(M.monadic
+            (M.read (|
+              let~ buf : Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ] :=
+                lib.repeat (| Value.Integer IntegerKind.U8 0, N |) in
+              let~ _ : Ty.tuple [] :=
+                M.match_operator (|
+                  Ty.tuple [],
+                  M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::ops::control_flow::ControlFlow")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.path "core::convert::Infallible";
+                            Ty.path "move_core_types::annotated_visitor::Error"
+                          ];
+                        Ty.tuple []
+                      ],
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::ops::control_flow::ControlFlow")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.path "core::convert::Infallible";
+                              Ty.path "move_core_types::annotated_visitor::Error"
+                            ];
+                          Ty.tuple []
+                        ],
+                      M.get_trait_method (|
+                        "core::ops::try_trait::Try",
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "move_core_types::annotated_visitor::Error" ],
+                        [],
+                        [],
+                        "branch",
+                        [],
+                        []
+                      |),
+                      [
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "move_core_types::annotated_visitor::Error" ],
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "std::io::error::Error" ],
+                            "map_err",
+                            [],
+                            [
+                              Ty.path "move_core_types::annotated_visitor::Error";
+                              Ty.function
+                                [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
+                                (Ty.path "move_core_types::annotated_visitor::Error")
+                            ]
+                          |),
+                          [
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.tuple []; Ty.path "std::io::error::Error" ],
+                              M.get_trait_method (|
+                                "std::io::Read",
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                [],
+                                [],
+                                "read_exact",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.deref (| M.read (| bytes |) |)
+                                |);
+                                (* Unsize *)
+                                M.pointer_coercion
+                                  (M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.borrow (| Pointer.Kind.MutRef, buf |) |)
+                                  |))
+                              ]
+                            |);
+                            M.closure
+                              (fun γ =>
+                                ltac:(M.monadic
+                                  match γ with
+                                  | [ α0 ] =>
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        Ty.function
+                                          [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
+                                          (Ty.path "move_core_types::annotated_visitor::Error"),
+                                        M.alloc (| Ty.path "std::io::error::Error", α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (Value.StructTuple
+                                                "move_core_types::annotated_visitor::Error::UnexpectedEof"
+                                                []
+                                                []
+                                                []))
+                                        ]
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
+                                  end))
+                          ]
+                        |)
+                      ]
+                    |)
+                  |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "core::ops::control_flow::ControlFlow::Break",
+                            0
+                          |) in
+                        let residual :=
+                          M.copy (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_core_types::annotated_visitor::Error"
+                              ],
+                            γ0_0
+                          |) in
+                        M.never_to_any (|
+                          M.read (|
+                            M.return_ (|
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ];
+                                    Ty.path "move_core_types::annotated_visitor::Error"
+                                  ],
+                                M.get_trait_method (|
+                                  "core::ops::try_trait::FromResidual",
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ];
+                                      Ty.path "move_core_types::annotated_visitor::Error"
+                                    ],
+                                  [],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "move_core_types::annotated_visitor::Error"
+                                      ]
+                                  ],
+                                  "from_residual",
+                                  [],
+                                  []
+                                |),
+                                [ M.read (| residual |) ]
+                              |)
+                            |)
+                          |)
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "core::ops::control_flow::ControlFlow::Continue",
+                            0
+                          |) in
+                        let val := M.copy (| Ty.tuple [], γ0_0 |) in
+                        M.read (| val |)))
+                  ]
+                |) in
+              M.alloc (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
@@ -8440,230 +7950,16 @@ Module annotated_visitor.
                     Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ];
                     Ty.path "move_core_types::annotated_visitor::Error"
                   ],
-                M.read (|
-                  let~ buf : Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ] :=
-                    lib.repeat (| Value.Integer IntegerKind.U8 0, N |) in
-                  let~ _ : Ty.tuple [] :=
-                    M.read (|
-                      M.match_operator (|
-                        Ty.tuple [],
-                        M.alloc (|
-                          Ty.apply
-                            (Ty.path "core::ops::control_flow::ControlFlow")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [
-                                  Ty.path "core::convert::Infallible";
-                                  Ty.path "move_core_types::annotated_visitor::Error"
-                                ];
-                              Ty.tuple []
-                            ],
-                          M.call_closure (|
-                            Ty.apply
-                              (Ty.path "core::ops::control_flow::ControlFlow")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  []
-                                  [
-                                    Ty.path "core::convert::Infallible";
-                                    Ty.path "move_core_types::annotated_visitor::Error"
-                                  ];
-                                Ty.tuple []
-                              ],
-                            M.get_trait_method (|
-                              "core::ops::try_trait::Try",
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [ Ty.tuple []; Ty.path "move_core_types::annotated_visitor::Error"
-                                ],
-                              [],
-                              [],
-                              "branch",
-                              [],
-                              []
-                            |),
-                            [
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  []
-                                  [ Ty.tuple []; Ty.path "move_core_types::annotated_visitor::Error"
-                                  ],
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [ Ty.tuple []; Ty.path "std::io::error::Error" ],
-                                  "map_err",
-                                  [],
-                                  [
-                                    Ty.path "move_core_types::annotated_visitor::Error";
-                                    Ty.function
-                                      [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
-                                      (Ty.path "move_core_types::annotated_visitor::Error")
-                                  ]
-                                |),
-                                [
-                                  M.call_closure (|
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [ Ty.tuple []; Ty.path "std::io::error::Error" ],
-                                    M.get_trait_method (|
-                                      "std::io::Read",
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                                      [],
-                                      [],
-                                      "read_exact",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.MutRef,
-                                        M.deref (| M.read (| bytes |) |)
-                                      |);
-                                      (* Unsize *)
-                                      M.pointer_coercion
-                                        (M.borrow (|
-                                          Pointer.Kind.MutRef,
-                                          M.deref (| M.borrow (| Pointer.Kind.MutRef, buf |) |)
-                                        |))
-                                    ]
-                                  |);
-                                  M.closure
-                                    (fun γ =>
-                                      ltac:(M.monadic
-                                        match γ with
-                                        | [ α0 ] =>
-                                          ltac:(M.monadic
-                                            (M.match_operator (|
-                                              Ty.function
-                                                [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
-                                                (Ty.path
-                                                  "move_core_types::annotated_visitor::Error"),
-                                              M.alloc (| Ty.path "std::io::error::Error", α0 |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (Value.StructTuple
-                                                      "move_core_types::annotated_visitor::Error::UnexpectedEof"
-                                                      []
-                                                      []
-                                                      []))
-                                              ]
-                                            |)))
-                                        | _ => M.impossible "wrong number of arguments"
-                                        end))
-                                ]
-                              |)
-                            ]
-                          |)
-                        |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::ops::control_flow::ControlFlow::Break",
-                                  0
-                                |) in
-                              let residual :=
-                                M.copy (|
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [
-                                      Ty.path "core::convert::Infallible";
-                                      Ty.path "move_core_types::annotated_visitor::Error"
-                                    ],
-                                  γ0_0
-                                |) in
-                              M.alloc (|
-                                Ty.tuple [],
-                                M.never_to_any (|
-                                  M.read (|
-                                    M.return_ (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [
-                                            Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ];
-                                            Ty.path "move_core_types::annotated_visitor::Error"
-                                          ],
-                                        M.get_trait_method (|
-                                          "core::ops::try_trait::FromResidual",
-                                          Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            []
-                                            [
-                                              Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ];
-                                              Ty.path "move_core_types::annotated_visitor::Error"
-                                            ],
-                                          [],
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::result::Result")
-                                              []
-                                              [
-                                                Ty.path "core::convert::Infallible";
-                                                Ty.path "move_core_types::annotated_visitor::Error"
-                                              ]
-                                          ],
-                                          "from_residual",
-                                          [],
-                                          []
-                                        |),
-                                        [ M.read (| residual |) ]
-                                      |)
-                                    |)
-                                  |)
-                                |)
-                              |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::ops::control_flow::ControlFlow::Continue",
-                                  0
-                                |) in
-                              let val := M.copy (| Ty.tuple [], γ0_0 |) in
-                              val))
-                        ]
-                      |)
-                    |) in
-                  M.alloc (|
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [
-                        Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ];
-                        Ty.path "move_core_types::annotated_visitor::Error"
-                      ],
-                    Value.StructTuple
-                      "core::result::Result::Ok"
-                      []
-                      [
-                        Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ];
-                        Ty.path "move_core_types::annotated_visitor::Error"
-                      ]
-                      [ M.read (| buf |) ]
-                  |)
-                |)
-              |)))
-          |)
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [
+                    Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ];
+                    Ty.path "move_core_types::annotated_visitor::Error"
+                  ]
+                  [ M.read (| buf |) ]
+              |)
+            |)))
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

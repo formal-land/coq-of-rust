@@ -57,144 +57,124 @@ Module interpreter_action.
               |) in
             let f :=
               M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
-            M.read (|
-              M.match_operator (|
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                self,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_record_field (|
-                          γ,
-                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Tx",
-                          "initdata"
-                        |) in
-                      let __self_0 :=
-                        M.alloc (|
-                          Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-                          γ1_0
-                        |) in
+            M.match_operator (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+              self,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_record_field (|
+                        γ,
+                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Tx",
+                        "initdata"
+                      |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                        γ1_0
+                      |) in
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Formatter",
+                        "debug_struct_field1_finish",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Tx" |) |) |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "initdata" |) |) |);
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |))
+                      ]
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_record_field (|
+                        γ,
+                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode",
+                        "initcode"
+                      |) in
+                    let γ1_1 :=
+                      M.SubPointer.get_struct_record_field (|
+                        γ,
+                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode",
+                        "input"
+                      |) in
+                    let γ1_2 :=
+                      M.SubPointer.get_struct_record_field (|
+                        γ,
+                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode",
+                        "created_address"
+                      |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::Eof" ],
+                        γ1_0
+                      |) in
+                    let __self_1 :=
+                      M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                        γ1_1
+                      |) in
+                    let __self_2 :=
                       M.alloc (|
                         Ty.apply
-                          (Ty.path "core::result::Result")
+                          (Ty.path "&")
                           []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::Formatter",
-                            "debug_struct_field1_finish",
-                            [],
-                            []
-                          |),
-                          [
-                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Tx" |) |) |);
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "initdata" |) |) |);
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                              |))
-                          ]
-                        |)
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_record_field (|
-                          γ,
-                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode",
-                          "initcode"
-                        |) in
-                      let γ1_1 :=
-                        M.SubPointer.get_struct_record_field (|
-                          γ,
-                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode",
-                          "input"
-                        |) in
-                      let γ1_2 :=
-                        M.SubPointer.get_struct_record_field (|
-                          γ,
-                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode",
-                          "created_address"
-                        |) in
-                      let __self_0 :=
-                        M.alloc (|
-                          Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::Eof" ],
-                          γ1_0
-                        |) in
-                      let __self_1 :=
-                        M.alloc (|
-                          Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-                          γ1_1
-                        |) in
-                      let __self_2 :=
-                        M.alloc (|
-                          Ty.apply
-                            (Ty.path "&")
-                            []
-                            [ Ty.path "alloy_primitives::bits::address::Address" ],
-                          γ1_2
-                        |) in
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::Formatter",
-                            "debug_struct_field3_finish",
-                            [],
-                            []
-                          |),
-                          [
-                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Opcode" |) |) |);
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "initcode" |) |) |);
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| __self_0 |) |)
-                              |));
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "input" |) |) |);
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| __self_1 |) |)
-                              |));
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| mk_str (| "created_address" |) |)
-                            |);
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.borrow (| Pointer.Kind.Ref, __self_2 |) |)
-                              |))
-                          ]
-                        |)
-                      |)))
-                ]
-              |)
+                          [ Ty.path "alloy_primitives::bits::address::Address" ],
+                        γ1_2
+                      |) in
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Formatter",
+                        "debug_struct_field3_finish",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Opcode" |) |) |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "initcode" |) |) |);
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |));
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "input" |) |) |);
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |));
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| mk_str (| "created_address" |) |)
+                        |);
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_2 |) |)
+                          |))
+                      ]
+                    |)))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -226,162 +206,132 @@ Module interpreter_action.
                   ],
                 self
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind",
-                self,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_record_field (|
-                          γ,
-                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Tx",
-                          "initdata"
-                        |) in
-                      let __self_0 :=
-                        M.alloc (|
-                          Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-                          γ1_0
-                        |) in
+            M.match_operator (|
+              Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind",
+              self,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_record_field (|
+                        γ,
+                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Tx",
+                        "initdata"
+                      |) in
+                    let __self_0 :=
                       M.alloc (|
-                        Ty.path
-                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind",
-                        Value.mkStructRecord
-                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Tx"
-                          []
-                          []
-                          [
-                            ("initdata",
-                              M.call_closure (|
-                                Ty.path "alloy_primitives::bytes_::Bytes",
-                                M.get_trait_method (|
-                                  "core::clone::Clone",
-                                  Ty.path "alloy_primitives::bytes_::Bytes",
-                                  [],
-                                  [],
-                                  "clone",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (| M.read (| __self_0 |) |)
-                                  |)
-                                ]
-                              |))
-                          ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_record_field (|
-                          γ,
-                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode",
-                          "initcode"
-                        |) in
-                      let γ1_1 :=
-                        M.SubPointer.get_struct_record_field (|
-                          γ,
-                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode",
-                          "input"
-                        |) in
-                      let γ1_2 :=
-                        M.SubPointer.get_struct_record_field (|
-                          γ,
-                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode",
-                          "created_address"
-                        |) in
-                      let __self_0 :=
-                        M.alloc (|
-                          Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::Eof" ],
-                          γ1_0
-                        |) in
-                      let __self_1 :=
-                        M.alloc (|
-                          Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-                          γ1_1
-                        |) in
-                      let __self_2 :=
-                        M.alloc (|
-                          Ty.apply
-                            (Ty.path "&")
-                            []
-                            [ Ty.path "alloy_primitives::bits::address::Address" ],
-                          γ1_2
-                        |) in
+                        Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                        γ1_0
+                      |) in
+                    Value.mkStructRecord
+                      "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Tx"
+                      []
+                      []
+                      [
+                        ("initdata",
+                          M.call_closure (|
+                            Ty.path "alloy_primitives::bytes_::Bytes",
+                            M.get_trait_method (|
+                              "core::clone::Clone",
+                              Ty.path "alloy_primitives::bytes_::Bytes",
+                              [],
+                              [],
+                              "clone",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
+                          |))
+                      ]));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_record_field (|
+                        γ,
+                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode",
+                        "initcode"
+                      |) in
+                    let γ1_1 :=
+                      M.SubPointer.get_struct_record_field (|
+                        γ,
+                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode",
+                        "input"
+                      |) in
+                    let γ1_2 :=
+                      M.SubPointer.get_struct_record_field (|
+                        γ,
+                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode",
+                        "created_address"
+                      |) in
+                    let __self_0 :=
                       M.alloc (|
-                        Ty.path
-                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind",
-                        Value.mkStructRecord
-                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode"
+                        Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::Eof" ],
+                        γ1_0
+                      |) in
+                    let __self_1 :=
+                      M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                        γ1_1
+                      |) in
+                    let __self_2 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
                           []
-                          []
-                          [
-                            ("initcode",
-                              M.call_closure (|
-                                Ty.path "revm_bytecode::eof::Eof",
-                                M.get_trait_method (|
-                                  "core::clone::Clone",
-                                  Ty.path "revm_bytecode::eof::Eof",
-                                  [],
-                                  [],
-                                  "clone",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (| M.read (| __self_0 |) |)
-                                  |)
-                                ]
-                              |));
-                            ("input",
-                              M.call_closure (|
-                                Ty.path "alloy_primitives::bytes_::Bytes",
-                                M.get_trait_method (|
-                                  "core::clone::Clone",
-                                  Ty.path "alloy_primitives::bytes_::Bytes",
-                                  [],
-                                  [],
-                                  "clone",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (| M.read (| __self_1 |) |)
-                                  |)
-                                ]
-                              |));
-                            ("created_address",
-                              M.call_closure (|
-                                Ty.path "alloy_primitives::bits::address::Address",
-                                M.get_trait_method (|
-                                  "core::clone::Clone",
-                                  Ty.path "alloy_primitives::bits::address::Address",
-                                  [],
-                                  [],
-                                  "clone",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (| M.read (| __self_2 |) |)
-                                  |)
-                                ]
-                              |))
-                          ]
-                      |)))
-                ]
-              |)
+                          [ Ty.path "alloy_primitives::bits::address::Address" ],
+                        γ1_2
+                      |) in
+                    Value.mkStructRecord
+                      "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode"
+                      []
+                      []
+                      [
+                        ("initcode",
+                          M.call_closure (|
+                            Ty.path "revm_bytecode::eof::Eof",
+                            M.get_trait_method (|
+                              "core::clone::Clone",
+                              Ty.path "revm_bytecode::eof::Eof",
+                              [],
+                              [],
+                              "clone",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
+                          |));
+                        ("input",
+                          M.call_closure (|
+                            Ty.path "alloy_primitives::bytes_::Bytes",
+                            M.get_trait_method (|
+                              "core::clone::Clone",
+                              Ty.path "alloy_primitives::bytes_::Bytes",
+                              [],
+                              [],
+                              "clone",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |) ]
+                          |));
+                        ("created_address",
+                          M.call_closure (|
+                            Ty.path "alloy_primitives::bits::address::Address",
+                            M.get_trait_method (|
+                              "core::clone::Clone",
+                              Ty.path "alloy_primitives::bits::address::Address",
+                              [],
+                              [],
+                              "clone",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_2 |) |) |) ]
+                          |))
+                      ]))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -471,80 +421,184 @@ Module interpreter_action.
                     [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
                   |),
                   ltac:(M.monadic
-                    (M.read (|
-                      M.match_operator (|
-                        Ty.path "bool",
-                        M.alloc (|
-                          Ty.tuple
-                            [
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [
-                                  Ty.path
-                                    "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind"
-                                ];
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [
-                                  Ty.path
-                                    "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind"
-                                ]
-                            ],
-                          Value.Tuple [ M.read (| self |); M.read (| other |) ]
-                        |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                              let γ0_0 := M.read (| γ0_0 |) in
-                              let γ2_0 :=
-                                M.SubPointer.get_struct_record_field (|
-                                  γ0_0,
-                                  "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Tx",
-                                  "initdata"
-                                |) in
-                              let __self_0 :=
-                                M.alloc (|
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-                                  γ2_0
-                                |) in
-                              let γ0_1 := M.read (| γ0_1 |) in
-                              let γ2_0 :=
-                                M.SubPointer.get_struct_record_field (|
-                                  γ0_1,
-                                  "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Tx",
-                                  "initdata"
-                                |) in
-                              let __arg1_0 :=
-                                M.alloc (|
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-                                  γ2_0
-                                |) in
+                    (M.match_operator (|
+                      Ty.path "bool",
+                      M.alloc (|
+                        Ty.tuple
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.path
+                                  "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind"
+                              ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.path
+                                  "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind"
+                              ]
+                          ],
+                        Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                      |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                            let γ0_0 := M.read (| γ0_0 |) in
+                            let γ2_0 :=
+                              M.SubPointer.get_struct_record_field (|
+                                γ0_0,
+                                "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Tx",
+                                "initdata"
+                              |) in
+                            let __self_0 :=
                               M.alloc (|
-                                Ty.path "bool",
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                                γ2_0
+                              |) in
+                            let γ0_1 := M.read (| γ0_1 |) in
+                            let γ2_0 :=
+                              M.SubPointer.get_struct_record_field (|
+                                γ0_1,
+                                "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Tx",
+                                "initdata"
+                              |) in
+                            let __arg1_0 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                                γ2_0
+                              |) in
+                            M.call_closure (|
+                              Ty.path "bool",
+                              M.get_trait_method (|
+                                "core::cmp::PartialEq",
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                                [],
+                                [
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "alloy_primitives::bytes_::Bytes" ]
+                                ],
+                                "eq",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                              ]
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                            let γ0_0 := M.read (| γ0_0 |) in
+                            let γ2_0 :=
+                              M.SubPointer.get_struct_record_field (|
+                                γ0_0,
+                                "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode",
+                                "initcode"
+                              |) in
+                            let γ2_1 :=
+                              M.SubPointer.get_struct_record_field (|
+                                γ0_0,
+                                "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode",
+                                "input"
+                              |) in
+                            let γ2_2 :=
+                              M.SubPointer.get_struct_record_field (|
+                                γ0_0,
+                                "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode",
+                                "created_address"
+                              |) in
+                            let __self_0 :=
+                              M.alloc (|
+                                Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::Eof" ],
+                                γ2_0
+                              |) in
+                            let __self_1 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                                γ2_1
+                              |) in
+                            let __self_2 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "alloy_primitives::bits::address::Address" ],
+                                γ2_2
+                              |) in
+                            let γ0_1 := M.read (| γ0_1 |) in
+                            let γ2_0 :=
+                              M.SubPointer.get_struct_record_field (|
+                                γ0_1,
+                                "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode",
+                                "initcode"
+                              |) in
+                            let γ2_1 :=
+                              M.SubPointer.get_struct_record_field (|
+                                γ0_1,
+                                "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode",
+                                "input"
+                              |) in
+                            let γ2_2 :=
+                              M.SubPointer.get_struct_record_field (|
+                                γ0_1,
+                                "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode",
+                                "created_address"
+                              |) in
+                            let __arg1_0 :=
+                              M.alloc (|
+                                Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::Eof" ],
+                                γ2_0
+                              |) in
+                            let __arg1_1 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                                γ2_1
+                              |) in
+                            let __arg1_2 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "alloy_primitives::bits::address::Address" ],
+                                γ2_2
+                              |) in
+                            LogicalOp.and (|
+                              LogicalOp.and (|
                                 M.call_closure (|
                                   Ty.path "bool",
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                                    Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::Eof" ],
                                     [],
                                     [
                                       Ty.apply
                                         (Ty.path "&")
                                         []
-                                        [ Ty.path "alloy_primitives::bytes_::Bytes" ]
+                                        [ Ty.path "revm_bytecode::eof::Eof" ]
                                     ],
                                     "eq",
                                     [],
@@ -554,187 +608,69 @@ Module interpreter_action.
                                     M.borrow (| Pointer.Kind.Ref, __self_0 |);
                                     M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
                                   ]
-                                |)
-                              |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                              let γ0_0 := M.read (| γ0_0 |) in
-                              let γ2_0 :=
-                                M.SubPointer.get_struct_record_field (|
-                                  γ0_0,
-                                  "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode",
-                                  "initcode"
-                                |) in
-                              let γ2_1 :=
-                                M.SubPointer.get_struct_record_field (|
-                                  γ0_0,
-                                  "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode",
-                                  "input"
-                                |) in
-                              let γ2_2 :=
-                                M.SubPointer.get_struct_record_field (|
-                                  γ0_0,
-                                  "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode",
-                                  "created_address"
-                                |) in
-                              let __self_0 :=
-                                M.alloc (|
-                                  Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::Eof" ],
-                                  γ2_0
-                                |) in
-                              let __self_1 :=
-                                M.alloc (|
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-                                  γ2_1
-                                |) in
-                              let __self_2 :=
-                                M.alloc (|
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [ Ty.path "alloy_primitives::bits::address::Address" ],
-                                  γ2_2
-                                |) in
-                              let γ0_1 := M.read (| γ0_1 |) in
-                              let γ2_0 :=
-                                M.SubPointer.get_struct_record_field (|
-                                  γ0_1,
-                                  "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode",
-                                  "initcode"
-                                |) in
-                              let γ2_1 :=
-                                M.SubPointer.get_struct_record_field (|
-                                  γ0_1,
-                                  "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode",
-                                  "input"
-                                |) in
-                              let γ2_2 :=
-                                M.SubPointer.get_struct_record_field (|
-                                  γ0_1,
-                                  "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode",
-                                  "created_address"
-                                |) in
-                              let __arg1_0 :=
-                                M.alloc (|
-                                  Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::Eof" ],
-                                  γ2_0
-                                |) in
-                              let __arg1_1 :=
-                                M.alloc (|
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-                                  γ2_1
-                                |) in
-                              let __arg1_2 :=
-                                M.alloc (|
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [ Ty.path "alloy_primitives::bits::address::Address" ],
-                                  γ2_2
-                                |) in
-                              M.alloc (|
-                                Ty.path "bool",
-                                LogicalOp.and (|
-                                  LogicalOp.and (|
-                                    M.call_closure (|
-                                      Ty.path "bool",
-                                      M.get_trait_method (|
-                                        "core::cmp::PartialEq",
+                                |),
+                                ltac:(M.monadic
+                                  (M.call_closure (|
+                                    Ty.path "bool",
+                                    M.get_trait_method (|
+                                      "core::cmp::PartialEq",
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                                      [],
+                                      [
                                         Ty.apply
                                           (Ty.path "&")
                                           []
-                                          [ Ty.path "revm_bytecode::eof::Eof" ],
-                                        [],
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [ Ty.path "revm_bytecode::eof::Eof" ]
-                                        ],
-                                        "eq",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (| Pointer.Kind.Ref, __self_0 |);
-                                        M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
-                                      ]
+                                          [ Ty.path "alloy_primitives::bytes_::Bytes" ]
+                                      ],
+                                      "eq",
+                                      [],
+                                      []
                                     |),
-                                    ltac:(M.monadic
-                                      (M.call_closure (|
-                                        Ty.path "bool",
-                                        M.get_trait_method (|
-                                          "core::cmp::PartialEq",
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-                                          [],
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [ Ty.path "alloy_primitives::bytes_::Bytes" ]
-                                          ],
-                                          "eq",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (| Pointer.Kind.Ref, __self_1 |);
-                                          M.borrow (| Pointer.Kind.Ref, __arg1_1 |)
-                                        ]
-                                      |)))
-                                  |),
-                                  ltac:(M.monadic
-                                    (M.call_closure (|
-                                      Ty.path "bool",
-                                      M.get_trait_method (|
-                                        "core::cmp::PartialEq",
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.path "alloy_primitives::bits::address::Address" ],
-                                        [],
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [ Ty.path "alloy_primitives::bits::address::Address" ]
-                                        ],
-                                        "eq",
-                                        [],
+                                    [
+                                      M.borrow (| Pointer.Kind.Ref, __self_1 |);
+                                      M.borrow (| Pointer.Kind.Ref, __arg1_1 |)
+                                    ]
+                                  |)))
+                              |),
+                              ltac:(M.monadic
+                                (M.call_closure (|
+                                  Ty.path "bool",
+                                  M.get_trait_method (|
+                                    "core::cmp::PartialEq",
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "alloy_primitives::bits::address::Address" ],
+                                    [],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&")
                                         []
-                                      |),
-                                      [
-                                        M.borrow (| Pointer.Kind.Ref, __self_2 |);
-                                        M.borrow (| Pointer.Kind.Ref, __arg1_2 |)
-                                      ]
-                                    |)))
-                                |)
-                              |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (M.alloc (|
-                                Ty.path "bool",
-                                M.never_to_any (|
-                                  M.call_closure (|
-                                    Ty.path "never",
-                                    M.get_function (| "core::intrinsics::unreachable", [], [] |),
+                                        [ Ty.path "alloy_primitives::bits::address::Address" ]
+                                    ],
+                                    "eq",
+                                    [],
                                     []
-                                  |)
-                                |)
-                              |)))
-                        ]
-                      |)
+                                  |),
+                                  [
+                                    M.borrow (| Pointer.Kind.Ref, __self_2 |);
+                                    M.borrow (| Pointer.Kind.Ref, __arg1_2 |)
+                                  ]
+                                |)))
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (M.never_to_any (|
+                              M.call_closure (|
+                                Ty.path "never",
+                                M.get_function (| "core::intrinsics::unreachable", [], [] |),
+                                []
+                              |)
+                            |)))
+                      ]
                     |)))
                 |)
               |)
@@ -774,31 +710,26 @@ Module interpreter_action.
                   ],
                 self
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.tuple [],
-                Value.DeclaredButUndefined,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.match_operator (|
-                        Ty.tuple [],
-                        Value.DeclaredButUndefined,
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (M.match_operator (|
-                                Ty.tuple [],
-                                Value.DeclaredButUndefined,
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                                ]
-                              |)))
-                        ]
-                      |)))
-                ]
-              |)
+            M.match_operator (|
+              Ty.tuple [],
+              Value.DeclaredButUndefined,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                      Ty.tuple [],
+                      Value.DeclaredButUndefined,
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              Ty.tuple [],
+                              Value.DeclaredButUndefined,
+                              [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
+                            |)))
+                      ]
+                    |)))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -840,89 +771,61 @@ Module interpreter_action.
                   ],
                 self
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.apply
-                  (Ty.path "core::option::Option")
-                  []
-                  [ Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bits::address::Address" ]
-                  ],
-                self,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_record_field (|
-                          γ,
-                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode",
-                          "created_address"
-                        |) in
-                      let created_address :=
-                        M.alloc (|
-                          Ty.apply
-                            (Ty.path "&")
-                            []
-                            [ Ty.path "alloy_primitives::bits::address::Address" ],
-                          γ1_0
-                        |) in
+            M.match_operator (|
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bits::address::Address" ]
+                ],
+              self,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_record_field (|
+                        γ,
+                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode",
+                        "created_address"
+                      |) in
+                    let created_address :=
                       M.alloc (|
                         Ty.apply
-                          (Ty.path "core::option::Option")
+                          (Ty.path "&")
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "&")
-                              []
-                              [ Ty.path "alloy_primitives::bits::address::Address" ]
-                          ],
-                        Value.StructTuple
-                          "core::option::Option::Some"
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "&")
-                              []
-                              [ Ty.path "alloy_primitives::bits::address::Address" ]
-                          ]
-                          [
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| created_address |) |)
-                            |)
-                          ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let _ :=
-                        M.is_struct_tuple (|
-                          γ,
-                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Tx"
-                        |) in
-                      M.alloc (|
+                          [ Ty.path "alloy_primitives::bits::address::Address" ],
+                        γ1_0
+                      |) in
+                    Value.StructTuple
+                      "core::option::Option::Some"
+                      []
+                      [
                         Ty.apply
-                          (Ty.path "core::option::Option")
+                          (Ty.path "&")
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "&")
-                              []
-                              [ Ty.path "alloy_primitives::bits::address::Address" ]
-                          ],
-                        Value.StructTuple
-                          "core::option::Option::None"
+                          [ Ty.path "alloy_primitives::bits::address::Address" ]
+                      ]
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| created_address |) |) |)
+                      ]));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Tx"
+                      |) in
+                    Value.StructTuple
+                      "core::option::Option::None"
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "&")
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "&")
-                              []
-                              [ Ty.path "alloy_primitives::bits::address::Address" ]
-                          ]
-                          []
-                      |)))
-                ]
-              |)
+                          [ Ty.path "alloy_primitives::bits::address::Address" ]
+                      ]
+                      []))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1617,40 +1520,34 @@ Module interpreter_action.
                   ],
                 self
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.tuple [],
-                Value.DeclaredButUndefined,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.match_operator (|
-                        Ty.tuple [],
-                        Value.DeclaredButUndefined,
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (M.match_operator (|
-                                Ty.tuple [],
-                                Value.DeclaredButUndefined,
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (M.match_operator (|
-                                        Ty.tuple [],
-                                        Value.DeclaredButUndefined,
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                                        ]
-                                      |)))
-                                ]
-                              |)))
-                        ]
-                      |)))
-                ]
-              |)
+            M.match_operator (|
+              Ty.tuple [],
+              Value.DeclaredButUndefined,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                      Ty.tuple [],
+                      Value.DeclaredButUndefined,
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              Ty.tuple [],
+                              Value.DeclaredButUndefined,
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (M.match_operator (|
+                                      Ty.tuple [],
+                                      Value.DeclaredButUndefined,
+                                      [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
+                                    |)))
+                              ]
+                            |)))
+                      ]
+                    |)))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

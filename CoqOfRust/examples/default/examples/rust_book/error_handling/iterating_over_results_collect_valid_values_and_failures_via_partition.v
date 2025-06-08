@@ -81,33 +81,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 |))
             ]
           |) in
-        M.match_operator (|
+        M.alloc (|
           Ty.tuple [],
-          M.alloc (|
-            Ty.tuple
-              [
-                Ty.apply
-                  (Ty.path "alloc::vec::Vec")
-                  []
-                  [
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ];
-                    Ty.path "alloc::alloc::Global"
-                  ];
-                Ty.apply
-                  (Ty.path "alloc::vec::Vec")
-                  []
-                  [
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ];
-                    Ty.path "alloc::alloc::Global"
-                  ]
-              ],
-            M.call_closure (|
+          M.match_operator (|
+            Ty.tuple [],
+            M.alloc (|
               Ty.tuple
                 [
                   Ty.apply
@@ -131,56 +109,32 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       Ty.path "alloc::alloc::Global"
                     ]
                 ],
-              M.get_trait_method (|
-                "core::iter::traits::iterator::Iterator",
-                Ty.apply
-                  (Ty.path "core::iter::adapters::map::Map")
-                  []
+              M.call_closure (|
+                Ty.tuple
                   [
                     Ty.apply
-                      (Ty.path "alloc::vec::into_iter::IntoIter")
+                      (Ty.path "alloc::vec::Vec")
                       []
-                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "alloc::alloc::Global"
+                      [
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ];
+                        Ty.path "alloc::alloc::Global"
                       ];
-                    Ty.function
-                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] ]
-                      (Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ])
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ];
+                        Ty.path "alloc::alloc::Global"
+                      ]
                   ],
-                [],
-                [],
-                "partition",
-                [],
-                [
-                  Ty.apply
-                    (Ty.path "alloc::vec::Vec")
-                    []
-                    [
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ];
-                      Ty.path "alloc::alloc::Global"
-                    ];
-                  Ty.function
-                    [
-                      Ty.apply
-                        (Ty.path "&")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
-                        ]
-                    ]
-                    (Ty.path "bool")
-                ]
-              |),
-              [
-                M.call_closure (|
+                M.get_trait_method (|
+                  "core::iter::traits::iterator::Iterator",
                   Ty.apply
                     (Ty.path "core::iter::adapters::map::Map")
                     []
@@ -199,32 +153,58 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           []
                           [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ])
                     ],
-                  M.get_trait_method (|
-                    "core::iter::traits::iterator::Iterator",
+                  [],
+                  [],
+                  "partition",
+                  [],
+                  [
                     Ty.apply
-                      (Ty.path "alloc::vec::into_iter::IntoIter")
+                      (Ty.path "alloc::vec::Vec")
                       []
-                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "alloc::alloc::Global"
-                      ],
-                    [],
-                    [],
-                    "map",
-                    [],
-                    [
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ];
-                      Ty.function
-                        [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] ]
-                        (Ty.apply
+                      [
+                        Ty.apply
                           (Ty.path "core::result::Result")
                           []
-                          [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ])
-                    ]
-                  |),
-                  [
-                    M.call_closure (|
+                          [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ];
+                        Ty.path "alloc::alloc::Global"
+                      ];
+                    Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
+                          ]
+                      ]
+                      (Ty.path "bool")
+                  ]
+                |),
+                [
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::iter::adapters::map::Map")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloc::vec::into_iter::IntoIter")
+                          []
+                          [
+                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                            Ty.path "alloc::alloc::Global"
+                          ];
+                        Ty.function
+                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] ]
+                          (Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ])
+                      ],
+                    M.get_trait_method (|
+                      "core::iter::traits::iterator::Iterator",
                       Ty.apply
                         (Ty.path "alloc::vec::into_iter::IntoIter")
                         []
@@ -232,291 +212,328 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
                           Ty.path "alloc::alloc::Global"
                         ],
-                      M.get_trait_method (|
-                        "core::iter::traits::collect::IntoIterator",
+                      [],
+                      [],
+                      "map",
+                      [],
+                      [
                         Ty.apply
-                          (Ty.path "alloc::vec::Vec")
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ];
+                        Ty.function
+                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] ]
+                          (Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ])
+                      ]
+                    |),
+                    [
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "alloc::vec::into_iter::IntoIter")
                           []
                           [
                             Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
                             Ty.path "alloc::alloc::Global"
                           ],
-                        [],
-                        [],
-                        "into_iter",
-                        [],
-                        []
-                      |),
-                      [ M.read (| strings |) ]
-                    |);
-                    M.closure
-                      (fun γ =>
-                        ltac:(M.monadic
-                          match γ with
-                          | [ α0 ] =>
-                            ltac:(M.monadic
-                              (M.match_operator (|
-                                Ty.function
-                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] ]
-                                  (Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]),
-                                M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let s :=
-                                        M.copy (|
-                                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                                          γ
-                                        |) in
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError"
-                                          ],
-                                        M.get_associated_function (|
-                                          Ty.path "str",
-                                          "parse",
-                                          [],
-                                          [ Ty.path "i32" ]
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| s |) |)
-                                          |)
-                                        ]
-                                      |)))
-                                ]
-                              |)))
-                          | _ => M.impossible "wrong number of arguments"
-                          end))
-                  ]
-                |);
-                M.get_associated_function (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
+                        M.get_trait_method (|
+                          "core::iter::traits::collect::IntoIterator",
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            []
+                            [
+                              Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                              Ty.path "alloc::alloc::Global"
+                            ],
+                          [],
+                          [],
+                          "into_iter",
+                          [],
+                          []
+                        |),
+                        [ M.read (| strings |) ]
+                      |);
+                      M.closure
+                        (fun γ =>
+                          ltac:(M.monadic
+                            match γ with
+                            | [ α0 ] =>
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  Ty.function
+                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] ]
+                                    (Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]),
+                                  M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let s :=
+                                          M.copy (|
+                                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                                            γ
+                                          |) in
+                                        M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "i32";
+                                              Ty.path "core::num::error::ParseIntError"
+                                            ],
+                                          M.get_associated_function (|
+                                            Ty.path "str",
+                                            "parse",
+                                            [],
+                                            [ Ty.path "i32" ]
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| s |) |)
+                                            |)
+                                          ]
+                                        |)))
+                                  ]
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
+                            end))
+                    ]
+                  |);
+                  M.get_associated_function (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
+                    "is_ok",
+                    [],
                     []
-                    [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
-                  "is_ok",
-                  [],
-                  []
-                |)
-              ]
-            |)
-          |),
-          [
-            fun γ =>
-              ltac:(M.monadic
-                (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                let numbers :=
-                  M.copy (|
-                    Ty.apply
-                      (Ty.path "alloc::vec::Vec")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ];
-                        Ty.path "alloc::alloc::Global"
-                      ],
-                    γ0_0
-                  |) in
-                let errors :=
-                  M.copy (|
-                    Ty.apply
-                      (Ty.path "alloc::vec::Vec")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ];
-                        Ty.path "alloc::alloc::Global"
-                      ],
-                    γ0_1
-                  |) in
-                let~ _ : Ty.tuple [] :=
+                  |)
+                ]
+              |)
+            |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                  let numbers :=
+                    M.copy (|
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ];
+                          Ty.path "alloc::alloc::Global"
+                        ],
+                      γ0_0
+                    |) in
+                  let errors :=
+                    M.copy (|
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ];
+                          Ty.path "alloc::alloc::Global"
+                        ],
+                      γ0_1
+                    |) in
                   M.read (|
                     let~ _ : Ty.tuple [] :=
-                      M.call_closure (|
-                        Ty.tuple [],
-                        M.get_function (| "std::io::stdio::_print", [], [] |),
-                        [
+                      M.read (|
+                        let~ _ : Ty.tuple [] :=
                           M.call_closure (|
-                            Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_v1",
-                              [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1
-                              ],
-                              []
-                            |),
+                            Ty.tuple [],
+                            M.get_function (| "std::io::stdio::_print", [], [] |),
                             [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
+                              M.call_closure (|
+                                Ty.path "core::fmt::Arguments",
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::Arguments",
+                                  "new_v1",
+                                  [
+                                    Value.Integer IntegerKind.Usize 2;
+                                    Value.Integer IntegerKind.Usize 1
+                                  ],
+                                  []
+                                |),
+                                [
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 2 ]
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                      Value.Array [ mk_str (| "Numbers: " |); mk_str (| "
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 2 ]
+                                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                          Value.Array [ mk_str (| "Numbers: " |); mk_str (| "
 " |) ]
+                                        |)
+                                      |)
                                     |)
-                                  |)
-                                |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
+                                  |);
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 1 ]
-                                        [ Ty.path "core::fmt::rt::Argument" ],
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_debug",
-                                              [],
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "alloc::vec::Vec")
-                                                  []
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 1 ]
+                                            [ Ty.path "core::fmt::rt::Argument" ],
+                                          Value.Array
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_debug",
+                                                  [],
                                                   [
                                                     Ty.apply
-                                                      (Ty.path "core::result::Result")
+                                                      (Ty.path "alloc::vec::Vec")
                                                       []
                                                       [
-                                                        Ty.path "i32";
-                                                        Ty.path "core::num::error::ParseIntError"
-                                                      ];
-                                                    Ty.path "alloc::alloc::Global"
+                                                        Ty.apply
+                                                          (Ty.path "core::result::Result")
+                                                          []
+                                                          [
+                                                            Ty.path "i32";
+                                                            Ty.path
+                                                              "core::num::error::ParseIntError"
+                                                          ];
+                                                        Ty.path "alloc::alloc::Global"
+                                                      ]
                                                   ]
-                                              ]
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (|
-                                                  M.borrow (| Pointer.Kind.Ref, numbers |)
-                                                |)
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (| Pointer.Kind.Ref, numbers |)
+                                                    |)
+                                                  |)
+                                                ]
                                               |)
                                             ]
-                                          |)
-                                        ]
+                                        |)
+                                      |)
                                     |)
                                   |)
-                                |)
+                                ]
                               |)
                             ]
-                          |)
-                        ]
+                          |) in
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |)
                       |) in
-                    M.alloc (| Ty.tuple [], Value.Tuple [] |)
-                  |) in
-                let~ _ : Ty.tuple [] :=
-                  M.read (|
                     let~ _ : Ty.tuple [] :=
-                      M.call_closure (|
-                        Ty.tuple [],
-                        M.get_function (| "std::io::stdio::_print", [], [] |),
-                        [
+                      M.read (|
+                        let~ _ : Ty.tuple [] :=
                           M.call_closure (|
-                            Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_v1",
-                              [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1
-                              ],
-                              []
-                            |),
+                            Ty.tuple [],
+                            M.get_function (| "std::io::stdio::_print", [], [] |),
                             [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
+                              M.call_closure (|
+                                Ty.path "core::fmt::Arguments",
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::Arguments",
+                                  "new_v1",
+                                  [
+                                    Value.Integer IntegerKind.Usize 2;
+                                    Value.Integer IntegerKind.Usize 1
+                                  ],
+                                  []
+                                |),
+                                [
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 2 ]
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                      Value.Array [ mk_str (| "Errors: " |); mk_str (| "
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 2 ]
+                                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                          Value.Array [ mk_str (| "Errors: " |); mk_str (| "
 " |) ]
+                                        |)
+                                      |)
                                     |)
-                                  |)
-                                |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
+                                  |);
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 1 ]
-                                        [ Ty.path "core::fmt::rt::Argument" ],
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_debug",
-                                              [],
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "alloc::vec::Vec")
-                                                  []
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 1 ]
+                                            [ Ty.path "core::fmt::rt::Argument" ],
+                                          Value.Array
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "core::fmt::rt::Argument",
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::rt::Argument",
+                                                  "new_debug",
+                                                  [],
                                                   [
                                                     Ty.apply
-                                                      (Ty.path "core::result::Result")
+                                                      (Ty.path "alloc::vec::Vec")
                                                       []
                                                       [
-                                                        Ty.path "i32";
-                                                        Ty.path "core::num::error::ParseIntError"
-                                                      ];
-                                                    Ty.path "alloc::alloc::Global"
+                                                        Ty.apply
+                                                          (Ty.path "core::result::Result")
+                                                          []
+                                                          [
+                                                            Ty.path "i32";
+                                                            Ty.path
+                                                              "core::num::error::ParseIntError"
+                                                          ];
+                                                        Ty.path "alloc::alloc::Global"
+                                                      ]
                                                   ]
-                                              ]
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (|
-                                                  M.borrow (| Pointer.Kind.Ref, errors |)
-                                                |)
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (| Pointer.Kind.Ref, errors |)
+                                                    |)
+                                                  |)
+                                                ]
                                               |)
                                             ]
-                                          |)
-                                        ]
+                                        |)
+                                      |)
                                     |)
                                   |)
-                                |)
+                                ]
                               |)
                             ]
-                          |)
-                        ]
+                          |) in
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |)
                       |) in
                     M.alloc (| Ty.tuple [], Value.Tuple [] |)
-                  |) in
-                M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-          ]
+                  |)))
+            ]
+          |)
         |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"

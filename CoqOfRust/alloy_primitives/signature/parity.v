@@ -46,20 +46,18 @@ Module signature.
                 Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signature::parity::Parity" ],
                 self
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.path "alloy_primitives::signature::parity::Parity",
-                Value.DeclaredButUndefined,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.match_operator (|
-                        Ty.path "alloy_primitives::signature::parity::Parity",
-                        Value.DeclaredButUndefined,
-                        [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
-                      |)))
-                ]
-              |)
+            M.match_operator (|
+              Ty.path "alloy_primitives::signature::parity::Parity",
+              Value.DeclaredButUndefined,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                      Ty.path "alloy_primitives::signature::parity::Parity",
+                      Value.DeclaredButUndefined,
+                      [ fun γ => ltac:(M.monadic (M.read (| M.deref (| M.read (| self |) |) |))) ]
+                    |)))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -100,133 +98,113 @@ Module signature.
               |) in
             let f :=
               M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
-            M.read (|
-              M.match_operator (|
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                self,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "alloy_primitives::signature::parity::Parity::Eip155",
-                          0
-                        |) in
-                      let __self_0 :=
-                        M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::Formatter",
-                            "debug_tuple_field1_finish",
-                            [],
-                            []
-                          |),
-                          [
-                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Eip155" |) |) |);
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                              |))
-                          ]
-                        |)
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "alloy_primitives::signature::parity::Parity::NonEip155",
-                          0
-                        |) in
-                      let __self_0 :=
-                        M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], γ1_0 |) in
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::Formatter",
-                            "debug_tuple_field1_finish",
-                            [],
-                            []
-                          |),
-                          [
-                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "NonEip155" |) |) |);
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                              |))
-                          ]
-                        |)
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "alloy_primitives::signature::parity::Parity::Parity",
-                          0
-                        |) in
-                      let __self_0 :=
-                        M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], γ1_0 |) in
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::Formatter",
-                            "debug_tuple_field1_finish",
-                            [],
-                            []
-                          |),
-                          [
-                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Parity" |) |) |);
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                              |))
-                          ]
-                        |)
-                      |)))
-                ]
-              |)
+            M.match_operator (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+              self,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "alloy_primitives::signature::parity::Parity::Eip155",
+                        0
+                      |) in
+                    let __self_0 :=
+                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Formatter",
+                        "debug_tuple_field1_finish",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Eip155" |) |) |);
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |))
+                      ]
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "alloy_primitives::signature::parity::Parity::NonEip155",
+                        0
+                      |) in
+                    let __self_0 :=
+                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], γ1_0 |) in
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Formatter",
+                        "debug_tuple_field1_finish",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "NonEip155" |) |) |);
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |))
+                      ]
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "alloy_primitives::signature::parity::Parity::Parity",
+                        0
+                      |) in
+                    let __self_0 :=
+                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], γ1_0 |) in
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Formatter",
+                        "debug_tuple_field1_finish",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Parity" |) |) |);
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |))
+                      ]
+                    |)))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -285,23 +263,23 @@ Module signature.
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                   ]
                 |) in
-              M.match_operator (|
+              M.alloc (|
                 Ty.tuple [],
-                self,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "alloy_primitives::signature::parity::Parity::Eip155",
-                          0
-                        |) in
-                      let __self_0 :=
-                        M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
-                      M.alloc (|
-                        Ty.tuple [],
+                M.match_operator (|
+                  Ty.tuple [],
+                  self,
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.read (| γ |) in
+                        let γ1_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "alloy_primitives::signature::parity::Parity::Eip155",
+                            0
+                          |) in
+                        let __self_0 :=
+                          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
                         M.call_closure (|
                           Ty.tuple [],
                           M.get_trait_method (|
@@ -317,21 +295,18 @@ Module signature.
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                           ]
-                        |)
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "alloy_primitives::signature::parity::Parity::NonEip155",
-                          0
-                        |) in
-                      let __self_0 :=
-                        M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], γ1_0 |) in
-                      M.alloc (|
-                        Ty.tuple [],
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.read (| γ |) in
+                        let γ1_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "alloy_primitives::signature::parity::Parity::NonEip155",
+                            0
+                          |) in
+                        let __self_0 :=
+                          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], γ1_0 |) in
                         M.call_closure (|
                           Ty.tuple [],
                           M.get_trait_method (|
@@ -347,21 +322,18 @@ Module signature.
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                           ]
-                        |)
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "alloy_primitives::signature::parity::Parity::Parity",
-                          0
-                        |) in
-                      let __self_0 :=
-                        M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], γ1_0 |) in
-                      M.alloc (|
-                        Ty.tuple [],
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.read (| γ |) in
+                        let γ1_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "alloy_primitives::signature::parity::Parity::Parity",
+                            0
+                          |) in
+                        let __self_0 :=
+                          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], γ1_0 |) in
                         M.call_closure (|
                           Ty.tuple [],
                           M.get_trait_method (|
@@ -377,9 +349,9 @@ Module signature.
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                           ]
-                        |)
-                      |)))
-                ]
+                        |)))
+                  ]
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -454,161 +426,147 @@ Module signature.
                     [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
                   |),
                   ltac:(M.monadic
-                    (M.read (|
-                      M.match_operator (|
-                        Ty.path "bool",
-                        M.alloc (|
-                          Ty.tuple
-                            [
-                              Ty.apply
-                                (Ty.path "&")
+                    (M.match_operator (|
+                      Ty.path "bool",
+                      M.alloc (|
+                        Ty.tuple
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "alloy_primitives::signature::parity::Parity" ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "alloy_primitives::signature::parity::Parity" ]
+                          ],
+                        Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                      |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                            let γ0_0 := M.read (| γ0_0 |) in
+                            let γ2_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ0_0,
+                                "alloy_primitives::signature::parity::Parity::Eip155",
+                                0
+                              |) in
+                            let __self_0 :=
+                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_0 |) in
+                            let γ0_1 := M.read (| γ0_1 |) in
+                            let γ2_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ0_1,
+                                "alloy_primitives::signature::parity::Parity::Eip155",
+                                0
+                              |) in
+                            let __arg1_0 :=
+                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_0 |) in
+                            M.call_closure (|
+                              Ty.path "bool",
+                              M.get_trait_method (|
+                                "core::cmp::PartialEq",
+                                Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
+                                [],
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
+                                "eq",
+                                [],
                                 []
-                                [ Ty.path "alloy_primitives::signature::parity::Parity" ];
-                              Ty.apply
-                                (Ty.path "&")
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                              ]
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                            let γ0_0 := M.read (| γ0_0 |) in
+                            let γ2_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ0_0,
+                                "alloy_primitives::signature::parity::Parity::NonEip155",
+                                0
+                              |) in
+                            let __self_0 :=
+                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], γ2_0 |) in
+                            let γ0_1 := M.read (| γ0_1 |) in
+                            let γ2_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ0_1,
+                                "alloy_primitives::signature::parity::Parity::NonEip155",
+                                0
+                              |) in
+                            let __arg1_0 :=
+                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], γ2_0 |) in
+                            M.call_closure (|
+                              Ty.path "bool",
+                              M.get_trait_method (|
+                                "core::cmp::PartialEq",
+                                Ty.apply (Ty.path "&") [] [ Ty.path "bool" ],
+                                [],
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "bool" ] ],
+                                "eq",
+                                [],
                                 []
-                                [ Ty.path "alloy_primitives::signature::parity::Parity" ]
-                            ],
-                          Value.Tuple [ M.read (| self |); M.read (| other |) ]
-                        |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                              let γ0_0 := M.read (| γ0_0 |) in
-                              let γ2_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ0_0,
-                                  "alloy_primitives::signature::parity::Parity::Eip155",
-                                  0
-                                |) in
-                              let __self_0 :=
-                                M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_0 |) in
-                              let γ0_1 := M.read (| γ0_1 |) in
-                              let γ2_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ0_1,
-                                  "alloy_primitives::signature::parity::Parity::Eip155",
-                                  0
-                                |) in
-                              let __arg1_0 :=
-                                M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_0 |) in
-                              M.alloc (|
-                                Ty.path "bool",
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_trait_method (|
-                                    "core::cmp::PartialEq",
-                                    Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
-                                    [],
-                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
-                                    "eq",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (| Pointer.Kind.Ref, __self_0 |);
-                                    M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
-                                  ]
-                                |)
-                              |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                              let γ0_0 := M.read (| γ0_0 |) in
-                              let γ2_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ0_0,
-                                  "alloy_primitives::signature::parity::Parity::NonEip155",
-                                  0
-                                |) in
-                              let __self_0 :=
-                                M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], γ2_0 |) in
-                              let γ0_1 := M.read (| γ0_1 |) in
-                              let γ2_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ0_1,
-                                  "alloy_primitives::signature::parity::Parity::NonEip155",
-                                  0
-                                |) in
-                              let __arg1_0 :=
-                                M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], γ2_0 |) in
-                              M.alloc (|
-                                Ty.path "bool",
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_trait_method (|
-                                    "core::cmp::PartialEq",
-                                    Ty.apply (Ty.path "&") [] [ Ty.path "bool" ],
-                                    [],
-                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "bool" ] ],
-                                    "eq",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (| Pointer.Kind.Ref, __self_0 |);
-                                    M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
-                                  ]
-                                |)
-                              |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                              let γ0_0 := M.read (| γ0_0 |) in
-                              let γ2_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ0_0,
-                                  "alloy_primitives::signature::parity::Parity::Parity",
-                                  0
-                                |) in
-                              let __self_0 :=
-                                M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], γ2_0 |) in
-                              let γ0_1 := M.read (| γ0_1 |) in
-                              let γ2_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ0_1,
-                                  "alloy_primitives::signature::parity::Parity::Parity",
-                                  0
-                                |) in
-                              let __arg1_0 :=
-                                M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], γ2_0 |) in
-                              M.alloc (|
-                                Ty.path "bool",
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_trait_method (|
-                                    "core::cmp::PartialEq",
-                                    Ty.apply (Ty.path "&") [] [ Ty.path "bool" ],
-                                    [],
-                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "bool" ] ],
-                                    "eq",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (| Pointer.Kind.Ref, __self_0 |);
-                                    M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
-                                  ]
-                                |)
-                              |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (M.alloc (|
-                                Ty.path "bool",
-                                M.never_to_any (|
-                                  M.call_closure (|
-                                    Ty.path "never",
-                                    M.get_function (| "core::intrinsics::unreachable", [], [] |),
-                                    []
-                                  |)
-                                |)
-                              |)))
-                        ]
-                      |)
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                              ]
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                            let γ0_0 := M.read (| γ0_0 |) in
+                            let γ2_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ0_0,
+                                "alloy_primitives::signature::parity::Parity::Parity",
+                                0
+                              |) in
+                            let __self_0 :=
+                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], γ2_0 |) in
+                            let γ0_1 := M.read (| γ0_1 |) in
+                            let γ2_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ0_1,
+                                "alloy_primitives::signature::parity::Parity::Parity",
+                                0
+                              |) in
+                            let __arg1_0 :=
+                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], γ2_0 |) in
+                            M.call_closure (|
+                              Ty.path "bool",
+                              M.get_trait_method (|
+                                "core::cmp::PartialEq",
+                                Ty.apply (Ty.path "&") [] [ Ty.path "bool" ],
+                                [],
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "bool" ] ],
+                                "eq",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                              ]
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (M.never_to_any (|
+                              M.call_closure (|
+                                Ty.path "never",
+                                M.get_function (| "core::intrinsics::unreachable", [], [] |),
+                                []
+                              |)
+                            |)))
+                      ]
                     |)))
                 |)
               |)
@@ -642,20 +600,18 @@ Module signature.
                 Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signature::parity::Parity" ],
                 self
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.tuple [],
-                Value.DeclaredButUndefined,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.match_operator (|
-                        Ty.tuple [],
-                        Value.DeclaredButUndefined,
-                        [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
-                      |)))
-                ]
-              |)
+            M.match_operator (|
+              Ty.tuple [],
+              Value.DeclaredButUndefined,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                      Ty.tuple [],
+                      Value.DeclaredButUndefined,
+                      [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
+                    |)))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -906,198 +862,157 @@ Module signature.
         | [], [], [ value ] =>
           ltac:(M.monadic
             (let value := M.alloc (| Ty.path "u64", value |) in
-            M.read (|
-              M.match_operator (|
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [
-                    Ty.path "alloy_primitives::signature::parity::Parity";
-                    Ty.path "alloy_primitives::signature::error::SignatureError"
-                  ],
-                value,
+            M.match_operator (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
                 [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.find_or_pattern (Ty.tuple []) (|
-                        γ,
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let _ :=
-                                is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Integer IntegerKind.U64 0
-                                |) in
-                              M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let _ :=
-                                is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Integer IntegerKind.U64 1
-                                |) in
-                              M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                        ],
+                  Ty.path "alloy_primitives::signature::parity::Parity";
+                  Ty.path "alloy_primitives::signature::error::SignatureError"
+                ],
+              value,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.find_or_pattern (Ty.tuple []) (|
+                      γ,
+                      [
                         fun γ =>
                           ltac:(M.monadic
-                            match γ with
-                            | [] =>
-                              ltac:(M.monadic
-                                (M.alloc (|
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [
-                                      Ty.path "alloy_primitives::signature::parity::Parity";
-                                      Ty.path "alloy_primitives::signature::error::SignatureError"
-                                    ],
-                                  Value.StructTuple
-                                    "core::result::Result::Ok"
-                                    []
-                                    [
-                                      Ty.path "alloy_primitives::signature::parity::Parity";
-                                      Ty.path "alloy_primitives::signature::error::SignatureError"
-                                    ]
-                                    [
-                                      Value.StructTuple
-                                        "alloy_primitives::signature::parity::Parity::Parity"
-                                        []
-                                        []
-                                        [
-                                          M.call_closure (|
-                                            Ty.path "bool",
-                                            BinOp.ne,
-                                            [ M.read (| value |); Value.Integer IntegerKind.U64 0 ]
-                                          |)
-                                        ]
-                                    ]
-                                |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end)
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.find_or_pattern (Ty.tuple []) (|
-                        γ,
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let _ :=
-                                is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Integer IntegerKind.U64 27
-                                |) in
-                              M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let _ :=
-                                is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Integer IntegerKind.U64 28
-                                |) in
-                              M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                        ],
+                            (let _ :=
+                              is_constant_or_break_match (|
+                                M.read (| γ |),
+                                Value.Integer IntegerKind.U64 0
+                              |) in
+                            Value.Tuple []));
                         fun γ =>
                           ltac:(M.monadic
-                            match γ with
-                            | [] =>
-                              ltac:(M.monadic
-                                (M.alloc (|
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [
-                                      Ty.path "alloy_primitives::signature::parity::Parity";
-                                      Ty.path "alloy_primitives::signature::error::SignatureError"
-                                    ],
+                            (let _ :=
+                              is_constant_or_break_match (|
+                                M.read (| γ |),
+                                Value.Integer IntegerKind.U64 1
+                              |) in
+                            Value.Tuple []))
+                      ],
+                      fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [] =>
+                            ltac:(M.monadic
+                              (Value.StructTuple
+                                "core::result::Result::Ok"
+                                []
+                                [
+                                  Ty.path "alloy_primitives::signature::parity::Parity";
+                                  Ty.path "alloy_primitives::signature::error::SignatureError"
+                                ]
+                                [
                                   Value.StructTuple
-                                    "core::result::Result::Ok"
+                                    "alloy_primitives::signature::parity::Parity::Parity"
+                                    []
                                     []
                                     [
-                                      Ty.path "alloy_primitives::signature::parity::Parity";
-                                      Ty.path "alloy_primitives::signature::error::SignatureError"
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.ne,
+                                        [ M.read (| value |); Value.Integer IntegerKind.U64 0 ]
+                                      |)
                                     ]
+                                ]))
+                          | _ => M.impossible "wrong number of arguments"
+                          end)
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.find_or_pattern (Ty.tuple []) (|
+                      γ,
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              is_constant_or_break_match (|
+                                M.read (| γ |),
+                                Value.Integer IntegerKind.U64 27
+                              |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              is_constant_or_break_match (|
+                                M.read (| γ |),
+                                Value.Integer IntegerKind.U64 28
+                              |) in
+                            Value.Tuple []))
+                      ],
+                      fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [] =>
+                            ltac:(M.monadic
+                              (Value.StructTuple
+                                "core::result::Result::Ok"
+                                []
+                                [
+                                  Ty.path "alloy_primitives::signature::parity::Parity";
+                                  Ty.path "alloy_primitives::signature::error::SignatureError"
+                                ]
+                                [
+                                  Value.StructTuple
+                                    "alloy_primitives::signature::parity::Parity::NonEip155"
+                                    []
+                                    []
                                     [
-                                      Value.StructTuple
-                                        "alloy_primitives::signature::parity::Parity::NonEip155"
-                                        []
-                                        []
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.ne,
                                         [
                                           M.call_closure (|
-                                            Ty.path "bool",
-                                            BinOp.ne,
-                                            [
-                                              M.call_closure (|
-                                                Ty.path "u64",
-                                                BinOp.Wrap.sub,
-                                                [
-                                                  M.read (| value |);
-                                                  Value.Integer IntegerKind.U64 27
-                                                ]
-                                              |);
-                                              Value.Integer IntegerKind.U64 0
-                                            ]
-                                          |)
+                                            Ty.path "u64",
+                                            BinOp.Wrap.sub,
+                                            [ M.read (| value |); Value.Integer IntegerKind.U64 27 ]
+                                          |);
+                                          Value.Integer IntegerKind.U64 0
                                         ]
+                                      |)
                                     ]
-                                |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end)
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let value := M.copy (| Ty.path "u64", γ |) in
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [
-                            Ty.path "alloy_primitives::signature::parity::Parity";
-                            Ty.path "alloy_primitives::signature::error::SignatureError"
-                          ],
+                                ]))
+                          | _ => M.impossible "wrong number of arguments"
+                          end)
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let value := M.copy (| Ty.path "u64", γ |) in
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
+                      [
+                        Ty.path "alloy_primitives::signature::parity::Parity";
+                        Ty.path "alloy_primitives::signature::error::SignatureError"
+                      ]
+                      [
                         Value.StructTuple
-                          "core::result::Result::Ok"
+                          "alloy_primitives::signature::parity::Parity::Eip155"
                           []
-                          [
-                            Ty.path "alloy_primitives::signature::parity::Parity";
-                            Ty.path "alloy_primitives::signature::error::SignatureError"
-                          ]
-                          [
-                            Value.StructTuple
-                              "alloy_primitives::signature::parity::Parity::Eip155"
-                              []
-                              []
-                              [ M.read (| value |) ]
-                          ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
                           []
-                          [
-                            Ty.path "alloy_primitives::signature::parity::Parity";
-                            Ty.path "alloy_primitives::signature::error::SignatureError"
-                          ],
+                          [ M.read (| value |) ]
+                      ]));
+                fun γ =>
+                  ltac:(M.monadic
+                    (Value.StructTuple
+                      "core::result::Result::Err"
+                      []
+                      [
+                        Ty.path "alloy_primitives::signature::parity::Parity";
+                        Ty.path "alloy_primitives::signature::error::SignatureError"
+                      ]
+                      [
                         Value.StructTuple
-                          "core::result::Result::Err"
+                          "alloy_primitives::signature::error::SignatureError::InvalidParity"
                           []
-                          [
-                            Ty.path "alloy_primitives::signature::parity::Parity";
-                            Ty.path "alloy_primitives::signature::error::SignatureError"
-                          ]
-                          [
-                            Value.StructTuple
-                              "alloy_primitives::signature::error::SignatureError::InvalidParity"
-                              []
-                              []
-                              [ M.read (| value |) ]
-                          ]
-                      |)))
-                ]
-              |)
+                          []
+                          [ M.read (| value |) ]
+                      ]))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1138,50 +1053,50 @@ Module signature.
                 Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signature::parity::Parity" ],
                 self
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
-                M.deref (| M.read (| self |) |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "alloy_primitives::signature::parity::Parity::Eip155",
-                          0
-                        |) in
-                      let v := M.copy (| Ty.path "u64", γ0_0 |) in
+            M.match_operator (|
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
+              M.deref (| M.read (| self |) |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "alloy_primitives::signature::parity::Parity::Eip155",
+                        0
+                      |) in
+                    let v := M.copy (| Ty.path "u64", γ0_0 |) in
+                    M.read (|
                       let~ _ : Ty.tuple [] :=
-                        M.read (|
-                          M.match_operator (|
-                            Ty.tuple [],
-                            M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ :=
-                                    M.use
-                                      (M.alloc (|
+                        M.match_operator (|
+                          Ty.tuple [],
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ :=
+                                  M.use
+                                    (M.alloc (|
+                                      Ty.path "bool",
+                                      M.call_closure (|
                                         Ty.path "bool",
-                                        M.call_closure (|
-                                          Ty.path "bool",
-                                          BinOp.eq,
-                                          [
-                                            M.call_closure (|
-                                              Ty.path "u64",
-                                              BinOp.Wrap.rem,
-                                              [ M.read (| v |); Value.Integer IntegerKind.U64 2 ]
-                                            |);
-                                            Value.Integer IntegerKind.U64 0
-                                          ]
-                                        |)
-                                      |)) in
-                                  let _ :=
-                                    is_constant_or_break_match (|
-                                      M.read (| γ |),
-                                      Value.Bool true
-                                    |) in
+                                        BinOp.eq,
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "u64",
+                                            BinOp.Wrap.rem,
+                                            [ M.read (| v |); Value.Integer IntegerKind.U64 2 ]
+                                          |);
+                                          Value.Integer IntegerKind.U64 0
+                                        ]
+                                      |)
+                                    |)) in
+                                let _ :=
+                                  is_constant_or_break_match (|
+                                    M.read (| γ |),
+                                    Value.Bool true
+                                  |) in
+                                M.read (|
                                   let~ _ : Ty.tuple [] :=
                                     let β := v in
                                     M.write (|
@@ -1192,10 +1107,10 @@ Module signature.
                                         [ M.read (| β |); Value.Integer IntegerKind.U64 1 ]
                                       |)
                                     |) in
-                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                              fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                            ]
-                          |)
+                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                                |)));
+                            fun γ => ltac:(M.monadic (Value.Tuple []))
+                          ]
                         |) in
                       let~ _ : Ty.tuple [] :=
                         let β := v in
@@ -1220,15 +1135,12 @@ Module signature.
                               [ M.read (| v |); Value.Integer IntegerKind.U64 2 ]
                             |)
                           ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
-                        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
-                        Value.StructTuple "core::option::Option::None" [] [ Ty.path "u64" ] []
-                      |)))
-                ]
-              |)
+                      |)
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (Value.StructTuple "core::option::Option::None" [] [ Ty.path "u64" ] []))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1305,120 +1217,106 @@ Module signature.
                 Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signature::parity::Parity" ],
                 self
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.path "bool",
-                self,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "alloy_primitives::signature::parity::Parity::Eip155",
-                          0
-                        |) in
-                      let v := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
-                      M.alloc (|
-                        Ty.path "bool",
+            M.match_operator (|
+              Ty.path "bool",
+              self,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "alloy_primitives::signature::parity::Parity::Eip155",
+                        0
+                      |) in
+                    let v := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
+                    M.call_closure (|
+                      Ty.path "bool",
+                      BinOp.eq,
+                      [
                         M.call_closure (|
-                          Ty.path "bool",
-                          BinOp.eq,
+                          Ty.path "u64",
+                          BinOp.Wrap.rem,
+                          [
+                            M.read (| M.deref (| M.read (| v |) |) |);
+                            Value.Integer IntegerKind.U64 2
+                          ]
+                        |);
+                        Value.Integer IntegerKind.U64 1
+                      ]
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "alloy_primitives::signature::parity::Parity::Eip155",
+                        0
+                      |) in
+                    let v := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
+                    M.call_closure (|
+                      Ty.path "bool",
+                      BinOp.eq,
+                      [
+                        M.call_closure (|
+                          Ty.path "u64",
+                          BinOp.Wrap.rem,
                           [
                             M.call_closure (|
                               Ty.path "u64",
-                              BinOp.Wrap.rem,
+                              BinOp.Wrap.bit_xor,
                               [
                                 M.read (| M.deref (| M.read (| v |) |) |);
-                                Value.Integer IntegerKind.U64 2
+                                Value.Integer IntegerKind.U64 1
                               ]
                             |);
-                            Value.Integer IntegerKind.U64 1
+                            Value.Integer IntegerKind.U64 2
                           ]
-                        |)
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "alloy_primitives::signature::parity::Parity::Eip155",
-                          0
-                        |) in
-                      let v := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
-                      M.alloc (|
-                        Ty.path "bool",
-                        M.call_closure (|
-                          Ty.path "bool",
-                          BinOp.eq,
-                          [
-                            M.call_closure (|
-                              Ty.path "u64",
-                              BinOp.Wrap.rem,
-                              [
-                                M.call_closure (|
-                                  Ty.path "u64",
-                                  BinOp.Wrap.bit_xor,
-                                  [
-                                    M.read (| M.deref (| M.read (| v |) |) |);
-                                    Value.Integer IntegerKind.U64 1
-                                  ]
-                                |);
-                                Value.Integer IntegerKind.U64 2
-                              ]
-                            |);
-                            Value.Integer IntegerKind.U64 1
-                          ]
-                        |)
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.find_or_pattern
-                        (Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "bool" ] ]) (|
-                        γ,
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ := M.read (| γ |) in
-                              let γ1_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "alloy_primitives::signature::parity::Parity::NonEip155",
-                                  0
-                                |) in
-                              let b :=
-                                M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], γ1_0 |) in
-                              M.alloc (|
-                                Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "bool" ] ],
-                                Value.Tuple [ b ]
-                              |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ := M.read (| γ |) in
-                              let γ1_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "alloy_primitives::signature::parity::Parity::Parity",
-                                  0
-                                |) in
-                              let b :=
-                                M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], γ1_0 |) in
-                              M.alloc (|
-                                Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "bool" ] ],
-                                Value.Tuple [ b ]
-                              |)))
-                        ],
+                        |);
+                        Value.Integer IntegerKind.U64 1
+                      ]
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.find_or_pattern
+                      (Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "bool" ] ]) (|
+                      γ,
+                      [
                         fun γ =>
                           ltac:(M.monadic
-                            match γ with
-                            | [ b ] => ltac:(M.monadic (M.deref (| M.read (| b |) |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end)
-                      |)))
-                ]
-              |)
+                            (let γ := M.read (| γ |) in
+                            let γ1_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "alloy_primitives::signature::parity::Parity::NonEip155",
+                                0
+                              |) in
+                            let b :=
+                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], γ1_0 |) in
+                            Value.Tuple [ b ]));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ := M.read (| γ |) in
+                            let γ1_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "alloy_primitives::signature::parity::Parity::Parity",
+                                0
+                              |) in
+                            let b :=
+                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], γ1_0 |) in
+                            Value.Tuple [ b ]))
+                      ],
+                      fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [ b ] => ltac:(M.monadic (M.read (| M.deref (| M.read (| b |) |) |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end)
+                    |)))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1483,83 +1381,69 @@ Module signature.
                 Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signature::parity::Parity" ],
                 self
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
-                self,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.find_or_pattern
-                        (Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "bool" ] ]) (|
-                        γ,
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ := M.read (| γ |) in
-                              let γ1_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "alloy_primitives::signature::parity::Parity::NonEip155",
-                                  0
-                                |) in
-                              let v :=
-                                M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], γ1_0 |) in
-                              M.alloc (|
-                                Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "bool" ] ],
-                                Value.Tuple [ v ]
-                              |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ := M.read (| γ |) in
-                              let γ1_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "alloy_primitives::signature::parity::Parity::Parity",
-                                  0
-                                |) in
-                              let v :=
-                                M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], γ1_0 |) in
-                              M.alloc (|
-                                Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "bool" ] ],
-                                Value.Tuple [ v ]
-                              |)))
-                        ],
+            M.match_operator (|
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
+              self,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.find_or_pattern
+                      (Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "bool" ] ]) (|
+                      γ,
+                      [
                         fun γ =>
                           ltac:(M.monadic
-                            match γ with
-                            | [ v ] =>
-                              ltac:(M.monadic
-                                (M.alloc (|
-                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
-                                  Value.StructTuple
-                                    "core::option::Option::Some"
-                                    []
-                                    [ Ty.path "u8" ]
+                            (let γ := M.read (| γ |) in
+                            let γ1_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "alloy_primitives::signature::parity::Parity::NonEip155",
+                                0
+                              |) in
+                            let v :=
+                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], γ1_0 |) in
+                            Value.Tuple [ v ]));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ := M.read (| γ |) in
+                            let γ1_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "alloy_primitives::signature::parity::Parity::Parity",
+                                0
+                              |) in
+                            let v :=
+                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], γ1_0 |) in
+                            Value.Tuple [ v ]))
+                      ],
+                      fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [ v ] =>
+                            ltac:(M.monadic
+                              (Value.StructTuple
+                                "core::option::Option::Some"
+                                []
+                                [ Ty.path "u8" ]
+                                [
+                                  M.call_closure (|
+                                    Ty.path "u8",
+                                    BinOp.Wrap.add,
                                     [
-                                      M.call_closure (|
-                                        Ty.path "u8",
-                                        BinOp.Wrap.add,
-                                        [
-                                          M.cast
-                                            (Ty.path "u8")
-                                            (M.read (| M.deref (| M.read (| v |) |) |));
-                                          Value.Integer IntegerKind.U8 27
-                                        ]
-                                      |)
+                                      M.cast
+                                        (Ty.path "u8")
+                                        (M.read (| M.deref (| M.read (| v |) |) |));
+                                      Value.Integer IntegerKind.U8 27
                                     ]
-                                |)))
-                            | _ => M.impossible "wrong number of arguments"
-                            end)
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
-                        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
-                        Value.StructTuple "core::option::Option::None" [] [ Ty.path "u8" ] []
-                      |)))
-                ]
-              |)
+                                  |)
+                                ]))
+                          | _ => M.impossible "wrong number of arguments"
+                          end)
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (Value.StructTuple "core::option::Option::None" [] [ Ty.path "u8" ] []))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1587,59 +1471,51 @@ Module signature.
                 Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signature::parity::Parity" ],
                 self
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.path "u64",
-                self,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "alloy_primitives::signature::parity::Parity::Eip155",
-                          0
-                        |) in
-                      let v := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
-                      M.deref (| M.read (| v |) |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "alloy_primitives::signature::parity::Parity::NonEip155",
-                          0
-                        |) in
-                      let b := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], γ1_0 |) in
-                      M.alloc (|
-                        Ty.path "u64",
-                        M.call_closure (|
-                          Ty.path "u64",
-                          BinOp.Wrap.add,
-                          [
-                            M.cast (Ty.path "u64") (M.read (| M.deref (| M.read (| b |) |) |));
-                            Value.Integer IntegerKind.U64 27
-                          ]
-                        |)
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "alloy_primitives::signature::parity::Parity::Parity",
-                          0
-                        |) in
-                      let b := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], γ1_0 |) in
-                      M.alloc (|
-                        Ty.path "u64",
-                        M.cast (Ty.path "u64") (M.read (| M.deref (| M.read (| b |) |) |))
-                      |)))
-                ]
-              |)
+            M.match_operator (|
+              Ty.path "u64",
+              self,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "alloy_primitives::signature::parity::Parity::Eip155",
+                        0
+                      |) in
+                    let v := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
+                    M.read (| M.deref (| M.read (| v |) |) |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "alloy_primitives::signature::parity::Parity::NonEip155",
+                        0
+                      |) in
+                    let b := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], γ1_0 |) in
+                    M.call_closure (|
+                      Ty.path "u64",
+                      BinOp.Wrap.add,
+                      [
+                        M.cast (Ty.path "u64") (M.read (| M.deref (| M.read (| b |) |) |));
+                        Value.Integer IntegerKind.U64 27
+                      ]
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "alloy_primitives::signature::parity::Parity::Parity",
+                        0
+                      |) in
+                    let b := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], γ1_0 |) in
+                    M.cast (Ty.path "u64") (M.read (| M.deref (| M.read (| b |) |) |))))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1668,160 +1544,134 @@ Module signature.
                 Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signature::parity::Parity" ],
                 self
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.path "alloy_primitives::signature::parity::Parity",
-                M.deref (| M.read (| self |) |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "alloy_primitives::signature::parity::Parity::Parity",
-                          0
-                        |) in
-                      let b := M.copy (| Ty.path "bool", γ0_0 |) in
-                      M.alloc (|
-                        Ty.path "alloy_primitives::signature::parity::Parity",
-                        Value.StructTuple
-                          "alloy_primitives::signature::parity::Parity::Parity"
-                          []
-                          []
-                          [ UnOp.not (| M.read (| b |) |) ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "alloy_primitives::signature::parity::Parity::NonEip155",
-                          0
-                        |) in
-                      let b := M.copy (| Ty.path "bool", γ0_0 |) in
-                      M.alloc (|
-                        Ty.path "alloy_primitives::signature::parity::Parity",
-                        Value.StructTuple
-                          "alloy_primitives::signature::parity::Parity::NonEip155"
-                          []
-                          []
-                          [ UnOp.not (| M.read (| b |) |) ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "alloy_primitives::signature::parity::Parity::Eip155",
-                          0
-                        |) in
-                      let _ :=
-                        is_constant_or_break_match (|
-                          M.read (| γ0_0 |),
-                          Value.Integer IntegerKind.U64 0
-                        |) in
-                      M.alloc (|
-                        Ty.path "alloy_primitives::signature::parity::Parity",
-                        Value.StructTuple
-                          "alloy_primitives::signature::parity::Parity::Eip155"
-                          []
-                          []
-                          [ Value.Integer IntegerKind.U64 1 ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "alloy_primitives::signature::parity::Parity::Eip155",
-                          0
-                        |) in
-                      let v := M.copy (| Ty.path "u64", γ0_0 |) in
-                      M.alloc (|
-                        Ty.path "alloy_primitives::signature::parity::Parity",
-                        Value.StructTuple
-                          "alloy_primitives::signature::parity::Parity::Eip155"
-                          []
-                          []
+            M.match_operator (|
+              Ty.path "alloy_primitives::signature::parity::Parity",
+              M.deref (| M.read (| self |) |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "alloy_primitives::signature::parity::Parity::Parity",
+                        0
+                      |) in
+                    let b := M.copy (| Ty.path "bool", γ0_0 |) in
+                    Value.StructTuple
+                      "alloy_primitives::signature::parity::Parity::Parity"
+                      []
+                      []
+                      [ UnOp.not (| M.read (| b |) |) ]));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "alloy_primitives::signature::parity::Parity::NonEip155",
+                        0
+                      |) in
+                    let b := M.copy (| Ty.path "bool", γ0_0 |) in
+                    Value.StructTuple
+                      "alloy_primitives::signature::parity::Parity::NonEip155"
+                      []
+                      []
+                      [ UnOp.not (| M.read (| b |) |) ]));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "alloy_primitives::signature::parity::Parity::Eip155",
+                        0
+                      |) in
+                    let _ :=
+                      is_constant_or_break_match (|
+                        M.read (| γ0_0 |),
+                        Value.Integer IntegerKind.U64 0
+                      |) in
+                    Value.StructTuple
+                      "alloy_primitives::signature::parity::Parity::Eip155"
+                      []
+                      []
+                      [ Value.Integer IntegerKind.U64 1 ]));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "alloy_primitives::signature::parity::Parity::Eip155",
+                        0
+                      |) in
+                    let v := M.copy (| Ty.path "u64", γ0_0 |) in
+                    Value.StructTuple
+                      "alloy_primitives::signature::parity::Parity::Eip155"
+                      []
+                      []
+                      [
+                        M.match_operator (|
+                          Ty.path "u64",
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
-                            M.read (|
-                              M.match_operator (|
-                                Ty.path "u64",
-                                M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ :=
-                                        M.use
-                                          (M.alloc (|
-                                            Ty.path "bool",
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              BinOp.eq,
-                                              [
-                                                M.call_closure (|
-                                                  Ty.path "u64",
-                                                  BinOp.Wrap.rem,
-                                                  [ M.read (| v |); Value.Integer IntegerKind.U64 2
-                                                  ]
-                                                |);
-                                                Value.Integer IntegerKind.U64 0
-                                              ]
-                                            |)
-                                          |)) in
-                                      let _ :=
-                                        is_constant_or_break_match (|
-                                          M.read (| γ |),
-                                          Value.Bool true
-                                        |) in
-                                      M.alloc (|
-                                        Ty.path "u64",
-                                        M.call_closure (|
-                                          Ty.path "u64",
-                                          BinOp.Wrap.sub,
-                                          [ M.read (| v |); Value.Integer IntegerKind.U64 1 ]
-                                        |)
-                                      |)));
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (M.alloc (|
-                                        Ty.path "u64",
-                                        M.call_closure (|
-                                          Ty.path "u64",
-                                          BinOp.Wrap.add,
-                                          [ M.read (| v |); Value.Integer IntegerKind.U64 1 ]
-                                        |)
-                                      |)))
-                                ]
-                              |)
-                            |)
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ :=
+                                  M.use
+                                    (M.alloc (|
+                                      Ty.path "bool",
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.eq,
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "u64",
+                                            BinOp.Wrap.rem,
+                                            [ M.read (| v |); Value.Integer IntegerKind.U64 2 ]
+                                          |);
+                                          Value.Integer IntegerKind.U64 0
+                                        ]
+                                      |)
+                                    |)) in
+                                let _ :=
+                                  is_constant_or_break_match (|
+                                    M.read (| γ |),
+                                    Value.Bool true
+                                  |) in
+                                M.call_closure (|
+                                  Ty.path "u64",
+                                  BinOp.Wrap.sub,
+                                  [ M.read (| v |); Value.Integer IntegerKind.U64 1 ]
+                                |)));
+                            fun γ =>
+                              ltac:(M.monadic
+                                (M.call_closure (|
+                                  Ty.path "u64",
+                                  BinOp.Wrap.add,
+                                  [ M.read (| v |); Value.Integer IntegerKind.U64 1 ]
+                                |)))
                           ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "alloy_primitives::signature::parity::Parity::Eip155",
-                          0
-                        |) in
-                      let v := M.copy (| Ty.path "u64", γ0_0 |) in
-                      M.alloc (|
-                        Ty.path "alloy_primitives::signature::parity::Parity",
-                        Value.StructTuple
-                          "alloy_primitives::signature::parity::Parity::Eip155"
-                          []
-                          []
-                          [
-                            M.call_closure (|
-                              Ty.path "u64",
-                              BinOp.Wrap.bit_xor,
-                              [ M.read (| v |); Value.Integer IntegerKind.U64 1 ]
-                            |)
-                          ]
-                      |)))
-                ]
-              |)
+                        |)
+                      ]));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "alloy_primitives::signature::parity::Parity::Eip155",
+                        0
+                      |) in
+                    let v := M.copy (| Ty.path "u64", γ0_0 |) in
+                    Value.StructTuple
+                      "alloy_primitives::signature::parity::Parity::Eip155"
+                      []
+                      []
+                      [
+                        M.call_closure (|
+                          Ty.path "u64",
+                          BinOp.Wrap.bit_xor,
+                          [ M.read (| v |); Value.Integer IntegerKind.U64 1 ]
+                        |)
+                      ]))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1848,48 +1698,43 @@ Module signature.
                 Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signature::parity::Parity" ],
                 self
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.path "alloy_primitives::signature::parity::Parity",
-                M.deref (| M.read (| self |) |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "alloy_primitives::signature::parity::Parity::Eip155",
-                          0
-                        |) in
-                      let v := M.copy (| Ty.path "u64", γ0_0 |) in
-                      M.alloc (|
-                        Ty.path "alloy_primitives::signature::parity::Parity",
-                        Value.StructTuple
-                          "alloy_primitives::signature::parity::Parity::NonEip155"
-                          []
-                          []
+            M.match_operator (|
+              Ty.path "alloy_primitives::signature::parity::Parity",
+              M.deref (| M.read (| self |) |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "alloy_primitives::signature::parity::Parity::Eip155",
+                        0
+                      |) in
+                    let v := M.copy (| Ty.path "u64", γ0_0 |) in
+                    Value.StructTuple
+                      "alloy_primitives::signature::parity::Parity::NonEip155"
+                      []
+                      []
+                      [
+                        M.call_closure (|
+                          Ty.path "bool",
+                          BinOp.eq,
                           [
                             M.call_closure (|
-                              Ty.path "bool",
-                              BinOp.eq,
-                              [
-                                M.call_closure (|
-                                  Ty.path "u64",
-                                  BinOp.Wrap.rem,
-                                  [ M.read (| v |); Value.Integer IntegerKind.U64 2 ]
-                                |);
-                                Value.Integer IntegerKind.U64 1
-                              ]
-                            |)
+                              Ty.path "u64",
+                              BinOp.Wrap.rem,
+                              [ M.read (| v |); Value.Integer IntegerKind.U64 2 ]
+                            |);
+                            Value.Integer IntegerKind.U64 1
                           ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let this :=
-                        M.copy (| Ty.path "alloy_primitives::signature::parity::Parity", γ |) in
-                      this))
-                ]
-              |)
+                        |)
+                      ]));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let this :=
+                      M.copy (| Ty.path "alloy_primitives::signature::parity::Parity", γ |) in
+                    M.read (| this |)))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1918,74 +1763,69 @@ Module signature.
             let chain_id := M.alloc (| Ty.path "u64", chain_id |) in
             M.read (|
               let~ parity : Ty.path "bool" :=
-                M.read (|
-                  M.match_operator (|
-                    Ty.path "bool",
-                    self,
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ0_0 :=
-                            M.SubPointer.get_struct_tuple_field (|
-                              γ,
-                              "alloy_primitives::signature::parity::Parity::Eip155",
-                              0
-                            |) in
-                          let v := M.copy (| Ty.path "u64", γ0_0 |) in
-                          M.alloc (|
-                            Ty.path "bool",
-                            M.call_closure (|
-                              Ty.path "bool",
-                              BinOp.eq,
-                              [
-                                M.call_closure (|
-                                  Ty.path "u8",
-                                  M.get_function (|
-                                    "alloy_primitives::signature::utils::normalize_v_to_byte",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.read (| v |) ]
-                                |);
-                                Value.Integer IntegerKind.U8 1
-                              ]
-                            |)
-                          |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (M.find_or_pattern (Ty.tuple [ Ty.path "bool" ]) (|
+                M.match_operator (|
+                  Ty.path "bool",
+                  self,
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
                             γ,
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "alloy_primitives::signature::parity::Parity::NonEip155",
-                                      0
-                                    |) in
-                                  let b := M.copy (| Ty.path "bool", γ0_0 |) in
-                                  M.alloc (| Ty.tuple [ Ty.path "bool" ], Value.Tuple [ b ] |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "alloy_primitives::signature::parity::Parity::Parity",
-                                      0
-                                    |) in
-                                  let b := M.copy (| Ty.path "bool", γ0_0 |) in
-                                  M.alloc (| Ty.tuple [ Ty.path "bool" ], Value.Tuple [ b ] |)))
-                            ],
+                            "alloy_primitives::signature::parity::Parity::Eip155",
+                            0
+                          |) in
+                        let v := M.copy (| Ty.path "u64", γ0_0 |) in
+                        M.call_closure (|
+                          Ty.path "bool",
+                          BinOp.eq,
+                          [
+                            M.call_closure (|
+                              Ty.path "u8",
+                              M.get_function (|
+                                "alloy_primitives::signature::utils::normalize_v_to_byte",
+                                [],
+                                []
+                              |),
+                              [ M.read (| v |) ]
+                            |);
+                            Value.Integer IntegerKind.U8 1
+                          ]
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (M.find_or_pattern (Ty.tuple [ Ty.path "bool" ]) (|
+                          γ,
+                          [
                             fun γ =>
                               ltac:(M.monadic
-                                match γ with
-                                | [ b ] => ltac:(M.monadic b)
-                                | _ => M.impossible "wrong number of arguments"
-                                end)
-                          |)))
-                    ]
-                  |)
+                                (let γ0_0 :=
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    γ,
+                                    "alloy_primitives::signature::parity::Parity::NonEip155",
+                                    0
+                                  |) in
+                                let b := M.copy (| Ty.path "bool", γ0_0 |) in
+                                Value.Tuple [ b ]));
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ0_0 :=
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    γ,
+                                    "alloy_primitives::signature::parity::Parity::Parity",
+                                    0
+                                  |) in
+                                let b := M.copy (| Ty.path "bool", γ0_0 |) in
+                                Value.Tuple [ b ]))
+                          ],
+                          fun γ =>
+                            ltac:(M.monadic
+                              match γ with
+                              | [ b ] => ltac:(M.monadic (M.read (| b |)))
+                              | _ => M.impossible "wrong number of arguments"
+                              end)
+                        |)))
+                  ]
                 |) in
               M.alloc (|
                 Ty.path "alloy_primitives::signature::parity::Parity",

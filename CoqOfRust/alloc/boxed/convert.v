@@ -450,102 +450,82 @@ Module boxed.
                 Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 cow
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.apply
-                  (Ty.path "alloc::boxed::Box")
-                  []
-                  [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
-                cow,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "alloc::borrow::Cow::Borrowed",
-                          0
-                        |) in
-                      let slice :=
-                        M.copy (|
-                          Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                          γ0_0
-                        |) in
-                      M.alloc (|
+            M.match_operator (|
+              Ty.apply
+                (Ty.path "alloc::boxed::Box")
+                []
+                [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
+              cow,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "alloc::borrow::Cow::Borrowed",
+                        0
+                      |) in
+                    let slice :=
+                      M.copy (|
+                        Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                        γ0_0
+                      |) in
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        []
+                        [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
+                      M.get_trait_method (|
+                        "core::convert::From",
                         Ty.apply
                           (Ty.path "alloc::boxed::Box")
                           []
                           [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "alloc::boxed::Box")
-                            []
-                            [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
-                          M.get_trait_method (|
-                            "core::convert::From",
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global"
-                              ],
-                            [],
-                            [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
-                            "from",
-                            [],
-                            []
-                          |),
-                          [ M.read (| slice |) ]
-                        |)
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "alloc::borrow::Cow::Owned",
-                          0
-                        |) in
-                      let slice :=
-                        M.copy (|
+                        [],
+                        [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
+                        "from",
+                        [],
+                        []
+                      |),
+                      [ M.read (| slice |) ]
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (| γ, "alloc::borrow::Cow::Owned", 0 |) in
+                    let slice :=
+                      M.copy (|
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [ T; Ty.path "alloc::alloc::Global" ],
+                        γ0_0
+                      |) in
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        []
+                        [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
+                      M.get_trait_method (|
+                        "core::convert::From",
+                        Ty.apply
+                          (Ty.path "alloc::boxed::Box")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
+                        [],
+                        [
                           Ty.apply
                             (Ty.path "alloc::vec::Vec")
                             []
-                            [ T; Ty.path "alloc::alloc::Global" ],
-                          γ0_0
-                        |) in
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "alloc::boxed::Box")
-                          []
-                          [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "alloc::boxed::Box")
-                            []
-                            [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
-                          M.get_trait_method (|
-                            "core::convert::From",
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global"
-                              ],
-                            [],
-                            [
-                              Ty.apply
-                                (Ty.path "alloc::vec::Vec")
-                                []
-                                [ T; Ty.path "alloc::alloc::Global" ]
-                            ],
-                            "from",
-                            [],
-                            []
-                          |),
-                          [ M.read (| slice |) ]
-                        |)
-                      |)))
-                ]
-              |)
+                            [ T; Ty.path "alloc::alloc::Global" ]
+                        ],
+                        "from",
+                        [],
+                        []
+                      |),
+                      [ M.read (| slice |) ]
+                    |)))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -689,84 +669,66 @@ Module boxed.
           ltac:(M.monadic
             (let cow :=
               M.alloc (| Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ], cow |) in
-            M.read (|
-              M.match_operator (|
-                Ty.apply
-                  (Ty.path "alloc::boxed::Box")
-                  []
-                  [ Ty.path "str"; Ty.path "alloc::alloc::Global" ],
-                cow,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "alloc::borrow::Cow::Borrowed",
-                          0
-                        |) in
-                      let s := M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], γ0_0 |) in
-                      M.alloc (|
+            M.match_operator (|
+              Ty.apply
+                (Ty.path "alloc::boxed::Box")
+                []
+                [ Ty.path "str"; Ty.path "alloc::alloc::Global" ],
+              cow,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "alloc::borrow::Cow::Borrowed",
+                        0
+                      |) in
+                    let s := M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], γ0_0 |) in
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        []
+                        [ Ty.path "str"; Ty.path "alloc::alloc::Global" ],
+                      M.get_trait_method (|
+                        "core::convert::From",
                         Ty.apply
                           (Ty.path "alloc::boxed::Box")
                           []
                           [ Ty.path "str"; Ty.path "alloc::alloc::Global" ],
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "alloc::boxed::Box")
-                            []
-                            [ Ty.path "str"; Ty.path "alloc::alloc::Global" ],
-                          M.get_trait_method (|
-                            "core::convert::From",
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [ Ty.path "str"; Ty.path "alloc::alloc::Global" ],
-                            [],
-                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                            "from",
-                            [],
-                            []
-                          |),
-                          [ M.read (| s |) ]
-                        |)
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "alloc::borrow::Cow::Owned",
-                          0
-                        |) in
-                      let s := M.copy (| Ty.path "alloc::string::String", γ0_0 |) in
-                      M.alloc (|
+                        [],
+                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                        "from",
+                        [],
+                        []
+                      |),
+                      [ M.read (| s |) ]
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (| γ, "alloc::borrow::Cow::Owned", 0 |) in
+                    let s := M.copy (| Ty.path "alloc::string::String", γ0_0 |) in
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        []
+                        [ Ty.path "str"; Ty.path "alloc::alloc::Global" ],
+                      M.get_trait_method (|
+                        "core::convert::From",
                         Ty.apply
                           (Ty.path "alloc::boxed::Box")
                           []
                           [ Ty.path "str"; Ty.path "alloc::alloc::Global" ],
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "alloc::boxed::Box")
-                            []
-                            [ Ty.path "str"; Ty.path "alloc::alloc::Global" ],
-                          M.get_trait_method (|
-                            "core::convert::From",
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [ Ty.path "str"; Ty.path "alloc::alloc::Global" ],
-                            [],
-                            [ Ty.path "alloc::string::String" ],
-                            "from",
-                            [],
-                            []
-                          |),
-                          [ M.read (| s |) ]
-                        |)
-                      |)))
-                ]
-              |)
+                        [],
+                        [ Ty.path "alloc::string::String" ],
+                        "from",
+                        [],
+                        []
+                      |),
+                      [ M.read (| s |) ]
+                    |)))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -801,65 +763,56 @@ Module boxed.
           ltac:(M.monadic
             (let s :=
               M.alloc (| Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "str"; A ], s |) in
-            M.read (|
-              M.match_operator (|
-                Ty.apply
-                  (Ty.path "alloc::boxed::Box")
-                  []
-                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]; A ],
-                M.alloc (|
+            M.match_operator (|
+              Ty.apply
+                (Ty.path "alloc::boxed::Box")
+                []
+                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]; A ],
+              M.alloc (|
+                Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ Ty.path "str" ]; A ],
+                M.call_closure (|
                   Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ Ty.path "str" ]; A ],
-                  M.call_closure (|
-                    Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ Ty.path "str" ]; A ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "str"; A ],
-                      "into_raw_with_allocator",
-                      [],
-                      []
-                    |),
-                    [ M.read (| s |) ]
-                  |)
-                |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                      let raw :=
-                        M.copy (| Ty.apply (Ty.path "*mut") [] [ Ty.path "str" ], γ0_0 |) in
-                      let alloc := M.copy (| A, γ0_1 |) in
-                      M.alloc (|
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "str"; A ],
+                    "into_raw_with_allocator",
+                    [],
+                    []
+                  |),
+                  [ M.read (| s |) ]
+                |)
+              |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let raw := M.copy (| Ty.apply (Ty.path "*mut") [] [ Ty.path "str" ], γ0_0 |) in
+                    let alloc := M.copy (| A, γ0_1 |) in
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        []
+                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]; A ],
+                      M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::boxed::Box")
                           []
                           [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]; A ],
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "alloc::boxed::Box")
+                        "from_raw_in",
+                        [],
+                        []
+                      |),
+                      [
+                        M.cast
+                          (Ty.apply
+                            (Ty.path "*mut")
                             []
-                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]; A ],
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]; A ],
-                            "from_raw_in",
-                            [],
-                            []
-                          |),
-                          [
-                            M.cast
-                              (Ty.apply
-                                (Ty.path "*mut")
-                                []
-                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ])
-                              (M.read (| raw |));
-                            M.read (| alloc |)
-                          ]
-                        |)
-                      |)))
-                ]
-              |)
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ])
+                          (M.read (| raw |));
+                        M.read (| alloc |)
+                      ]
+                    |)))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -957,202 +910,191 @@ Module boxed.
             |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
-              M.read (|
-                M.match_operator (|
-                  Ty.tuple [],
-                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ := M.use (M.alloc (| Ty.path "bool", Value.Bool true |)) in
-                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+              M.match_operator (|
+                Ty.tuple [],
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.use (M.alloc (| Ty.path "bool", Value.Bool true |)) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      M.read (|
                         let~ _ : Ty.tuple [] :=
-                          M.read (|
-                            M.match_operator (|
-                              Ty.tuple [],
-                              M.alloc (|
-                                Ty.tuple
-                                  [
-                                    Ty.apply (Ty.path "&") [] [ Ty.path "usize" ];
-                                    Ty.apply (Ty.path "&") [] [ Ty.path "usize" ]
-                                  ],
-                                Value.Tuple
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.alloc (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (|
+                              Ty.tuple
+                                [
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "usize" ];
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "usize" ]
+                                ],
+                              Value.Tuple
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Ty.path "usize",
+                                      M.call_closure (|
                                         Ty.path "usize",
-                                        M.call_closure (|
-                                          Ty.path "usize",
-                                          M.get_associated_function (|
-                                            Ty.apply (Ty.path "slice") [] [ T ],
-                                            "len",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (| M.read (| boxed_slice |) |)
-                                            |)
-                                          ]
-                                        |)
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "slice") [] [ T ],
+                                          "len",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| boxed_slice |) |)
+                                          |)
+                                        ]
                                       |)
-                                    |);
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.alloc (| Ty.path "usize", N |)
                                     |)
-                                  ]
-                              |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                    let left_val :=
-                                      M.copy (|
-                                        Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
-                                        γ0_0
-                                      |) in
-                                    let right_val :=
-                                      M.copy (|
-                                        Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
-                                        γ0_1
-                                      |) in
-                                    M.match_operator (|
-                                      Ty.tuple [],
-                                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ :=
-                                              M.use
-                                                (M.alloc (|
-                                                  Ty.path "bool",
-                                                  UnOp.not (|
-                                                    M.call_closure (|
-                                                      Ty.path "bool",
-                                                      BinOp.eq,
-                                                      [
-                                                        M.read (|
-                                                          M.deref (| M.read (| left_val |) |)
-                                                        |);
-                                                        M.read (|
-                                                          M.deref (| M.read (| right_val |) |)
-                                                        |)
-                                                      ]
-                                                    |)
-                                                  |)
-                                                |)) in
-                                            let _ :=
-                                              is_constant_or_break_match (|
-                                                M.read (| γ |),
-                                                Value.Bool true
-                                              |) in
-                                            M.alloc (|
-                                              Ty.tuple [],
-                                              M.never_to_any (|
-                                                M.read (|
-                                                  let~ kind :
-                                                      Ty.path "core::panicking::AssertKind" :=
-                                                    Value.StructTuple
-                                                      "core::panicking::AssertKind::Eq"
-                                                      []
-                                                      []
-                                                      [] in
-                                                  M.alloc (|
-                                                    Ty.path "never",
-                                                    M.call_closure (|
-                                                      Ty.path "never",
-                                                      M.get_function (|
-                                                        "core::panicking::assert_failed",
-                                                        [],
-                                                        [ Ty.path "usize"; Ty.path "usize" ]
-                                                      |),
-                                                      [
-                                                        M.read (| kind |);
-                                                        M.borrow (|
-                                                          Pointer.Kind.Ref,
-                                                          M.deref (|
-                                                            M.borrow (|
-                                                              Pointer.Kind.Ref,
-                                                              M.deref (| M.read (| left_val |) |)
-                                                            |)
-                                                          |)
-                                                        |);
-                                                        M.borrow (|
-                                                          Pointer.Kind.Ref,
-                                                          M.deref (|
-                                                            M.borrow (|
-                                                              Pointer.Kind.Ref,
-                                                              M.deref (| M.read (| right_val |) |)
-                                                            |)
-                                                          |)
-                                                        |);
-                                                        Value.StructTuple
-                                                          "core::option::Option::None"
-                                                          []
-                                                          [ Ty.path "core::fmt::Arguments" ]
-                                                          []
-                                                      ]
-                                                    |)
+                                  |);
+                                  M.borrow (| Pointer.Kind.Ref, M.alloc (| Ty.path "usize", N |) |)
+                                ]
+                            |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                  let left_val :=
+                                    M.copy (|
+                                      Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
+                                      γ0_0
+                                    |) in
+                                  let right_val :=
+                                    M.copy (|
+                                      Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
+                                      γ0_1
+                                    |) in
+                                  M.match_operator (|
+                                    Ty.tuple [],
+                                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ :=
+                                            M.use
+                                              (M.alloc (|
+                                                Ty.path "bool",
+                                                UnOp.not (|
+                                                  M.call_closure (|
+                                                    Ty.path "bool",
+                                                    BinOp.eq,
+                                                    [
+                                                      M.read (|
+                                                        M.deref (| M.read (| left_val |) |)
+                                                      |);
+                                                      M.read (|
+                                                        M.deref (| M.read (| right_val |) |)
+                                                      |)
+                                                    ]
                                                   |)
                                                 |)
+                                              |)) in
+                                          let _ :=
+                                            is_constant_or_break_match (|
+                                              M.read (| γ |),
+                                              Value.Bool true
+                                            |) in
+                                          M.never_to_any (|
+                                            M.read (|
+                                              let~ kind : Ty.path "core::panicking::AssertKind" :=
+                                                Value.StructTuple
+                                                  "core::panicking::AssertKind::Eq"
+                                                  []
+                                                  []
+                                                  [] in
+                                              M.alloc (|
+                                                Ty.path "never",
+                                                M.call_closure (|
+                                                  Ty.path "never",
+                                                  M.get_function (|
+                                                    "core::panicking::assert_failed",
+                                                    [],
+                                                    [ Ty.path "usize"; Ty.path "usize" ]
+                                                  |),
+                                                  [
+                                                    M.read (| kind |);
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (| M.read (| left_val |) |)
+                                                        |)
+                                                      |)
+                                                    |);
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (| M.read (| right_val |) |)
+                                                        |)
+                                                      |)
+                                                    |);
+                                                    Value.StructTuple
+                                                      "core::option::Option::None"
+                                                      []
+                                                      [ Ty.path "core::fmt::Arguments" ]
+                                                      []
+                                                  ]
+                                                |)
                                               |)
-                                            |)));
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                                      ]
-                                    |)))
-                              ]
-                            |)
+                                            |)
+                                          |)));
+                                      fun γ => ltac:(M.monadic (Value.Tuple []))
+                                    ]
+                                  |)))
+                            ]
                           |) in
-                        M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                  ]
-                |)
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                      |)));
+                  fun γ => ltac:(M.monadic (Value.Tuple []))
+                ]
               |) in
-            M.match_operator (|
+            M.alloc (|
               Ty.apply
                 (Ty.path "alloc::boxed::Box")
                 []
                 [ Ty.apply (Ty.path "array") [ N ] [ T ]; A ],
-              M.alloc (|
-                Ty.tuple
-                  [ Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]; A ],
-                M.call_closure (|
+              M.match_operator (|
+                Ty.apply
+                  (Ty.path "alloc::boxed::Box")
+                  []
+                  [ Ty.apply (Ty.path "array") [ N ] [ T ]; A ],
+                M.alloc (|
                   Ty.tuple
                     [ Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]; A ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "alloc::boxed::Box")
-                      []
-                      [ Ty.apply (Ty.path "slice") [] [ T ]; A ],
-                    "into_raw_with_allocator",
-                    [],
-                    []
-                  |),
-                  [ M.read (| boxed_slice |) ]
-                |)
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let ptr :=
-                      M.copy (|
-                        Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                        γ0_0
-                      |) in
-                    let alloc := M.copy (| A, γ0_1 |) in
-                    M.alloc (|
+                  M.call_closure (|
+                    Ty.tuple
+                      [ Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]; A ],
+                    M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
                         []
-                        [ Ty.apply (Ty.path "array") [ N ] [ T ]; A ],
+                        [ Ty.apply (Ty.path "slice") [] [ T ]; A ],
+                      "into_raw_with_allocator",
+                      [],
+                      []
+                    |),
+                    [ M.read (| boxed_slice |) ]
+                  |)
+                |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let ptr :=
+                        M.copy (|
+                          Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                          γ0_0
+                        |) in
+                      let alloc := M.copy (| A, γ0_1 |) in
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "alloc::boxed::Box")
@@ -1176,9 +1118,9 @@ Module boxed.
                             (M.read (| ptr |));
                           M.read (| alloc |)
                         ]
-                      |)
-                    |)))
-              ]
+                      |)))
+                ]
+              |)
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1233,147 +1175,99 @@ Module boxed.
                   [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
                 boxed_slice
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [
-                    Ty.apply
-                      (Ty.path "alloc::boxed::Box")
-                      []
-                      [ Ty.apply (Ty.path "array") [ N ] [ T ]; Ty.path "alloc::alloc::Global" ];
-                    Ty.apply
-                      (Ty.path "alloc::boxed::Box")
-                      []
-                      [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ]
-                  ],
-                M.alloc (| Ty.tuple [], Value.Tuple [] |),
+            M.match_operator (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
                 [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ :=
-                        M.use
-                          (M.alloc (|
+                  Ty.apply
+                    (Ty.path "alloc::boxed::Box")
+                    []
+                    [ Ty.apply (Ty.path "array") [ N ] [ T ]; Ty.path "alloc::alloc::Global" ];
+                  Ty.apply
+                    (Ty.path "alloc::boxed::Box")
+                    []
+                    [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ]
+                ],
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          Ty.path "bool",
+                          M.call_closure (|
                             Ty.path "bool",
-                            M.call_closure (|
-                              Ty.path "bool",
-                              BinOp.eq,
-                              [
-                                M.call_closure (|
-                                  Ty.path "usize",
-                                  M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [] [ T ],
-                                    "len",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (| M.read (| boxed_slice |) |)
-                                    |)
-                                  ]
-                                |);
-                                N
-                              ]
-                            |)
-                          |)) in
-                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [
-                                Ty.apply (Ty.path "array") [ N ] [ T ];
-                                Ty.path "alloc::alloc::Global"
-                              ];
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global"
-                              ]
-                          ],
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [
-                                Ty.apply (Ty.path "array") [ N ] [ T ];
-                                Ty.path "alloc::alloc::Global"
-                              ];
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global"
-                              ]
-                          ]
-                          [
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "alloc::boxed::Box")
-                                []
+                            BinOp.eq,
+                            [
+                              M.call_closure (|
+                                Ty.path "usize",
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "slice") [] [ T ],
+                                  "len",
+                                  [],
+                                  []
+                                |),
                                 [
-                                  Ty.apply (Ty.path "array") [ N ] [ T ];
-                                  Ty.path "alloc::alloc::Global"
-                                ],
-                              M.get_function (|
-                                "alloc::boxed::convert::boxed_slice_as_array_unchecked",
-                                [ N ],
-                                [ T; Ty.path "alloc::alloc::Global" ]
-                              |),
-                              [ M.read (| boxed_slice |) ]
-                            |)
-                          ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| boxed_slice |) |)
+                                  |)
+                                ]
+                              |);
+                              N
+                            ]
+                          |)
+                        |)) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
+                      [
                         Ty.apply
-                          (Ty.path "core::result::Result")
+                          (Ty.path "alloc::boxed::Box")
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [
-                                Ty.apply (Ty.path "array") [ N ] [ T ];
-                                Ty.path "alloc::alloc::Global"
-                              ];
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global"
-                              ]
-                          ],
-                        Value.StructTuple
-                          "core::result::Result::Err"
+                          [ Ty.apply (Ty.path "array") [ N ] [ T ]; Ty.path "alloc::alloc::Global"
+                          ];
+                        Ty.apply
+                          (Ty.path "alloc::boxed::Box")
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [
-                                Ty.apply (Ty.path "array") [ N ] [ T ];
-                                Ty.path "alloc::alloc::Global"
-                              ];
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global"
-                              ]
-                          ]
+                          [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ]
+                      ]
+                      [
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "alloc::boxed::Box")
+                            []
+                            [ Ty.apply (Ty.path "array") [ N ] [ T ]; Ty.path "alloc::alloc::Global"
+                            ],
+                          M.get_function (|
+                            "alloc::boxed::convert::boxed_slice_as_array_unchecked",
+                            [ N ],
+                            [ T; Ty.path "alloc::alloc::Global" ]
+                          |),
                           [ M.read (| boxed_slice |) ]
-                      |)))
-                ]
-              |)
+                        |)
+                      ]));
+                fun γ =>
+                  ltac:(M.monadic
+                    (Value.StructTuple
+                      "core::result::Result::Err"
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloc::boxed::Box")
+                          []
+                          [ Ty.apply (Ty.path "array") [ N ] [ T ]; Ty.path "alloc::alloc::Global"
+                          ];
+                        Ty.apply
+                          (Ty.path "alloc::boxed::Box")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ]
+                      ]
+                      [ M.read (| boxed_slice |) ]))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1435,48 +1329,48 @@ Module boxed.
                 Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
                 vec
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [
-                    Ty.apply
-                      (Ty.path "alloc::boxed::Box")
-                      []
-                      [ Ty.apply (Ty.path "array") [ N ] [ T ]; Ty.path "alloc::alloc::Global" ];
-                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ]
-                  ],
-                M.alloc (| Ty.tuple [], Value.Tuple [] |),
+            M.match_operator (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
                 [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ :=
-                        M.use
-                          (M.alloc (|
+                  Ty.apply
+                    (Ty.path "alloc::boxed::Box")
+                    []
+                    [ Ty.apply (Ty.path "array") [ N ] [ T ]; Ty.path "alloc::alloc::Global" ];
+                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ]
+                ],
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          Ty.path "bool",
+                          M.call_closure (|
                             Ty.path "bool",
-                            M.call_closure (|
-                              Ty.path "bool",
-                              BinOp.eq,
-                              [
-                                M.call_closure (|
-                                  Ty.path "usize",
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "alloc::vec::Vec")
-                                      []
-                                      [ T; Ty.path "alloc::alloc::Global" ],
-                                    "len",
-                                    [],
+                            BinOp.eq,
+                            [
+                              M.call_closure (|
+                                Ty.path "usize",
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "alloc::vec::Vec")
                                     []
-                                  |),
-                                  [ M.borrow (| Pointer.Kind.Ref, vec |) ]
-                                |);
-                                N
-                              ]
-                            |)
-                          |)) in
-                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                                    [ T; Ty.path "alloc::alloc::Global" ],
+                                  "len",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, vec |) ]
+                              |);
+                              N
+                            ]
+                          |)
+                        |)) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.read (|
                       let~ boxed_slice :
                           Ty.apply
                             (Ty.path "alloc::boxed::Box")
@@ -1549,46 +1443,26 @@ Module boxed.
                               [ M.read (| boxed_slice |) ]
                             |)
                           ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
+                      |)
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (Value.StructTuple
+                      "core::result::Result::Err"
+                      []
+                      [
                         Ty.apply
-                          (Ty.path "core::result::Result")
+                          (Ty.path "alloc::boxed::Box")
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [
-                                Ty.apply (Ty.path "array") [ N ] [ T ];
-                                Ty.path "alloc::alloc::Global"
-                              ];
-                            Ty.apply
-                              (Ty.path "alloc::vec::Vec")
-                              []
-                              [ T; Ty.path "alloc::alloc::Global" ]
-                          ],
-                        Value.StructTuple
-                          "core::result::Result::Err"
+                          [ Ty.apply (Ty.path "array") [ N ] [ T ]; Ty.path "alloc::alloc::Global"
+                          ];
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [
-                                Ty.apply (Ty.path "array") [ N ] [ T ];
-                                Ty.path "alloc::alloc::Global"
-                              ];
-                            Ty.apply
-                              (Ty.path "alloc::vec::Vec")
-                              []
-                              [ T; Ty.path "alloc::alloc::Global" ]
-                          ]
-                          [ M.read (| vec |) ]
-                      |)))
-                ]
-              |)
+                          [ T; Ty.path "alloc::alloc::Global" ]
+                      ]
+                      [ M.read (| vec |) ]))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1630,102 +1504,76 @@ Module boxed.
                   [ Ty.dyn [ ("core::any::Any::Trait", []) ]; A ],
                 self
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [
-                    Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
-                    Ty.apply
-                      (Ty.path "alloc::boxed::Box")
-                      []
-                      [ Ty.dyn [ ("core::any::Any::Trait", []) ]; A ]
-                  ],
-                M.alloc (| Ty.tuple [], Value.Tuple [] |),
+            M.match_operator (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
                 [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ :=
-                        M.use
-                          (M.alloc (|
+                  Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
+                  Ty.apply
+                    (Ty.path "alloc::boxed::Box")
+                    []
+                    [ Ty.dyn [ ("core::any::Any::Trait", []) ]; A ]
+                ],
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          Ty.path "bool",
+                          M.call_closure (|
                             Ty.path "bool",
-                            M.call_closure (|
-                              Ty.path "bool",
-                              M.get_associated_function (|
-                                Ty.dyn [ ("core::any::Any::Trait", []) ],
-                                "is",
-                                [],
-                                [ T ]
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                            |)
-                          |)) in
-                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (|
+                            M.get_associated_function (|
+                              Ty.dyn [ ("core::any::Any::Trait", []) ],
+                              "is",
+                              [],
+                              [ T ]
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
+                        |)) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    Value.StructTuple
+                      "core::result::Result::Ok"
+                      []
+                      [
+                        Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
                         Ty.apply
-                          (Ty.path "core::result::Result")
+                          (Ty.path "alloc::boxed::Box")
                           []
-                          [
-                            Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
+                          [ Ty.dyn [ ("core::any::Any::Trait", []) ]; A ]
+                      ]
+                      [
+                        M.call_closure (|
+                          Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
+                          M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::boxed::Box")
                               []
-                              [ Ty.dyn [ ("core::any::Any::Trait", []) ]; A ]
-                          ],
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          []
-                          [
-                            Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [ Ty.dyn [ ("core::any::Any::Trait", []) ]; A ]
-                          ]
-                          [
-                            M.call_closure (|
-                              Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "alloc::boxed::Box")
-                                  []
-                                  [ Ty.dyn [ ("core::any::Any::Trait", []) ]; A ],
-                                "downcast_unchecked",
-                                [],
-                                [ T ]
-                              |),
-                              [ M.read (| self |) ]
-                            |)
-                          ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
+                              [ Ty.dyn [ ("core::any::Any::Trait", []) ]; A ],
+                            "downcast_unchecked",
+                            [],
+                            [ T ]
+                          |),
+                          [ M.read (| self |) ]
+                        |)
+                      ]));
+                fun γ =>
+                  ltac:(M.monadic
+                    (Value.StructTuple
+                      "core::result::Result::Err"
+                      []
+                      [
+                        Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
                         Ty.apply
-                          (Ty.path "core::result::Result")
+                          (Ty.path "alloc::boxed::Box")
                           []
-                          [
-                            Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [ Ty.dyn [ ("core::any::Any::Trait", []) ]; A ]
-                          ],
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          []
-                          [
-                            Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [ Ty.dyn [ ("core::any::Any::Trait", []) ]; A ]
-                          ]
-                          [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
-                      |)))
-                ]
-              |)
+                          [ Ty.dyn [ ("core::any::Any::Trait", []) ]; A ]
+                      ]
+                      [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1765,106 +1613,104 @@ Module boxed.
               |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.read (|
-                  M.match_operator (|
-                    Ty.tuple [],
-                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ := M.use (M.alloc (| Ty.path "bool", Value.Bool true |)) in
-                          let _ :=
-                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                M.match_operator (|
+                  Ty.tuple [],
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.use (M.alloc (| Ty.path "bool", Value.Bool true |)) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.read (|
                           let~ _ : Ty.tuple [] :=
-                            M.read (|
-                              M.match_operator (|
-                                Ty.tuple [],
-                                M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ :=
-                                        M.use
-                                          (M.alloc (|
-                                            Ty.path "bool",
-                                            UnOp.not (|
-                                              M.call_closure (|
-                                                Ty.path "bool",
-                                                M.get_associated_function (|
-                                                  Ty.dyn [ ("core::any::Any::Trait", []) ],
-                                                  "is",
-                                                  [],
-                                                  [ T ]
-                                                |),
-                                                [
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (| M.read (| self |) |)
-                                                  |)
-                                                ]
-                                              |)
+                            M.match_operator (|
+                              Ty.tuple [],
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ :=
+                                      M.use
+                                        (M.alloc (|
+                                          Ty.path "bool",
+                                          UnOp.not (|
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              M.get_associated_function (|
+                                                Ty.dyn [ ("core::any::Any::Trait", []) ],
+                                                "is",
+                                                [],
+                                                [ T ]
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| self |) |)
+                                                |)
+                                              ]
                                             |)
-                                          |)) in
-                                      let _ :=
-                                        is_constant_or_break_match (|
-                                          M.read (| γ |),
-                                          Value.Bool true
-                                        |) in
-                                      M.alloc (|
-                                        Ty.tuple [],
-                                        M.never_to_any (|
-                                          M.call_closure (|
-                                            Ty.path "never",
-                                            M.get_function (| "core::panicking::panic", [], [] |),
-                                            [ mk_str (| "assertion failed: self.is::<T>()" |) ]
                                           |)
-                                        |)
-                                      |)));
-                                  fun γ =>
-                                    ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                                ]
-                              |)
+                                        |)) in
+                                    let _ :=
+                                      is_constant_or_break_match (|
+                                        M.read (| γ |),
+                                        Value.Bool true
+                                      |) in
+                                    M.never_to_any (|
+                                      M.call_closure (|
+                                        Ty.path "never",
+                                        M.get_function (| "core::panicking::panic", [], [] |),
+                                        [ mk_str (| "assertion failed: self.is::<T>()" |) ]
+                                      |)
+                                    |)));
+                                fun γ => ltac:(M.monadic (Value.Tuple []))
+                              ]
                             |) in
-                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                    ]
-                  |)
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                        |)));
+                    fun γ => ltac:(M.monadic (Value.Tuple []))
+                  ]
                 |) in
-              M.match_operator (|
+              M.alloc (|
                 Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
-                M.alloc (|
-                  Ty.tuple
-                    [ Ty.apply (Ty.path "*mut") [] [ Ty.dyn [ ("core::any::Any::Trait", []) ] ]; A
-                    ],
-                  M.call_closure (|
+                M.match_operator (|
+                  Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
+                  M.alloc (|
                     Ty.tuple
                       [ Ty.apply (Ty.path "*mut") [] [ Ty.dyn [ ("core::any::Any::Trait", []) ] ]; A
                       ],
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "alloc::boxed::Box")
+                    M.call_closure (|
+                      Ty.tuple
+                        [
+                          Ty.apply (Ty.path "*mut") [] [ Ty.dyn [ ("core::any::Any::Trait", []) ] ];
+                          A
+                        ],
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "alloc::boxed::Box")
+                          []
+                          [ Ty.dyn [ ("core::any::Any::Trait", []) ]; A ],
+                        "into_raw_with_allocator",
+                        [],
                         []
-                        [ Ty.dyn [ ("core::any::Any::Trait", []) ]; A ],
-                      "into_raw_with_allocator",
-                      [],
-                      []
-                    |),
-                    [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
-                  |)
-                |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                      let raw :=
-                        M.copy (|
-                          Ty.apply (Ty.path "*mut") [] [ Ty.dyn [ ("core::any::Any::Trait", []) ] ],
-                          γ0_0
-                        |) in
-                      let alloc := M.copy (| A, γ0_1 |) in
-                      M.alloc (|
-                        Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
+                      |),
+                      [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+                    |)
+                  |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                        let raw :=
+                          M.copy (|
+                            Ty.apply
+                              (Ty.path "*mut")
+                              []
+                              [ Ty.dyn [ ("core::any::Any::Trait", []) ] ],
+                            γ0_0
+                          |) in
+                        let alloc := M.copy (| A, γ0_1 |) in
                         M.call_closure (|
                           Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
                           M.get_associated_function (|
@@ -1877,9 +1723,9 @@ Module boxed.
                             M.cast (Ty.apply (Ty.path "*mut") [] [ T ]) (M.read (| raw |));
                             M.read (| alloc |)
                           ]
-                        |)
-                      |)))
-                ]
+                        |)))
+                  ]
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1920,145 +1766,101 @@ Module boxed.
                   ],
                 self
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [
-                    Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
-                    Ty.apply
-                      (Ty.path "alloc::boxed::Box")
+            M.match_operator (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
+                  Ty.apply
+                    (Ty.path "alloc::boxed::Box")
+                    []
+                    [
+                      Ty.dyn
+                        [ ("core::any::Any::Trait", []); ("core::marker::Send::AutoTrait", []) ];
+                      A
+                    ]
+                ],
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          Ty.path "bool",
+                          M.call_closure (|
+                            Ty.path "bool",
+                            M.get_associated_function (|
+                              Ty.dyn
+                                [
+                                  ("core::any::Any::Trait", []);
+                                  ("core::marker::Send::AutoTrait", [])
+                                ],
+                              "is",
+                              [],
+                              [ T ]
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
+                        |)) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    Value.StructTuple
+                      "core::result::Result::Ok"
                       []
                       [
-                        Ty.dyn
-                          [ ("core::any::Any::Trait", []); ("core::marker::Send::AutoTrait", []) ];
-                        A
+                        Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
+                        Ty.apply
+                          (Ty.path "alloc::boxed::Box")
+                          []
+                          [
+                            Ty.dyn
+                              [ ("core::any::Any::Trait", []); ("core::marker::Send::AutoTrait", [])
+                              ];
+                            A
+                          ]
                       ]
-                  ],
-                M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ :=
-                        M.use
-                          (M.alloc (|
-                            Ty.path "bool",
-                            M.call_closure (|
-                              Ty.path "bool",
-                              M.get_associated_function (|
+                      [
+                        M.call_closure (|
+                          Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
                                 Ty.dyn
                                   [
                                     ("core::any::Any::Trait", []);
                                     ("core::marker::Send::AutoTrait", [])
-                                  ],
-                                "is",
-                                [],
-                                [ T ]
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                            |)
-                          |)) in
-                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (|
+                                  ];
+                                A
+                              ],
+                            "downcast_unchecked",
+                            [],
+                            [ T ]
+                          |),
+                          [ M.read (| self |) ]
+                        |)
+                      ]));
+                fun γ =>
+                  ltac:(M.monadic
+                    (Value.StructTuple
+                      "core::result::Result::Err"
+                      []
+                      [
+                        Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
                         Ty.apply
-                          (Ty.path "core::result::Result")
+                          (Ty.path "alloc::boxed::Box")
                           []
                           [
-                            Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [
-                                Ty.dyn
-                                  [
-                                    ("core::any::Any::Trait", []);
-                                    ("core::marker::Send::AutoTrait", [])
-                                  ];
-                                A
-                              ]
-                          ],
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          []
-                          [
-                            Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [
-                                Ty.dyn
-                                  [
-                                    ("core::any::Any::Trait", []);
-                                    ("core::marker::Send::AutoTrait", [])
-                                  ];
-                                A
-                              ]
+                            Ty.dyn
+                              [ ("core::any::Any::Trait", []); ("core::marker::Send::AutoTrait", [])
+                              ];
+                            A
                           ]
-                          [
-                            M.call_closure (|
-                              Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "alloc::boxed::Box")
-                                  []
-                                  [
-                                    Ty.dyn
-                                      [
-                                        ("core::any::Any::Trait", []);
-                                        ("core::marker::Send::AutoTrait", [])
-                                      ];
-                                    A
-                                  ],
-                                "downcast_unchecked",
-                                [],
-                                [ T ]
-                              |),
-                              [ M.read (| self |) ]
-                            |)
-                          ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [
-                            Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [
-                                Ty.dyn
-                                  [
-                                    ("core::any::Any::Trait", []);
-                                    ("core::marker::Send::AutoTrait", [])
-                                  ];
-                                A
-                              ]
-                          ],
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          []
-                          [
-                            Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [
-                                Ty.dyn
-                                  [
-                                    ("core::any::Any::Trait", []);
-                                    ("core::marker::Send::AutoTrait", [])
-                                  ];
-                                A
-                              ]
-                          ]
-                          [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
-                      |)))
-                ]
-              |)
+                      ]
+                      [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2101,90 +1903,73 @@ Module boxed.
               |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.read (|
-                  M.match_operator (|
-                    Ty.tuple [],
-                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ := M.use (M.alloc (| Ty.path "bool", Value.Bool true |)) in
-                          let _ :=
-                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                M.match_operator (|
+                  Ty.tuple [],
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.use (M.alloc (| Ty.path "bool", Value.Bool true |)) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.read (|
                           let~ _ : Ty.tuple [] :=
-                            M.read (|
-                              M.match_operator (|
-                                Ty.tuple [],
-                                M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ :=
-                                        M.use
-                                          (M.alloc (|
-                                            Ty.path "bool",
-                                            UnOp.not (|
-                                              M.call_closure (|
-                                                Ty.path "bool",
-                                                M.get_associated_function (|
-                                                  Ty.dyn
-                                                    [
-                                                      ("core::any::Any::Trait", []);
-                                                      ("core::marker::Send::AutoTrait", [])
-                                                    ],
-                                                  "is",
-                                                  [],
-                                                  [ T ]
-                                                |),
-                                                [
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (| M.read (| self |) |)
-                                                  |)
-                                                ]
-                                              |)
+                            M.match_operator (|
+                              Ty.tuple [],
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ :=
+                                      M.use
+                                        (M.alloc (|
+                                          Ty.path "bool",
+                                          UnOp.not (|
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              M.get_associated_function (|
+                                                Ty.dyn
+                                                  [
+                                                    ("core::any::Any::Trait", []);
+                                                    ("core::marker::Send::AutoTrait", [])
+                                                  ],
+                                                "is",
+                                                [],
+                                                [ T ]
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| self |) |)
+                                                |)
+                                              ]
                                             |)
-                                          |)) in
-                                      let _ :=
-                                        is_constant_or_break_match (|
-                                          M.read (| γ |),
-                                          Value.Bool true
-                                        |) in
-                                      M.alloc (|
-                                        Ty.tuple [],
-                                        M.never_to_any (|
-                                          M.call_closure (|
-                                            Ty.path "never",
-                                            M.get_function (| "core::panicking::panic", [], [] |),
-                                            [ mk_str (| "assertion failed: self.is::<T>()" |) ]
                                           |)
-                                        |)
-                                      |)));
-                                  fun γ =>
-                                    ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                                ]
-                              |)
+                                        |)) in
+                                    let _ :=
+                                      is_constant_or_break_match (|
+                                        M.read (| γ |),
+                                        Value.Bool true
+                                      |) in
+                                    M.never_to_any (|
+                                      M.call_closure (|
+                                        Ty.path "never",
+                                        M.get_function (| "core::panicking::panic", [], [] |),
+                                        [ mk_str (| "assertion failed: self.is::<T>()" |) ]
+                                      |)
+                                    |)));
+                                fun γ => ltac:(M.monadic (Value.Tuple []))
+                              ]
                             |) in
-                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                    ]
-                  |)
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                        |)));
+                    fun γ => ltac:(M.monadic (Value.Tuple []))
+                  ]
                 |) in
-              M.match_operator (|
+              M.alloc (|
                 Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
-                M.alloc (|
-                  Ty.tuple
-                    [
-                      Ty.apply
-                        (Ty.path "*mut")
-                        []
-                        [
-                          Ty.dyn
-                            [ ("core::any::Any::Trait", []); ("core::marker::Send::AutoTrait", []) ]
-                        ];
-                      A
-                    ],
-                  M.call_closure (|
+                M.match_operator (|
+                  Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
+                  M.alloc (|
                     Ty.tuple
                       [
                         Ty.apply
@@ -2197,30 +1982,9 @@ Module boxed.
                           ];
                         A
                       ],
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "alloc::boxed::Box")
-                        []
+                    M.call_closure (|
+                      Ty.tuple
                         [
-                          Ty.dyn
-                            [ ("core::any::Any::Trait", []); ("core::marker::Send::AutoTrait", [])
-                            ];
-                          A
-                        ],
-                      "into_raw_with_allocator",
-                      [],
-                      []
-                    |),
-                    [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
-                  |)
-                |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                      let raw :=
-                        M.copy (|
                           Ty.apply
                             (Ty.path "*mut")
                             []
@@ -2230,12 +1994,46 @@ Module boxed.
                                   ("core::any::Any::Trait", []);
                                   ("core::marker::Send::AutoTrait", [])
                                 ]
-                            ],
-                          γ0_0
-                        |) in
-                      let alloc := M.copy (| A, γ0_1 |) in
-                      M.alloc (|
-                        Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
+                            ];
+                          A
+                        ],
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "alloc::boxed::Box")
+                          []
+                          [
+                            Ty.dyn
+                              [ ("core::any::Any::Trait", []); ("core::marker::Send::AutoTrait", [])
+                              ];
+                            A
+                          ],
+                        "into_raw_with_allocator",
+                        [],
+                        []
+                      |),
+                      [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+                    |)
+                  |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                        let raw :=
+                          M.copy (|
+                            Ty.apply
+                              (Ty.path "*mut")
+                              []
+                              [
+                                Ty.dyn
+                                  [
+                                    ("core::any::Any::Trait", []);
+                                    ("core::marker::Send::AutoTrait", [])
+                                  ]
+                              ],
+                            γ0_0
+                          |) in
+                        let alloc := M.copy (| A, γ0_1 |) in
                         M.call_closure (|
                           Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
                           M.get_associated_function (|
@@ -2248,9 +2046,9 @@ Module boxed.
                             M.cast (Ty.apply (Ty.path "*mut") [] [ T ]) (M.read (| raw |));
                             M.read (| alloc |)
                           ]
-                        |)
-                      |)))
-                ]
+                        |)))
+                  ]
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2304,155 +2102,113 @@ Module boxed.
                   ],
                 self
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [
-                    Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
-                    Ty.apply
-                      (Ty.path "alloc::boxed::Box")
+            M.match_operator (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
+                  Ty.apply
+                    (Ty.path "alloc::boxed::Box")
+                    []
+                    [
+                      Ty.dyn
+                        [
+                          ("core::any::Any::Trait", []);
+                          ("core::marker::Sync::AutoTrait", []);
+                          ("core::marker::Send::AutoTrait", [])
+                        ];
+                      A
+                    ]
+                ],
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          Ty.path "bool",
+                          M.call_closure (|
+                            Ty.path "bool",
+                            M.get_associated_function (|
+                              Ty.dyn
+                                [
+                                  ("core::any::Any::Trait", []);
+                                  ("core::marker::Sync::AutoTrait", []);
+                                  ("core::marker::Send::AutoTrait", [])
+                                ],
+                              "is",
+                              [],
+                              [ T ]
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
+                        |)) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    Value.StructTuple
+                      "core::result::Result::Ok"
                       []
                       [
-                        Ty.dyn
+                        Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
+                        Ty.apply
+                          (Ty.path "alloc::boxed::Box")
+                          []
                           [
-                            ("core::any::Any::Trait", []);
-                            ("core::marker::Sync::AutoTrait", []);
-                            ("core::marker::Send::AutoTrait", [])
-                          ];
-                        A
+                            Ty.dyn
+                              [
+                                ("core::any::Any::Trait", []);
+                                ("core::marker::Sync::AutoTrait", []);
+                                ("core::marker::Send::AutoTrait", [])
+                              ];
+                            A
+                          ]
                       ]
-                  ],
-                M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ :=
-                        M.use
-                          (M.alloc (|
-                            Ty.path "bool",
-                            M.call_closure (|
-                              Ty.path "bool",
-                              M.get_associated_function (|
+                      [
+                        M.call_closure (|
+                          Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
                                 Ty.dyn
                                   [
                                     ("core::any::Any::Trait", []);
                                     ("core::marker::Sync::AutoTrait", []);
                                     ("core::marker::Send::AutoTrait", [])
-                                  ],
-                                "is",
-                                [],
-                                [ T ]
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                            |)
-                          |)) in
-                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (|
+                                  ];
+                                A
+                              ],
+                            "downcast_unchecked",
+                            [],
+                            [ T ]
+                          |),
+                          [ M.read (| self |) ]
+                        |)
+                      ]));
+                fun γ =>
+                  ltac:(M.monadic
+                    (Value.StructTuple
+                      "core::result::Result::Err"
+                      []
+                      [
+                        Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
                         Ty.apply
-                          (Ty.path "core::result::Result")
+                          (Ty.path "alloc::boxed::Box")
                           []
                           [
-                            Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
+                            Ty.dyn
                               [
-                                Ty.dyn
-                                  [
-                                    ("core::any::Any::Trait", []);
-                                    ("core::marker::Sync::AutoTrait", []);
-                                    ("core::marker::Send::AutoTrait", [])
-                                  ];
-                                A
-                              ]
-                          ],
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          []
-                          [
-                            Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [
-                                Ty.dyn
-                                  [
-                                    ("core::any::Any::Trait", []);
-                                    ("core::marker::Sync::AutoTrait", []);
-                                    ("core::marker::Send::AutoTrait", [])
-                                  ];
-                                A
-                              ]
+                                ("core::any::Any::Trait", []);
+                                ("core::marker::Sync::AutoTrait", []);
+                                ("core::marker::Send::AutoTrait", [])
+                              ];
+                            A
                           ]
-                          [
-                            M.call_closure (|
-                              Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "alloc::boxed::Box")
-                                  []
-                                  [
-                                    Ty.dyn
-                                      [
-                                        ("core::any::Any::Trait", []);
-                                        ("core::marker::Sync::AutoTrait", []);
-                                        ("core::marker::Send::AutoTrait", [])
-                                      ];
-                                    A
-                                  ],
-                                "downcast_unchecked",
-                                [],
-                                [ T ]
-                              |),
-                              [ M.read (| self |) ]
-                            |)
-                          ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [
-                            Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [
-                                Ty.dyn
-                                  [
-                                    ("core::any::Any::Trait", []);
-                                    ("core::marker::Sync::AutoTrait", []);
-                                    ("core::marker::Send::AutoTrait", [])
-                                  ];
-                                A
-                              ]
-                          ],
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          []
-                          [
-                            Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [
-                                Ty.dyn
-                                  [
-                                    ("core::any::Any::Trait", []);
-                                    ("core::marker::Sync::AutoTrait", []);
-                                    ("core::marker::Send::AutoTrait", [])
-                                  ];
-                                A
-                              ]
-                          ]
-                          [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
-                      |)))
-                ]
-              |)
+                      ]
+                      [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2501,95 +2257,74 @@ Module boxed.
               |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.read (|
-                  M.match_operator (|
-                    Ty.tuple [],
-                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ := M.use (M.alloc (| Ty.path "bool", Value.Bool true |)) in
-                          let _ :=
-                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                M.match_operator (|
+                  Ty.tuple [],
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.use (M.alloc (| Ty.path "bool", Value.Bool true |)) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.read (|
                           let~ _ : Ty.tuple [] :=
-                            M.read (|
-                              M.match_operator (|
-                                Ty.tuple [],
-                                M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ :=
-                                        M.use
-                                          (M.alloc (|
-                                            Ty.path "bool",
-                                            UnOp.not (|
-                                              M.call_closure (|
-                                                Ty.path "bool",
-                                                M.get_associated_function (|
-                                                  Ty.dyn
-                                                    [
-                                                      ("core::any::Any::Trait", []);
-                                                      ("core::marker::Sync::AutoTrait", []);
-                                                      ("core::marker::Send::AutoTrait", [])
-                                                    ],
-                                                  "is",
-                                                  [],
-                                                  [ T ]
-                                                |),
-                                                [
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (| M.read (| self |) |)
-                                                  |)
-                                                ]
-                                              |)
+                            M.match_operator (|
+                              Ty.tuple [],
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ :=
+                                      M.use
+                                        (M.alloc (|
+                                          Ty.path "bool",
+                                          UnOp.not (|
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              M.get_associated_function (|
+                                                Ty.dyn
+                                                  [
+                                                    ("core::any::Any::Trait", []);
+                                                    ("core::marker::Sync::AutoTrait", []);
+                                                    ("core::marker::Send::AutoTrait", [])
+                                                  ],
+                                                "is",
+                                                [],
+                                                [ T ]
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| self |) |)
+                                                |)
+                                              ]
                                             |)
-                                          |)) in
-                                      let _ :=
-                                        is_constant_or_break_match (|
-                                          M.read (| γ |),
-                                          Value.Bool true
-                                        |) in
-                                      M.alloc (|
-                                        Ty.tuple [],
-                                        M.never_to_any (|
-                                          M.call_closure (|
-                                            Ty.path "never",
-                                            M.get_function (| "core::panicking::panic", [], [] |),
-                                            [ mk_str (| "assertion failed: self.is::<T>()" |) ]
                                           |)
-                                        |)
-                                      |)));
-                                  fun γ =>
-                                    ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                                ]
-                              |)
+                                        |)) in
+                                    let _ :=
+                                      is_constant_or_break_match (|
+                                        M.read (| γ |),
+                                        Value.Bool true
+                                      |) in
+                                    M.never_to_any (|
+                                      M.call_closure (|
+                                        Ty.path "never",
+                                        M.get_function (| "core::panicking::panic", [], [] |),
+                                        [ mk_str (| "assertion failed: self.is::<T>()" |) ]
+                                      |)
+                                    |)));
+                                fun γ => ltac:(M.monadic (Value.Tuple []))
+                              ]
                             |) in
-                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                    ]
-                  |)
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                        |)));
+                    fun γ => ltac:(M.monadic (Value.Tuple []))
+                  ]
                 |) in
-              M.match_operator (|
+              M.alloc (|
                 Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
-                M.alloc (|
-                  Ty.tuple
-                    [
-                      Ty.apply
-                        (Ty.path "*mut")
-                        []
-                        [
-                          Ty.dyn
-                            [
-                              ("core::any::Any::Trait", []);
-                              ("core::marker::Sync::AutoTrait", []);
-                              ("core::marker::Send::AutoTrait", [])
-                            ]
-                        ];
-                      A
-                    ],
-                  M.call_closure (|
+                M.match_operator (|
+                  Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
+                  M.alloc (|
                     Ty.tuple
                       [
                         Ty.apply
@@ -2605,33 +2340,9 @@ Module boxed.
                           ];
                         A
                       ],
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "alloc::boxed::Box")
-                        []
+                    M.call_closure (|
+                      Ty.tuple
                         [
-                          Ty.dyn
-                            [
-                              ("core::any::Any::Trait", []);
-                              ("core::marker::Sync::AutoTrait", []);
-                              ("core::marker::Send::AutoTrait", [])
-                            ];
-                          A
-                        ],
-                      "into_raw_with_allocator",
-                      [],
-                      []
-                    |),
-                    [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
-                  |)
-                |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                      let raw :=
-                        M.copy (|
                           Ty.apply
                             (Ty.path "*mut")
                             []
@@ -2642,12 +2353,50 @@ Module boxed.
                                   ("core::marker::Sync::AutoTrait", []);
                                   ("core::marker::Send::AutoTrait", [])
                                 ]
-                            ],
-                          γ0_0
-                        |) in
-                      let alloc := M.copy (| A, γ0_1 |) in
-                      M.alloc (|
-                        Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
+                            ];
+                          A
+                        ],
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "alloc::boxed::Box")
+                          []
+                          [
+                            Ty.dyn
+                              [
+                                ("core::any::Any::Trait", []);
+                                ("core::marker::Sync::AutoTrait", []);
+                                ("core::marker::Send::AutoTrait", [])
+                              ];
+                            A
+                          ],
+                        "into_raw_with_allocator",
+                        [],
+                        []
+                      |),
+                      [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+                    |)
+                  |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                        let raw :=
+                          M.copy (|
+                            Ty.apply
+                              (Ty.path "*mut")
+                              []
+                              [
+                                Ty.dyn
+                                  [
+                                    ("core::any::Any::Trait", []);
+                                    ("core::marker::Sync::AutoTrait", []);
+                                    ("core::marker::Send::AutoTrait", [])
+                                  ]
+                              ],
+                            γ0_0
+                          |) in
+                        let alloc := M.copy (| A, γ0_1 |) in
                         M.call_closure (|
                           Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
                           M.get_associated_function (|
@@ -2660,9 +2409,9 @@ Module boxed.
                             M.cast (Ty.apply (Ty.path "*mut") [] [ T ]) (M.read (| raw |));
                             M.read (| alloc |)
                           ]
-                        |)
-                      |)))
-                ]
+                        |)))
+                  ]
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3299,39 +3048,38 @@ Module boxed.
                   [ Ty.dyn [ ("core::error::Error::Trait", []) ]; Ty.path "alloc::alloc::Global" ],
                 self
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [
-                    Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ];
-                    Ty.apply
-                      (Ty.path "alloc::boxed::Box")
-                      []
-                      [ Ty.dyn [ ("core::error::Error::Trait", []) ]; Ty.path "alloc::alloc::Global"
-                      ]
-                  ],
-                M.alloc (| Ty.tuple [], Value.Tuple [] |),
+            M.match_operator (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
                 [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ :=
-                        M.use
-                          (M.alloc (|
+                  Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ];
+                  Ty.apply
+                    (Ty.path "alloc::boxed::Box")
+                    []
+                    [ Ty.dyn [ ("core::error::Error::Trait", []) ]; Ty.path "alloc::alloc::Global" ]
+                ],
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          Ty.path "bool",
+                          M.call_closure (|
                             Ty.path "bool",
-                            M.call_closure (|
-                              Ty.path "bool",
-                              M.get_associated_function (|
-                                Ty.dyn [ ("core::error::Error::Trait", []) ],
-                                "is",
-                                [],
-                                [ T ]
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                            |)
-                          |)) in
-                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            M.get_associated_function (|
+                              Ty.dyn [ ("core::error::Error::Trait", []) ],
+                              "is",
+                              [],
+                              [ T ]
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
+                        |)) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.read (|
                       let~ raw :
                           Ty.apply
                             (Ty.path "*mut")
@@ -3409,46 +3157,28 @@ Module boxed.
                               [ M.cast (Ty.apply (Ty.path "*mut") [] [ T ]) (M.read (| raw |)) ]
                             |)
                           ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
+                      |)
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (Value.StructTuple
+                      "core::result::Result::Err"
+                      []
+                      [
                         Ty.apply
-                          (Ty.path "core::result::Result")
+                          (Ty.path "alloc::boxed::Box")
+                          []
+                          [ T; Ty.path "alloc::alloc::Global" ];
+                        Ty.apply
+                          (Ty.path "alloc::boxed::Box")
                           []
                           [
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [ T; Ty.path "alloc::alloc::Global" ];
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [
-                                Ty.dyn [ ("core::error::Error::Trait", []) ];
-                                Ty.path "alloc::alloc::Global"
-                              ]
-                          ],
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [ T; Ty.path "alloc::alloc::Global" ];
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [
-                                Ty.dyn [ ("core::error::Error::Trait", []) ];
-                                Ty.path "alloc::alloc::Global"
-                              ]
+                            Ty.dyn [ ("core::error::Error::Trait", []) ];
+                            Ty.path "alloc::alloc::Global"
                           ]
-                          [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
-                      |)))
-                ]
-              |)
+                      ]
+                      [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

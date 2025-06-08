@@ -61,12 +61,10 @@ Module Impl_core_clone_Clone_for_contract_terminate_AccountId.
             Ty.apply (Ty.path "&") [] [ Ty.path "contract_terminate::AccountId" ],
             self
           |) in
-        M.read (|
-          M.match_operator (|
-            Ty.path "contract_terminate::AccountId",
-            Value.DeclaredButUndefined,
-            [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
-          |)
+        M.match_operator (|
+          Ty.path "contract_terminate::AccountId",
+          Value.DeclaredButUndefined,
+          [ fun γ => ltac:(M.monadic (M.read (| M.deref (| M.read (| self |) |) |))) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

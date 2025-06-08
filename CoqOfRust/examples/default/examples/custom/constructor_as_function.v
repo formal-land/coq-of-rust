@@ -14,33 +14,31 @@ Definition matching (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
   | [], [], [ tuple ] =>
     ltac:(M.monadic
       (let tuple := M.alloc (| Ty.tuple [ Ty.path "i32"; Ty.path "i32" ], tuple |) in
-      M.read (|
-        M.match_operator (|
-          Ty.path "i32",
-          tuple,
-          [
-            fun γ =>
-              ltac:(M.monadic
-                (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                let _ :=
-                  is_constant_or_break_match (|
-                    M.read (| γ0_0 |),
-                    Value.Integer IntegerKind.I32 0
-                  |) in
-                let _ :=
-                  is_constant_or_break_match (|
-                    M.read (| γ0_1 |),
-                    Value.Integer IntegerKind.I32 0
-                  |) in
-                M.alloc (| Ty.path "i32", Value.Integer IntegerKind.I32 0 |)));
-            fun γ =>
-              ltac:(M.monadic
-                (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                M.alloc (| Ty.path "i32", Value.Integer IntegerKind.I32 1 |)))
-          ]
-        |)
+      M.match_operator (|
+        Ty.path "i32",
+        tuple,
+        [
+          fun γ =>
+            ltac:(M.monadic
+              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+              let _ :=
+                is_constant_or_break_match (|
+                  M.read (| γ0_0 |),
+                  Value.Integer IntegerKind.I32 0
+                |) in
+              let _ :=
+                is_constant_or_break_match (|
+                  M.read (| γ0_1 |),
+                  Value.Integer IntegerKind.I32 0
+                |) in
+              Value.Integer IntegerKind.I32 0));
+          fun γ =>
+            ltac:(M.monadic
+              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+              Value.Integer IntegerKind.I32 1))
+        ]
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

@@ -42,189 +42,204 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         M.loop (|
           Ty.tuple [],
           ltac:(M.monadic
-            (M.match_operator (|
+            (M.alloc (|
               Ty.tuple [],
-              optional,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let i := M.copy (| Ty.path "i32", γ0_0 |) in
-                    M.match_operator (|
-                      Ty.tuple [],
-                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  Ty.path "bool",
-                                  M.call_closure (|
+              M.match_operator (|
+                Ty.tuple [],
+                optional,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 :=
+                        M.SubPointer.get_struct_tuple_field (|
+                          γ,
+                          "core::option::Option::Some",
+                          0
+                        |) in
+                      let i := M.copy (| Ty.path "i32", γ0_0 |) in
+                      M.match_operator (|
+                        Ty.tuple [],
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.use
+                                  (M.alloc (|
                                     Ty.path "bool",
-                                    BinOp.gt,
-                                    [ M.read (| i |); Value.Integer IntegerKind.I32 9 ]
-                                  |)
-                                |)) in
-                            let _ :=
-                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let~ _ : Ty.tuple [] :=
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.gt,
+                                      [ M.read (| i |); Value.Integer IntegerKind.I32 9 ]
+                                    |)
+                                  |)) in
+                              let _ :=
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.read (|
                                 let~ _ : Ty.tuple [] :=
-                                  M.call_closure (|
-                                    Ty.tuple [],
-                                    M.get_function (| "std::io::stdio::_print", [], [] |),
-                                    [
+                                  M.read (|
+                                    let~ _ : Ty.tuple [] :=
                                       M.call_closure (|
-                                        Ty.path "core::fmt::Arguments",
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::Arguments",
-                                          "new_const",
-                                          [ Value.Integer IntegerKind.Usize 1 ],
-                                          []
-                                        |),
+                                        Ty.tuple [],
+                                        M.get_function (| "std::io::stdio::_print", [], [] |),
                                         [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (|
+                                          M.call_closure (|
+                                            Ty.path "core::fmt::Arguments",
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::Arguments",
+                                              "new_const",
+                                              [ Value.Integer IntegerKind.Usize 1 ],
+                                              []
+                                            |),
+                                            [
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
-                                                M.alloc (|
-                                                  Ty.apply
-                                                    (Ty.path "array")
-                                                    [ Value.Integer IntegerKind.Usize 1 ]
-                                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                                  Value.Array
-                                                    [ mk_str (| "Greater than 9, quit!
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      Ty.apply
+                                                        (Ty.path "array")
+                                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [ Ty.path "str" ]
+                                                        ],
+                                                      Value.Array
+                                                        [ mk_str (| "Greater than 9, quit!
 " |) ]
+                                                    |)
+                                                  |)
                                                 |)
                                               |)
-                                            |)
+                                            ]
                                           |)
                                         ]
-                                      |)
-                                    ]
+                                      |) in
+                                    M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                                  |) in
+                                let~ _ : Ty.tuple [] :=
+                                  M.write (|
+                                    optional,
+                                    Value.StructTuple
+                                      "core::option::Option::None"
+                                      []
+                                      [ Ty.path "i32" ]
+                                      []
                                   |) in
                                 M.alloc (| Ty.tuple [], Value.Tuple [] |)
-                              |) in
-                            let~ _ : Ty.tuple [] :=
-                              M.write (|
-                                optional,
-                                Value.StructTuple
-                                  "core::option::Option::None"
-                                  []
-                                  [ Ty.path "i32" ]
-                                  []
-                              |) in
-                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let~ _ : Ty.tuple [] :=
-                              M.read (|
+                              |)));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (M.read (|
                                 let~ _ : Ty.tuple [] :=
-                                  M.call_closure (|
-                                    Ty.tuple [],
-                                    M.get_function (| "std::io::stdio::_print", [], [] |),
-                                    [
+                                  M.read (|
+                                    let~ _ : Ty.tuple [] :=
                                       M.call_closure (|
-                                        Ty.path "core::fmt::Arguments",
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::Arguments",
-                                          "new_v1",
-                                          [
-                                            Value.Integer IntegerKind.Usize 2;
-                                            Value.Integer IntegerKind.Usize 1
-                                          ],
-                                          []
-                                        |),
+                                        Ty.tuple [],
+                                        M.get_function (| "std::io::stdio::_print", [], [] |),
                                         [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (|
+                                          M.call_closure (|
+                                            Ty.path "core::fmt::Arguments",
+                                            M.get_associated_function (|
+                                              Ty.path "core::fmt::Arguments",
+                                              "new_v1",
+                                              [
+                                                Value.Integer IntegerKind.Usize 2;
+                                                Value.Integer IntegerKind.Usize 1
+                                              ],
+                                              []
+                                            |),
+                                            [
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
-                                                M.alloc (|
-                                                  Ty.apply
-                                                    (Ty.path "array")
-                                                    [ Value.Integer IntegerKind.Usize 2 ]
-                                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                                  Value.Array
-                                                    [
-                                                      mk_str (| "`i` is `" |);
-                                                      mk_str (| "`. Try again.
-" |)
-                                                    ]
-                                                |)
-                                              |)
-                                            |)
-                                          |);
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (|
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.alloc (|
-                                                  Ty.apply
-                                                    (Ty.path "array")
-                                                    [ Value.Integer IntegerKind.Usize 1 ]
-                                                    [ Ty.path "core::fmt::rt::Argument" ],
-                                                  Value.Array
-                                                    [
-                                                      M.call_closure (|
-                                                        Ty.path "core::fmt::rt::Argument",
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_debug",
-                                                          [],
-                                                          [ Ty.path "i32" ]
-                                                        |),
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      Ty.apply
+                                                        (Ty.path "array")
+                                                        [ Value.Integer IntegerKind.Usize 2 ]
                                                         [
-                                                          M.borrow (|
-                                                            Pointer.Kind.Ref,
-                                                            M.deref (|
-                                                              M.borrow (| Pointer.Kind.Ref, i |)
-                                                            |)
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [ Ty.path "str" ]
+                                                        ],
+                                                      Value.Array
+                                                        [
+                                                          mk_str (| "`i` is `" |);
+                                                          mk_str (| "`. Try again.
+" |)
+                                                        ]
+                                                    |)
+                                                  |)
+                                                |)
+                                              |);
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.alloc (|
+                                                      Ty.apply
+                                                        (Ty.path "array")
+                                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                                        [ Ty.path "core::fmt::rt::Argument" ],
+                                                      Value.Array
+                                                        [
+                                                          M.call_closure (|
+                                                            Ty.path "core::fmt::rt::Argument",
+                                                            M.get_associated_function (|
+                                                              Ty.path "core::fmt::rt::Argument",
+                                                              "new_debug",
+                                                              [],
+                                                              [ Ty.path "i32" ]
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (|
+                                                                  M.borrow (| Pointer.Kind.Ref, i |)
+                                                                |)
+                                                              |)
+                                                            ]
                                                           |)
                                                         ]
-                                                      |)
-                                                    ]
+                                                    |)
+                                                  |)
                                                 |)
                                               |)
-                                            |)
+                                            ]
                                           |)
                                         ]
-                                      |)
-                                    ]
+                                      |) in
+                                    M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                                  |) in
+                                let~ _ : Ty.tuple [] :=
+                                  M.write (|
+                                    optional,
+                                    Value.StructTuple
+                                      "core::option::Option::Some"
+                                      []
+                                      [ Ty.path "i32" ]
+                                      [
+                                        M.call_closure (|
+                                          Ty.path "i32",
+                                          BinOp.Wrap.add,
+                                          [ M.read (| i |); Value.Integer IntegerKind.I32 1 ]
+                                        |)
+                                      ]
                                   |) in
                                 M.alloc (| Ty.tuple [], Value.Tuple [] |)
-                              |) in
-                            let~ _ : Ty.tuple [] :=
-                              M.write (|
-                                optional,
-                                Value.StructTuple
-                                  "core::option::Option::Some"
-                                  []
-                                  [ Ty.path "i32" ]
-                                  [
-                                    M.call_closure (|
-                                      Ty.path "i32",
-                                      BinOp.Wrap.add,
-                                      [ M.read (| i |); Value.Integer IntegerKind.I32 1 ]
-                                    |)
-                                  ]
-                              |) in
-                            M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                      ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (M.alloc (| Ty.tuple [], M.never_to_any (| M.read (| M.break (||) |) |) |)))
-              ]
+                              |)))
+                        ]
+                      |)));
+                  fun γ => ltac:(M.monadic (M.never_to_any (| M.read (| M.break (||) |) |)))
+                ]
+              |)
             |)))
         |)
       |)))

@@ -29,7 +29,7 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
           |) in
         let f := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
         M.never_to_any (|
-          M.read (| M.match_operator (| Ty.path "never", M.deref (| M.read (| self |) |), [] |) |)
+          M.match_operator (| Ty.path "never", M.deref (| M.read (| self |) |), [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -112,7 +112,7 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
           |) in
         let f := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
         M.never_to_any (|
-          M.read (| M.match_operator (| Ty.path "never", M.deref (| M.read (| self |) |), [] |) |)
+          M.match_operator (| Ty.path "never", M.deref (| M.read (| self |) |), [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

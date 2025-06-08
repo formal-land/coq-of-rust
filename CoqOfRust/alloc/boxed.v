@@ -474,50 +474,92 @@ Module boxed.
         ltac:(M.monadic
           (let x := M.alloc (| T, x |) in
           let alloc := M.alloc (| A, alloc |) in
-          M.read (|
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
-                  Ty.path "core::alloc::AllocError"
-                ]) (|
-              ltac:(M.monadic
-                (M.alloc (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
-                      Ty.path "core::alloc::AllocError"
-                    ],
-                  M.read (|
-                    let~ boxed :
-                        Ty.apply
-                          (Ty.path "alloc::boxed::Box")
-                          []
-                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A
-                          ] :=
-                      M.read (|
-                        M.match_operator (|
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
+                Ty.path "core::alloc::AllocError"
+              ]) (|
+            ltac:(M.monadic
+              (M.read (|
+                let~ boxed :
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      []
+                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ] :=
+                  M.match_operator (|
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      []
+                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ],
+                    M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::ops::control_flow::ControlFlow")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "core::convert::Infallible"; Ty.path "core::alloc::AllocError"
+                            ];
                           Ty.apply
                             (Ty.path "alloc::boxed::Box")
                             []
                             [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A
-                            ],
-                          M.alloc (|
+                            ]
+                        ],
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
                             Ty.apply
-                              (Ty.path "core::ops::control_flow::ControlFlow")
+                              (Ty.path "core::result::Result")
                               []
                               [
-                                Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  []
-                                  [
-                                    Ty.path "core::convert::Infallible";
-                                    Ty.path "core::alloc::AllocError"
-                                  ];
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "core::alloc::AllocError"
+                              ];
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
+                                Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ];
+                                A
+                              ]
+                          ],
+                        M.get_trait_method (|
+                          "core::ops::try_trait::Try",
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::boxed::Box")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                    []
+                                    [ T ];
+                                  A
+                                ];
+                              Ty.path "core::alloc::AllocError"
+                            ],
+                          [],
+                          [],
+                          "branch",
+                          [],
+                          []
+                        |),
+                        [
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
                                 Ty.apply
                                   (Ty.path "alloc::boxed::Box")
                                   []
@@ -527,223 +569,89 @@ Module boxed.
                                       []
                                       [ T ];
                                     A
-                                  ]
+                                  ];
+                                Ty.path "core::alloc::AllocError"
                               ],
-                            M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
+                              "try_new_uninit_in",
+                              [],
+                              []
+                            |),
+                            [ M.read (| alloc |) ]
+                          |)
+                        ]
+                      |)
+                    |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ0_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ,
+                              "core::ops::control_flow::ControlFlow::Break",
+                              0
+                            |) in
+                          let residual :=
+                            M.copy (|
                               Ty.apply
-                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                (Ty.path "core::result::Result")
                                 []
                                 [
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [
-                                      Ty.path "core::convert::Infallible";
-                                      Ty.path "core::alloc::AllocError"
-                                    ];
-                                  Ty.apply
-                                    (Ty.path "alloc::boxed::Box")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                        []
-                                        [ T ];
-                                      A
-                                    ]
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.path "core::alloc::AllocError"
                                 ],
-                              M.get_trait_method (|
-                                "core::ops::try_trait::Try",
-                                Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                          []
-                                          [ T ];
-                                        A
-                                      ];
-                                    Ty.path "core::alloc::AllocError"
-                                  ],
-                                [],
-                                [],
-                                "branch",
-                                [],
-                                []
-                              |),
-                              [
+                              γ0_0
+                            |) in
+                          M.never_to_any (|
+                            M.read (|
+                              M.return_ (|
                                 M.call_closure (|
                                   Ty.apply
                                     (Ty.path "core::result::Result")
                                     []
                                     [
-                                      Ty.apply
-                                        (Ty.path "alloc::boxed::Box")
-                                        []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                            []
-                                            [ T ];
-                                          A
-                                        ];
+                                      Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
                                       Ty.path "core::alloc::AllocError"
                                     ],
-                                  M.get_associated_function (|
-                                    Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
-                                    "try_new_uninit_in",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.read (| alloc |) ]
-                                |)
-                              ]
-                            |)
-                          |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ0_0 :=
-                                  M.SubPointer.get_struct_tuple_field (|
-                                    γ,
-                                    "core::ops::control_flow::ControlFlow::Break",
-                                    0
-                                  |) in
-                                let residual :=
-                                  M.copy (|
+                                  M.get_trait_method (|
+                                    "core::ops::try_trait::FromResidual",
                                     Ty.apply
                                       (Ty.path "core::result::Result")
                                       []
                                       [
-                                        Ty.path "core::convert::Infallible";
+                                        Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
                                         Ty.path "core::alloc::AllocError"
                                       ],
-                                    γ0_0
-                                  |) in
-                                M.alloc (|
-                                  Ty.apply
-                                    (Ty.path "alloc::boxed::Box")
-                                    []
+                                    [],
                                     [
                                       Ty.apply
-                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        (Ty.path "core::result::Result")
                                         []
-                                        [ T ];
-                                      A
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::alloc::AllocError"
+                                        ]
                                     ],
-                                  M.never_to_any (|
-                                    M.read (|
-                                      M.return_ (|
-                                        M.call_closure (|
-                                          Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            []
-                                            [
-                                              Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
-                                              Ty.path "core::alloc::AllocError"
-                                            ],
-                                          M.get_trait_method (|
-                                            "core::ops::try_trait::FromResidual",
-                                            Ty.apply
-                                              (Ty.path "core::result::Result")
-                                              []
-                                              [
-                                                Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
-                                                Ty.path "core::alloc::AllocError"
-                                              ],
-                                            [],
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.path "core::convert::Infallible";
-                                                  Ty.path "core::alloc::AllocError"
-                                                ]
-                                            ],
-                                            "from_residual",
-                                            [],
-                                            []
-                                          |),
-                                          [ M.read (| residual |) ]
-                                        |)
-                                      |)
-                                    |)
-                                  |)
-                                |)));
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ0_0 :=
-                                  M.SubPointer.get_struct_tuple_field (|
-                                    γ,
-                                    "core::ops::control_flow::ControlFlow::Continue",
-                                    0
-                                  |) in
-                                let val :=
-                                  M.copy (|
-                                    Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                          []
-                                          [ T ];
-                                        A
-                                      ],
-                                    γ0_0
-                                  |) in
-                                val))
-                          ]
-                        |)
-                      |) in
-                    let~ _ : Ty.tuple [] :=
-                      M.call_closure (|
-                        Ty.tuple [],
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "*mut") [] [ T ],
-                          "write",
-                          [],
-                          []
-                        |),
-                        [
-                          M.call_closure (|
-                            Ty.apply (Ty.path "*mut") [] [ T ],
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
-                              "as_mut_ptr",
-                              [],
-                              []
-                            |),
-                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| boxed |) |) |) ]
-                          |);
-                          M.read (| x |)
-                        ]
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [
-                          Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
-                          Ty.path "core::alloc::AllocError"
-                        ],
-                      Value.StructTuple
-                        "core::result::Result::Ok"
-                        []
-                        [
-                          Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
-                          Ty.path "core::alloc::AllocError"
-                        ]
-                        [
-                          M.call_closure (|
-                            Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
-                            M.get_associated_function (|
+                                    "from_residual",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.read (| residual |) ]
+                                |)
+                              |)
+                            |)
+                          |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ0_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ,
+                              "core::ops::control_flow::ControlFlow::Continue",
+                              0
+                            |) in
+                          let val :=
+                            M.copy (|
                               Ty.apply
                                 (Ty.path "alloc::boxed::Box")
                                 []
@@ -754,17 +662,67 @@ Module boxed.
                                     [ T ];
                                   A
                                 ],
-                              "assume_init",
-                              [],
-                              []
-                            |),
-                            [ M.read (| boxed |) ]
-                          |)
-                        ]
-                    |)
-                  |)
-                |)))
-            |)
+                              γ0_0
+                            |) in
+                          M.read (| val |)))
+                    ]
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.call_closure (|
+                    Ty.tuple [],
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "*mut") [] [ T ],
+                      "write",
+                      [],
+                      []
+                    |),
+                    [
+                      M.call_closure (|
+                        Ty.apply (Ty.path "*mut") [] [ T ],
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
+                          "as_mut_ptr",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| boxed |) |) |) ]
+                      |);
+                      M.read (| x |)
+                    ]
+                  |) in
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
+                      Ty.path "core::alloc::AllocError"
+                    ],
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ];
+                      Ty.path "core::alloc::AllocError"
+                    ]
+                    [
+                      M.call_closure (|
+                        Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "alloc::boxed::Box")
+                            []
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A
+                            ],
+                          "assume_init",
+                          [],
+                          []
+                        |),
+                        [ M.read (| boxed |) ]
+                      |)
+                    ]
+                |)
+              |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -812,23 +770,17 @@ Module boxed.
                 |),
                 []
               |) in
-            M.match_operator (|
+            M.alloc (|
               Ty.apply
                 (Ty.path "alloc::boxed::Box")
                 []
                 [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ],
-              M.alloc (|
+              M.match_operator (|
                 Ty.apply
-                  (Ty.path "core::result::Result")
+                  (Ty.path "alloc::boxed::Box")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "alloc::boxed::Box")
-                      []
-                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ];
-                    Ty.path "core::alloc::AllocError"
-                  ],
-                M.call_closure (|
+                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ],
+                M.alloc (|
                   Ty.apply
                     (Ty.path "core::result::Result")
                     []
@@ -839,47 +791,62 @@ Module boxed.
                         [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ];
                       Ty.path "core::alloc::AllocError"
                     ],
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
-                    "try_new_uninit_in",
-                    [],
-                    []
-                  |),
-                  [ M.read (| alloc |) ]
-                |)
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                    let m :=
-                      M.copy (|
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
                         Ty.apply
                           (Ty.path "alloc::boxed::Box")
                           []
-                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ],
-                        γ0_0
-                      |) in
-                    m));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "alloc::boxed::Box")
-                        []
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ],
+                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ];
+                        Ty.path "core::alloc::AllocError"
+                      ],
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
+                      "try_new_uninit_in",
+                      [],
+                      []
+                    |),
+                    [ M.read (| alloc |) ]
+                  |)
+                |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 :=
+                        M.SubPointer.get_struct_tuple_field (|
+                          γ,
+                          "core::result::Result::Ok",
+                          0
+                        |) in
+                      let m :=
+                        M.copy (|
+                          Ty.apply
+                            (Ty.path "alloc::boxed::Box")
+                            []
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A
+                            ],
+                          γ0_0
+                        |) in
+                      M.read (| m |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 :=
+                        M.SubPointer.get_struct_tuple_field (|
+                          γ,
+                          "core::result::Result::Err",
+                          0
+                        |) in
                       M.never_to_any (|
                         M.call_closure (|
                           Ty.path "never",
                           M.get_function (| "alloc::alloc::handle_alloc_error", [], [] |),
                           [ M.read (| layout |) ]
                         |)
-                      |)
-                    |)))
-              ]
+                      |)))
+                ]
+              |)
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -916,414 +883,87 @@ Module boxed.
       | [], [], [ alloc ] =>
         ltac:(M.monadic
           (let alloc := M.alloc (| A, alloc |) in
-          M.read (|
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.apply
-                    (Ty.path "alloc::boxed::Box")
-                    []
-                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ];
-                  Ty.path "core::alloc::AllocError"
-                ]) (|
-              ltac:(M.monadic
-                (M.alloc (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.apply
+                  (Ty.path "alloc::boxed::Box")
+                  []
+                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ];
+                Ty.path "core::alloc::AllocError"
+              ]) (|
+            ltac:(M.monadic
+              (M.read (|
+                let~ ptr :
+                    Ty.apply
+                      (Ty.path "core::ptr::non_null::NonNull")
+                      []
+                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ] :=
+                  M.match_operator (|
+                    Ty.apply
+                      (Ty.path "core::ptr::non_null::NonNull")
+                      []
+                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
                     [
-                      Ty.apply
-                        (Ty.path "alloc::boxed::Box")
-                        []
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ];
-                      Ty.path "core::alloc::AllocError"
-                    ],
-                  M.read (|
-                    let~ ptr :
-                        Ty.apply
-                          (Ty.path "core::ptr::non_null::NonNull")
-                          []
-                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ] :=
-                      M.read (|
-                        M.match_operator (|
-                          Ty.apply
-                            (Ty.path "core::ptr::non_null::NonNull")
-                            []
-                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
-                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ :=
-                                  M.use
-                                    (get_constant (|
-                                      "core::mem::SizedTypeProperties::IS_ZST",
-                                      Ty.path "bool"
-                                    |)) in
-                                let _ :=
-                                  is_constant_or_break_match (|
-                                    M.read (| γ |),
-                                    Value.Bool true
-                                  |) in
-                                M.alloc (|
-                                  Ty.apply
-                                    (Ty.path "core::ptr::non_null::NonNull")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                        []
-                                        [ T ]
-                                    ],
-                                  M.call_closure (|
-                                    Ty.apply
-                                      (Ty.path "core::ptr::non_null::NonNull")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                          []
-                                          [ T ]
-                                      ],
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "core::ptr::non_null::NonNull")
-                                        []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                            []
-                                            [ T ]
-                                        ],
-                                      "dangling",
-                                      [],
-                                      []
-                                    |),
-                                    []
-                                  |)
-                                |)));
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let~ layout : Ty.path "core::alloc::layout::Layout" :=
-                                  M.call_closure (|
-                                    Ty.path "core::alloc::layout::Layout",
-                                    M.get_associated_function (|
-                                      Ty.path "core::alloc::layout::Layout",
-                                      "new",
-                                      [],
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                          []
-                                          [ T ]
-                                      ]
-                                    |),
-                                    []
-                                  |) in
-                                M.alloc (|
-                                  Ty.apply
-                                    (Ty.path "core::ptr::non_null::NonNull")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                        []
-                                        [ T ]
-                                    ],
-                                  M.call_closure (|
-                                    Ty.apply
-                                      (Ty.path "core::ptr::non_null::NonNull")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                          []
-                                          [ T ]
-                                      ],
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "core::ptr::non_null::NonNull")
-                                        []
-                                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                                      "cast",
-                                      [],
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                          []
-                                          [ T ]
-                                      ]
-                                    |),
-                                    [
-                                      M.read (|
-                                        M.match_operator (|
-                                          Ty.apply
-                                            (Ty.path "core::ptr::non_null::NonNull")
-                                            []
-                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                                          M.alloc (|
-                                            Ty.apply
-                                              (Ty.path "core::ops::control_flow::ControlFlow")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [
-                                                    Ty.path "core::convert::Infallible";
-                                                    Ty.path "core::alloc::AllocError"
-                                                  ];
-                                                Ty.apply
-                                                  (Ty.path "core::ptr::non_null::NonNull")
-                                                  []
-                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                              ],
-                                            M.call_closure (|
-                                              Ty.apply
-                                                (Ty.path "core::ops::control_flow::ControlFlow")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::result::Result")
-                                                    []
-                                                    [
-                                                      Ty.path "core::convert::Infallible";
-                                                      Ty.path "core::alloc::AllocError"
-                                                    ];
-                                                  Ty.apply
-                                                    (Ty.path "core::ptr::non_null::NonNull")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ],
-                                              M.get_trait_method (|
-                                                "core::ops::try_trait::Try",
-                                                Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::ptr::non_null::NonNull")
-                                                      []
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "slice")
-                                                          []
-                                                          [ Ty.path "u8" ]
-                                                      ];
-                                                    Ty.path "core::alloc::AllocError"
-                                                  ],
-                                                [],
-                                                [],
-                                                "branch",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.call_closure (|
-                                                  Ty.apply
-                                                    (Ty.path "core::result::Result")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "core::ptr::non_null::NonNull")
-                                                        []
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "slice")
-                                                            []
-                                                            [ Ty.path "u8" ]
-                                                        ];
-                                                      Ty.path "core::alloc::AllocError"
-                                                    ],
-                                                  M.get_trait_method (|
-                                                    "core::alloc::Allocator",
-                                                    A,
-                                                    [],
-                                                    [],
-                                                    "allocate",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.borrow (| Pointer.Kind.Ref, alloc |);
-                                                    M.read (| layout |)
-                                                  ]
-                                                |)
-                                              ]
-                                            |)
-                                          |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let γ0_0 :=
-                                                  M.SubPointer.get_struct_tuple_field (|
-                                                    γ,
-                                                    "core::ops::control_flow::ControlFlow::Break",
-                                                    0
-                                                  |) in
-                                                let residual :=
-                                                  M.copy (|
-                                                    Ty.apply
-                                                      (Ty.path "core::result::Result")
-                                                      []
-                                                      [
-                                                        Ty.path "core::convert::Infallible";
-                                                        Ty.path "core::alloc::AllocError"
-                                                      ],
-                                                    γ0_0
-                                                  |) in
-                                                M.alloc (|
-                                                  Ty.apply
-                                                    (Ty.path "core::ptr::non_null::NonNull")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ],
-                                                  M.never_to_any (|
-                                                    M.read (|
-                                                      M.return_ (|
-                                                        M.call_closure (|
-                                                          Ty.apply
-                                                            (Ty.path "core::result::Result")
-                                                            []
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "alloc::boxed::Box")
-                                                                []
-                                                                [
-                                                                  Ty.apply
-                                                                    (Ty.path
-                                                                      "core::mem::maybe_uninit::MaybeUninit")
-                                                                    []
-                                                                    [ T ];
-                                                                  A
-                                                                ];
-                                                              Ty.path "core::alloc::AllocError"
-                                                            ],
-                                                          M.get_trait_method (|
-                                                            "core::ops::try_trait::FromResidual",
-                                                            Ty.apply
-                                                              (Ty.path "core::result::Result")
-                                                              []
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path "alloc::boxed::Box")
-                                                                  []
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path
-                                                                        "core::mem::maybe_uninit::MaybeUninit")
-                                                                      []
-                                                                      [ T ];
-                                                                    A
-                                                                  ];
-                                                                Ty.path "core::alloc::AllocError"
-                                                              ],
-                                                            [],
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "core::result::Result")
-                                                                []
-                                                                [
-                                                                  Ty.path
-                                                                    "core::convert::Infallible";
-                                                                  Ty.path "core::alloc::AllocError"
-                                                                ]
-                                                            ],
-                                                            "from_residual",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [ M.read (| residual |) ]
-                                                        |)
-                                                      |)
-                                                    |)
-                                                  |)
-                                                |)));
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let γ0_0 :=
-                                                  M.SubPointer.get_struct_tuple_field (|
-                                                    γ,
-                                                    "core::ops::control_flow::ControlFlow::Continue",
-                                                    0
-                                                  |) in
-                                                let val :=
-                                                  M.copy (|
-                                                    Ty.apply
-                                                      (Ty.path "core::ptr::non_null::NonNull")
-                                                      []
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "slice")
-                                                          []
-                                                          [ Ty.path "u8" ]
-                                                      ],
-                                                    γ0_0
-                                                  |) in
-                                                val))
-                                          ]
-                                        |)
-                                      |)
-                                    ]
-                                  |)
-                                |)))
-                          ]
-                        |)
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "alloc::boxed::Box")
-                            []
-                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A
-                            ];
-                          Ty.path "core::alloc::AllocError"
-                        ],
-                      Value.StructTuple
-                        "core::result::Result::Ok"
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "alloc::boxed::Box")
-                            []
-                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A
-                            ];
-                          Ty.path "core::alloc::AllocError"
-                        ]
-                        [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ :=
+                            M.use
+                              (get_constant (|
+                                "core::mem::SizedTypeProperties::IS_ZST",
+                                Ty.path "bool"
+                              |)) in
+                          let _ :=
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.call_closure (|
                             Ty.apply
-                              (Ty.path "alloc::boxed::Box")
+                              (Ty.path "core::ptr::non_null::NonNull")
                               []
-                              [
-                                Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ];
-                                A
+                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
                               ],
                             M.get_associated_function (|
                               Ty.apply
-                                (Ty.path "alloc::boxed::Box")
+                                (Ty.path "core::ptr::non_null::NonNull")
                                 []
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                    []
-                                    [ T ];
-                                  A
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
                                 ],
-                              "from_raw_in",
+                              "dangling",
                               [],
                               []
                             |),
-                            [
+                            []
+                          |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.read (|
+                            let~ layout : Ty.path "core::alloc::layout::Layout" :=
+                              M.call_closure (|
+                                Ty.path "core::alloc::layout::Layout",
+                                M.get_associated_function (|
+                                  Ty.path "core::alloc::layout::Layout",
+                                  "new",
+                                  [],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ T ]
+                                  ]
+                                |),
+                                []
+                              |) in
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::ptr::non_null::NonNull")
+                                []
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                                ],
                               M.call_closure (|
                                 Ty.apply
-                                  (Ty.path "*mut")
+                                  (Ty.path "core::ptr::non_null::NonNull")
                                   []
                                   [
                                     Ty.apply
@@ -1335,26 +975,270 @@ Module boxed.
                                   Ty.apply
                                     (Ty.path "core::ptr::non_null::NonNull")
                                     []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                        []
-                                        [ T ]
-                                    ],
-                                  "as_ptr",
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                  "cast",
                                   [],
-                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ T ]
+                                  ]
                                 |),
-                                [ M.read (| ptr |) ]
-                              |);
-                              M.read (| alloc |)
-                            ]
-                          |)
+                                [
+                                  M.match_operator (|
+                                    Ty.apply
+                                      (Ty.path "core::ptr::non_null::NonNull")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                    M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "core::ops::control_flow::ControlFlow")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::alloc::AllocError"
+                                            ];
+                                          Ty.apply
+                                            (Ty.path "core::ptr::non_null::NonNull")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                        ],
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::ops::control_flow::ControlFlow")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.path "core::convert::Infallible";
+                                                Ty.path "core::alloc::AllocError"
+                                              ];
+                                            Ty.apply
+                                              (Ty.path "core::ptr::non_null::NonNull")
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                          ],
+                                        M.get_trait_method (|
+                                          "core::ops::try_trait::Try",
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::ptr::non_null::NonNull")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                              Ty.path "core::alloc::AllocError"
+                                            ],
+                                          [],
+                                          [],
+                                          "branch",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::ptr::non_null::NonNull")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ];
+                                                Ty.path "core::alloc::AllocError"
+                                              ],
+                                            M.get_trait_method (|
+                                              "core::alloc::Allocator",
+                                              A,
+                                              [],
+                                              [],
+                                              "allocate",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (| Pointer.Kind.Ref, alloc |);
+                                              M.read (| layout |)
+                                            ]
+                                          |)
+                                        ]
+                                      |)
+                                    |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ0_0 :=
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              γ,
+                                              "core::ops::control_flow::ControlFlow::Break",
+                                              0
+                                            |) in
+                                          let residual :=
+                                            M.copy (|
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path "core::convert::Infallible";
+                                                  Ty.path "core::alloc::AllocError"
+                                                ],
+                                              γ0_0
+                                            |) in
+                                          M.never_to_any (|
+                                            M.read (|
+                                              M.return_ (|
+                                                M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "alloc::boxed::Box")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::mem::maybe_uninit::MaybeUninit")
+                                                            []
+                                                            [ T ];
+                                                          A
+                                                        ];
+                                                      Ty.path "core::alloc::AllocError"
+                                                    ],
+                                                  M.get_trait_method (|
+                                                    "core::ops::try_trait::FromResidual",
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "alloc::boxed::Box")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "core::mem::maybe_uninit::MaybeUninit")
+                                                              []
+                                                              [ T ];
+                                                            A
+                                                          ];
+                                                        Ty.path "core::alloc::AllocError"
+                                                      ],
+                                                    [],
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.path "core::convert::Infallible";
+                                                          Ty.path "core::alloc::AllocError"
+                                                        ]
+                                                    ],
+                                                    "from_residual",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [ M.read (| residual |) ]
+                                                |)
+                                              |)
+                                            |)
+                                          |)));
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ0_0 :=
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              γ,
+                                              "core::ops::control_flow::ControlFlow::Continue",
+                                              0
+                                            |) in
+                                          let val :=
+                                            M.copy (|
+                                              Ty.apply
+                                                (Ty.path "core::ptr::non_null::NonNull")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                              γ0_0
+                                            |) in
+                                          M.read (| val |)))
+                                    ]
+                                  |)
+                                ]
+                              |)
+                            |)
+                          |)))
+                    ]
+                  |) in
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        []
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ];
+                      Ty.path "core::alloc::AllocError"
+                    ],
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        []
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ];
+                      Ty.path "core::alloc::AllocError"
+                    ]
+                    [
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "alloc::boxed::Box")
+                          []
+                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ],
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "alloc::boxed::Box")
+                            []
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A
+                            ],
+                          "from_raw_in",
+                          [],
+                          []
+                        |),
+                        [
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "*mut")
+                              []
+                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                              ],
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "core::ptr::non_null::NonNull")
+                                []
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                                ],
+                              "as_ptr",
+                              [],
+                              []
+                            |),
+                            [ M.read (| ptr |) ]
+                          |);
+                          M.read (| alloc |)
                         ]
-                    |)
-                  |)
-                |)))
-            |)
+                      |)
+                    ]
+                |)
+              |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1402,23 +1286,17 @@ Module boxed.
                 |),
                 []
               |) in
-            M.match_operator (|
+            M.alloc (|
               Ty.apply
                 (Ty.path "alloc::boxed::Box")
                 []
                 [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ],
-              M.alloc (|
+              M.match_operator (|
                 Ty.apply
-                  (Ty.path "core::result::Result")
+                  (Ty.path "alloc::boxed::Box")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "alloc::boxed::Box")
-                      []
-                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ];
-                    Ty.path "core::alloc::AllocError"
-                  ],
-                M.call_closure (|
+                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ],
+                M.alloc (|
                   Ty.apply
                     (Ty.path "core::result::Result")
                     []
@@ -1429,47 +1307,62 @@ Module boxed.
                         [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ];
                       Ty.path "core::alloc::AllocError"
                     ],
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
-                    "try_new_zeroed_in",
-                    [],
-                    []
-                  |),
-                  [ M.read (| alloc |) ]
-                |)
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                    let m :=
-                      M.copy (|
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
                         Ty.apply
                           (Ty.path "alloc::boxed::Box")
                           []
-                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ],
-                        γ0_0
-                      |) in
-                    m));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "alloc::boxed::Box")
-                        []
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ],
+                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ];
+                        Ty.path "core::alloc::AllocError"
+                      ],
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
+                      "try_new_zeroed_in",
+                      [],
+                      []
+                    |),
+                    [ M.read (| alloc |) ]
+                  |)
+                |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 :=
+                        M.SubPointer.get_struct_tuple_field (|
+                          γ,
+                          "core::result::Result::Ok",
+                          0
+                        |) in
+                      let m :=
+                        M.copy (|
+                          Ty.apply
+                            (Ty.path "alloc::boxed::Box")
+                            []
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A
+                            ],
+                          γ0_0
+                        |) in
+                      M.read (| m |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 :=
+                        M.SubPointer.get_struct_tuple_field (|
+                          γ,
+                          "core::result::Result::Err",
+                          0
+                        |) in
                       M.never_to_any (|
                         M.call_closure (|
                           Ty.path "never",
                           M.get_function (| "alloc::alloc::handle_alloc_error", [], [] |),
                           [ M.read (| layout |) ]
                         |)
-                      |)
-                    |)))
-              ]
+                      |)))
+                ]
+              |)
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1506,414 +1399,87 @@ Module boxed.
       | [], [], [ alloc ] =>
         ltac:(M.monadic
           (let alloc := M.alloc (| A, alloc |) in
-          M.read (|
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.apply
-                    (Ty.path "alloc::boxed::Box")
-                    []
-                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ];
-                  Ty.path "core::alloc::AllocError"
-                ]) (|
-              ltac:(M.monadic
-                (M.alloc (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.apply
+                  (Ty.path "alloc::boxed::Box")
+                  []
+                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ];
+                Ty.path "core::alloc::AllocError"
+              ]) (|
+            ltac:(M.monadic
+              (M.read (|
+                let~ ptr :
+                    Ty.apply
+                      (Ty.path "core::ptr::non_null::NonNull")
+                      []
+                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ] :=
+                  M.match_operator (|
+                    Ty.apply
+                      (Ty.path "core::ptr::non_null::NonNull")
+                      []
+                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
                     [
-                      Ty.apply
-                        (Ty.path "alloc::boxed::Box")
-                        []
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ];
-                      Ty.path "core::alloc::AllocError"
-                    ],
-                  M.read (|
-                    let~ ptr :
-                        Ty.apply
-                          (Ty.path "core::ptr::non_null::NonNull")
-                          []
-                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ] :=
-                      M.read (|
-                        M.match_operator (|
-                          Ty.apply
-                            (Ty.path "core::ptr::non_null::NonNull")
-                            []
-                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
-                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ :=
-                                  M.use
-                                    (get_constant (|
-                                      "core::mem::SizedTypeProperties::IS_ZST",
-                                      Ty.path "bool"
-                                    |)) in
-                                let _ :=
-                                  is_constant_or_break_match (|
-                                    M.read (| γ |),
-                                    Value.Bool true
-                                  |) in
-                                M.alloc (|
-                                  Ty.apply
-                                    (Ty.path "core::ptr::non_null::NonNull")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                        []
-                                        [ T ]
-                                    ],
-                                  M.call_closure (|
-                                    Ty.apply
-                                      (Ty.path "core::ptr::non_null::NonNull")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                          []
-                                          [ T ]
-                                      ],
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "core::ptr::non_null::NonNull")
-                                        []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                            []
-                                            [ T ]
-                                        ],
-                                      "dangling",
-                                      [],
-                                      []
-                                    |),
-                                    []
-                                  |)
-                                |)));
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let~ layout : Ty.path "core::alloc::layout::Layout" :=
-                                  M.call_closure (|
-                                    Ty.path "core::alloc::layout::Layout",
-                                    M.get_associated_function (|
-                                      Ty.path "core::alloc::layout::Layout",
-                                      "new",
-                                      [],
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                          []
-                                          [ T ]
-                                      ]
-                                    |),
-                                    []
-                                  |) in
-                                M.alloc (|
-                                  Ty.apply
-                                    (Ty.path "core::ptr::non_null::NonNull")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                        []
-                                        [ T ]
-                                    ],
-                                  M.call_closure (|
-                                    Ty.apply
-                                      (Ty.path "core::ptr::non_null::NonNull")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                          []
-                                          [ T ]
-                                      ],
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "core::ptr::non_null::NonNull")
-                                        []
-                                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                                      "cast",
-                                      [],
-                                      [
-                                        Ty.apply
-                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                          []
-                                          [ T ]
-                                      ]
-                                    |),
-                                    [
-                                      M.read (|
-                                        M.match_operator (|
-                                          Ty.apply
-                                            (Ty.path "core::ptr::non_null::NonNull")
-                                            []
-                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                                          M.alloc (|
-                                            Ty.apply
-                                              (Ty.path "core::ops::control_flow::ControlFlow")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [
-                                                    Ty.path "core::convert::Infallible";
-                                                    Ty.path "core::alloc::AllocError"
-                                                  ];
-                                                Ty.apply
-                                                  (Ty.path "core::ptr::non_null::NonNull")
-                                                  []
-                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                              ],
-                                            M.call_closure (|
-                                              Ty.apply
-                                                (Ty.path "core::ops::control_flow::ControlFlow")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::result::Result")
-                                                    []
-                                                    [
-                                                      Ty.path "core::convert::Infallible";
-                                                      Ty.path "core::alloc::AllocError"
-                                                    ];
-                                                  Ty.apply
-                                                    (Ty.path "core::ptr::non_null::NonNull")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ],
-                                              M.get_trait_method (|
-                                                "core::ops::try_trait::Try",
-                                                Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::ptr::non_null::NonNull")
-                                                      []
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "slice")
-                                                          []
-                                                          [ Ty.path "u8" ]
-                                                      ];
-                                                    Ty.path "core::alloc::AllocError"
-                                                  ],
-                                                [],
-                                                [],
-                                                "branch",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.call_closure (|
-                                                  Ty.apply
-                                                    (Ty.path "core::result::Result")
-                                                    []
-                                                    [
-                                                      Ty.apply
-                                                        (Ty.path "core::ptr::non_null::NonNull")
-                                                        []
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "slice")
-                                                            []
-                                                            [ Ty.path "u8" ]
-                                                        ];
-                                                      Ty.path "core::alloc::AllocError"
-                                                    ],
-                                                  M.get_trait_method (|
-                                                    "core::alloc::Allocator",
-                                                    A,
-                                                    [],
-                                                    [],
-                                                    "allocate_zeroed",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.borrow (| Pointer.Kind.Ref, alloc |);
-                                                    M.read (| layout |)
-                                                  ]
-                                                |)
-                                              ]
-                                            |)
-                                          |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let γ0_0 :=
-                                                  M.SubPointer.get_struct_tuple_field (|
-                                                    γ,
-                                                    "core::ops::control_flow::ControlFlow::Break",
-                                                    0
-                                                  |) in
-                                                let residual :=
-                                                  M.copy (|
-                                                    Ty.apply
-                                                      (Ty.path "core::result::Result")
-                                                      []
-                                                      [
-                                                        Ty.path "core::convert::Infallible";
-                                                        Ty.path "core::alloc::AllocError"
-                                                      ],
-                                                    γ0_0
-                                                  |) in
-                                                M.alloc (|
-                                                  Ty.apply
-                                                    (Ty.path "core::ptr::non_null::NonNull")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ],
-                                                  M.never_to_any (|
-                                                    M.read (|
-                                                      M.return_ (|
-                                                        M.call_closure (|
-                                                          Ty.apply
-                                                            (Ty.path "core::result::Result")
-                                                            []
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "alloc::boxed::Box")
-                                                                []
-                                                                [
-                                                                  Ty.apply
-                                                                    (Ty.path
-                                                                      "core::mem::maybe_uninit::MaybeUninit")
-                                                                    []
-                                                                    [ T ];
-                                                                  A
-                                                                ];
-                                                              Ty.path "core::alloc::AllocError"
-                                                            ],
-                                                          M.get_trait_method (|
-                                                            "core::ops::try_trait::FromResidual",
-                                                            Ty.apply
-                                                              (Ty.path "core::result::Result")
-                                                              []
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path "alloc::boxed::Box")
-                                                                  []
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path
-                                                                        "core::mem::maybe_uninit::MaybeUninit")
-                                                                      []
-                                                                      [ T ];
-                                                                    A
-                                                                  ];
-                                                                Ty.path "core::alloc::AllocError"
-                                                              ],
-                                                            [],
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "core::result::Result")
-                                                                []
-                                                                [
-                                                                  Ty.path
-                                                                    "core::convert::Infallible";
-                                                                  Ty.path "core::alloc::AllocError"
-                                                                ]
-                                                            ],
-                                                            "from_residual",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [ M.read (| residual |) ]
-                                                        |)
-                                                      |)
-                                                    |)
-                                                  |)
-                                                |)));
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let γ0_0 :=
-                                                  M.SubPointer.get_struct_tuple_field (|
-                                                    γ,
-                                                    "core::ops::control_flow::ControlFlow::Continue",
-                                                    0
-                                                  |) in
-                                                let val :=
-                                                  M.copy (|
-                                                    Ty.apply
-                                                      (Ty.path "core::ptr::non_null::NonNull")
-                                                      []
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "slice")
-                                                          []
-                                                          [ Ty.path "u8" ]
-                                                      ],
-                                                    γ0_0
-                                                  |) in
-                                                val))
-                                          ]
-                                        |)
-                                      |)
-                                    ]
-                                  |)
-                                |)))
-                          ]
-                        |)
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "alloc::boxed::Box")
-                            []
-                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A
-                            ];
-                          Ty.path "core::alloc::AllocError"
-                        ],
-                      Value.StructTuple
-                        "core::result::Result::Ok"
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "alloc::boxed::Box")
-                            []
-                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A
-                            ];
-                          Ty.path "core::alloc::AllocError"
-                        ]
-                        [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ :=
+                            M.use
+                              (get_constant (|
+                                "core::mem::SizedTypeProperties::IS_ZST",
+                                Ty.path "bool"
+                              |)) in
+                          let _ :=
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.call_closure (|
                             Ty.apply
-                              (Ty.path "alloc::boxed::Box")
+                              (Ty.path "core::ptr::non_null::NonNull")
                               []
-                              [
-                                Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ];
-                                A
+                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
                               ],
                             M.get_associated_function (|
                               Ty.apply
-                                (Ty.path "alloc::boxed::Box")
+                                (Ty.path "core::ptr::non_null::NonNull")
                                 []
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                    []
-                                    [ T ];
-                                  A
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
                                 ],
-                              "from_raw_in",
+                              "dangling",
                               [],
                               []
                             |),
-                            [
+                            []
+                          |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.read (|
+                            let~ layout : Ty.path "core::alloc::layout::Layout" :=
+                              M.call_closure (|
+                                Ty.path "core::alloc::layout::Layout",
+                                M.get_associated_function (|
+                                  Ty.path "core::alloc::layout::Layout",
+                                  "new",
+                                  [],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ T ]
+                                  ]
+                                |),
+                                []
+                              |) in
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::ptr::non_null::NonNull")
+                                []
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                                ],
                               M.call_closure (|
                                 Ty.apply
-                                  (Ty.path "*mut")
+                                  (Ty.path "core::ptr::non_null::NonNull")
                                   []
                                   [
                                     Ty.apply
@@ -1925,26 +1491,270 @@ Module boxed.
                                   Ty.apply
                                     (Ty.path "core::ptr::non_null::NonNull")
                                     []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                        []
-                                        [ T ]
-                                    ],
-                                  "as_ptr",
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                  "cast",
                                   [],
-                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ T ]
+                                  ]
                                 |),
-                                [ M.read (| ptr |) ]
-                              |);
-                              M.read (| alloc |)
-                            ]
-                          |)
+                                [
+                                  M.match_operator (|
+                                    Ty.apply
+                                      (Ty.path "core::ptr::non_null::NonNull")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                    M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "core::ops::control_flow::ControlFlow")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::alloc::AllocError"
+                                            ];
+                                          Ty.apply
+                                            (Ty.path "core::ptr::non_null::NonNull")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                        ],
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::ops::control_flow::ControlFlow")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.path "core::convert::Infallible";
+                                                Ty.path "core::alloc::AllocError"
+                                              ];
+                                            Ty.apply
+                                              (Ty.path "core::ptr::non_null::NonNull")
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                          ],
+                                        M.get_trait_method (|
+                                          "core::ops::try_trait::Try",
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::ptr::non_null::NonNull")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                              Ty.path "core::alloc::AllocError"
+                                            ],
+                                          [],
+                                          [],
+                                          "branch",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::ptr::non_null::NonNull")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ];
+                                                Ty.path "core::alloc::AllocError"
+                                              ],
+                                            M.get_trait_method (|
+                                              "core::alloc::Allocator",
+                                              A,
+                                              [],
+                                              [],
+                                              "allocate_zeroed",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (| Pointer.Kind.Ref, alloc |);
+                                              M.read (| layout |)
+                                            ]
+                                          |)
+                                        ]
+                                      |)
+                                    |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ0_0 :=
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              γ,
+                                              "core::ops::control_flow::ControlFlow::Break",
+                                              0
+                                            |) in
+                                          let residual :=
+                                            M.copy (|
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path "core::convert::Infallible";
+                                                  Ty.path "core::alloc::AllocError"
+                                                ],
+                                              γ0_0
+                                            |) in
+                                          M.never_to_any (|
+                                            M.read (|
+                                              M.return_ (|
+                                                M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "alloc::boxed::Box")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::mem::maybe_uninit::MaybeUninit")
+                                                            []
+                                                            [ T ];
+                                                          A
+                                                        ];
+                                                      Ty.path "core::alloc::AllocError"
+                                                    ],
+                                                  M.get_trait_method (|
+                                                    "core::ops::try_trait::FromResidual",
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "alloc::boxed::Box")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "core::mem::maybe_uninit::MaybeUninit")
+                                                              []
+                                                              [ T ];
+                                                            A
+                                                          ];
+                                                        Ty.path "core::alloc::AllocError"
+                                                      ],
+                                                    [],
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.path "core::convert::Infallible";
+                                                          Ty.path "core::alloc::AllocError"
+                                                        ]
+                                                    ],
+                                                    "from_residual",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [ M.read (| residual |) ]
+                                                |)
+                                              |)
+                                            |)
+                                          |)));
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ0_0 :=
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              γ,
+                                              "core::ops::control_flow::ControlFlow::Continue",
+                                              0
+                                            |) in
+                                          let val :=
+                                            M.copy (|
+                                              Ty.apply
+                                                (Ty.path "core::ptr::non_null::NonNull")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                              γ0_0
+                                            |) in
+                                          M.read (| val |)))
+                                    ]
+                                  |)
+                                ]
+                              |)
+                            |)
+                          |)))
+                    ]
+                  |) in
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        []
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ];
+                      Ty.path "core::alloc::AllocError"
+                    ],
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        []
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ];
+                      Ty.path "core::alloc::AllocError"
+                    ]
+                    [
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "alloc::boxed::Box")
+                          []
+                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ],
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "alloc::boxed::Box")
+                            []
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A
+                            ],
+                          "from_raw_in",
+                          [],
+                          []
+                        |),
+                        [
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "*mut")
+                              []
+                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                              ],
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "core::ptr::non_null::NonNull")
+                                []
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                                ],
+                              "as_ptr",
+                              [],
+                              []
+                            |),
+                            [ M.read (| ptr |) ]
+                          |);
+                          M.read (| alloc |)
                         ]
-                    |)
-                  |)
-                |)))
-            |)
+                      |)
+                    ]
+                |)
+              |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2020,68 +1830,56 @@ Module boxed.
       | [], [], [ boxed ] =>
         ltac:(M.monadic
           (let boxed := M.alloc (| Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ], boxed |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.apply (Ty.path "slice") [] [ T ]; A ],
-              M.alloc (|
+          M.match_operator (|
+            Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.apply (Ty.path "slice") [] [ T ]; A ],
+            M.alloc (|
+              Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ T ]; A ],
+              M.call_closure (|
                 Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ T ]; A ],
-                M.call_closure (|
-                  Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ T ]; A ],
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
-                    "into_raw_with_allocator",
-                    [],
-                    []
-                  |),
-                  [ M.read (| boxed |) ]
-                |)
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let raw := M.copy (| Ty.apply (Ty.path "*mut") [] [ T ], γ0_0 |) in
-                    let alloc := M.copy (| A, γ0_1 |) in
-                    M.alloc (|
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
+                  "into_raw_with_allocator",
+                  [],
+                  []
+                |),
+                [ M.read (| boxed |) ]
+              |)
+            |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                  let raw := M.copy (| Ty.apply (Ty.path "*mut") [] [ T ], γ0_0 |) in
+                  let alloc := M.copy (| A, γ0_1 |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ T ]; A ],
+                    M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
                         []
                         [ Ty.apply (Ty.path "slice") [] [ T ]; A ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "alloc::boxed::Box")
-                          []
-                          [ Ty.apply (Ty.path "slice") [] [ T ]; A ],
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "alloc::boxed::Box")
+                      "from_raw_in",
+                      [],
+                      []
+                    |),
+                    [
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.cast
+                          (Ty.apply
+                            (Ty.path "*mut")
                             []
-                            [ Ty.apply (Ty.path "slice") [] [ T ]; A ],
-                          "from_raw_in",
-                          [],
-                          []
-                        |),
-                        [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.cast
-                              (Ty.apply
-                                (Ty.path "*mut")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "array")
-                                    [ Value.Integer IntegerKind.Usize 1 ]
-                                    [ T ]
-                                ])
-                              (M.read (| raw |)));
-                          M.read (| alloc |)
-                        ]
-                      |)
-                    |)))
-              ]
-            |)
+                            [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ T ]
+                            ])
+                          (M.read (| raw |)));
+                      M.read (| alloc |)
+                    ]
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2443,48 +2241,43 @@ Module boxed.
       | [], [], [ b ] =>
         ltac:(M.monadic
           (let b := M.alloc (| Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ], b |) in
-          M.read (|
-            M.match_operator (|
-              Ty.tuple [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ]; A ],
-              M.alloc (|
+          M.match_operator (|
+            Ty.tuple [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ]; A ],
+            M.alloc (|
+              Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ T ]; A ],
+              M.call_closure (|
                 Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ T ]; A ],
-                M.call_closure (|
-                  Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ T ]; A ],
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
-                    "into_raw_with_allocator",
-                    [],
-                    []
-                  |),
-                  [ M.read (| b |) ]
-                |)
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let ptr := M.copy (| Ty.apply (Ty.path "*mut") [] [ T ], γ0_0 |) in
-                    let alloc := M.copy (| A, γ0_1 |) in
-                    M.alloc (|
-                      Ty.tuple [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ]; A ],
-                      Value.Tuple
-                        [
-                          M.call_closure (|
-                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                              "new_unchecked",
-                              [],
-                              []
-                            |),
-                            [ M.read (| ptr |) ]
-                          |);
-                          M.read (| alloc |)
-                        ]
-                    |)))
-              ]
-            |)
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
+                  "into_raw_with_allocator",
+                  [],
+                  []
+                |),
+                [ M.read (| b |) ]
+              |)
+            |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                  let ptr := M.copy (| Ty.apply (Ty.path "*mut") [] [ T ], γ0_0 |) in
+                  let alloc := M.copy (| A, γ0_1 |) in
+                  Value.Tuple
+                    [
+                      M.call_closure (|
+                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                          "new_unchecked",
+                          [],
+                          []
+                        |),
+                        [ M.read (| ptr |) ]
+                      |);
+                      M.read (| alloc |)
+                    ]))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2510,51 +2303,46 @@ Module boxed.
       | [], [], [ b ] =>
         ltac:(M.monadic
           (let b := M.alloc (| Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ], b |) in
-          M.read (|
-            M.match_operator (|
-              Ty.tuple [ Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ]; A ],
-              M.alloc (|
+          M.match_operator (|
+            Ty.tuple [ Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ]; A ],
+            M.alloc (|
+              Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ T ]; A ],
+              M.call_closure (|
                 Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ T ]; A ],
-                M.call_closure (|
-                  Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ T ]; A ],
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
-                    "into_raw_with_allocator",
-                    [],
-                    []
-                  |),
-                  [ M.read (| b |) ]
-                |)
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let ptr := M.copy (| Ty.apply (Ty.path "*mut") [] [ T ], γ0_0 |) in
-                    let alloc := M.copy (| A, γ0_1 |) in
-                    M.alloc (|
-                      Ty.tuple [ Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ]; A ],
-                      Value.Tuple
-                        [
-                          M.call_closure (|
-                            Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ],
-                            M.get_trait_method (|
-                              "core::convert::From",
-                              Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ],
-                              [],
-                              [ Ty.apply (Ty.path "&mut") [] [ T ] ],
-                              "from",
-                              [],
-                              []
-                            |),
-                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| ptr |) |) |) ]
-                          |);
-                          M.read (| alloc |)
-                        ]
-                    |)))
-              ]
-            |)
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
+                  "into_raw_with_allocator",
+                  [],
+                  []
+                |),
+                [ M.read (| b |) ]
+              |)
+            |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                  let ptr := M.copy (| Ty.apply (Ty.path "*mut") [] [ T ], γ0_0 |) in
+                  let alloc := M.copy (| A, γ0_1 |) in
+                  Value.Tuple
+                    [
+                      M.call_closure (|
+                        Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ],
+                        M.get_trait_method (|
+                          "core::convert::From",
+                          Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ],
+                          [],
+                          [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                          "from",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| ptr |) |) |) ]
+                      |);
+                      M.read (| alloc |)
+                    ]))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2914,154 +2702,308 @@ Module boxed.
       | [], [], [ len ] =>
         ltac:(M.monadic
           (let len := M.alloc (| Ty.path "usize", len |) in
-          M.read (|
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.apply
-                    (Ty.path "alloc::boxed::Box")
-                    []
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.apply
+                  (Ty.path "alloc::boxed::Box")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "slice")
+                      []
+                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
+                    Ty.path "alloc::alloc::Global"
+                  ];
+                Ty.path "core::alloc::AllocError"
+              ]) (|
+            ltac:(M.monadic
+              (M.read (|
+                let~ ptr : Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] :=
+                  M.match_operator (|
+                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
                     [
-                      Ty.apply
-                        (Ty.path "slice")
-                        []
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
-                      Ty.path "alloc::alloc::Global"
-                    ];
-                  Ty.path "core::alloc::AllocError"
-                ]) (|
-              ltac:(M.monadic
-                (M.alloc (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.apply
-                        (Ty.path "alloc::boxed::Box")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "slice")
-                            []
-                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
-                          Ty.path "alloc::alloc::Global"
-                        ];
-                      Ty.path "core::alloc::AllocError"
-                    ],
-                  M.read (|
-                    let~ ptr : Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] :=
-                      M.read (|
-                        M.match_operator (|
-                          Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ :=
-                                  M.use
-                                    (M.alloc (|
-                                      Ty.path "bool",
-                                      LogicalOp.or (|
-                                        M.read (|
-                                          get_constant (|
-                                            "core::mem::SizedTypeProperties::IS_ZST",
-                                            Ty.path "bool"
-                                          |)
-                                        |),
-                                        ltac:(M.monadic
-                                          (M.call_closure (|
-                                            Ty.path "bool",
-                                            BinOp.eq,
-                                            [ M.read (| len |); Value.Integer IntegerKind.Usize 0 ]
-                                          |)))
-                                      |)
-                                    |)) in
-                                let _ :=
-                                  is_constant_or_break_match (|
-                                    M.read (| γ |),
-                                    Value.Bool true
-                                  |) in
-                                M.alloc (|
-                                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                                  M.call_closure (|
-                                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                                      "dangling",
-                                      [],
-                                      []
-                                    |),
-                                    []
-                                  |)
-                                |)));
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let~ layout : Ty.path "core::alloc::layout::Layout" :=
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ :=
+                            M.use
+                              (M.alloc (|
+                                Ty.path "bool",
+                                LogicalOp.or (|
                                   M.read (|
-                                    M.match_operator (|
+                                    get_constant (|
+                                      "core::mem::SizedTypeProperties::IS_ZST",
+                                      Ty.path "bool"
+                                    |)
+                                  |),
+                                  ltac:(M.monadic
+                                    (M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.eq,
+                                      [ M.read (| len |); Value.Integer IntegerKind.Usize 0 ]
+                                    |)))
+                                |)
+                              |)) in
+                          let _ :=
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          M.call_closure (|
+                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                              "dangling",
+                              [],
+                              []
+                            |),
+                            []
+                          |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.read (|
+                            let~ layout : Ty.path "core::alloc::layout::Layout" :=
+                              M.match_operator (|
+                                Ty.path "core::alloc::layout::Layout",
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::alloc::layout::Layout";
+                                      Ty.path "core::alloc::layout::LayoutError"
+                                    ],
+                                  M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::alloc::layout::Layout";
+                                        Ty.path "core::alloc::layout::LayoutError"
+                                      ],
+                                    M.get_associated_function (|
                                       Ty.path "core::alloc::layout::Layout",
-                                      M.alloc (|
+                                      "array",
+                                      [],
+                                      [
                                         Ty.apply
-                                          (Ty.path "core::result::Result")
+                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                                           []
-                                          [
-                                            Ty.path "core::alloc::layout::Layout";
-                                            Ty.path "core::alloc::layout::LayoutError"
-                                          ],
-                                        M.call_closure (|
+                                          [ T ]
+                                      ]
+                                    |),
+                                    [ M.read (| len |) ]
+                                  |)
+                                |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::result::Result::Ok",
+                                          0
+                                        |) in
+                                      let l :=
+                                        M.copy (| Ty.path "core::alloc::layout::Layout", γ0_0 |) in
+                                      M.read (| l |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::result::Result::Err",
+                                          0
+                                        |) in
+                                      M.never_to_any (|
+                                        M.read (|
+                                          M.return_ (|
+                                            Value.StructTuple
+                                              "core::result::Result::Err"
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloc::boxed::Box")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "slice")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "core::mem::maybe_uninit::MaybeUninit")
+                                                          []
+                                                          [ T ]
+                                                      ];
+                                                    Ty.path "alloc::alloc::Global"
+                                                  ];
+                                                Ty.path "core::alloc::AllocError"
+                                              ]
+                                              [ Value.StructTuple "core::alloc::AllocError" [] [] []
+                                              ]
+                                          |)
+                                        |)
+                                      |)))
+                                ]
+                              |) in
+                            M.alloc (|
+                              Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                              M.call_closure (|
+                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "core::ptr::non_null::NonNull")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                  "cast",
+                                  [],
+                                  [ T ]
+                                |),
+                                [
+                                  M.match_operator (|
+                                    Ty.apply
+                                      (Ty.path "core::ptr::non_null::NonNull")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                    M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "core::ops::control_flow::ControlFlow")
+                                        []
+                                        [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
                                             []
                                             [
-                                              Ty.path "core::alloc::layout::Layout";
-                                              Ty.path "core::alloc::layout::LayoutError"
-                                            ],
-                                          M.get_associated_function (|
-                                            Ty.path "core::alloc::layout::Layout",
-                                            "array",
-                                            [],
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::alloc::AllocError"
+                                            ];
+                                          Ty.apply
+                                            (Ty.path "core::ptr::non_null::NonNull")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                        ],
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::ops::control_flow::ControlFlow")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.path "core::convert::Infallible";
+                                                Ty.path "core::alloc::AllocError"
+                                              ];
+                                            Ty.apply
+                                              (Ty.path "core::ptr::non_null::NonNull")
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                          ],
+                                        M.get_trait_method (|
+                                          "core::ops::try_trait::Try",
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.apply
-                                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                (Ty.path "core::ptr::non_null::NonNull")
                                                 []
-                                                [ T ]
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                              Ty.path "core::alloc::AllocError"
+                                            ],
+                                          [],
+                                          [],
+                                          "branch",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::ptr::non_null::NonNull")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ];
+                                                Ty.path "core::alloc::AllocError"
+                                              ],
+                                            M.get_trait_method (|
+                                              "core::alloc::Allocator",
+                                              Ty.path "alloc::alloc::Global",
+                                              [],
+                                              [],
+                                              "allocate",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.alloc (|
+                                                  Ty.path "alloc::alloc::Global",
+                                                  Value.StructTuple "alloc::alloc::Global" [] [] []
+                                                |)
+                                              |);
+                                              M.read (| layout |)
                                             ]
-                                          |),
-                                          [ M.read (| len |) ]
-                                        |)
-                                      |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ0_0 :=
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                γ,
-                                                "core::result::Result::Ok",
-                                                0
-                                              |) in
-                                            let l :=
-                                              M.copy (|
-                                                Ty.path "core::alloc::layout::Layout",
-                                                γ0_0
-                                              |) in
-                                            l));
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ0_0 :=
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                γ,
-                                                "core::result::Result::Err",
-                                                0
-                                              |) in
-                                            M.alloc (|
-                                              Ty.path "core::alloc::layout::Layout",
-                                              M.never_to_any (|
-                                                M.read (|
-                                                  M.return_ (|
-                                                    Value.StructTuple
-                                                      "core::result::Result::Err"
+                                          |)
+                                        ]
+                                      |)
+                                    |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ0_0 :=
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              γ,
+                                              "core::ops::control_flow::ControlFlow::Break",
+                                              0
+                                            |) in
+                                          let residual :=
+                                            M.copy (|
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path "core::convert::Infallible";
+                                                  Ty.path "core::alloc::AllocError"
+                                                ],
+                                              γ0_0
+                                            |) in
+                                          M.never_to_any (|
+                                            M.read (|
+                                              M.return_ (|
+                                                M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "alloc::boxed::Box")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "slice")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "core::mem::maybe_uninit::MaybeUninit")
+                                                                []
+                                                                [ T ]
+                                                            ];
+                                                          Ty.path "alloc::alloc::Global"
+                                                        ];
+                                                      Ty.path "core::alloc::AllocError"
+                                                    ],
+                                                  M.get_trait_method (|
+                                                    "core::ops::try_trait::FromResidual",
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
                                                       []
                                                       [
                                                         Ty.apply
@@ -3081,370 +3023,142 @@ Module boxed.
                                                             Ty.path "alloc::alloc::Global"
                                                           ];
                                                         Ty.path "core::alloc::AllocError"
-                                                      ]
-                                                      [
-                                                        Value.StructTuple
-                                                          "core::alloc::AllocError"
-                                                          []
-                                                          []
-                                                          []
-                                                      ]
-                                                  |)
-                                                |)
-                                              |)
-                                            |)))
-                                      ]
-                                    |)
-                                  |) in
-                                M.alloc (|
-                                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                                  M.call_closure (|
-                                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "core::ptr::non_null::NonNull")
-                                        []
-                                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                                      "cast",
-                                      [],
-                                      [ T ]
-                                    |),
-                                    [
-                                      M.read (|
-                                        M.match_operator (|
-                                          Ty.apply
-                                            (Ty.path "core::ptr::non_null::NonNull")
-                                            []
-                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                                          M.alloc (|
-                                            Ty.apply
-                                              (Ty.path "core::ops::control_flow::ControlFlow")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [
-                                                    Ty.path "core::convert::Infallible";
-                                                    Ty.path "core::alloc::AllocError"
-                                                  ];
-                                                Ty.apply
-                                                  (Ty.path "core::ptr::non_null::NonNull")
-                                                  []
-                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                              ],
-                                            M.call_closure (|
-                                              Ty.apply
-                                                (Ty.path "core::ops::control_flow::ControlFlow")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::result::Result")
-                                                    []
-                                                    [
-                                                      Ty.path "core::convert::Infallible";
-                                                      Ty.path "core::alloc::AllocError"
-                                                    ];
-                                                  Ty.apply
-                                                    (Ty.path "core::ptr::non_null::NonNull")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ],
-                                              M.get_trait_method (|
-                                                "core::ops::try_trait::Try",
-                                                Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::ptr::non_null::NonNull")
-                                                      []
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "slice")
-                                                          []
-                                                          [ Ty.path "u8" ]
-                                                      ];
-                                                    Ty.path "core::alloc::AllocError"
-                                                  ],
-                                                [],
-                                                [],
-                                                "branch",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.call_closure (|
-                                                  Ty.apply
-                                                    (Ty.path "core::result::Result")
-                                                    []
+                                                      ],
+                                                    [],
                                                     [
                                                       Ty.apply
-                                                        (Ty.path "core::ptr::non_null::NonNull")
+                                                        (Ty.path "core::result::Result")
                                                         []
                                                         [
-                                                          Ty.apply
-                                                            (Ty.path "slice")
-                                                            []
-                                                            [ Ty.path "u8" ]
-                                                        ];
-                                                      Ty.path "core::alloc::AllocError"
+                                                          Ty.path "core::convert::Infallible";
+                                                          Ty.path "core::alloc::AllocError"
+                                                        ]
                                                     ],
-                                                  M.get_trait_method (|
-                                                    "core::alloc::Allocator",
-                                                    Ty.path "alloc::alloc::Global",
-                                                    [],
-                                                    [],
-                                                    "allocate",
+                                                    "from_residual",
                                                     [],
                                                     []
                                                   |),
-                                                  [
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.alloc (|
-                                                        Ty.path "alloc::alloc::Global",
-                                                        Value.StructTuple
-                                                          "alloc::alloc::Global"
-                                                          []
-                                                          []
-                                                          []
-                                                      |)
-                                                    |);
-                                                    M.read (| layout |)
-                                                  ]
+                                                  [ M.read (| residual |) ]
                                                 |)
-                                              ]
+                                              |)
                                             |)
-                                          |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let γ0_0 :=
-                                                  M.SubPointer.get_struct_tuple_field (|
-                                                    γ,
-                                                    "core::ops::control_flow::ControlFlow::Break",
-                                                    0
-                                                  |) in
-                                                let residual :=
-                                                  M.copy (|
-                                                    Ty.apply
-                                                      (Ty.path "core::result::Result")
-                                                      []
-                                                      [
-                                                        Ty.path "core::convert::Infallible";
-                                                        Ty.path "core::alloc::AllocError"
-                                                      ],
-                                                    γ0_0
-                                                  |) in
-                                                M.alloc (|
-                                                  Ty.apply
-                                                    (Ty.path "core::ptr::non_null::NonNull")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ],
-                                                  M.never_to_any (|
-                                                    M.read (|
-                                                      M.return_ (|
-                                                        M.call_closure (|
-                                                          Ty.apply
-                                                            (Ty.path "core::result::Result")
-                                                            []
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "alloc::boxed::Box")
-                                                                []
-                                                                [
-                                                                  Ty.apply
-                                                                    (Ty.path "slice")
-                                                                    []
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path
-                                                                          "core::mem::maybe_uninit::MaybeUninit")
-                                                                        []
-                                                                        [ T ]
-                                                                    ];
-                                                                  Ty.path "alloc::alloc::Global"
-                                                                ];
-                                                              Ty.path "core::alloc::AllocError"
-                                                            ],
-                                                          M.get_trait_method (|
-                                                            "core::ops::try_trait::FromResidual",
-                                                            Ty.apply
-                                                              (Ty.path "core::result::Result")
-                                                              []
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path "alloc::boxed::Box")
-                                                                  []
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path "slice")
-                                                                      []
-                                                                      [
-                                                                        Ty.apply
-                                                                          (Ty.path
-                                                                            "core::mem::maybe_uninit::MaybeUninit")
-                                                                          []
-                                                                          [ T ]
-                                                                      ];
-                                                                    Ty.path "alloc::alloc::Global"
-                                                                  ];
-                                                                Ty.path "core::alloc::AllocError"
-                                                              ],
-                                                            [],
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "core::result::Result")
-                                                                []
-                                                                [
-                                                                  Ty.path
-                                                                    "core::convert::Infallible";
-                                                                  Ty.path "core::alloc::AllocError"
-                                                                ]
-                                                            ],
-                                                            "from_residual",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [ M.read (| residual |) ]
-                                                        |)
-                                                      |)
-                                                    |)
-                                                  |)
-                                                |)));
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let γ0_0 :=
-                                                  M.SubPointer.get_struct_tuple_field (|
-                                                    γ,
-                                                    "core::ops::control_flow::ControlFlow::Continue",
-                                                    0
-                                                  |) in
-                                                let val :=
-                                                  M.copy (|
-                                                    Ty.apply
-                                                      (Ty.path "core::ptr::non_null::NonNull")
-                                                      []
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "slice")
-                                                          []
-                                                          [ Ty.path "u8" ]
-                                                      ],
-                                                    γ0_0
-                                                  |) in
-                                                val))
-                                          ]
-                                        |)
-                                      |)
+                                          |)));
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ0_0 :=
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              γ,
+                                              "core::ops::control_flow::ControlFlow::Continue",
+                                              0
+                                            |) in
+                                          let val :=
+                                            M.copy (|
+                                              Ty.apply
+                                                (Ty.path "core::ptr::non_null::NonNull")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                              γ0_0
+                                            |) in
+                                          M.read (| val |)))
                                     ]
                                   |)
-                                |)))
-                          ]
-                        |)
-                      |) in
-                    M.alloc (|
+                                ]
+                              |)
+                            |)
+                          |)))
+                    ]
+                  |) in
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
                       Ty.apply
-                        (Ty.path "core::result::Result")
+                        (Ty.path "alloc::boxed::Box")
                         []
                         [
                           Ty.apply
-                            (Ty.path "alloc::boxed::Box")
+                            (Ty.path "slice")
                             []
-                            [
-                              Ty.apply
-                                (Ty.path "slice")
-                                []
-                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
-                                ];
-                              Ty.path "alloc::alloc::Global"
-                            ];
-                          Ty.path "core::alloc::AllocError"
-                        ],
-                      Value.StructTuple
-                        "core::result::Result::Ok"
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
+                          Ty.path "alloc::alloc::Global"
+                        ];
+                      Ty.path "core::alloc::AllocError"
+                    ],
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
                         []
                         [
                           Ty.apply
-                            (Ty.path "alloc::boxed::Box")
+                            (Ty.path "slice")
                             []
-                            [
-                              Ty.apply
-                                (Ty.path "slice")
-                                []
-                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
-                                ];
-                              Ty.path "alloc::alloc::Global"
-                            ];
-                          Ty.path "core::alloc::AllocError"
-                        ]
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
+                          Ty.path "alloc::alloc::Global"
+                        ];
+                      Ty.path "core::alloc::AllocError"
+                    ]
+                    [
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "alloc::boxed::Box")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "slice")
+                              []
+                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                              ];
+                            Ty.path "alloc::alloc::Global"
+                          ],
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "alloc::raw_vec::RawVec")
+                            []
+                            [ T; Ty.path "alloc::alloc::Global" ],
+                          "into_box",
+                          [],
+                          []
+                        |),
                         [
                           M.call_closure (|
                             Ty.apply
-                              (Ty.path "alloc::boxed::Box")
+                              (Ty.path "alloc::raw_vec::RawVec")
                               []
-                              [
-                                Ty.apply
-                                  (Ty.path "slice")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                      []
-                                      [ T ]
-                                  ];
-                                Ty.path "alloc::alloc::Global"
-                              ],
+                              [ T; Ty.path "alloc::alloc::Global" ],
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::raw_vec::RawVec")
                                 []
                                 [ T; Ty.path "alloc::alloc::Global" ],
-                              "into_box",
+                              "from_raw_parts_in",
                               [],
                               []
                             |),
                             [
                               M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "alloc::raw_vec::RawVec")
-                                  []
-                                  [ T; Ty.path "alloc::alloc::Global" ],
+                                Ty.apply (Ty.path "*mut") [] [ T ],
                                 M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "alloc::raw_vec::RawVec")
-                                    []
-                                    [ T; Ty.path "alloc::alloc::Global" ],
-                                  "from_raw_parts_in",
+                                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                                  "as_ptr",
                                   [],
                                   []
                                 |),
-                                [
-                                  M.call_closure (|
-                                    Ty.apply (Ty.path "*mut") [] [ T ],
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                                      "as_ptr",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.read (| ptr |) ]
-                                  |);
-                                  M.read (| len |);
-                                  Value.StructTuple "alloc::alloc::Global" [] [] []
-                                ]
+                                [ M.read (| ptr |) ]
                               |);
-                              M.read (| len |)
+                              M.read (| len |);
+                              Value.StructTuple "alloc::alloc::Global" [] [] []
                             ]
-                          |)
+                          |);
+                          M.read (| len |)
                         ]
-                    |)
-                  |)
-                |)))
-            |)
+                      |)
+                    ]
+                |)
+              |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3480,154 +3194,308 @@ Module boxed.
       | [], [], [ len ] =>
         ltac:(M.monadic
           (let len := M.alloc (| Ty.path "usize", len |) in
-          M.read (|
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.apply
-                    (Ty.path "alloc::boxed::Box")
-                    []
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.apply
+                  (Ty.path "alloc::boxed::Box")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "slice")
+                      []
+                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
+                    Ty.path "alloc::alloc::Global"
+                  ];
+                Ty.path "core::alloc::AllocError"
+              ]) (|
+            ltac:(M.monadic
+              (M.read (|
+                let~ ptr : Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] :=
+                  M.match_operator (|
+                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
                     [
-                      Ty.apply
-                        (Ty.path "slice")
-                        []
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
-                      Ty.path "alloc::alloc::Global"
-                    ];
-                  Ty.path "core::alloc::AllocError"
-                ]) (|
-              ltac:(M.monadic
-                (M.alloc (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.apply
-                        (Ty.path "alloc::boxed::Box")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "slice")
-                            []
-                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
-                          Ty.path "alloc::alloc::Global"
-                        ];
-                      Ty.path "core::alloc::AllocError"
-                    ],
-                  M.read (|
-                    let~ ptr : Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] :=
-                      M.read (|
-                        M.match_operator (|
-                          Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ :=
-                                  M.use
-                                    (M.alloc (|
-                                      Ty.path "bool",
-                                      LogicalOp.or (|
-                                        M.read (|
-                                          get_constant (|
-                                            "core::mem::SizedTypeProperties::IS_ZST",
-                                            Ty.path "bool"
-                                          |)
-                                        |),
-                                        ltac:(M.monadic
-                                          (M.call_closure (|
-                                            Ty.path "bool",
-                                            BinOp.eq,
-                                            [ M.read (| len |); Value.Integer IntegerKind.Usize 0 ]
-                                          |)))
-                                      |)
-                                    |)) in
-                                let _ :=
-                                  is_constant_or_break_match (|
-                                    M.read (| γ |),
-                                    Value.Bool true
-                                  |) in
-                                M.alloc (|
-                                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                                  M.call_closure (|
-                                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                                      "dangling",
-                                      [],
-                                      []
-                                    |),
-                                    []
-                                  |)
-                                |)));
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let~ layout : Ty.path "core::alloc::layout::Layout" :=
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ :=
+                            M.use
+                              (M.alloc (|
+                                Ty.path "bool",
+                                LogicalOp.or (|
                                   M.read (|
-                                    M.match_operator (|
+                                    get_constant (|
+                                      "core::mem::SizedTypeProperties::IS_ZST",
+                                      Ty.path "bool"
+                                    |)
+                                  |),
+                                  ltac:(M.monadic
+                                    (M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.eq,
+                                      [ M.read (| len |); Value.Integer IntegerKind.Usize 0 ]
+                                    |)))
+                                |)
+                              |)) in
+                          let _ :=
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          M.call_closure (|
+                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                              "dangling",
+                              [],
+                              []
+                            |),
+                            []
+                          |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.read (|
+                            let~ layout : Ty.path "core::alloc::layout::Layout" :=
+                              M.match_operator (|
+                                Ty.path "core::alloc::layout::Layout",
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::alloc::layout::Layout";
+                                      Ty.path "core::alloc::layout::LayoutError"
+                                    ],
+                                  M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::alloc::layout::Layout";
+                                        Ty.path "core::alloc::layout::LayoutError"
+                                      ],
+                                    M.get_associated_function (|
                                       Ty.path "core::alloc::layout::Layout",
-                                      M.alloc (|
+                                      "array",
+                                      [],
+                                      [
                                         Ty.apply
-                                          (Ty.path "core::result::Result")
+                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                                           []
-                                          [
-                                            Ty.path "core::alloc::layout::Layout";
-                                            Ty.path "core::alloc::layout::LayoutError"
-                                          ],
-                                        M.call_closure (|
+                                          [ T ]
+                                      ]
+                                    |),
+                                    [ M.read (| len |) ]
+                                  |)
+                                |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::result::Result::Ok",
+                                          0
+                                        |) in
+                                      let l :=
+                                        M.copy (| Ty.path "core::alloc::layout::Layout", γ0_0 |) in
+                                      M.read (| l |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::result::Result::Err",
+                                          0
+                                        |) in
+                                      M.never_to_any (|
+                                        M.read (|
+                                          M.return_ (|
+                                            Value.StructTuple
+                                              "core::result::Result::Err"
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloc::boxed::Box")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "slice")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "core::mem::maybe_uninit::MaybeUninit")
+                                                          []
+                                                          [ T ]
+                                                      ];
+                                                    Ty.path "alloc::alloc::Global"
+                                                  ];
+                                                Ty.path "core::alloc::AllocError"
+                                              ]
+                                              [ Value.StructTuple "core::alloc::AllocError" [] [] []
+                                              ]
+                                          |)
+                                        |)
+                                      |)))
+                                ]
+                              |) in
+                            M.alloc (|
+                              Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                              M.call_closure (|
+                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "core::ptr::non_null::NonNull")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                  "cast",
+                                  [],
+                                  [ T ]
+                                |),
+                                [
+                                  M.match_operator (|
+                                    Ty.apply
+                                      (Ty.path "core::ptr::non_null::NonNull")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                    M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "core::ops::control_flow::ControlFlow")
+                                        []
+                                        [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
                                             []
                                             [
-                                              Ty.path "core::alloc::layout::Layout";
-                                              Ty.path "core::alloc::layout::LayoutError"
-                                            ],
-                                          M.get_associated_function (|
-                                            Ty.path "core::alloc::layout::Layout",
-                                            "array",
-                                            [],
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::alloc::AllocError"
+                                            ];
+                                          Ty.apply
+                                            (Ty.path "core::ptr::non_null::NonNull")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                        ],
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::ops::control_flow::ControlFlow")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.path "core::convert::Infallible";
+                                                Ty.path "core::alloc::AllocError"
+                                              ];
+                                            Ty.apply
+                                              (Ty.path "core::ptr::non_null::NonNull")
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                          ],
+                                        M.get_trait_method (|
+                                          "core::ops::try_trait::Try",
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.apply
-                                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                (Ty.path "core::ptr::non_null::NonNull")
                                                 []
-                                                [ T ]
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                              Ty.path "core::alloc::AllocError"
+                                            ],
+                                          [],
+                                          [],
+                                          "branch",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::ptr::non_null::NonNull")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ];
+                                                Ty.path "core::alloc::AllocError"
+                                              ],
+                                            M.get_trait_method (|
+                                              "core::alloc::Allocator",
+                                              Ty.path "alloc::alloc::Global",
+                                              [],
+                                              [],
+                                              "allocate_zeroed",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.alloc (|
+                                                  Ty.path "alloc::alloc::Global",
+                                                  Value.StructTuple "alloc::alloc::Global" [] [] []
+                                                |)
+                                              |);
+                                              M.read (| layout |)
                                             ]
-                                          |),
-                                          [ M.read (| len |) ]
-                                        |)
-                                      |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ0_0 :=
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                γ,
-                                                "core::result::Result::Ok",
-                                                0
-                                              |) in
-                                            let l :=
-                                              M.copy (|
-                                                Ty.path "core::alloc::layout::Layout",
-                                                γ0_0
-                                              |) in
-                                            l));
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ0_0 :=
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                γ,
-                                                "core::result::Result::Err",
-                                                0
-                                              |) in
-                                            M.alloc (|
-                                              Ty.path "core::alloc::layout::Layout",
-                                              M.never_to_any (|
-                                                M.read (|
-                                                  M.return_ (|
-                                                    Value.StructTuple
-                                                      "core::result::Result::Err"
+                                          |)
+                                        ]
+                                      |)
+                                    |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ0_0 :=
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              γ,
+                                              "core::ops::control_flow::ControlFlow::Break",
+                                              0
+                                            |) in
+                                          let residual :=
+                                            M.copy (|
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path "core::convert::Infallible";
+                                                  Ty.path "core::alloc::AllocError"
+                                                ],
+                                              γ0_0
+                                            |) in
+                                          M.never_to_any (|
+                                            M.read (|
+                                              M.return_ (|
+                                                M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "alloc::boxed::Box")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "slice")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "core::mem::maybe_uninit::MaybeUninit")
+                                                                []
+                                                                [ T ]
+                                                            ];
+                                                          Ty.path "alloc::alloc::Global"
+                                                        ];
+                                                      Ty.path "core::alloc::AllocError"
+                                                    ],
+                                                  M.get_trait_method (|
+                                                    "core::ops::try_trait::FromResidual",
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
                                                       []
                                                       [
                                                         Ty.apply
@@ -3647,370 +3515,142 @@ Module boxed.
                                                             Ty.path "alloc::alloc::Global"
                                                           ];
                                                         Ty.path "core::alloc::AllocError"
-                                                      ]
-                                                      [
-                                                        Value.StructTuple
-                                                          "core::alloc::AllocError"
-                                                          []
-                                                          []
-                                                          []
-                                                      ]
-                                                  |)
-                                                |)
-                                              |)
-                                            |)))
-                                      ]
-                                    |)
-                                  |) in
-                                M.alloc (|
-                                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                                  M.call_closure (|
-                                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "core::ptr::non_null::NonNull")
-                                        []
-                                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                                      "cast",
-                                      [],
-                                      [ T ]
-                                    |),
-                                    [
-                                      M.read (|
-                                        M.match_operator (|
-                                          Ty.apply
-                                            (Ty.path "core::ptr::non_null::NonNull")
-                                            []
-                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                                          M.alloc (|
-                                            Ty.apply
-                                              (Ty.path "core::ops::control_flow::ControlFlow")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [
-                                                    Ty.path "core::convert::Infallible";
-                                                    Ty.path "core::alloc::AllocError"
-                                                  ];
-                                                Ty.apply
-                                                  (Ty.path "core::ptr::non_null::NonNull")
-                                                  []
-                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                              ],
-                                            M.call_closure (|
-                                              Ty.apply
-                                                (Ty.path "core::ops::control_flow::ControlFlow")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::result::Result")
-                                                    []
-                                                    [
-                                                      Ty.path "core::convert::Infallible";
-                                                      Ty.path "core::alloc::AllocError"
-                                                    ];
-                                                  Ty.apply
-                                                    (Ty.path "core::ptr::non_null::NonNull")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ],
-                                              M.get_trait_method (|
-                                                "core::ops::try_trait::Try",
-                                                Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::ptr::non_null::NonNull")
-                                                      []
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "slice")
-                                                          []
-                                                          [ Ty.path "u8" ]
-                                                      ];
-                                                    Ty.path "core::alloc::AllocError"
-                                                  ],
-                                                [],
-                                                [],
-                                                "branch",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.call_closure (|
-                                                  Ty.apply
-                                                    (Ty.path "core::result::Result")
-                                                    []
+                                                      ],
+                                                    [],
                                                     [
                                                       Ty.apply
-                                                        (Ty.path "core::ptr::non_null::NonNull")
+                                                        (Ty.path "core::result::Result")
                                                         []
                                                         [
-                                                          Ty.apply
-                                                            (Ty.path "slice")
-                                                            []
-                                                            [ Ty.path "u8" ]
-                                                        ];
-                                                      Ty.path "core::alloc::AllocError"
+                                                          Ty.path "core::convert::Infallible";
+                                                          Ty.path "core::alloc::AllocError"
+                                                        ]
                                                     ],
-                                                  M.get_trait_method (|
-                                                    "core::alloc::Allocator",
-                                                    Ty.path "alloc::alloc::Global",
-                                                    [],
-                                                    [],
-                                                    "allocate_zeroed",
+                                                    "from_residual",
                                                     [],
                                                     []
                                                   |),
-                                                  [
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.alloc (|
-                                                        Ty.path "alloc::alloc::Global",
-                                                        Value.StructTuple
-                                                          "alloc::alloc::Global"
-                                                          []
-                                                          []
-                                                          []
-                                                      |)
-                                                    |);
-                                                    M.read (| layout |)
-                                                  ]
+                                                  [ M.read (| residual |) ]
                                                 |)
-                                              ]
+                                              |)
                                             |)
-                                          |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let γ0_0 :=
-                                                  M.SubPointer.get_struct_tuple_field (|
-                                                    γ,
-                                                    "core::ops::control_flow::ControlFlow::Break",
-                                                    0
-                                                  |) in
-                                                let residual :=
-                                                  M.copy (|
-                                                    Ty.apply
-                                                      (Ty.path "core::result::Result")
-                                                      []
-                                                      [
-                                                        Ty.path "core::convert::Infallible";
-                                                        Ty.path "core::alloc::AllocError"
-                                                      ],
-                                                    γ0_0
-                                                  |) in
-                                                M.alloc (|
-                                                  Ty.apply
-                                                    (Ty.path "core::ptr::non_null::NonNull")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ],
-                                                  M.never_to_any (|
-                                                    M.read (|
-                                                      M.return_ (|
-                                                        M.call_closure (|
-                                                          Ty.apply
-                                                            (Ty.path "core::result::Result")
-                                                            []
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "alloc::boxed::Box")
-                                                                []
-                                                                [
-                                                                  Ty.apply
-                                                                    (Ty.path "slice")
-                                                                    []
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path
-                                                                          "core::mem::maybe_uninit::MaybeUninit")
-                                                                        []
-                                                                        [ T ]
-                                                                    ];
-                                                                  Ty.path "alloc::alloc::Global"
-                                                                ];
-                                                              Ty.path "core::alloc::AllocError"
-                                                            ],
-                                                          M.get_trait_method (|
-                                                            "core::ops::try_trait::FromResidual",
-                                                            Ty.apply
-                                                              (Ty.path "core::result::Result")
-                                                              []
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path "alloc::boxed::Box")
-                                                                  []
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path "slice")
-                                                                      []
-                                                                      [
-                                                                        Ty.apply
-                                                                          (Ty.path
-                                                                            "core::mem::maybe_uninit::MaybeUninit")
-                                                                          []
-                                                                          [ T ]
-                                                                      ];
-                                                                    Ty.path "alloc::alloc::Global"
-                                                                  ];
-                                                                Ty.path "core::alloc::AllocError"
-                                                              ],
-                                                            [],
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "core::result::Result")
-                                                                []
-                                                                [
-                                                                  Ty.path
-                                                                    "core::convert::Infallible";
-                                                                  Ty.path "core::alloc::AllocError"
-                                                                ]
-                                                            ],
-                                                            "from_residual",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [ M.read (| residual |) ]
-                                                        |)
-                                                      |)
-                                                    |)
-                                                  |)
-                                                |)));
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let γ0_0 :=
-                                                  M.SubPointer.get_struct_tuple_field (|
-                                                    γ,
-                                                    "core::ops::control_flow::ControlFlow::Continue",
-                                                    0
-                                                  |) in
-                                                let val :=
-                                                  M.copy (|
-                                                    Ty.apply
-                                                      (Ty.path "core::ptr::non_null::NonNull")
-                                                      []
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "slice")
-                                                          []
-                                                          [ Ty.path "u8" ]
-                                                      ],
-                                                    γ0_0
-                                                  |) in
-                                                val))
-                                          ]
-                                        |)
-                                      |)
+                                          |)));
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ0_0 :=
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              γ,
+                                              "core::ops::control_flow::ControlFlow::Continue",
+                                              0
+                                            |) in
+                                          let val :=
+                                            M.copy (|
+                                              Ty.apply
+                                                (Ty.path "core::ptr::non_null::NonNull")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                              γ0_0
+                                            |) in
+                                          M.read (| val |)))
                                     ]
                                   |)
-                                |)))
-                          ]
-                        |)
-                      |) in
-                    M.alloc (|
+                                ]
+                              |)
+                            |)
+                          |)))
+                    ]
+                  |) in
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
                       Ty.apply
-                        (Ty.path "core::result::Result")
+                        (Ty.path "alloc::boxed::Box")
                         []
                         [
                           Ty.apply
-                            (Ty.path "alloc::boxed::Box")
+                            (Ty.path "slice")
                             []
-                            [
-                              Ty.apply
-                                (Ty.path "slice")
-                                []
-                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
-                                ];
-                              Ty.path "alloc::alloc::Global"
-                            ];
-                          Ty.path "core::alloc::AllocError"
-                        ],
-                      Value.StructTuple
-                        "core::result::Result::Ok"
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
+                          Ty.path "alloc::alloc::Global"
+                        ];
+                      Ty.path "core::alloc::AllocError"
+                    ],
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
                         []
                         [
                           Ty.apply
-                            (Ty.path "alloc::boxed::Box")
+                            (Ty.path "slice")
                             []
-                            [
-                              Ty.apply
-                                (Ty.path "slice")
-                                []
-                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
-                                ];
-                              Ty.path "alloc::alloc::Global"
-                            ];
-                          Ty.path "core::alloc::AllocError"
-                        ]
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
+                          Ty.path "alloc::alloc::Global"
+                        ];
+                      Ty.path "core::alloc::AllocError"
+                    ]
+                    [
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "alloc::boxed::Box")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "slice")
+                              []
+                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                              ];
+                            Ty.path "alloc::alloc::Global"
+                          ],
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "alloc::raw_vec::RawVec")
+                            []
+                            [ T; Ty.path "alloc::alloc::Global" ],
+                          "into_box",
+                          [],
+                          []
+                        |),
                         [
                           M.call_closure (|
                             Ty.apply
-                              (Ty.path "alloc::boxed::Box")
+                              (Ty.path "alloc::raw_vec::RawVec")
                               []
-                              [
-                                Ty.apply
-                                  (Ty.path "slice")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                      []
-                                      [ T ]
-                                  ];
-                                Ty.path "alloc::alloc::Global"
-                              ],
+                              [ T; Ty.path "alloc::alloc::Global" ],
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::raw_vec::RawVec")
                                 []
                                 [ T; Ty.path "alloc::alloc::Global" ],
-                              "into_box",
+                              "from_raw_parts_in",
                               [],
                               []
                             |),
                             [
                               M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "alloc::raw_vec::RawVec")
-                                  []
-                                  [ T; Ty.path "alloc::alloc::Global" ],
+                                Ty.apply (Ty.path "*mut") [] [ T ],
                                 M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "alloc::raw_vec::RawVec")
-                                    []
-                                    [ T; Ty.path "alloc::alloc::Global" ],
-                                  "from_raw_parts_in",
+                                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                                  "as_ptr",
                                   [],
                                   []
                                 |),
-                                [
-                                  M.call_closure (|
-                                    Ty.apply (Ty.path "*mut") [] [ T ],
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                                      "as_ptr",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.read (| ptr |) ]
-                                  |);
-                                  M.read (| len |);
-                                  Value.StructTuple "alloc::alloc::Global" [] [] []
-                                ]
+                                [ M.read (| ptr |) ]
                               |);
-                              M.read (| len |)
+                              M.read (| len |);
+                              Value.StructTuple "alloc::alloc::Global" [] [] []
                             ]
-                          |)
+                          |);
+                          M.read (| len |)
                         ]
-                    |)
-                  |)
-                |)))
-            |)
+                      |)
+                    ]
+                |)
+              |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4169,154 +3809,302 @@ Module boxed.
         ltac:(M.monadic
           (let len := M.alloc (| Ty.path "usize", len |) in
           let alloc := M.alloc (| A, alloc |) in
-          M.read (|
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.apply
-                    (Ty.path "alloc::boxed::Box")
-                    []
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.apply
+                  (Ty.path "alloc::boxed::Box")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "slice")
+                      []
+                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
+                    A
+                  ];
+                Ty.path "core::alloc::AllocError"
+              ]) (|
+            ltac:(M.monadic
+              (M.read (|
+                let~ ptr : Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] :=
+                  M.match_operator (|
+                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
                     [
-                      Ty.apply
-                        (Ty.path "slice")
-                        []
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
-                      A
-                    ];
-                  Ty.path "core::alloc::AllocError"
-                ]) (|
-              ltac:(M.monadic
-                (M.alloc (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.apply
-                        (Ty.path "alloc::boxed::Box")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "slice")
-                            []
-                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
-                          A
-                        ];
-                      Ty.path "core::alloc::AllocError"
-                    ],
-                  M.read (|
-                    let~ ptr : Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] :=
-                      M.read (|
-                        M.match_operator (|
-                          Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ :=
-                                  M.use
-                                    (M.alloc (|
-                                      Ty.path "bool",
-                                      LogicalOp.or (|
-                                        M.read (|
-                                          get_constant (|
-                                            "core::mem::SizedTypeProperties::IS_ZST",
-                                            Ty.path "bool"
-                                          |)
-                                        |),
-                                        ltac:(M.monadic
-                                          (M.call_closure (|
-                                            Ty.path "bool",
-                                            BinOp.eq,
-                                            [ M.read (| len |); Value.Integer IntegerKind.Usize 0 ]
-                                          |)))
-                                      |)
-                                    |)) in
-                                let _ :=
-                                  is_constant_or_break_match (|
-                                    M.read (| γ |),
-                                    Value.Bool true
-                                  |) in
-                                M.alloc (|
-                                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                                  M.call_closure (|
-                                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                                      "dangling",
-                                      [],
-                                      []
-                                    |),
-                                    []
-                                  |)
-                                |)));
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let~ layout : Ty.path "core::alloc::layout::Layout" :=
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ :=
+                            M.use
+                              (M.alloc (|
+                                Ty.path "bool",
+                                LogicalOp.or (|
                                   M.read (|
-                                    M.match_operator (|
+                                    get_constant (|
+                                      "core::mem::SizedTypeProperties::IS_ZST",
+                                      Ty.path "bool"
+                                    |)
+                                  |),
+                                  ltac:(M.monadic
+                                    (M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.eq,
+                                      [ M.read (| len |); Value.Integer IntegerKind.Usize 0 ]
+                                    |)))
+                                |)
+                              |)) in
+                          let _ :=
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          M.call_closure (|
+                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                              "dangling",
+                              [],
+                              []
+                            |),
+                            []
+                          |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.read (|
+                            let~ layout : Ty.path "core::alloc::layout::Layout" :=
+                              M.match_operator (|
+                                Ty.path "core::alloc::layout::Layout",
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::alloc::layout::Layout";
+                                      Ty.path "core::alloc::layout::LayoutError"
+                                    ],
+                                  M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::alloc::layout::Layout";
+                                        Ty.path "core::alloc::layout::LayoutError"
+                                      ],
+                                    M.get_associated_function (|
                                       Ty.path "core::alloc::layout::Layout",
-                                      M.alloc (|
+                                      "array",
+                                      [],
+                                      [
                                         Ty.apply
-                                          (Ty.path "core::result::Result")
+                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                                           []
-                                          [
-                                            Ty.path "core::alloc::layout::Layout";
-                                            Ty.path "core::alloc::layout::LayoutError"
-                                          ],
-                                        M.call_closure (|
+                                          [ T ]
+                                      ]
+                                    |),
+                                    [ M.read (| len |) ]
+                                  |)
+                                |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::result::Result::Ok",
+                                          0
+                                        |) in
+                                      let l :=
+                                        M.copy (| Ty.path "core::alloc::layout::Layout", γ0_0 |) in
+                                      M.read (| l |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::result::Result::Err",
+                                          0
+                                        |) in
+                                      M.never_to_any (|
+                                        M.read (|
+                                          M.return_ (|
+                                            Value.StructTuple
+                                              "core::result::Result::Err"
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloc::boxed::Box")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "slice")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "core::mem::maybe_uninit::MaybeUninit")
+                                                          []
+                                                          [ T ]
+                                                      ];
+                                                    A
+                                                  ];
+                                                Ty.path "core::alloc::AllocError"
+                                              ]
+                                              [ Value.StructTuple "core::alloc::AllocError" [] [] []
+                                              ]
+                                          |)
+                                        |)
+                                      |)))
+                                ]
+                              |) in
+                            M.alloc (|
+                              Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                              M.call_closure (|
+                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "core::ptr::non_null::NonNull")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                  "cast",
+                                  [],
+                                  [ T ]
+                                |),
+                                [
+                                  M.match_operator (|
+                                    Ty.apply
+                                      (Ty.path "core::ptr::non_null::NonNull")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                    M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "core::ops::control_flow::ControlFlow")
+                                        []
+                                        [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
                                             []
                                             [
-                                              Ty.path "core::alloc::layout::Layout";
-                                              Ty.path "core::alloc::layout::LayoutError"
-                                            ],
-                                          M.get_associated_function (|
-                                            Ty.path "core::alloc::layout::Layout",
-                                            "array",
-                                            [],
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::alloc::AllocError"
+                                            ];
+                                          Ty.apply
+                                            (Ty.path "core::ptr::non_null::NonNull")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                        ],
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::ops::control_flow::ControlFlow")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.path "core::convert::Infallible";
+                                                Ty.path "core::alloc::AllocError"
+                                              ];
+                                            Ty.apply
+                                              (Ty.path "core::ptr::non_null::NonNull")
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                          ],
+                                        M.get_trait_method (|
+                                          "core::ops::try_trait::Try",
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.apply
-                                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                (Ty.path "core::ptr::non_null::NonNull")
                                                 []
-                                                [ T ]
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                              Ty.path "core::alloc::AllocError"
+                                            ],
+                                          [],
+                                          [],
+                                          "branch",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::ptr::non_null::NonNull")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ];
+                                                Ty.path "core::alloc::AllocError"
+                                              ],
+                                            M.get_trait_method (|
+                                              "core::alloc::Allocator",
+                                              A,
+                                              [],
+                                              [],
+                                              "allocate",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (| Pointer.Kind.Ref, alloc |);
+                                              M.read (| layout |)
                                             ]
-                                          |),
-                                          [ M.read (| len |) ]
-                                        |)
-                                      |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ0_0 :=
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                γ,
-                                                "core::result::Result::Ok",
-                                                0
-                                              |) in
-                                            let l :=
-                                              M.copy (|
-                                                Ty.path "core::alloc::layout::Layout",
-                                                γ0_0
-                                              |) in
-                                            l));
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ0_0 :=
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                γ,
-                                                "core::result::Result::Err",
-                                                0
-                                              |) in
-                                            M.alloc (|
-                                              Ty.path "core::alloc::layout::Layout",
-                                              M.never_to_any (|
-                                                M.read (|
-                                                  M.return_ (|
-                                                    Value.StructTuple
-                                                      "core::result::Result::Err"
+                                          |)
+                                        ]
+                                      |)
+                                    |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ0_0 :=
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              γ,
+                                              "core::ops::control_flow::ControlFlow::Break",
+                                              0
+                                            |) in
+                                          let residual :=
+                                            M.copy (|
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path "core::convert::Infallible";
+                                                  Ty.path "core::alloc::AllocError"
+                                                ],
+                                              γ0_0
+                                            |) in
+                                          M.never_to_any (|
+                                            M.read (|
+                                              M.return_ (|
+                                                M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "alloc::boxed::Box")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "slice")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "core::mem::maybe_uninit::MaybeUninit")
+                                                                []
+                                                                [ T ]
+                                                            ];
+                                                          A
+                                                        ];
+                                                      Ty.path "core::alloc::AllocError"
+                                                    ],
+                                                  M.get_trait_method (|
+                                                    "core::ops::try_trait::FromResidual",
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
                                                       []
                                                       [
                                                         Ty.apply
@@ -4336,351 +4124,133 @@ Module boxed.
                                                             A
                                                           ];
                                                         Ty.path "core::alloc::AllocError"
-                                                      ]
-                                                      [
-                                                        Value.StructTuple
-                                                          "core::alloc::AllocError"
-                                                          []
-                                                          []
-                                                          []
-                                                      ]
-                                                  |)
-                                                |)
-                                              |)
-                                            |)))
-                                      ]
-                                    |)
-                                  |) in
-                                M.alloc (|
-                                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                                  M.call_closure (|
-                                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "core::ptr::non_null::NonNull")
-                                        []
-                                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                                      "cast",
-                                      [],
-                                      [ T ]
-                                    |),
-                                    [
-                                      M.read (|
-                                        M.match_operator (|
-                                          Ty.apply
-                                            (Ty.path "core::ptr::non_null::NonNull")
-                                            []
-                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                                          M.alloc (|
-                                            Ty.apply
-                                              (Ty.path "core::ops::control_flow::ControlFlow")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [
-                                                    Ty.path "core::convert::Infallible";
-                                                    Ty.path "core::alloc::AllocError"
-                                                  ];
-                                                Ty.apply
-                                                  (Ty.path "core::ptr::non_null::NonNull")
-                                                  []
-                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                              ],
-                                            M.call_closure (|
-                                              Ty.apply
-                                                (Ty.path "core::ops::control_flow::ControlFlow")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::result::Result")
-                                                    []
-                                                    [
-                                                      Ty.path "core::convert::Infallible";
-                                                      Ty.path "core::alloc::AllocError"
-                                                    ];
-                                                  Ty.apply
-                                                    (Ty.path "core::ptr::non_null::NonNull")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ],
-                                              M.get_trait_method (|
-                                                "core::ops::try_trait::Try",
-                                                Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::ptr::non_null::NonNull")
-                                                      []
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "slice")
-                                                          []
-                                                          [ Ty.path "u8" ]
-                                                      ];
-                                                    Ty.path "core::alloc::AllocError"
-                                                  ],
-                                                [],
-                                                [],
-                                                "branch",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.call_closure (|
-                                                  Ty.apply
-                                                    (Ty.path "core::result::Result")
-                                                    []
+                                                      ],
+                                                    [],
                                                     [
                                                       Ty.apply
-                                                        (Ty.path "core::ptr::non_null::NonNull")
+                                                        (Ty.path "core::result::Result")
                                                         []
                                                         [
-                                                          Ty.apply
-                                                            (Ty.path "slice")
-                                                            []
-                                                            [ Ty.path "u8" ]
-                                                        ];
-                                                      Ty.path "core::alloc::AllocError"
+                                                          Ty.path "core::convert::Infallible";
+                                                          Ty.path "core::alloc::AllocError"
+                                                        ]
                                                     ],
-                                                  M.get_trait_method (|
-                                                    "core::alloc::Allocator",
-                                                    A,
-                                                    [],
-                                                    [],
-                                                    "allocate",
+                                                    "from_residual",
                                                     [],
                                                     []
                                                   |),
-                                                  [
-                                                    M.borrow (| Pointer.Kind.Ref, alloc |);
-                                                    M.read (| layout |)
-                                                  ]
+                                                  [ M.read (| residual |) ]
                                                 |)
-                                              ]
+                                              |)
                                             |)
-                                          |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let γ0_0 :=
-                                                  M.SubPointer.get_struct_tuple_field (|
-                                                    γ,
-                                                    "core::ops::control_flow::ControlFlow::Break",
-                                                    0
-                                                  |) in
-                                                let residual :=
-                                                  M.copy (|
-                                                    Ty.apply
-                                                      (Ty.path "core::result::Result")
-                                                      []
-                                                      [
-                                                        Ty.path "core::convert::Infallible";
-                                                        Ty.path "core::alloc::AllocError"
-                                                      ],
-                                                    γ0_0
-                                                  |) in
-                                                M.alloc (|
-                                                  Ty.apply
-                                                    (Ty.path "core::ptr::non_null::NonNull")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ],
-                                                  M.never_to_any (|
-                                                    M.read (|
-                                                      M.return_ (|
-                                                        M.call_closure (|
-                                                          Ty.apply
-                                                            (Ty.path "core::result::Result")
-                                                            []
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "alloc::boxed::Box")
-                                                                []
-                                                                [
-                                                                  Ty.apply
-                                                                    (Ty.path "slice")
-                                                                    []
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path
-                                                                          "core::mem::maybe_uninit::MaybeUninit")
-                                                                        []
-                                                                        [ T ]
-                                                                    ];
-                                                                  A
-                                                                ];
-                                                              Ty.path "core::alloc::AllocError"
-                                                            ],
-                                                          M.get_trait_method (|
-                                                            "core::ops::try_trait::FromResidual",
-                                                            Ty.apply
-                                                              (Ty.path "core::result::Result")
-                                                              []
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path "alloc::boxed::Box")
-                                                                  []
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path "slice")
-                                                                      []
-                                                                      [
-                                                                        Ty.apply
-                                                                          (Ty.path
-                                                                            "core::mem::maybe_uninit::MaybeUninit")
-                                                                          []
-                                                                          [ T ]
-                                                                      ];
-                                                                    A
-                                                                  ];
-                                                                Ty.path "core::alloc::AllocError"
-                                                              ],
-                                                            [],
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "core::result::Result")
-                                                                []
-                                                                [
-                                                                  Ty.path
-                                                                    "core::convert::Infallible";
-                                                                  Ty.path "core::alloc::AllocError"
-                                                                ]
-                                                            ],
-                                                            "from_residual",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [ M.read (| residual |) ]
-                                                        |)
-                                                      |)
-                                                    |)
-                                                  |)
-                                                |)));
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let γ0_0 :=
-                                                  M.SubPointer.get_struct_tuple_field (|
-                                                    γ,
-                                                    "core::ops::control_flow::ControlFlow::Continue",
-                                                    0
-                                                  |) in
-                                                let val :=
-                                                  M.copy (|
-                                                    Ty.apply
-                                                      (Ty.path "core::ptr::non_null::NonNull")
-                                                      []
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "slice")
-                                                          []
-                                                          [ Ty.path "u8" ]
-                                                      ],
-                                                    γ0_0
-                                                  |) in
-                                                val))
-                                          ]
-                                        |)
-                                      |)
+                                          |)));
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ0_0 :=
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              γ,
+                                              "core::ops::control_flow::ControlFlow::Continue",
+                                              0
+                                            |) in
+                                          let val :=
+                                            M.copy (|
+                                              Ty.apply
+                                                (Ty.path "core::ptr::non_null::NonNull")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                              γ0_0
+                                            |) in
+                                          M.read (| val |)))
                                     ]
                                   |)
-                                |)))
-                          ]
-                        |)
-                      |) in
-                    M.alloc (|
+                                ]
+                              |)
+                            |)
+                          |)))
+                    ]
+                  |) in
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
                       Ty.apply
-                        (Ty.path "core::result::Result")
+                        (Ty.path "alloc::boxed::Box")
                         []
                         [
                           Ty.apply
-                            (Ty.path "alloc::boxed::Box")
+                            (Ty.path "slice")
                             []
-                            [
-                              Ty.apply
-                                (Ty.path "slice")
-                                []
-                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
-                                ];
-                              A
-                            ];
-                          Ty.path "core::alloc::AllocError"
-                        ],
-                      Value.StructTuple
-                        "core::result::Result::Ok"
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
+                          A
+                        ];
+                      Ty.path "core::alloc::AllocError"
+                    ],
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
                         []
                         [
                           Ty.apply
-                            (Ty.path "alloc::boxed::Box")
+                            (Ty.path "slice")
                             []
-                            [
-                              Ty.apply
-                                (Ty.path "slice")
-                                []
-                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
-                                ];
-                              A
-                            ];
-                          Ty.path "core::alloc::AllocError"
-                        ]
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
+                          A
+                        ];
+                      Ty.path "core::alloc::AllocError"
+                    ]
+                    [
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "alloc::boxed::Box")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "slice")
+                              []
+                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                              ];
+                            A
+                          ],
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
+                          "into_box",
+                          [],
+                          []
+                        |),
                         [
                           M.call_closure (|
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "slice")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                      []
-                                      [ T ]
-                                  ];
-                                A
-                              ],
+                            Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                             M.get_associated_function (|
                               Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
-                              "into_box",
+                              "from_raw_parts_in",
                               [],
                               []
                             |),
                             [
                               M.call_closure (|
-                                Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
+                                Ty.apply (Ty.path "*mut") [] [ T ],
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
-                                  "from_raw_parts_in",
+                                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                                  "as_ptr",
                                   [],
                                   []
                                 |),
-                                [
-                                  M.call_closure (|
-                                    Ty.apply (Ty.path "*mut") [] [ T ],
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                                      "as_ptr",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.read (| ptr |) ]
-                                  |);
-                                  M.read (| len |);
-                                  M.read (| alloc |)
-                                ]
+                                [ M.read (| ptr |) ]
                               |);
-                              M.read (| len |)
+                              M.read (| len |);
+                              M.read (| alloc |)
                             ]
-                          |)
+                          |);
+                          M.read (| len |)
                         ]
-                    |)
-                  |)
-                |)))
-            |)
+                      |)
+                    ]
+                |)
+              |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4720,154 +4290,302 @@ Module boxed.
         ltac:(M.monadic
           (let len := M.alloc (| Ty.path "usize", len |) in
           let alloc := M.alloc (| A, alloc |) in
-          M.read (|
-            M.catch_return
-              (Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [
-                  Ty.apply
-                    (Ty.path "alloc::boxed::Box")
-                    []
+          M.catch_return
+            (Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.apply
+                  (Ty.path "alloc::boxed::Box")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "slice")
+                      []
+                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
+                    A
+                  ];
+                Ty.path "core::alloc::AllocError"
+              ]) (|
+            ltac:(M.monadic
+              (M.read (|
+                let~ ptr : Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] :=
+                  M.match_operator (|
+                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
                     [
-                      Ty.apply
-                        (Ty.path "slice")
-                        []
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
-                      A
-                    ];
-                  Ty.path "core::alloc::AllocError"
-                ]) (|
-              ltac:(M.monadic
-                (M.alloc (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.apply
-                        (Ty.path "alloc::boxed::Box")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "slice")
-                            []
-                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
-                          A
-                        ];
-                      Ty.path "core::alloc::AllocError"
-                    ],
-                  M.read (|
-                    let~ ptr : Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] :=
-                      M.read (|
-                        M.match_operator (|
-                          Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ :=
-                                  M.use
-                                    (M.alloc (|
-                                      Ty.path "bool",
-                                      LogicalOp.or (|
-                                        M.read (|
-                                          get_constant (|
-                                            "core::mem::SizedTypeProperties::IS_ZST",
-                                            Ty.path "bool"
-                                          |)
-                                        |),
-                                        ltac:(M.monadic
-                                          (M.call_closure (|
-                                            Ty.path "bool",
-                                            BinOp.eq,
-                                            [ M.read (| len |); Value.Integer IntegerKind.Usize 0 ]
-                                          |)))
-                                      |)
-                                    |)) in
-                                let _ :=
-                                  is_constant_or_break_match (|
-                                    M.read (| γ |),
-                                    Value.Bool true
-                                  |) in
-                                M.alloc (|
-                                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                                  M.call_closure (|
-                                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                                      "dangling",
-                                      [],
-                                      []
-                                    |),
-                                    []
-                                  |)
-                                |)));
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let~ layout : Ty.path "core::alloc::layout::Layout" :=
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ :=
+                            M.use
+                              (M.alloc (|
+                                Ty.path "bool",
+                                LogicalOp.or (|
                                   M.read (|
-                                    M.match_operator (|
+                                    get_constant (|
+                                      "core::mem::SizedTypeProperties::IS_ZST",
+                                      Ty.path "bool"
+                                    |)
+                                  |),
+                                  ltac:(M.monadic
+                                    (M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.eq,
+                                      [ M.read (| len |); Value.Integer IntegerKind.Usize 0 ]
+                                    |)))
+                                |)
+                              |)) in
+                          let _ :=
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          M.call_closure (|
+                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                              "dangling",
+                              [],
+                              []
+                            |),
+                            []
+                          |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.read (|
+                            let~ layout : Ty.path "core::alloc::layout::Layout" :=
+                              M.match_operator (|
+                                Ty.path "core::alloc::layout::Layout",
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::alloc::layout::Layout";
+                                      Ty.path "core::alloc::layout::LayoutError"
+                                    ],
+                                  M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::alloc::layout::Layout";
+                                        Ty.path "core::alloc::layout::LayoutError"
+                                      ],
+                                    M.get_associated_function (|
                                       Ty.path "core::alloc::layout::Layout",
-                                      M.alloc (|
+                                      "array",
+                                      [],
+                                      [
                                         Ty.apply
-                                          (Ty.path "core::result::Result")
+                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                                           []
-                                          [
-                                            Ty.path "core::alloc::layout::Layout";
-                                            Ty.path "core::alloc::layout::LayoutError"
-                                          ],
-                                        M.call_closure (|
+                                          [ T ]
+                                      ]
+                                    |),
+                                    [ M.read (| len |) ]
+                                  |)
+                                |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::result::Result::Ok",
+                                          0
+                                        |) in
+                                      let l :=
+                                        M.copy (| Ty.path "core::alloc::layout::Layout", γ0_0 |) in
+                                      M.read (| l |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::result::Result::Err",
+                                          0
+                                        |) in
+                                      M.never_to_any (|
+                                        M.read (|
+                                          M.return_ (|
+                                            Value.StructTuple
+                                              "core::result::Result::Err"
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloc::boxed::Box")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "slice")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "core::mem::maybe_uninit::MaybeUninit")
+                                                          []
+                                                          [ T ]
+                                                      ];
+                                                    A
+                                                  ];
+                                                Ty.path "core::alloc::AllocError"
+                                              ]
+                                              [ Value.StructTuple "core::alloc::AllocError" [] [] []
+                                              ]
+                                          |)
+                                        |)
+                                      |)))
+                                ]
+                              |) in
+                            M.alloc (|
+                              Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                              M.call_closure (|
+                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "core::ptr::non_null::NonNull")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                  "cast",
+                                  [],
+                                  [ T ]
+                                |),
+                                [
+                                  M.match_operator (|
+                                    Ty.apply
+                                      (Ty.path "core::ptr::non_null::NonNull")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                    M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "core::ops::control_flow::ControlFlow")
+                                        []
+                                        [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
                                             []
                                             [
-                                              Ty.path "core::alloc::layout::Layout";
-                                              Ty.path "core::alloc::layout::LayoutError"
-                                            ],
-                                          M.get_associated_function (|
-                                            Ty.path "core::alloc::layout::Layout",
-                                            "array",
-                                            [],
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::alloc::AllocError"
+                                            ];
+                                          Ty.apply
+                                            (Ty.path "core::ptr::non_null::NonNull")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                        ],
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::ops::control_flow::ControlFlow")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.path "core::convert::Infallible";
+                                                Ty.path "core::alloc::AllocError"
+                                              ];
+                                            Ty.apply
+                                              (Ty.path "core::ptr::non_null::NonNull")
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                          ],
+                                        M.get_trait_method (|
+                                          "core::ops::try_trait::Try",
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
                                             [
                                               Ty.apply
-                                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                (Ty.path "core::ptr::non_null::NonNull")
                                                 []
-                                                [ T ]
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                              Ty.path "core::alloc::AllocError"
+                                            ],
+                                          [],
+                                          [],
+                                          "branch",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::ptr::non_null::NonNull")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ];
+                                                Ty.path "core::alloc::AllocError"
+                                              ],
+                                            M.get_trait_method (|
+                                              "core::alloc::Allocator",
+                                              A,
+                                              [],
+                                              [],
+                                              "allocate_zeroed",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (| Pointer.Kind.Ref, alloc |);
+                                              M.read (| layout |)
                                             ]
-                                          |),
-                                          [ M.read (| len |) ]
-                                        |)
-                                      |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ0_0 :=
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                γ,
-                                                "core::result::Result::Ok",
-                                                0
-                                              |) in
-                                            let l :=
-                                              M.copy (|
-                                                Ty.path "core::alloc::layout::Layout",
-                                                γ0_0
-                                              |) in
-                                            l));
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ0_0 :=
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                γ,
-                                                "core::result::Result::Err",
-                                                0
-                                              |) in
-                                            M.alloc (|
-                                              Ty.path "core::alloc::layout::Layout",
-                                              M.never_to_any (|
-                                                M.read (|
-                                                  M.return_ (|
-                                                    Value.StructTuple
-                                                      "core::result::Result::Err"
+                                          |)
+                                        ]
+                                      |)
+                                    |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ0_0 :=
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              γ,
+                                              "core::ops::control_flow::ControlFlow::Break",
+                                              0
+                                            |) in
+                                          let residual :=
+                                            M.copy (|
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path "core::convert::Infallible";
+                                                  Ty.path "core::alloc::AllocError"
+                                                ],
+                                              γ0_0
+                                            |) in
+                                          M.never_to_any (|
+                                            M.read (|
+                                              M.return_ (|
+                                                M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "alloc::boxed::Box")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "slice")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "core::mem::maybe_uninit::MaybeUninit")
+                                                                []
+                                                                [ T ]
+                                                            ];
+                                                          A
+                                                        ];
+                                                      Ty.path "core::alloc::AllocError"
+                                                    ],
+                                                  M.get_trait_method (|
+                                                    "core::ops::try_trait::FromResidual",
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
                                                       []
                                                       [
                                                         Ty.apply
@@ -4887,351 +4605,133 @@ Module boxed.
                                                             A
                                                           ];
                                                         Ty.path "core::alloc::AllocError"
-                                                      ]
-                                                      [
-                                                        Value.StructTuple
-                                                          "core::alloc::AllocError"
-                                                          []
-                                                          []
-                                                          []
-                                                      ]
-                                                  |)
-                                                |)
-                                              |)
-                                            |)))
-                                      ]
-                                    |)
-                                  |) in
-                                M.alloc (|
-                                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                                  M.call_closure (|
-                                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "core::ptr::non_null::NonNull")
-                                        []
-                                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                                      "cast",
-                                      [],
-                                      [ T ]
-                                    |),
-                                    [
-                                      M.read (|
-                                        M.match_operator (|
-                                          Ty.apply
-                                            (Ty.path "core::ptr::non_null::NonNull")
-                                            []
-                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                                          M.alloc (|
-                                            Ty.apply
-                                              (Ty.path "core::ops::control_flow::ControlFlow")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [
-                                                    Ty.path "core::convert::Infallible";
-                                                    Ty.path "core::alloc::AllocError"
-                                                  ];
-                                                Ty.apply
-                                                  (Ty.path "core::ptr::non_null::NonNull")
-                                                  []
-                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                              ],
-                                            M.call_closure (|
-                                              Ty.apply
-                                                (Ty.path "core::ops::control_flow::ControlFlow")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "core::result::Result")
-                                                    []
-                                                    [
-                                                      Ty.path "core::convert::Infallible";
-                                                      Ty.path "core::alloc::AllocError"
-                                                    ];
-                                                  Ty.apply
-                                                    (Ty.path "core::ptr::non_null::NonNull")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ]
-                                                ],
-                                              M.get_trait_method (|
-                                                "core::ops::try_trait::Try",
-                                                Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "core::ptr::non_null::NonNull")
-                                                      []
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "slice")
-                                                          []
-                                                          [ Ty.path "u8" ]
-                                                      ];
-                                                    Ty.path "core::alloc::AllocError"
-                                                  ],
-                                                [],
-                                                [],
-                                                "branch",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.call_closure (|
-                                                  Ty.apply
-                                                    (Ty.path "core::result::Result")
-                                                    []
+                                                      ],
+                                                    [],
                                                     [
                                                       Ty.apply
-                                                        (Ty.path "core::ptr::non_null::NonNull")
+                                                        (Ty.path "core::result::Result")
                                                         []
                                                         [
-                                                          Ty.apply
-                                                            (Ty.path "slice")
-                                                            []
-                                                            [ Ty.path "u8" ]
-                                                        ];
-                                                      Ty.path "core::alloc::AllocError"
+                                                          Ty.path "core::convert::Infallible";
+                                                          Ty.path "core::alloc::AllocError"
+                                                        ]
                                                     ],
-                                                  M.get_trait_method (|
-                                                    "core::alloc::Allocator",
-                                                    A,
-                                                    [],
-                                                    [],
-                                                    "allocate_zeroed",
+                                                    "from_residual",
                                                     [],
                                                     []
                                                   |),
-                                                  [
-                                                    M.borrow (| Pointer.Kind.Ref, alloc |);
-                                                    M.read (| layout |)
-                                                  ]
+                                                  [ M.read (| residual |) ]
                                                 |)
-                                              ]
+                                              |)
                                             |)
-                                          |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let γ0_0 :=
-                                                  M.SubPointer.get_struct_tuple_field (|
-                                                    γ,
-                                                    "core::ops::control_flow::ControlFlow::Break",
-                                                    0
-                                                  |) in
-                                                let residual :=
-                                                  M.copy (|
-                                                    Ty.apply
-                                                      (Ty.path "core::result::Result")
-                                                      []
-                                                      [
-                                                        Ty.path "core::convert::Infallible";
-                                                        Ty.path "core::alloc::AllocError"
-                                                      ],
-                                                    γ0_0
-                                                  |) in
-                                                M.alloc (|
-                                                  Ty.apply
-                                                    (Ty.path "core::ptr::non_null::NonNull")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
-                                                    ],
-                                                  M.never_to_any (|
-                                                    M.read (|
-                                                      M.return_ (|
-                                                        M.call_closure (|
-                                                          Ty.apply
-                                                            (Ty.path "core::result::Result")
-                                                            []
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "alloc::boxed::Box")
-                                                                []
-                                                                [
-                                                                  Ty.apply
-                                                                    (Ty.path "slice")
-                                                                    []
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path
-                                                                          "core::mem::maybe_uninit::MaybeUninit")
-                                                                        []
-                                                                        [ T ]
-                                                                    ];
-                                                                  A
-                                                                ];
-                                                              Ty.path "core::alloc::AllocError"
-                                                            ],
-                                                          M.get_trait_method (|
-                                                            "core::ops::try_trait::FromResidual",
-                                                            Ty.apply
-                                                              (Ty.path "core::result::Result")
-                                                              []
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path "alloc::boxed::Box")
-                                                                  []
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path "slice")
-                                                                      []
-                                                                      [
-                                                                        Ty.apply
-                                                                          (Ty.path
-                                                                            "core::mem::maybe_uninit::MaybeUninit")
-                                                                          []
-                                                                          [ T ]
-                                                                      ];
-                                                                    A
-                                                                  ];
-                                                                Ty.path "core::alloc::AllocError"
-                                                              ],
-                                                            [],
-                                                            [
-                                                              Ty.apply
-                                                                (Ty.path "core::result::Result")
-                                                                []
-                                                                [
-                                                                  Ty.path
-                                                                    "core::convert::Infallible";
-                                                                  Ty.path "core::alloc::AllocError"
-                                                                ]
-                                                            ],
-                                                            "from_residual",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [ M.read (| residual |) ]
-                                                        |)
-                                                      |)
-                                                    |)
-                                                  |)
-                                                |)));
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let γ0_0 :=
-                                                  M.SubPointer.get_struct_tuple_field (|
-                                                    γ,
-                                                    "core::ops::control_flow::ControlFlow::Continue",
-                                                    0
-                                                  |) in
-                                                let val :=
-                                                  M.copy (|
-                                                    Ty.apply
-                                                      (Ty.path "core::ptr::non_null::NonNull")
-                                                      []
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "slice")
-                                                          []
-                                                          [ Ty.path "u8" ]
-                                                      ],
-                                                    γ0_0
-                                                  |) in
-                                                val))
-                                          ]
-                                        |)
-                                      |)
+                                          |)));
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ0_0 :=
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              γ,
+                                              "core::ops::control_flow::ControlFlow::Continue",
+                                              0
+                                            |) in
+                                          let val :=
+                                            M.copy (|
+                                              Ty.apply
+                                                (Ty.path "core::ptr::non_null::NonNull")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                              γ0_0
+                                            |) in
+                                          M.read (| val |)))
                                     ]
                                   |)
-                                |)))
-                          ]
-                        |)
-                      |) in
-                    M.alloc (|
+                                ]
+                              |)
+                            |)
+                          |)))
+                    ]
+                  |) in
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
                       Ty.apply
-                        (Ty.path "core::result::Result")
+                        (Ty.path "alloc::boxed::Box")
                         []
                         [
                           Ty.apply
-                            (Ty.path "alloc::boxed::Box")
+                            (Ty.path "slice")
                             []
-                            [
-                              Ty.apply
-                                (Ty.path "slice")
-                                []
-                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
-                                ];
-                              A
-                            ];
-                          Ty.path "core::alloc::AllocError"
-                        ],
-                      Value.StructTuple
-                        "core::result::Result::Ok"
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
+                          A
+                        ];
+                      Ty.path "core::alloc::AllocError"
+                    ],
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
                         []
                         [
                           Ty.apply
-                            (Ty.path "alloc::boxed::Box")
+                            (Ty.path "slice")
                             []
-                            [
-                              Ty.apply
-                                (Ty.path "slice")
-                                []
-                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
-                                ];
-                              A
-                            ];
-                          Ty.path "core::alloc::AllocError"
-                        ]
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
+                          A
+                        ];
+                      Ty.path "core::alloc::AllocError"
+                    ]
+                    [
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "alloc::boxed::Box")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "slice")
+                              []
+                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                              ];
+                            A
+                          ],
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
+                          "into_box",
+                          [],
+                          []
+                        |),
                         [
                           M.call_closure (|
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "slice")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                      []
-                                      [ T ]
-                                  ];
-                                A
-                              ],
+                            Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
                             M.get_associated_function (|
                               Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
-                              "into_box",
+                              "from_raw_parts_in",
                               [],
                               []
                             |),
                             [
                               M.call_closure (|
-                                Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
+                                Ty.apply (Ty.path "*mut") [] [ T ],
                                 M.get_associated_function (|
-                                  Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
-                                  "from_raw_parts_in",
+                                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                                  "as_ptr",
                                   [],
                                   []
                                 |),
-                                [
-                                  M.call_closure (|
-                                    Ty.apply (Ty.path "*mut") [] [ T ],
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                                      "as_ptr",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.read (| ptr |) ]
-                                  |);
-                                  M.read (| len |);
-                                  M.read (| alloc |)
-                                ]
+                                [ M.read (| ptr |) ]
                               |);
-                              M.read (| len |)
+                              M.read (| len |);
+                              M.read (| alloc |)
                             ]
-                          |)
+                          |);
+                          M.read (| len |)
                         ]
-                    |)
-                  |)
-                |)))
-            |)
+                      |)
+                    ]
+                |)
+              |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -5269,10 +4769,18 @@ Module boxed.
                 [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ],
               self
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
-              M.alloc (|
+          M.match_operator (|
+            Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
+            M.alloc (|
+              Ty.tuple
+                [
+                  Ty.apply
+                    (Ty.path "*mut")
+                    []
+                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
+                  A
+                ],
+              M.call_closure (|
                 Ty.tuple
                   [
                     Ty.apply
@@ -5281,59 +4789,46 @@ Module boxed.
                       [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
                     A
                   ],
-                M.call_closure (|
-                  Ty.tuple
-                    [
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "alloc::boxed::Box")
+                    []
+                    [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ],
+                  "into_raw_with_allocator",
+                  [],
+                  []
+                |),
+                [ M.read (| self |) ]
+              |)
+            |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                  let raw :=
+                    M.copy (|
                       Ty.apply
                         (Ty.path "*mut")
                         []
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
-                      A
-                    ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "alloc::boxed::Box")
-                      []
-                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ],
-                    "into_raw_with_allocator",
-                    [],
-                    []
-                  |),
-                  [ M.read (| self |) ]
-                |)
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let raw :=
-                      M.copy (|
-                        Ty.apply
-                          (Ty.path "*mut")
-                          []
-                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
-                        γ0_0
-                      |) in
-                    let alloc := M.copy (| A, γ0_1 |) in
-                    M.alloc (|
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
+                      γ0_0
+                    |) in
+                  let alloc := M.copy (| A, γ0_1 |) in
+                  M.call_closure (|
+                    Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
+                    M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
-                      M.call_closure (|
-                        Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
-                          "from_raw_in",
-                          [],
-                          []
-                        |),
-                        [
-                          M.cast (Ty.apply (Ty.path "*mut") [] [ T ]) (M.read (| raw |));
-                          M.read (| alloc |)
-                        ]
-                      |)
-                    |)))
-              ]
-            |)
+                      "from_raw_in",
+                      [],
+                      []
+                    |),
+                    [
+                      M.cast (Ty.apply (Ty.path "*mut") [] [ T ]) (M.read (| raw |));
+                      M.read (| alloc |)
+                    ]
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -5446,10 +4941,23 @@ Module boxed.
                 ],
               self
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.apply (Ty.path "slice") [] [ T ]; A ],
-              M.alloc (|
+          M.match_operator (|
+            Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.apply (Ty.path "slice") [] [ T ]; A ],
+            M.alloc (|
+              Ty.tuple
+                [
+                  Ty.apply
+                    (Ty.path "*mut")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "slice")
+                        []
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
+                    ];
+                  A
+                ],
+              M.call_closure (|
                 Ty.tuple
                   [
                     Ty.apply
@@ -5463,9 +4971,31 @@ Module boxed.
                       ];
                     A
                   ],
-                M.call_closure (|
-                  Ty.tuple
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "alloc::boxed::Box")
+                    []
                     [
+                      Ty.apply
+                        (Ty.path "slice")
+                        []
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
+                      A
+                    ],
+                  "into_raw_with_allocator",
+                  [],
+                  []
+                |),
+                [ M.read (| self |) ]
+              |)
+            |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                  let raw :=
+                    M.copy (|
                       Ty.apply
                         (Ty.path "*mut")
                         []
@@ -5474,75 +5004,32 @@ Module boxed.
                             (Ty.path "slice")
                             []
                             [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
-                        ];
-                      A
-                    ],
-                  M.get_associated_function (|
+                        ],
+                      γ0_0
+                    |) in
+                  let alloc := M.copy (| A, γ0_1 |) in
+                  M.call_closure (|
                     Ty.apply
                       (Ty.path "alloc::boxed::Box")
                       []
-                      [
-                        Ty.apply
-                          (Ty.path "slice")
-                          []
-                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
-                        A
-                      ],
-                    "into_raw_with_allocator",
-                    [],
-                    []
-                  |),
-                  [ M.read (| self |) ]
-                |)
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let raw :=
-                      M.copy (|
-                        Ty.apply
-                          (Ty.path "*mut")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "slice")
-                              []
-                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
-                          ],
-                        γ0_0
-                      |) in
-                    let alloc := M.copy (| A, γ0_1 |) in
-                    M.alloc (|
+                      [ Ty.apply (Ty.path "slice") [] [ T ]; A ],
+                    M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
                         []
                         [ Ty.apply (Ty.path "slice") [] [ T ]; A ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "alloc::boxed::Box")
-                          []
-                          [ Ty.apply (Ty.path "slice") [] [ T ]; A ],
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "alloc::boxed::Box")
-                            []
-                            [ Ty.apply (Ty.path "slice") [] [ T ]; A ],
-                          "from_raw_in",
-                          [],
-                          []
-                        |),
-                        [
-                          M.cast
-                            (Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ])
-                            (M.read (| raw |));
-                          M.read (| alloc |)
-                        ]
-                      |)
-                    |)))
-              ]
-            |)
+                      "from_raw_in",
+                      [],
+                      []
+                    |),
+                    [
+                      M.cast
+                        (Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ])
+                        (M.read (| raw |));
+                      M.read (| alloc |)
+                    ]
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -5616,87 +5103,105 @@ Module boxed.
                     |))
                 ]
               |) in
-            M.match_operator (|
+            M.alloc (|
               Ty.tuple [],
-              M.alloc (| Ty.tuple [], Value.Tuple [] |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ :=
-                      M.use
-                        (M.alloc (|
-                          Ty.path "bool",
-                          M.call_closure (|
+              M.match_operator (|
+                Ty.tuple [],
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ :=
+                        M.use
+                          (M.alloc (|
                             Ty.path "bool",
-                            BinOp.ne,
-                            [
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_associated_function (|
-                                  Ty.path "core::alloc::layout::Layout",
-                                  "size",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, layout |) ]
-                              |);
-                              Value.Integer IntegerKind.Usize 0
-                            ]
-                          |)
-                        |)) in
-                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let~ _ : Ty.tuple [] :=
-                      M.call_closure (|
-                        Ty.tuple [],
-                        M.get_trait_method (|
-                          "core::alloc::Allocator",
-                          A,
-                          [],
-                          [],
-                          "deallocate",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_tuple_field (|
-                              M.deref (| M.read (| self |) |),
-                              "alloc::boxed::Box",
-                              1
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.ne,
+                              [
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_associated_function (|
+                                    Ty.path "core::alloc::layout::Layout",
+                                    "size",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, layout |) ]
+                                |);
+                                Value.Integer IntegerKind.Usize 0
+                              ]
                             |)
-                          |);
+                          |)) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      M.read (|
+                        let~ _ : Ty.tuple [] :=
                           M.call_closure (|
-                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
+                            Ty.tuple [],
                             M.get_trait_method (|
-                              "core::convert::From",
-                              Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
+                              "core::alloc::Allocator",
+                              A,
                               [],
-                              [ Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ Ty.path "u8" ]
-                              ],
-                              "from",
+                              [],
+                              "deallocate",
                               [],
                               []
                             |),
                             [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_tuple_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "alloc::boxed::Box",
+                                  1
+                                |)
+                              |);
                               M.call_closure (|
-                                Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ Ty.path "u8" ],
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ],
-                                  "cast",
+                                Ty.apply
+                                  (Ty.path "core::ptr::non_null::NonNull")
+                                  []
+                                  [ Ty.path "u8" ],
+                                M.get_trait_method (|
+                                  "core::convert::From",
+                                  Ty.apply
+                                    (Ty.path "core::ptr::non_null::NonNull")
+                                    []
+                                    [ Ty.path "u8" ],
                                   [],
-                                  [ Ty.path "u8" ]
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::ptr::unique::Unique")
+                                      []
+                                      [ Ty.path "u8" ]
+                                  ],
+                                  "from",
+                                  [],
+                                  []
                                 |),
-                                [ M.read (| ptr |) ]
-                              |)
+                                [
+                                  M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::ptr::unique::Unique")
+                                      []
+                                      [ Ty.path "u8" ],
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ],
+                                      "cast",
+                                      [],
+                                      [ Ty.path "u8" ]
+                                    |),
+                                    [ M.read (| ptr |) ]
+                                  |)
+                                ]
+                              |);
+                              M.read (| layout |)
                             ]
-                          |);
-                          M.read (| layout |)
-                        ]
-                      |) in
-                    M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-              ]
+                          |) in
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                      |)));
+                  fun γ => ltac:(M.monadic (Value.Tuple []))
+                ]
+              |)
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -6263,55 +5768,55 @@ Module boxed.
                 ],
               source
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.tuple [],
-              M.alloc (| Ty.tuple [], Value.Tuple [] |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ :=
-                      M.use
-                        (M.alloc (|
+          M.match_operator (|
+            Ty.tuple [],
+            M.alloc (| Ty.tuple [], Value.Tuple [] |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ :=
+                    M.use
+                      (M.alloc (|
+                        Ty.path "bool",
+                        M.call_closure (|
                           Ty.path "bool",
-                          M.call_closure (|
-                            Ty.path "bool",
-                            BinOp.eq,
-                            [
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [] [ T ],
-                                  "len",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
-                                  |)
-                                ]
-                              |);
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [] [ T ],
-                                  "len",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (| M.read (| M.deref (| M.read (| source |) |) |) |)
-                                  |)
-                                ]
-                              |)
-                            ]
-                          |)
-                        |)) in
-                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          BinOp.eq,
+                          [
+                            M.call_closure (|
+                              Ty.path "usize",
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "slice") [] [ T ],
+                                "len",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                                |)
+                              ]
+                            |);
+                            M.call_closure (|
+                              Ty.path "usize",
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "slice") [] [ T ],
+                                "len",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (| M.read (| M.deref (| M.read (| source |) |) |) |)
+                                |)
+                              ]
+                            |)
+                          ]
+                        |)
+                      |)) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  M.read (|
                     let~ _ : Ty.tuple [] :=
                       M.call_closure (|
                         Ty.tuple [],
@@ -6338,10 +5843,12 @@ Module boxed.
                           |)
                         ]
                       |) in
-                    M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let~ _ : Ty.tuple [] :=
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (M.read (|
+                    let~ _ : Ty.tuple [] :=
                       M.write (|
                         M.deref (| M.read (| self |) |),
                         M.call_closure (|
@@ -6364,9 +5871,9 @@ Module boxed.
                           [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| source |) |) |) ]
                         |)
                       |) in
-                    M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-              ]
-            |)
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.

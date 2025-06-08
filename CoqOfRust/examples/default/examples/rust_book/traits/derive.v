@@ -208,35 +208,30 @@ Module Impl_derive_Inches.
     | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "derive::Inches" ], self |) in
-        M.read (|
-          M.match_operator (|
-            Ty.path "derive::Centimeters",
-            self,
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
-                  let γ1_0 := M.SubPointer.get_struct_tuple_field (| γ, "derive::Inches", 0 |) in
-                  let inches := M.copy (| Ty.path "i32", γ1_0 |) in
-                  M.alloc (|
-                    Ty.path "derive::Centimeters",
-                    Value.StructTuple
-                      "derive::Centimeters"
-                      []
-                      []
+        M.match_operator (|
+          Ty.path "derive::Centimeters",
+          self,
+          [
+            fun γ =>
+              ltac:(M.monadic
+                (let γ := M.read (| γ |) in
+                let γ1_0 := M.SubPointer.get_struct_tuple_field (| γ, "derive::Inches", 0 |) in
+                let inches := M.copy (| Ty.path "i32", γ1_0 |) in
+                Value.StructTuple
+                  "derive::Centimeters"
+                  []
+                  []
+                  [
+                    M.call_closure (|
+                      Ty.path "f64",
+                      BinOp.Wrap.mul,
                       [
-                        M.call_closure (|
-                          Ty.path "f64",
-                          BinOp.Wrap.mul,
-                          [
-                            M.cast (Ty.path "f64") (M.read (| inches |));
-                            M.read (| UnsupportedLiteral |)
-                          ]
-                        |)
+                        M.cast (Ty.path "f64") (M.read (| inches |));
+                        M.read (| UnsupportedLiteral |)
                       ]
-                  |)))
-            ]
-          |)
+                    |)
+                  ]))
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -364,62 +359,54 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ meter : Ty.path "derive::Centimeters" :=
           Value.StructTuple "derive::Centimeters" [] [] [ M.read (| UnsupportedLiteral |) ] in
         let~ cmp : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
-          M.read (|
-            M.match_operator (|
-              Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-              M.alloc (| Ty.tuple [], Value.Tuple [] |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ :=
-                      M.use
-                        (M.alloc (|
+          M.match_operator (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+            M.alloc (| Ty.tuple [], Value.Tuple [] |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ :=
+                    M.use
+                      (M.alloc (|
+                        Ty.path "bool",
+                        M.call_closure (|
                           Ty.path "bool",
-                          M.call_closure (|
-                            Ty.path "bool",
-                            M.get_trait_method (|
-                              "core::cmp::PartialOrd",
-                              Ty.path "derive::Centimeters",
-                              [],
-                              [ Ty.path "derive::Centimeters" ],
-                              "lt",
-                              [],
-                              []
-                            |),
-                            [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.alloc (|
+                          M.get_trait_method (|
+                            "core::cmp::PartialOrd",
+                            Ty.path "derive::Centimeters",
+                            [],
+                            [ Ty.path "derive::Centimeters" ],
+                            "lt",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Ty.path "derive::Centimeters",
+                                M.call_closure (|
                                   Ty.path "derive::Centimeters",
-                                  M.call_closure (|
-                                    Ty.path "derive::Centimeters",
-                                    M.get_associated_function (|
-                                      Ty.path "derive::Inches",
-                                      "to_centimeters",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.borrow (| Pointer.Kind.Ref, foot |) ]
-                                  |)
+                                  M.get_associated_function (|
+                                    Ty.path "derive::Inches",
+                                    "to_centimeters",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, foot |) ]
                                 |)
-                              |);
-                              M.borrow (| Pointer.Kind.Ref, meter |)
-                            ]
-                          |)
-                        |)) in
-                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.alloc (|
-                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                      mk_str (| "smaller" |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (M.alloc (|
-                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "bigger" |) |) |)
-                    |)))
-              ]
-            |)
+                              |)
+                            |);
+                            M.borrow (| Pointer.Kind.Ref, meter |)
+                          ]
+                        |)
+                      |)) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  mk_str (| "smaller" |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "bigger" |) |) |)))
+            ]
           |) in
         let~ _ : Ty.tuple [] :=
           M.read (|

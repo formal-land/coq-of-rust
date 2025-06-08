@@ -62,127 +62,91 @@ Module future.
                   [ Ty.apply (Ty.path "core::future::join::MaybeDone") [] [ F ] ],
                 self
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.apply
-                  (Ty.path "core::option::Option")
-                  []
-                  [ Ty.associated_in_trait "core::future::future::Future" [] [] F "Output" ],
-                M.deref (| M.read (| self |) |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::future::join::MaybeDone::Done",
-                          0
-                        |) in
-                      M.match_operator (|
-                        Ty.apply
-                          (Ty.path "core::option::Option")
-                          []
-                          [ Ty.associated_in_trait "core::future::future::Future" [] [] F "Output"
-                          ],
-                        M.alloc (|
+            M.match_operator (|
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.associated_in_trait "core::future::future::Future" [] [] F "Output" ],
+              M.deref (| M.read (| self |) |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::future::join::MaybeDone::Done",
+                        0
+                      |) in
+                    M.match_operator (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.associated_in_trait "core::future::future::Future" [] [] F "Output" ],
+                      M.alloc (|
+                        Ty.apply (Ty.path "core::future::join::MaybeDone") [] [ F ],
+                        M.call_closure (|
                           Ty.apply (Ty.path "core::future::join::MaybeDone") [] [ F ],
-                          M.call_closure (|
-                            Ty.apply (Ty.path "core::future::join::MaybeDone") [] [ F ],
-                            M.get_function (|
-                              "core::mem::replace",
-                              [],
-                              [ Ty.apply (Ty.path "core::future::join::MaybeDone") [] [ F ] ]
-                            |),
-                            [
-                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-                              Value.StructTuple "core::future::join::MaybeDone::Taken" [] [ F ] []
-                            ]
-                          |)
-                        |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::future::join::MaybeDone::Done",
-                                  0
-                                |) in
-                              let val :=
-                                M.copy (|
-                                  Ty.associated_in_trait
-                                    "core::future::future::Future"
-                                    []
-                                    []
-                                    F
-                                    "Output",
-                                  γ0_0
-                                |) in
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "core::option::Option")
+                          M.get_function (|
+                            "core::mem::replace",
+                            [],
+                            [ Ty.apply (Ty.path "core::future::join::MaybeDone") [] [ F ] ]
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                            Value.StructTuple "core::future::join::MaybeDone::Taken" [] [ F ] []
+                          ]
+                        |)
+                      |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "core::future::join::MaybeDone::Done",
+                                0
+                              |) in
+                            let val :=
+                              M.copy (|
+                                Ty.associated_in_trait
+                                  "core::future::future::Future"
                                   []
-                                  [
-                                    Ty.associated_in_trait
-                                      "core::future::future::Future"
-                                      []
-                                      []
-                                      F
-                                      "Output"
-                                  ],
-                                Value.StructTuple
-                                  "core::option::Option::Some"
                                   []
-                                  [
-                                    Ty.associated_in_trait
-                                      "core::future::future::Future"
-                                      []
-                                      []
-                                      F
-                                      "Output"
-                                  ]
-                                  [ M.read (| val |) ]
-                              |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (M.alloc (|
-                                Ty.apply
-                                  (Ty.path "core::option::Option")
+                                  F
+                                  "Output",
+                                γ0_0
+                              |) in
+                            Value.StructTuple
+                              "core::option::Option::Some"
+                              []
+                              [
+                                Ty.associated_in_trait
+                                  "core::future::future::Future"
                                   []
-                                  [
-                                    Ty.associated_in_trait
-                                      "core::future::future::Future"
-                                      []
-                                      []
-                                      F
-                                      "Output"
-                                  ],
-                                M.never_to_any (|
-                                  M.call_closure (|
-                                    Ty.path "never",
-                                    M.get_function (| "core::panicking::panic", [], [] |),
-                                    [ mk_str (| "internal error: entered unreachable code" |) ]
-                                  |)
-                                |)
-                              |)))
-                        ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::option::Option")
-                          []
-                          [ Ty.associated_in_trait "core::future::future::Future" [] [] F "Output"
-                          ],
-                        Value.StructTuple
-                          "core::option::Option::None"
-                          []
-                          [ Ty.associated_in_trait "core::future::future::Future" [] [] F "Output" ]
-                          []
-                      |)))
-                ]
-              |)
+                                  []
+                                  F
+                                  "Output"
+                              ]
+                              [ M.read (| val |) ]));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (M.never_to_any (|
+                              M.call_closure (|
+                                Ty.path "never",
+                                M.get_function (| "core::panicking::panic", [], [] |),
+                                [ mk_str (| "internal error: entered unreachable code" |) ]
+                              |)
+                            |)))
+                      ]
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (Value.StructTuple
+                      "core::option::Option::None"
+                      []
+                      [ Ty.associated_in_trait "core::future::future::Future" [] [] F "Output" ]
+                      []))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -242,64 +206,200 @@ Module future.
                 Ty.apply (Ty.path "&mut") [] [ Ty.path "core::task::wake::Context" ],
                 cx
               |) in
-            M.read (|
-              M.catch_return
-                (Ty.apply
-                  (Ty.path "core::task::poll::Poll")
-                  []
-                  [
-                    Ty.associated_in_trait
-                      "core::future::future::Future"
-                      []
-                      []
-                      (Ty.apply (Ty.path "core::future::join::MaybeDone") [] [ F ])
-                      "Output"
-                  ]) (|
-                ltac:(M.monadic
-                  (M.alloc (|
-                    Ty.apply
-                      (Ty.path "core::task::poll::Poll")
-                      []
-                      [
-                        Ty.associated_in_trait
-                          "core::future::future::Future"
-                          []
-                          []
-                          (Ty.apply (Ty.path "core::future::join::MaybeDone") [] [ F ])
-                          "Output"
-                      ],
-                    M.read (|
-                      let~ _ : Ty.tuple [] :=
-                        M.read (|
-                          M.match_operator (|
-                            Ty.tuple [],
-                            M.deref (|
-                              M.call_closure (|
+            M.catch_return
+              (Ty.apply
+                (Ty.path "core::task::poll::Poll")
+                []
+                [
+                  Ty.associated_in_trait
+                    "core::future::future::Future"
+                    []
+                    []
+                    (Ty.apply (Ty.path "core::future::join::MaybeDone") [] [ F ])
+                    "Output"
+                ]) (|
+              ltac:(M.monadic
+                (M.read (|
+                  let~ _ : Ty.tuple [] :=
+                    M.match_operator (|
+                      Ty.tuple [],
+                      M.deref (|
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.apply (Ty.path "core::future::join::MaybeDone") [] [ F ] ],
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "core::pin::Pin")
+                              []
+                              [
                                 Ty.apply
                                   (Ty.path "&mut")
                                   []
-                                  [ Ty.apply (Ty.path "core::future::join::MaybeDone") [] [ F ] ],
-                                M.get_associated_function (|
+                                  [ Ty.apply (Ty.path "core::future::join::MaybeDone") [] [ F ] ]
+                              ],
+                            "get_unchecked_mut",
+                            [],
+                            []
+                          |),
+                          [
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::pin::Pin")
+                                []
+                                [
                                   Ty.apply
-                                    (Ty.path "core::pin::Pin")
+                                    (Ty.path "&mut")
                                     []
-                                    [
+                                    [ Ty.apply (Ty.path "core::future::join::MaybeDone") [] [ F ] ]
+                                ],
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "core::pin::Pin")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [ Ty.apply (Ty.path "core::future::join::MaybeDone") [] [ F ]
+                                      ]
+                                  ],
+                                "as_mut",
+                                [],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.MutRef, self |) ]
+                            |)
+                          ]
+                        |)
+                      |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "core::future::join::MaybeDone::Future",
+                                0
+                              |) in
+                            let f := M.alloc (| Ty.apply (Ty.path "&mut") [] [ F ], γ0_0 |) in
+                            M.read (|
+                              let~ val :
+                                  Ty.associated_in_trait
+                                    "core::future::future::Future"
+                                    []
+                                    []
+                                    F
+                                    "Output" :=
+                                M.match_operator (|
+                                  Ty.associated_in_trait
+                                    "core::future::future::Future"
+                                    []
+                                    []
+                                    F
+                                    "Output",
+                                  M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "core::task::poll::Poll")
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "core::future::future::Future"
+                                          []
+                                          []
+                                          F
+                                          "Output"
+                                      ],
+                                    M.call_closure (|
                                       Ty.apply
-                                        (Ty.path "&mut")
+                                        (Ty.path "core::task::poll::Poll")
                                         []
                                         [
-                                          Ty.apply
-                                            (Ty.path "core::future::join::MaybeDone")
+                                          Ty.associated_in_trait
+                                            "core::future::future::Future"
                                             []
-                                            [ F ]
-                                        ]
-                                    ],
-                                  "get_unchecked_mut",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.call_closure (|
+                                            []
+                                            F
+                                            "Output"
+                                        ],
+                                      M.get_trait_method (|
+                                        "core::future::future::Future",
+                                        F,
+                                        [],
+                                        [],
+                                        "poll",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::pin::Pin")
+                                            []
+                                            [ Ty.apply (Ty.path "&mut") [] [ F ] ],
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "core::pin::Pin")
+                                              []
+                                              [ Ty.apply (Ty.path "&mut") [] [ F ] ],
+                                            "new_unchecked",
+                                            [],
+                                            []
+                                          |),
+                                          [ M.read (| f |) ]
+                                        |);
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (| M.read (| cx |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ0_0 :=
+                                          M.SubPointer.get_struct_tuple_field (|
+                                            γ,
+                                            "core::task::poll::Poll::Ready",
+                                            0
+                                          |) in
+                                        let t :=
+                                          M.copy (|
+                                            Ty.associated_in_trait
+                                              "core::future::future::Future"
+                                              []
+                                              []
+                                              F
+                                              "Output",
+                                            γ0_0
+                                          |) in
+                                        M.read (| t |)));
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let _ :=
+                                          M.is_struct_tuple (|
+                                            γ,
+                                            "core::task::poll::Poll::Pending"
+                                          |) in
+                                        M.never_to_any (|
+                                          M.read (|
+                                            M.return_ (|
+                                              Value.StructTuple
+                                                "core::task::poll::Poll::Pending"
+                                                []
+                                                [ Ty.tuple [] ]
+                                                []
+                                            |)
+                                          |)
+                                        |)))
+                                  ]
+                                |) in
+                              let~ _ : Ty.tuple [] :=
+                                M.call_closure (|
+                                  Ty.tuple [],
+                                  M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::pin::Pin")
                                       []
@@ -314,233 +414,52 @@ Module future.
                                               [ F ]
                                           ]
                                       ],
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "core::pin::Pin")
-                                        []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&mut")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::future::join::MaybeDone")
-                                                []
-                                                [ F ]
-                                            ]
-                                        ],
-                                      "as_mut",
-                                      [],
+                                    "set",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (| Pointer.Kind.MutRef, self |);
+                                    Value.StructTuple
+                                      "core::future::join::MaybeDone::Done"
                                       []
-                                    |),
-                                    [ M.borrow (| Pointer.Kind.MutRef, self |) ]
-                                  |)
-                                ]
+                                      [ F ]
+                                      [ M.read (| val |) ]
+                                  ]
+                                |) in
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "core::future::join::MaybeDone::Done",
+                                0
+                              |) in
+                            Value.Tuple []));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (| γ, "core::future::join::MaybeDone::Taken" |) in
+                            M.never_to_any (|
+                              M.call_closure (|
+                                Ty.path "never",
+                                M.get_function (| "core::panicking::panic", [], [] |),
+                                [ mk_str (| "internal error: entered unreachable code" |) ]
                               |)
-                            |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::future::join::MaybeDone::Future",
-                                      0
-                                    |) in
-                                  let f := M.alloc (| Ty.apply (Ty.path "&mut") [] [ F ], γ0_0 |) in
-                                  let~ val :
-                                      Ty.associated_in_trait
-                                        "core::future::future::Future"
-                                        []
-                                        []
-                                        F
-                                        "Output" :=
-                                    M.read (|
-                                      M.match_operator (|
-                                        Ty.associated_in_trait
-                                          "core::future::future::Future"
-                                          []
-                                          []
-                                          F
-                                          "Output",
-                                        M.alloc (|
-                                          Ty.apply
-                                            (Ty.path "core::task::poll::Poll")
-                                            []
-                                            [
-                                              Ty.associated_in_trait
-                                                "core::future::future::Future"
-                                                []
-                                                []
-                                                F
-                                                "Output"
-                                            ],
-                                          M.call_closure (|
-                                            Ty.apply
-                                              (Ty.path "core::task::poll::Poll")
-                                              []
-                                              [
-                                                Ty.associated_in_trait
-                                                  "core::future::future::Future"
-                                                  []
-                                                  []
-                                                  F
-                                                  "Output"
-                                              ],
-                                            M.get_trait_method (|
-                                              "core::future::future::Future",
-                                              F,
-                                              [],
-                                              [],
-                                              "poll",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.call_closure (|
-                                                Ty.apply
-                                                  (Ty.path "core::pin::Pin")
-                                                  []
-                                                  [ Ty.apply (Ty.path "&mut") [] [ F ] ],
-                                                M.get_associated_function (|
-                                                  Ty.apply
-                                                    (Ty.path "core::pin::Pin")
-                                                    []
-                                                    [ Ty.apply (Ty.path "&mut") [] [ F ] ],
-                                                  "new_unchecked",
-                                                  [],
-                                                  []
-                                                |),
-                                                [ M.read (| f |) ]
-                                              |);
-                                              M.borrow (|
-                                                Pointer.Kind.MutRef,
-                                                M.deref (| M.read (| cx |) |)
-                                              |)
-                                            ]
-                                          |)
-                                        |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let γ0_0 :=
-                                                M.SubPointer.get_struct_tuple_field (|
-                                                  γ,
-                                                  "core::task::poll::Poll::Ready",
-                                                  0
-                                                |) in
-                                              let t :=
-                                                M.copy (|
-                                                  Ty.associated_in_trait
-                                                    "core::future::future::Future"
-                                                    []
-                                                    []
-                                                    F
-                                                    "Output",
-                                                  γ0_0
-                                                |) in
-                                              t));
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let _ :=
-                                                M.is_struct_tuple (|
-                                                  γ,
-                                                  "core::task::poll::Poll::Pending"
-                                                |) in
-                                              M.alloc (|
-                                                Ty.associated_in_trait
-                                                  "core::future::future::Future"
-                                                  []
-                                                  []
-                                                  F
-                                                  "Output",
-                                                M.never_to_any (|
-                                                  M.read (|
-                                                    M.return_ (|
-                                                      Value.StructTuple
-                                                        "core::task::poll::Poll::Pending"
-                                                        []
-                                                        [ Ty.tuple [] ]
-                                                        []
-                                                    |)
-                                                  |)
-                                                |)
-                                              |)))
-                                        ]
-                                      |)
-                                    |) in
-                                  let~ _ : Ty.tuple [] :=
-                                    M.call_closure (|
-                                      Ty.tuple [],
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "core::pin::Pin")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&mut")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "core::future::join::MaybeDone")
-                                                  []
-                                                  [ F ]
-                                              ]
-                                          ],
-                                        "set",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (| Pointer.Kind.MutRef, self |);
-                                        Value.StructTuple
-                                          "core::future::join::MaybeDone::Done"
-                                          []
-                                          [ F ]
-                                          [ M.read (| val |) ]
-                                      ]
-                                    |) in
-                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 :=
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      γ,
-                                      "core::future::join::MaybeDone::Done",
-                                      0
-                                    |) in
-                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let _ :=
-                                    M.is_struct_tuple (|
-                                      γ,
-                                      "core::future::join::MaybeDone::Taken"
-                                    |) in
-                                  M.alloc (|
-                                    Ty.tuple [],
-                                    M.never_to_any (|
-                                      M.call_closure (|
-                                        Ty.path "never",
-                                        M.get_function (| "core::panicking::panic", [], [] |),
-                                        [ mk_str (| "internal error: entered unreachable code" |) ]
-                                      |)
-                                    |)
-                                  |)))
-                            ]
-                          |)
-                        |) in
-                      M.alloc (|
-                        Ty.apply (Ty.path "core::task::poll::Poll") [] [ Ty.tuple [] ],
-                        Value.StructTuple
-                          "core::task::poll::Poll::Ready"
-                          []
-                          [ Ty.tuple [] ]
-                          [ Value.Tuple [] ]
-                      |)
-                    |)
-                  |)))
-              |)
+                            |)))
+                      ]
+                    |) in
+                  M.alloc (|
+                    Ty.apply (Ty.path "core::task::poll::Poll") [] [ Ty.tuple [] ],
+                    Value.StructTuple
+                      "core::task::poll::Poll::Ready"
+                      []
+                      [ Ty.tuple [] ]
+                      [ Value.Tuple [] ]
+                  |)
+                |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

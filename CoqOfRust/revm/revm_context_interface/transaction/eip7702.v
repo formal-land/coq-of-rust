@@ -1507,38 +1507,49 @@ Module transaction.
                   ],
                 self
               |) in
-            M.read (|
-              M.catch_return (Ty.path "bool") (|
-                ltac:(M.monadic
-                  (M.alloc (|
-                    Ty.path "bool",
-                    M.read (|
-                      let~ _ : Ty.tuple [] :=
-                        M.read (|
-                          M.match_operator (|
-                            Ty.tuple [],
-                            M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ :=
-                                    M.use
-                                      (M.alloc (|
-                                        Ty.path "bool",
-                                        UnOp.not (|
-                                          M.read (|
-                                            M.match_operator (|
-                                              Ty.path "bool",
-                                              M.alloc (|
-                                                Ty.path
-                                                  "alloy_primitives::signature::parity::Parity",
+            M.catch_return (Ty.path "bool") (|
+              ltac:(M.monadic
+                (M.read (|
+                  let~ _ : Ty.tuple [] :=
+                    M.match_operator (|
+                      Ty.tuple [],
+                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ :=
+                              M.use
+                                (M.alloc (|
+                                  Ty.path "bool",
+                                  UnOp.not (|
+                                    M.match_operator (|
+                                      Ty.path "bool",
+                                      M.alloc (|
+                                        Ty.path "alloy_primitives::signature::parity::Parity",
+                                        M.call_closure (|
+                                          Ty.path "alloy_primitives::signature::parity::Parity",
+                                          M.get_associated_function (|
+                                            Ty.path "alloy_primitives::signature::sig::Signature",
+                                            "v",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
                                                 M.call_closure (|
-                                                  Ty.path
-                                                    "alloy_primitives::signature::parity::Parity",
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "alloy_primitives::signature::sig::Signature"
+                                                    ],
                                                   M.get_associated_function (|
                                                     Ty.path
-                                                      "alloy_primitives::signature::sig::Signature",
-                                                    "v",
+                                                      "alloy_eip7702::auth_list::SignedAuthorization",
+                                                    "signature",
                                                     [],
                                                     []
                                                   |),
@@ -1552,44 +1563,19 @@ Module transaction.
                                                             []
                                                             [
                                                               Ty.path
-                                                                "alloy_primitives::signature::sig::Signature"
+                                                                "alloy_eip7702::auth_list::SignedAuthorization"
                                                             ],
                                                           M.get_associated_function (|
                                                             Ty.path
-                                                              "alloy_eip7702::auth_list::SignedAuthorization",
-                                                            "signature",
+                                                              "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization",
+                                                            "inner",
                                                             [],
                                                             []
                                                           |),
                                                           [
                                                             M.borrow (|
                                                               Pointer.Kind.Ref,
-                                                              M.deref (|
-                                                                M.call_closure (|
-                                                                  Ty.apply
-                                                                    (Ty.path "&")
-                                                                    []
-                                                                    [
-                                                                      Ty.path
-                                                                        "alloy_eip7702::auth_list::SignedAuthorization"
-                                                                    ],
-                                                                  M.get_associated_function (|
-                                                                    Ty.path
-                                                                      "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization",
-                                                                    "inner",
-                                                                    [],
-                                                                    []
-                                                                  |),
-                                                                  [
-                                                                    M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      M.deref (|
-                                                                        M.read (| self |)
-                                                                      |)
-                                                                    |)
-                                                                  ]
-                                                                |)
-                                                              |)
+                                                              M.deref (| M.read (| self |) |)
                                                             |)
                                                           ]
                                                         |)
@@ -1597,59 +1583,80 @@ Module transaction.
                                                     |)
                                                   ]
                                                 |)
-                                              |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let γ0_0 :=
-                                                      M.SubPointer.get_struct_tuple_field (|
-                                                        γ,
-                                                        "alloy_primitives::signature::parity::Parity::Parity",
-                                                        0
-                                                      |) in
-                                                    M.alloc (| Ty.path "bool", Value.Bool true |)));
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (M.alloc (|
-                                                      Ty.path "bool",
-                                                      Value.Bool false
-                                                    |)))
-                                              ]
+                                              |)
                                             |)
-                                          |)
+                                          ]
                                         |)
-                                      |)) in
-                                  let _ :=
-                                    is_constant_or_break_match (|
-                                      M.read (| γ |),
-                                      Value.Bool true
-                                    |) in
-                                  M.alloc (|
-                                    Ty.tuple [],
-                                    M.never_to_any (|
-                                      M.read (| M.return_ (| Value.Bool true |) |)
+                                      |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let γ0_0 :=
+                                              M.SubPointer.get_struct_tuple_field (|
+                                                γ,
+                                                "alloy_primitives::signature::parity::Parity::Parity",
+                                                0
+                                              |) in
+                                            Value.Bool true));
+                                        fun γ => ltac:(M.monadic (Value.Bool false))
+                                      ]
                                     |)
-                                  |)));
-                              fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                            ]
-                          |)
-                        |) in
-                      let~ _ : Ty.tuple [] :=
-                        M.read (|
-                          M.match_operator (|
-                            Ty.tuple [],
-                            M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ :=
-                                    M.use
-                                      (M.alloc (|
-                                        Ty.path "bool",
-                                        M.call_closure (|
-                                          Ty.path "bool",
-                                          M.get_trait_method (|
-                                            "core::cmp::PartialOrd",
+                                  |)
+                                |)) in
+                            let _ :=
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            M.never_to_any (| M.read (| M.return_ (| Value.Bool true |) |) |)));
+                        fun γ => ltac:(M.monadic (Value.Tuple []))
+                      ]
+                    |) in
+                  let~ _ : Ty.tuple [] :=
+                    M.match_operator (|
+                      Ty.tuple [],
+                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ :=
+                              M.use
+                                (M.alloc (|
+                                  Ty.path "bool",
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    M.get_trait_method (|
+                                      "core::cmp::PartialOrd",
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [
+                                          Value.Integer IntegerKind.Usize 256;
+                                          Value.Integer IntegerKind.Usize 4
+                                        ]
+                                        [],
+                                      [],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ]
+                                          []
+                                      ],
+                                      "gt",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [
+                                              Value.Integer IntegerKind.Usize 256;
+                                              Value.Integer IntegerKind.Usize 4
+                                            ]
+                                            [],
+                                          M.call_closure (|
                                             Ty.apply
                                               (Ty.path "ruint::Uint")
                                               [
@@ -1657,138 +1664,91 @@ Module transaction.
                                                 Value.Integer IntegerKind.Usize 4
                                               ]
                                               [],
-                                            [],
+                                            M.get_associated_function (|
+                                              Ty.path "alloy_primitives::signature::sig::Signature",
+                                              "s",
+                                              [],
+                                              []
+                                            |),
                                             [
-                                              Ty.apply
-                                                (Ty.path "ruint::Uint")
-                                                [
-                                                  Value.Integer IntegerKind.Usize 256;
-                                                  Value.Integer IntegerKind.Usize 4
-                                                ]
-                                                []
-                                            ],
-                                            "gt",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.alloc (|
-                                                Ty.apply
-                                                  (Ty.path "ruint::Uint")
-                                                  [
-                                                    Value.Integer IntegerKind.Usize 256;
-                                                    Value.Integer IntegerKind.Usize 4
-                                                  ]
-                                                  [],
-                                                M.call_closure (|
-                                                  Ty.apply
-                                                    (Ty.path "ruint::Uint")
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "alloy_primitives::signature::sig::Signature"
+                                                      ],
+                                                    M.get_associated_function (|
+                                                      Ty.path
+                                                        "alloy_eip7702::auth_list::SignedAuthorization",
+                                                      "signature",
+                                                      [],
+                                                      []
+                                                    |),
                                                     [
-                                                      Value.Integer IntegerKind.Usize 256;
-                                                      Value.Integer IntegerKind.Usize 4
-                                                    ]
-                                                    [],
-                                                  M.get_associated_function (|
-                                                    Ty.path
-                                                      "alloy_primitives::signature::sig::Signature",
-                                                    "s",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.deref (|
-                                                        M.call_closure (|
-                                                          Ty.apply
-                                                            (Ty.path "&")
-                                                            []
-                                                            [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "alloy_eip7702::auth_list::SignedAuthorization"
+                                                              ],
+                                                            M.get_associated_function (|
                                                               Ty.path
-                                                                "alloy_primitives::signature::sig::Signature"
-                                                            ],
-                                                          M.get_associated_function (|
-                                                            Ty.path
-                                                              "alloy_eip7702::auth_list::SignedAuthorization",
-                                                            "signature",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.borrow (|
-                                                              Pointer.Kind.Ref,
-                                                              M.deref (|
-                                                                M.call_closure (|
-                                                                  Ty.apply
-                                                                    (Ty.path "&")
-                                                                    []
-                                                                    [
-                                                                      Ty.path
-                                                                        "alloy_eip7702::auth_list::SignedAuthorization"
-                                                                    ],
-                                                                  M.get_associated_function (|
-                                                                    Ty.path
-                                                                      "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization",
-                                                                    "inner",
-                                                                    [],
-                                                                    []
-                                                                  |),
-                                                                  [
-                                                                    M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      M.deref (|
-                                                                        M.read (| self |)
-                                                                      |)
-                                                                    |)
-                                                                  ]
-                                                                |)
+                                                                "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization",
+                                                              "inner",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.deref (| M.read (| self |) |)
                                                               |)
-                                                            |)
-                                                          ]
+                                                            ]
+                                                          |)
                                                         |)
                                                       |)
-                                                    |)
-                                                  ]
+                                                    ]
+                                                  |)
                                                 |)
                                               |)
-                                            |);
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              get_constant (|
-                                                "revm_specification::eip2::SECP256K1N_HALF",
-                                                Ty.apply
-                                                  (Ty.path "ruint::Uint")
-                                                  [
-                                                    Value.Integer IntegerKind.Usize 256;
-                                                    Value.Integer IntegerKind.Usize 4
-                                                  ]
-                                                  []
-                                              |)
-                                            |)
-                                          ]
+                                            ]
+                                          |)
                                         |)
-                                      |)) in
-                                  let _ :=
-                                    is_constant_or_break_match (|
-                                      M.read (| γ |),
-                                      Value.Bool true
-                                    |) in
-                                  M.alloc (|
-                                    Ty.tuple [],
-                                    M.never_to_any (|
-                                      M.read (| M.return_ (| Value.Bool true |) |)
-                                    |)
-                                  |)));
-                              fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                            ]
-                          |)
-                        |) in
-                      M.alloc (| Ty.path "bool", Value.Bool false |)
-                    |)
-                  |)))
-              |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        get_constant (|
+                                          "revm_specification::eip2::SECP256K1N_HALF",
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [
+                                              Value.Integer IntegerKind.Usize 256;
+                                              Value.Integer IntegerKind.Usize 4
+                                            ]
+                                            []
+                                        |)
+                                      |)
+                                    ]
+                                  |)
+                                |)) in
+                            let _ :=
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            M.never_to_any (| M.read (| M.return_ (| Value.Bool true |) |) |)));
+                        fun γ => ltac:(M.monadic (Value.Tuple []))
+                      ]
+                    |) in
+                  M.alloc (| Ty.path "bool", Value.Bool false |)
+                |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

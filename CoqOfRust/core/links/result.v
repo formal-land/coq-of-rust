@@ -132,6 +132,8 @@ Module Impl_Result_T_E.
       T.
   Proof.
     constructor.
+    unfold result.Impl_core_result_Result_T_E.unwrap_or.
+    cbn.
     run_symbolic.
   Defined.
 

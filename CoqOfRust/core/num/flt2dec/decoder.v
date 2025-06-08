@@ -44,28 +44,29 @@ Module num.
                   Ty.apply (Ty.path "&") [] [ Ty.path "core::num::flt2dec::decoder::Decoded" ],
                   self
                 |) in
-              M.read (|
-                M.match_operator (|
-                  Ty.path "core::num::flt2dec::decoder::Decoded",
-                  Value.DeclaredButUndefined,
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (M.match_operator (|
-                          Ty.path "core::num::flt2dec::decoder::Decoded",
-                          Value.DeclaredButUndefined,
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (M.match_operator (|
-                                  Ty.path "core::num::flt2dec::decoder::Decoded",
-                                  Value.DeclaredButUndefined,
-                                  [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
-                                |)))
-                          ]
-                        |)))
-                  ]
-                |)
+              M.match_operator (|
+                Ty.path "core::num::flt2dec::decoder::Decoded",
+                Value.DeclaredButUndefined,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        Ty.path "core::num::flt2dec::decoder::Decoded",
+                        Value.DeclaredButUndefined,
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                Ty.path "core::num::flt2dec::decoder::Decoded",
+                                Value.DeclaredButUndefined,
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic (M.read (| M.deref (| M.read (| self |) |) |)))
+                                ]
+                              |)))
+                        ]
+                      |)))
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -379,31 +380,26 @@ Module num.
                   Ty.apply (Ty.path "&") [] [ Ty.path "core::num::flt2dec::decoder::Decoded" ],
                   self
                 |) in
-              M.read (|
-                M.match_operator (|
-                  Ty.tuple [],
-                  Value.DeclaredButUndefined,
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (M.match_operator (|
-                          Ty.tuple [],
-                          Value.DeclaredButUndefined,
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (M.match_operator (|
-                                  Ty.tuple [],
-                                  Value.DeclaredButUndefined,
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                                  ]
-                                |)))
-                          ]
-                        |)))
-                  ]
-                |)
+              M.match_operator (|
+                Ty.tuple [],
+                Value.DeclaredButUndefined,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        Ty.tuple [],
+                        Value.DeclaredButUndefined,
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                Ty.tuple [],
+                                Value.DeclaredButUndefined,
+                                [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
+                              |)))
+                        ]
+                      |)))
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -479,12 +475,10 @@ Module num.
                   Ty.apply (Ty.path "&") [] [ Ty.path "core::num::flt2dec::decoder::FullDecoded" ],
                   self
                 |) in
-              M.read (|
-                M.match_operator (|
-                  Ty.path "core::num::flt2dec::decoder::FullDecoded",
-                  Value.DeclaredButUndefined,
-                  [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
-                |)
+              M.match_operator (|
+                Ty.path "core::num::flt2dec::decoder::FullDecoded",
+                Value.DeclaredButUndefined,
+                [ fun γ => ltac:(M.monadic (M.read (| M.deref (| M.read (| self |) |) |))) ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -513,151 +507,125 @@ Module num.
                 |) in
               let f :=
                 M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
-              M.read (|
-                M.match_operator (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                  self,
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
-                        let _ :=
-                          M.is_struct_tuple (|
-                            γ,
-                            "core::num::flt2dec::decoder::FullDecoded::Nan"
-                          |) in
+              M.match_operator (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                self,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let _ :=
+                        M.is_struct_tuple (|
+                          γ,
+                          "core::num::flt2dec::decoder::FullDecoded::Nan"
+                        |) in
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::Formatter",
+                          "write_str",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Nan" |) |) |)
+                        ]
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let _ :=
+                        M.is_struct_tuple (|
+                          γ,
+                          "core::num::flt2dec::decoder::FullDecoded::Infinite"
+                        |) in
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::Formatter",
+                          "write_str",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Infinite" |) |) |)
+                        ]
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let _ :=
+                        M.is_struct_tuple (|
+                          γ,
+                          "core::num::flt2dec::decoder::FullDecoded::Zero"
+                        |) in
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::Formatter",
+                          "write_str",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Zero" |) |) |)
+                        ]
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let γ1_0 :=
+                        M.SubPointer.get_struct_tuple_field (|
+                          γ,
+                          "core::num::flt2dec::decoder::FullDecoded::Finite",
+                          0
+                        |) in
+                      let __self_0 :=
                         M.alloc (|
                           Ty.apply
-                            (Ty.path "core::result::Result")
+                            (Ty.path "&")
                             []
-                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                          M.call_closure (|
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Formatter",
-                              "write_str",
-                              [],
-                              []
-                            |),
-                            [
-                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Nan" |) |) |)
-                            ]
-                          |)
-                        |)));
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
-                        let _ :=
-                          M.is_struct_tuple (|
-                            γ,
-                            "core::num::flt2dec::decoder::FullDecoded::Infinite"
-                          |) in
-                        M.alloc (|
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                          M.call_closure (|
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Formatter",
-                              "write_str",
-                              [],
-                              []
-                            |),
-                            [
-                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Infinite" |) |) |)
-                            ]
-                          |)
-                        |)));
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
-                        let _ :=
-                          M.is_struct_tuple (|
-                            γ,
-                            "core::num::flt2dec::decoder::FullDecoded::Zero"
-                          |) in
-                        M.alloc (|
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                          M.call_closure (|
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Formatter",
-                              "write_str",
-                              [],
-                              []
-                            |),
-                            [
-                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Zero" |) |) |)
-                            ]
-                          |)
-                        |)));
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
-                        let γ1_0 :=
-                          M.SubPointer.get_struct_tuple_field (|
-                            γ,
-                            "core::num::flt2dec::decoder::FullDecoded::Finite",
-                            0
-                          |) in
-                        let __self_0 :=
-                          M.alloc (|
-                            Ty.apply
-                              (Ty.path "&")
-                              []
-                              [ Ty.path "core::num::flt2dec::decoder::Decoded" ],
-                            γ1_0
-                          |) in
-                        M.alloc (|
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                          M.call_closure (|
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Formatter",
-                              "debug_tuple_field1_finish",
-                              [],
-                              []
-                            |),
-                            [
-                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Finite" |) |) |);
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                                |))
-                            ]
-                          |)
-                        |)))
-                  ]
-                |)
+                            [ Ty.path "core::num::flt2dec::decoder::Decoded" ],
+                          γ1_0
+                        |) in
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::Formatter",
+                          "debug_tuple_field1_finish",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Finite" |) |) |);
+                          (* Unsize *)
+                          M.pointer_coercion
+                            (M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                            |))
+                        ]
+                      |)))
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -731,89 +699,83 @@ Module num.
                       [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
                     |),
                     ltac:(M.monadic
-                      (M.read (|
-                        M.match_operator (|
-                          Ty.path "bool",
-                          M.alloc (|
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "core::num::flt2dec::decoder::FullDecoded" ];
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.path "core::num::flt2dec::decoder::FullDecoded" ]
-                              ],
-                            Value.Tuple [ M.read (| self |); M.read (| other |) ]
-                          |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                let γ0_0 := M.read (| γ0_0 |) in
-                                let γ2_0 :=
-                                  M.SubPointer.get_struct_tuple_field (|
-                                    γ0_0,
-                                    "core::num::flt2dec::decoder::FullDecoded::Finite",
-                                    0
-                                  |) in
-                                let __self_0 :=
-                                  M.alloc (|
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [ Ty.path "core::num::flt2dec::decoder::Decoded" ],
-                                    γ2_0
-                                  |) in
-                                let γ0_1 := M.read (| γ0_1 |) in
-                                let γ2_0 :=
-                                  M.SubPointer.get_struct_tuple_field (|
-                                    γ0_1,
-                                    "core::num::flt2dec::decoder::FullDecoded::Finite",
-                                    0
-                                  |) in
-                                let __arg1_0 :=
-                                  M.alloc (|
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [ Ty.path "core::num::flt2dec::decoder::Decoded" ],
-                                    γ2_0
-                                  |) in
+                      (M.match_operator (|
+                        Ty.path "bool",
+                        M.alloc (|
+                          Ty.tuple
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "core::num::flt2dec::decoder::FullDecoded" ];
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "core::num::flt2dec::decoder::FullDecoded" ]
+                            ],
+                          Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                        |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                              let γ0_0 := M.read (| γ0_0 |) in
+                              let γ2_0 :=
+                                M.SubPointer.get_struct_tuple_field (|
+                                  γ0_0,
+                                  "core::num::flt2dec::decoder::FullDecoded::Finite",
+                                  0
+                                |) in
+                              let __self_0 :=
                                 M.alloc (|
-                                  Ty.path "bool",
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_trait_method (|
-                                      "core::cmp::PartialEq",
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.path "core::num::flt2dec::decoder::Decoded" ],
-                                      [],
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.path "core::num::flt2dec::decoder::Decoded" ]
-                                      ],
-                                      "eq",
-                                      [],
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "core::num::flt2dec::decoder::Decoded" ],
+                                  γ2_0
+                                |) in
+                              let γ0_1 := M.read (| γ0_1 |) in
+                              let γ2_0 :=
+                                M.SubPointer.get_struct_tuple_field (|
+                                  γ0_1,
+                                  "core::num::flt2dec::decoder::FullDecoded::Finite",
+                                  0
+                                |) in
+                              let __arg1_0 :=
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "core::num::flt2dec::decoder::Decoded" ],
+                                  γ2_0
+                                |) in
+                              M.call_closure (|
+                                Ty.path "bool",
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "core::num::flt2dec::decoder::Decoded" ],
+                                  [],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
                                       []
-                                    |),
-                                    [
-                                      M.borrow (| Pointer.Kind.Ref, __self_0 |);
-                                      M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
-                                    ]
-                                  |)
-                                |)));
-                            fun γ =>
-                              ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool true |)))
-                          ]
-                        |)
+                                      [ Ty.path "core::num::flt2dec::decoder::Decoded" ]
+                                  ],
+                                  "eq",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                  M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                ]
+                              |)));
+                          fun γ => ltac:(M.monadic (Value.Bool true))
+                        ]
                       |)))
                   |)
                 |)
@@ -847,12 +809,10 @@ Module num.
                   Ty.apply (Ty.path "&") [] [ Ty.path "core::num::flt2dec::decoder::FullDecoded" ],
                   self
                 |) in
-              M.read (|
-                M.match_operator (|
-                  Ty.tuple [],
-                  Value.DeclaredButUndefined,
-                  [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
-                |)
+              M.match_operator (|
+                Ty.tuple [],
+                Value.DeclaredButUndefined,
+                [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -970,34 +930,34 @@ Module num.
         | [], [ T ], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| T, v |) in
-            M.read (|
-              M.match_operator (|
-                Ty.tuple [ Ty.path "bool"; Ty.path "core::num::flt2dec::decoder::FullDecoded" ],
-                M.alloc (|
+            M.match_operator (|
+              Ty.tuple [ Ty.path "bool"; Ty.path "core::num::flt2dec::decoder::FullDecoded" ],
+              M.alloc (|
+                Ty.tuple [ Ty.path "u64"; Ty.path "i16"; Ty.path "i8" ],
+                M.call_closure (|
                   Ty.tuple [ Ty.path "u64"; Ty.path "i16"; Ty.path "i8" ],
-                  M.call_closure (|
-                    Ty.tuple [ Ty.path "u64"; Ty.path "i16"; Ty.path "i8" ],
-                    M.get_trait_method (|
-                      "core::num::dec2flt::float::RawFloat",
-                      T,
-                      [],
-                      [],
-                      "integer_decode",
-                      [],
-                      []
-                    |),
-                    [ M.read (| v |) ]
-                  |)
-                |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                      let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
-                      let mant := M.copy (| Ty.path "u64", γ0_0 |) in
-                      let exp := M.copy (| Ty.path "i16", γ0_1 |) in
-                      let sign := M.copy (| Ty.path "i8", γ0_2 |) in
+                  M.get_trait_method (|
+                    "core::num::dec2flt::float::RawFloat",
+                    T,
+                    [],
+                    [],
+                    "integer_decode",
+                    [],
+                    []
+                  |),
+                  [ M.read (| v |) ]
+                |)
+              |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
+                    let mant := M.copy (| Ty.path "u64", γ0_0 |) in
+                    let exp := M.copy (| Ty.path "i16", γ0_1 |) in
+                    let sign := M.copy (| Ty.path "i8", γ0_2 |) in
+                    M.read (|
                       let~ even : Ty.path "bool" :=
                         M.call_closure (|
                           Ty.path "bool",
@@ -1012,90 +972,77 @@ Module num.
                           ]
                         |) in
                       let~ decoded : Ty.path "core::num::flt2dec::decoder::FullDecoded" :=
-                        M.read (|
-                          M.match_operator (|
-                            Ty.path "core::num::flt2dec::decoder::FullDecoded",
-                            M.alloc (|
+                        M.match_operator (|
+                          Ty.path "core::num::flt2dec::decoder::FullDecoded",
+                          M.alloc (|
+                            Ty.path "core::num::FpCategory",
+                            M.call_closure (|
                               Ty.path "core::num::FpCategory",
-                              M.call_closure (|
-                                Ty.path "core::num::FpCategory",
-                                M.get_trait_method (|
-                                  "core::num::dec2flt::float::RawFloat",
-                                  T,
-                                  [],
-                                  [],
-                                  "classify",
-                                  [],
+                              M.get_trait_method (|
+                                "core::num::dec2flt::float::RawFloat",
+                                T,
+                                [],
+                                [],
+                                "classify",
+                                [],
+                                []
+                              |),
+                              [ M.read (| v |) ]
+                            |)
+                          |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let _ := M.is_struct_tuple (| γ, "core::num::FpCategory::Nan" |) in
+                                Value.StructTuple
+                                  "core::num::flt2dec::decoder::FullDecoded::Nan"
                                   []
-                                |),
-                                [ M.read (| v |) ]
-                              |)
-                            |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let _ :=
-                                    M.is_struct_tuple (| γ, "core::num::FpCategory::Nan" |) in
-                                  M.alloc (|
-                                    Ty.path "core::num::flt2dec::decoder::FullDecoded",
-                                    Value.StructTuple
-                                      "core::num::flt2dec::decoder::FullDecoded::Nan"
-                                      []
-                                      []
-                                      []
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let _ :=
-                                    M.is_struct_tuple (| γ, "core::num::FpCategory::Infinite" |) in
-                                  M.alloc (|
-                                    Ty.path "core::num::flt2dec::decoder::FullDecoded",
-                                    Value.StructTuple
-                                      "core::num::flt2dec::decoder::FullDecoded::Infinite"
-                                      []
-                                      []
-                                      []
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let _ :=
-                                    M.is_struct_tuple (| γ, "core::num::FpCategory::Zero" |) in
-                                  M.alloc (|
-                                    Ty.path "core::num::flt2dec::decoder::FullDecoded",
-                                    Value.StructTuple
-                                      "core::num::flt2dec::decoder::FullDecoded::Zero"
-                                      []
-                                      []
-                                      []
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let _ :=
-                                    M.is_struct_tuple (| γ, "core::num::FpCategory::Subnormal" |) in
-                                  M.alloc (|
-                                    Ty.path "core::num::flt2dec::decoder::FullDecoded",
-                                    Value.StructTuple
-                                      "core::num::flt2dec::decoder::FullDecoded::Finite"
+                                  []
+                                  []));
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let _ :=
+                                  M.is_struct_tuple (| γ, "core::num::FpCategory::Infinite" |) in
+                                Value.StructTuple
+                                  "core::num::flt2dec::decoder::FullDecoded::Infinite"
+                                  []
+                                  []
+                                  []));
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let _ :=
+                                  M.is_struct_tuple (| γ, "core::num::FpCategory::Zero" |) in
+                                Value.StructTuple
+                                  "core::num::flt2dec::decoder::FullDecoded::Zero"
+                                  []
+                                  []
+                                  []));
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let _ :=
+                                  M.is_struct_tuple (| γ, "core::num::FpCategory::Subnormal" |) in
+                                Value.StructTuple
+                                  "core::num::flt2dec::decoder::FullDecoded::Finite"
+                                  []
+                                  []
+                                  [
+                                    Value.mkStructRecord
+                                      "core::num::flt2dec::decoder::Decoded"
                                       []
                                       []
                                       [
-                                        Value.mkStructRecord
-                                          "core::num::flt2dec::decoder::Decoded"
-                                          []
-                                          []
-                                          [
-                                            ("mant", M.read (| mant |));
-                                            ("minus", Value.Integer IntegerKind.U64 1);
-                                            ("plus", Value.Integer IntegerKind.U64 1);
-                                            ("exp", M.read (| exp |));
-                                            ("inclusive", M.read (| even |))
-                                          ]
+                                        ("mant", M.read (| mant |));
+                                        ("minus", Value.Integer IntegerKind.U64 1);
+                                        ("plus", Value.Integer IntegerKind.U64 1);
+                                        ("exp", M.read (| exp |));
+                                        ("inclusive", M.read (| even |))
                                       ]
-                                  |)));
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let _ :=
-                                    M.is_struct_tuple (| γ, "core::num::FpCategory::Normal" |) in
+                                  ]));
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let _ :=
+                                  M.is_struct_tuple (| γ, "core::num::FpCategory::Normal" |) in
+                                M.read (|
                                   let~ minnorm :
                                       Ty.tuple [ Ty.path "u64"; Ty.path "i16"; Ty.path "i8" ] :=
                                     M.call_closure (|
@@ -1125,34 +1072,37 @@ Module num.
                                         |)
                                       ]
                                     |) in
-                                  M.match_operator (|
+                                  M.alloc (|
                                     Ty.path "core::num::flt2dec::decoder::FullDecoded",
-                                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let γ :=
-                                            M.use
-                                              (M.alloc (|
-                                                Ty.path "bool",
-                                                M.call_closure (|
+                                    M.match_operator (|
+                                      Ty.path "core::num::flt2dec::decoder::FullDecoded",
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let γ :=
+                                              M.use
+                                                (M.alloc (|
                                                   Ty.path "bool",
-                                                  BinOp.eq,
-                                                  [
-                                                    M.read (| mant |);
-                                                    M.read (|
-                                                      M.SubPointer.get_tuple_field (| minnorm, 0 |)
-                                                    |)
-                                                  ]
-                                                |)
-                                              |)) in
-                                          let _ :=
-                                            is_constant_or_break_match (|
-                                              M.read (| γ |),
-                                              Value.Bool true
-                                            |) in
-                                          M.alloc (|
-                                            Ty.path "core::num::flt2dec::decoder::FullDecoded",
+                                                  M.call_closure (|
+                                                    Ty.path "bool",
+                                                    BinOp.eq,
+                                                    [
+                                                      M.read (| mant |);
+                                                      M.read (|
+                                                        M.SubPointer.get_tuple_field (|
+                                                          minnorm,
+                                                          0
+                                                        |)
+                                                      |)
+                                                    ]
+                                                  |)
+                                                |)) in
+                                            let _ :=
+                                              is_constant_or_break_match (|
+                                                M.read (| γ |),
+                                                Value.Bool true
+                                              |) in
                                             Value.StructTuple
                                               "core::num::flt2dec::decoder::FullDecoded::Finite"
                                               []
@@ -1185,13 +1135,10 @@ Module num.
                                                       |));
                                                     ("inclusive", M.read (| even |))
                                                   ]
-                                              ]
-                                          |)));
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (M.alloc (|
-                                            Ty.path "core::num::flt2dec::decoder::FullDecoded",
-                                            Value.StructTuple
+                                              ]));
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (Value.StructTuple
                                               "core::num::flt2dec::decoder::FullDecoded::Finite"
                                               []
                                               []
@@ -1223,12 +1170,12 @@ Module num.
                                                       |));
                                                     ("inclusive", M.read (| even |))
                                                   ]
-                                              ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
+                                              ]))
+                                      ]
+                                    |)
+                                  |)
+                                |)))
+                          ]
                         |) in
                       M.alloc (|
                         Ty.tuple
@@ -1242,9 +1189,9 @@ Module num.
                             |);
                             M.read (| decoded |)
                           ]
-                      |)))
-                ]
-              |)
+                      |)
+                    |)))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

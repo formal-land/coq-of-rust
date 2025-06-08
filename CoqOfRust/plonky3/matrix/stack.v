@@ -423,147 +423,135 @@ Module stack.
           let second := M.alloc (| Second, second |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
-              M.read (|
-                M.match_operator (|
-                  Ty.tuple [],
-                  M.alloc (|
-                    Ty.tuple
-                      [
-                        Ty.apply (Ty.path "&") [] [ Ty.path "usize" ];
-                        Ty.apply (Ty.path "&") [] [ Ty.path "usize" ]
-                      ],
-                    Value.Tuple
-                      [
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.alloc (|
+              M.match_operator (|
+                Ty.tuple [],
+                M.alloc (|
+                  Ty.tuple
+                    [
+                      Ty.apply (Ty.path "&") [] [ Ty.path "usize" ];
+                      Ty.apply (Ty.path "&") [] [ Ty.path "usize" ]
+                    ],
+                  Value.Tuple
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.path "usize",
+                          M.call_closure (|
                             Ty.path "usize",
-                            M.call_closure (|
-                              Ty.path "usize",
-                              M.get_trait_method (|
-                                "p3_matrix::Matrix",
-                                First,
-                                [],
-                                [ T ],
-                                "width",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, first |) ]
-                            |)
-                          |)
-                        |);
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.alloc (|
-                            Ty.path "usize",
-                            M.call_closure (|
-                              Ty.path "usize",
-                              M.get_trait_method (|
-                                "p3_matrix::Matrix",
-                                Second,
-                                [],
-                                [ T ],
-                                "width",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, second |) ]
-                            |)
+                            M.get_trait_method (|
+                              "p3_matrix::Matrix",
+                              First,
+                              [],
+                              [ T ],
+                              "width",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, first |) ]
                           |)
                         |)
-                      ]
-                  |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                        let left_val :=
-                          M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ0_0 |) in
-                        let right_val :=
-                          M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ0_1 |) in
-                        M.match_operator (|
-                          Ty.tuple [],
-                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ :=
-                                  M.use
-                                    (M.alloc (|
-                                      Ty.path "bool",
-                                      UnOp.not (|
-                                        M.call_closure (|
-                                          Ty.path "bool",
-                                          BinOp.eq,
-                                          [
-                                            M.read (| M.deref (| M.read (| left_val |) |) |);
-                                            M.read (| M.deref (| M.read (| right_val |) |) |)
-                                          ]
-                                        |)
-                                      |)
-                                    |)) in
-                                let _ :=
-                                  is_constant_or_break_match (|
-                                    M.read (| γ |),
-                                    Value.Bool true
-                                  |) in
-                                M.alloc (|
-                                  Ty.tuple [],
-                                  M.never_to_any (|
-                                    M.read (|
-                                      let~ kind : Ty.path "core::panicking::AssertKind" :=
-                                        Value.StructTuple
-                                          "core::panicking::AssertKind::Eq"
-                                          []
-                                          []
-                                          [] in
-                                      M.alloc (|
-                                        Ty.path "never",
-                                        M.call_closure (|
-                                          Ty.path "never",
-                                          M.get_function (|
-                                            "core::panicking::assert_failed",
-                                            [],
-                                            [ Ty.path "usize"; Ty.path "usize" ]
-                                          |),
-                                          [
-                                            M.read (| kind |);
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (|
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (| M.read (| left_val |) |)
-                                                |)
-                                              |)
-                                            |);
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (|
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (| M.read (| right_val |) |)
-                                                |)
-                                              |)
-                                            |);
-                                            Value.StructTuple
-                                              "core::option::Option::None"
-                                              []
-                                              [ Ty.path "core::fmt::Arguments" ]
-                                              []
-                                          ]
-                                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.path "usize",
+                          M.call_closure (|
+                            Ty.path "usize",
+                            M.get_trait_method (|
+                              "p3_matrix::Matrix",
+                              Second,
+                              [],
+                              [ T ],
+                              "width",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, second |) ]
+                          |)
+                        |)
+                      |)
+                    ]
+                |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let left_val :=
+                        M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ0_0 |) in
+                      let right_val :=
+                        M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ0_1 |) in
+                      M.match_operator (|
+                        Ty.tuple [],
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.use
+                                  (M.alloc (|
+                                    Ty.path "bool",
+                                    UnOp.not (|
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.eq,
+                                        [
+                                          M.read (| M.deref (| M.read (| left_val |) |) |);
+                                          M.read (| M.deref (| M.read (| right_val |) |) |)
+                                        ]
                                       |)
                                     |)
+                                  |)) in
+                              let _ :=
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              M.never_to_any (|
+                                M.read (|
+                                  let~ kind : Ty.path "core::panicking::AssertKind" :=
+                                    Value.StructTuple "core::panicking::AssertKind::Eq" [] [] [] in
+                                  M.alloc (|
+                                    Ty.path "never",
+                                    M.call_closure (|
+                                      Ty.path "never",
+                                      M.get_function (|
+                                        "core::panicking::assert_failed",
+                                        [],
+                                        [ Ty.path "usize"; Ty.path "usize" ]
+                                      |),
+                                      [
+                                        M.read (| kind |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| left_val |) |)
+                                            |)
+                                          |)
+                                        |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| right_val |) |)
+                                            |)
+                                          |)
+                                        |);
+                                        Value.StructTuple
+                                          "core::option::Option::None"
+                                          []
+                                          [ Ty.path "core::fmt::Arguments" ]
+                                          []
+                                      ]
+                                    |)
                                   |)
-                                |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                          ]
-                        |)))
-                  ]
-                |)
+                                |)
+                              |)));
+                          fun γ => ltac:(M.monadic (Value.Tuple []))
+                        ]
+                      |)))
+                ]
               |) in
             M.alloc (|
               Ty.apply (Ty.path "p3_matrix::stack::VerticalPair") [] [ First; Second ],
@@ -613,147 +601,135 @@ Module stack.
           let second := M.alloc (| Second, second |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
-              M.read (|
-                M.match_operator (|
-                  Ty.tuple [],
-                  M.alloc (|
-                    Ty.tuple
-                      [
-                        Ty.apply (Ty.path "&") [] [ Ty.path "usize" ];
-                        Ty.apply (Ty.path "&") [] [ Ty.path "usize" ]
-                      ],
-                    Value.Tuple
-                      [
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.alloc (|
+              M.match_operator (|
+                Ty.tuple [],
+                M.alloc (|
+                  Ty.tuple
+                    [
+                      Ty.apply (Ty.path "&") [] [ Ty.path "usize" ];
+                      Ty.apply (Ty.path "&") [] [ Ty.path "usize" ]
+                    ],
+                  Value.Tuple
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.path "usize",
+                          M.call_closure (|
                             Ty.path "usize",
-                            M.call_closure (|
-                              Ty.path "usize",
-                              M.get_trait_method (|
-                                "p3_matrix::Matrix",
-                                First,
-                                [],
-                                [ T ],
-                                "height",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, first |) ]
-                            |)
-                          |)
-                        |);
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.alloc (|
-                            Ty.path "usize",
-                            M.call_closure (|
-                              Ty.path "usize",
-                              M.get_trait_method (|
-                                "p3_matrix::Matrix",
-                                Second,
-                                [],
-                                [ T ],
-                                "height",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, second |) ]
-                            |)
+                            M.get_trait_method (|
+                              "p3_matrix::Matrix",
+                              First,
+                              [],
+                              [ T ],
+                              "height",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, first |) ]
                           |)
                         |)
-                      ]
-                  |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                        let left_val :=
-                          M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ0_0 |) in
-                        let right_val :=
-                          M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ0_1 |) in
-                        M.match_operator (|
-                          Ty.tuple [],
-                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ :=
-                                  M.use
-                                    (M.alloc (|
-                                      Ty.path "bool",
-                                      UnOp.not (|
-                                        M.call_closure (|
-                                          Ty.path "bool",
-                                          BinOp.eq,
-                                          [
-                                            M.read (| M.deref (| M.read (| left_val |) |) |);
-                                            M.read (| M.deref (| M.read (| right_val |) |) |)
-                                          ]
-                                        |)
-                                      |)
-                                    |)) in
-                                let _ :=
-                                  is_constant_or_break_match (|
-                                    M.read (| γ |),
-                                    Value.Bool true
-                                  |) in
-                                M.alloc (|
-                                  Ty.tuple [],
-                                  M.never_to_any (|
-                                    M.read (|
-                                      let~ kind : Ty.path "core::panicking::AssertKind" :=
-                                        Value.StructTuple
-                                          "core::panicking::AssertKind::Eq"
-                                          []
-                                          []
-                                          [] in
-                                      M.alloc (|
-                                        Ty.path "never",
-                                        M.call_closure (|
-                                          Ty.path "never",
-                                          M.get_function (|
-                                            "core::panicking::assert_failed",
-                                            [],
-                                            [ Ty.path "usize"; Ty.path "usize" ]
-                                          |),
-                                          [
-                                            M.read (| kind |);
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (|
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (| M.read (| left_val |) |)
-                                                |)
-                                              |)
-                                            |);
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (|
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (| M.read (| right_val |) |)
-                                                |)
-                                              |)
-                                            |);
-                                            Value.StructTuple
-                                              "core::option::Option::None"
-                                              []
-                                              [ Ty.path "core::fmt::Arguments" ]
-                                              []
-                                          ]
-                                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.path "usize",
+                          M.call_closure (|
+                            Ty.path "usize",
+                            M.get_trait_method (|
+                              "p3_matrix::Matrix",
+                              Second,
+                              [],
+                              [ T ],
+                              "height",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, second |) ]
+                          |)
+                        |)
+                      |)
+                    ]
+                |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let left_val :=
+                        M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ0_0 |) in
+                      let right_val :=
+                        M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ0_1 |) in
+                      M.match_operator (|
+                        Ty.tuple [],
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.use
+                                  (M.alloc (|
+                                    Ty.path "bool",
+                                    UnOp.not (|
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.eq,
+                                        [
+                                          M.read (| M.deref (| M.read (| left_val |) |) |);
+                                          M.read (| M.deref (| M.read (| right_val |) |) |)
+                                        ]
                                       |)
                                     |)
+                                  |)) in
+                              let _ :=
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              M.never_to_any (|
+                                M.read (|
+                                  let~ kind : Ty.path "core::panicking::AssertKind" :=
+                                    Value.StructTuple "core::panicking::AssertKind::Eq" [] [] [] in
+                                  M.alloc (|
+                                    Ty.path "never",
+                                    M.call_closure (|
+                                      Ty.path "never",
+                                      M.get_function (|
+                                        "core::panicking::assert_failed",
+                                        [],
+                                        [ Ty.path "usize"; Ty.path "usize" ]
+                                      |),
+                                      [
+                                        M.read (| kind |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| left_val |) |)
+                                            |)
+                                          |)
+                                        |);
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| right_val |) |)
+                                            |)
+                                          |)
+                                        |);
+                                        Value.StructTuple
+                                          "core::option::Option::None"
+                                          []
+                                          [ Ty.path "core::fmt::Arguments" ]
+                                          []
+                                      ]
+                                    |)
                                   |)
-                                |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                          ]
-                        |)))
-                  ]
-                |)
+                                |)
+                              |)));
+                          fun γ => ltac:(M.monadic (Value.Tuple []))
+                        ]
+                      |)))
+                ]
               |) in
             M.alloc (|
               Ty.apply (Ty.path "p3_matrix::stack::HorizontalPair") [] [ First; Second ],
@@ -907,134 +883,110 @@ Module stack.
             |) in
           let r := M.alloc (| Ty.path "usize", r |) in
           let c := M.alloc (| Ty.path "usize", c |) in
-          M.read (|
-            M.match_operator (|
-              T,
-              M.alloc (| Ty.tuple [], Value.Tuple [] |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ :=
-                      M.use
-                        (M.alloc (|
+          M.match_operator (|
+            T,
+            M.alloc (| Ty.tuple [], Value.Tuple [] |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ :=
+                    M.use
+                      (M.alloc (|
+                        Ty.path "bool",
+                        M.call_closure (|
                           Ty.path "bool",
-                          M.call_closure (|
-                            Ty.path "bool",
-                            BinOp.lt,
-                            [
-                              M.read (| r |);
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_trait_method (|
-                                  "p3_matrix::Matrix",
-                                  First,
-                                  [],
-                                  [ T ],
-                                  "height",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "p3_matrix::stack::VerticalPair",
-                                      "first"
-                                    |)
+                          BinOp.lt,
+                          [
+                            M.read (| r |);
+                            M.call_closure (|
+                              Ty.path "usize",
+                              M.get_trait_method (|
+                                "p3_matrix::Matrix",
+                                First,
+                                [],
+                                [ T ],
+                                "height",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "p3_matrix::stack::VerticalPair",
+                                    "first"
                                   |)
-                                ]
+                                |)
+                              ]
+                            |)
+                          ]
+                        |)
+                      |)) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  M.call_closure (|
+                    T,
+                    M.get_trait_method (| "p3_matrix::Matrix", First, [], [ T ], "get", [], [] |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "p3_matrix::stack::VerticalPair",
+                          "first"
+                        |)
+                      |);
+                      M.read (| r |);
+                      M.read (| c |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (M.call_closure (|
+                    T,
+                    M.get_trait_method (| "p3_matrix::Matrix", Second, [], [ T ], "get", [], [] |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "p3_matrix::stack::VerticalPair",
+                          "second"
+                        |)
+                      |);
+                      M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.sub,
+                        [
+                          M.read (| r |);
+                          M.call_closure (|
+                            Ty.path "usize",
+                            M.get_trait_method (|
+                              "p3_matrix::Matrix",
+                              First,
+                              [],
+                              [ T ],
+                              "height",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "p3_matrix::stack::VerticalPair",
+                                  "first"
+                                |)
                               |)
                             ]
                           |)
-                        |)) in
-                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.alloc (|
-                      T,
-                      M.call_closure (|
-                        T,
-                        M.get_trait_method (|
-                          "p3_matrix::Matrix",
-                          First,
-                          [],
-                          [ T ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "p3_matrix::stack::VerticalPair",
-                              "first"
-                            |)
-                          |);
-                          M.read (| r |);
-                          M.read (| c |)
                         ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (M.alloc (|
-                      T,
-                      M.call_closure (|
-                        T,
-                        M.get_trait_method (|
-                          "p3_matrix::Matrix",
-                          Second,
-                          [],
-                          [ T ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "p3_matrix::stack::VerticalPair",
-                              "second"
-                            |)
-                          |);
-                          M.call_closure (|
-                            Ty.path "usize",
-                            BinOp.Wrap.sub,
-                            [
-                              M.read (| r |);
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_trait_method (|
-                                  "p3_matrix::Matrix",
-                                  First,
-                                  [],
-                                  [ T ],
-                                  "height",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "p3_matrix::stack::VerticalPair",
-                                      "first"
-                                    |)
-                                  |)
-                                ]
-                              |)
-                            ]
-                          |);
-                          M.read (| c |)
-                        ]
-                      |)
-                    |)))
-              ]
-            |)
+                      |);
+                      M.read (| c |)
+                    ]
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1082,26 +1034,118 @@ Module stack.
               self
             |) in
           let r := M.alloc (| Ty.path "usize", r |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply
-                (Ty.path "p3_matrix::stack::EitherRow")
-                []
-                [
-                  Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] First "Row";
-                  Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Second "Row"
-                ],
-              M.alloc (| Ty.tuple [], Value.Tuple [] |),
+          M.match_operator (|
+            Ty.apply
+              (Ty.path "p3_matrix::stack::EitherRow")
+              []
               [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ :=
-                      M.use
-                        (M.alloc (|
+                Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] First "Row";
+                Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Second "Row"
+              ],
+            M.alloc (| Ty.tuple [], Value.Tuple [] |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ :=
+                    M.use
+                      (M.alloc (|
+                        Ty.path "bool",
+                        M.call_closure (|
                           Ty.path "bool",
+                          BinOp.lt,
+                          [
+                            M.read (| r |);
+                            M.call_closure (|
+                              Ty.path "usize",
+                              M.get_trait_method (|
+                                "p3_matrix::Matrix",
+                                First,
+                                [],
+                                [ T ],
+                                "height",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "p3_matrix::stack::VerticalPair",
+                                    "first"
+                                  |)
+                                |)
+                              ]
+                            |)
+                          ]
+                        |)
+                      |)) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  Value.StructTuple
+                    "p3_matrix::stack::EitherRow::Left"
+                    []
+                    [
+                      Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] First "Row";
+                      Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Second "Row"
+                    ]
+                    [
+                      M.call_closure (|
+                        Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] First "Row",
+                        M.get_trait_method (|
+                          "p3_matrix::Matrix",
+                          First,
+                          [],
+                          [ T ],
+                          "row",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "p3_matrix::stack::VerticalPair",
+                              "first"
+                            |)
+                          |);
+                          M.read (| r |)
+                        ]
+                      |)
+                    ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (Value.StructTuple
+                    "p3_matrix::stack::EitherRow::Right"
+                    []
+                    [
+                      Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] First "Row";
+                      Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Second "Row"
+                    ]
+                    [
+                      M.call_closure (|
+                        Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Second "Row",
+                        M.get_trait_method (|
+                          "p3_matrix::Matrix",
+                          Second,
+                          [],
+                          [ T ],
+                          "row",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "p3_matrix::stack::VerticalPair",
+                              "second"
+                            |)
+                          |);
                           M.call_closure (|
-                            Ty.path "bool",
-                            BinOp.lt,
+                            Ty.path "usize",
+                            BinOp.Wrap.sub,
                             [
                               M.read (| r |);
                               M.call_closure (|
@@ -1128,122 +1172,10 @@ Module stack.
                               |)
                             ]
                           |)
-                        |)) in
-                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "p3_matrix::stack::EitherRow")
-                        []
-                        [
-                          Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] First "Row";
-                          Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Second "Row"
-                        ],
-                      Value.StructTuple
-                        "p3_matrix::stack::EitherRow::Left"
-                        []
-                        [
-                          Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] First "Row";
-                          Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Second "Row"
                         ]
-                        [
-                          M.call_closure (|
-                            Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] First "Row",
-                            M.get_trait_method (|
-                              "p3_matrix::Matrix",
-                              First,
-                              [],
-                              [ T ],
-                              "row",
-                              [],
-                              []
-                            |),
-                            [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "p3_matrix::stack::VerticalPair",
-                                  "first"
-                                |)
-                              |);
-                              M.read (| r |)
-                            ]
-                          |)
-                        ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (M.alloc (|
-                      Ty.apply
-                        (Ty.path "p3_matrix::stack::EitherRow")
-                        []
-                        [
-                          Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] First "Row";
-                          Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Second "Row"
-                        ],
-                      Value.StructTuple
-                        "p3_matrix::stack::EitherRow::Right"
-                        []
-                        [
-                          Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] First "Row";
-                          Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Second "Row"
-                        ]
-                        [
-                          M.call_closure (|
-                            Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Second "Row",
-                            M.get_trait_method (|
-                              "p3_matrix::Matrix",
-                              Second,
-                              [],
-                              [ T ],
-                              "row",
-                              [],
-                              []
-                            |),
-                            [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "p3_matrix::stack::VerticalPair",
-                                  "second"
-                                |)
-                              |);
-                              M.call_closure (|
-                                Ty.path "usize",
-                                BinOp.Wrap.sub,
-                                [
-                                  M.read (| r |);
-                                  M.call_closure (|
-                                    Ty.path "usize",
-                                    M.get_trait_method (|
-                                      "p3_matrix::Matrix",
-                                      First,
-                                      [],
-                                      [ T ],
-                                      "height",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| self |) |),
-                                          "p3_matrix::stack::VerticalPair",
-                                          "first"
-                                        |)
-                                      |)
-                                    ]
-                                  |)
-                                ]
-                              |)
-                            ]
-                          |)
-                        ]
-                    |)))
-              ]
-            |)
+                      |)
+                    ]))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1276,26 +1208,123 @@ Module stack.
               self
             |) in
           let r := M.alloc (| Ty.path "usize", r |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply
-                (Ty.path "p3_matrix::stack::EitherRow")
-                []
-                [
-                  Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] First "{{synthetic}}'2";
-                  Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Second "{{synthetic}}'2"
-                ],
-              M.alloc (| Ty.tuple [], Value.Tuple [] |),
+          M.match_operator (|
+            Ty.apply
+              (Ty.path "p3_matrix::stack::EitherRow")
+              []
               [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ :=
-                      M.use
-                        (M.alloc (|
+                Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] First "{{synthetic}}'2";
+                Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Second "{{synthetic}}'2"
+              ],
+            M.alloc (| Ty.tuple [], Value.Tuple [] |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ :=
+                    M.use
+                      (M.alloc (|
+                        Ty.path "bool",
+                        M.call_closure (|
                           Ty.path "bool",
+                          BinOp.lt,
+                          [
+                            M.read (| r |);
+                            M.call_closure (|
+                              Ty.path "usize",
+                              M.get_trait_method (|
+                                "p3_matrix::Matrix",
+                                First,
+                                [],
+                                [ T ],
+                                "height",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "p3_matrix::stack::VerticalPair",
+                                    "first"
+                                  |)
+                                |)
+                              ]
+                            |)
+                          ]
+                        |)
+                      |)) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  Value.StructTuple
+                    "p3_matrix::stack::EitherRow::Left"
+                    []
+                    [
+                      Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] First "{{synthetic}}'2";
+                      Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Second "{{synthetic}}'2"
+                    ]
+                    [
+                      M.call_closure (|
+                        Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] First "{{synthetic}}'2",
+                        M.get_trait_method (|
+                          "p3_matrix::Matrix",
+                          First,
+                          [],
+                          [ T ],
+                          "row_slice",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "p3_matrix::stack::VerticalPair",
+                              "first"
+                            |)
+                          |);
+                          M.read (| r |)
+                        ]
+                      |)
+                    ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (Value.StructTuple
+                    "p3_matrix::stack::EitherRow::Right"
+                    []
+                    [
+                      Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] First "{{synthetic}}'2";
+                      Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Second "{{synthetic}}'2"
+                    ]
+                    [
+                      M.call_closure (|
+                        Ty.associated_in_trait
+                          "p3_matrix::Matrix"
+                          []
+                          [ T ]
+                          Second
+                          "{{synthetic}}'2",
+                        M.get_trait_method (|
+                          "p3_matrix::Matrix",
+                          Second,
+                          [],
+                          [ T ],
+                          "row_slice",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "p3_matrix::stack::VerticalPair",
+                              "second"
+                            |)
+                          |);
                           M.call_closure (|
-                            Ty.path "bool",
-                            BinOp.lt,
+                            Ty.path "usize",
+                            BinOp.Wrap.sub,
                             [
                               M.read (| r |);
                               M.call_closure (|
@@ -1322,172 +1351,10 @@ Module stack.
                               |)
                             ]
                           |)
-                        |)) in
-                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "p3_matrix::stack::EitherRow")
-                        []
-                        [
-                          Ty.associated_in_trait
-                            "p3_matrix::Matrix"
-                            []
-                            [ T ]
-                            First
-                            "{{synthetic}}'2";
-                          Ty.associated_in_trait
-                            "p3_matrix::Matrix"
-                            []
-                            [ T ]
-                            Second
-                            "{{synthetic}}'2"
-                        ],
-                      Value.StructTuple
-                        "p3_matrix::stack::EitherRow::Left"
-                        []
-                        [
-                          Ty.associated_in_trait
-                            "p3_matrix::Matrix"
-                            []
-                            [ T ]
-                            First
-                            "{{synthetic}}'2";
-                          Ty.associated_in_trait
-                            "p3_matrix::Matrix"
-                            []
-                            [ T ]
-                            Second
-                            "{{synthetic}}'2"
                         ]
-                        [
-                          M.call_closure (|
-                            Ty.associated_in_trait
-                              "p3_matrix::Matrix"
-                              []
-                              [ T ]
-                              First
-                              "{{synthetic}}'2",
-                            M.get_trait_method (|
-                              "p3_matrix::Matrix",
-                              First,
-                              [],
-                              [ T ],
-                              "row_slice",
-                              [],
-                              []
-                            |),
-                            [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "p3_matrix::stack::VerticalPair",
-                                  "first"
-                                |)
-                              |);
-                              M.read (| r |)
-                            ]
-                          |)
-                        ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (M.alloc (|
-                      Ty.apply
-                        (Ty.path "p3_matrix::stack::EitherRow")
-                        []
-                        [
-                          Ty.associated_in_trait
-                            "p3_matrix::Matrix"
-                            []
-                            [ T ]
-                            First
-                            "{{synthetic}}'2";
-                          Ty.associated_in_trait
-                            "p3_matrix::Matrix"
-                            []
-                            [ T ]
-                            Second
-                            "{{synthetic}}'2"
-                        ],
-                      Value.StructTuple
-                        "p3_matrix::stack::EitherRow::Right"
-                        []
-                        [
-                          Ty.associated_in_trait
-                            "p3_matrix::Matrix"
-                            []
-                            [ T ]
-                            First
-                            "{{synthetic}}'2";
-                          Ty.associated_in_trait
-                            "p3_matrix::Matrix"
-                            []
-                            [ T ]
-                            Second
-                            "{{synthetic}}'2"
-                        ]
-                        [
-                          M.call_closure (|
-                            Ty.associated_in_trait
-                              "p3_matrix::Matrix"
-                              []
-                              [ T ]
-                              Second
-                              "{{synthetic}}'2",
-                            M.get_trait_method (|
-                              "p3_matrix::Matrix",
-                              Second,
-                              [],
-                              [ T ],
-                              "row_slice",
-                              [],
-                              []
-                            |),
-                            [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "p3_matrix::stack::VerticalPair",
-                                  "second"
-                                |)
-                              |);
-                              M.call_closure (|
-                                Ty.path "usize",
-                                BinOp.Wrap.sub,
-                                [
-                                  M.read (| r |);
-                                  M.call_closure (|
-                                    Ty.path "usize",
-                                    M.get_trait_method (|
-                                      "p3_matrix::Matrix",
-                                      First,
-                                      [],
-                                      [ T ],
-                                      "height",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| self |) |),
-                                          "p3_matrix::stack::VerticalPair",
-                                          "first"
-                                        |)
-                                      |)
-                                    ]
-                                  |)
-                                ]
-                              |)
-                            ]
-                          |)
-                        ]
-                    |)))
-              ]
-            |)
+                      |)
+                    ]))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1643,134 +1510,110 @@ Module stack.
             |) in
           let r := M.alloc (| Ty.path "usize", r |) in
           let c := M.alloc (| Ty.path "usize", c |) in
-          M.read (|
-            M.match_operator (|
-              T,
-              M.alloc (| Ty.tuple [], Value.Tuple [] |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ :=
-                      M.use
-                        (M.alloc (|
+          M.match_operator (|
+            T,
+            M.alloc (| Ty.tuple [], Value.Tuple [] |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ :=
+                    M.use
+                      (M.alloc (|
+                        Ty.path "bool",
+                        M.call_closure (|
                           Ty.path "bool",
-                          M.call_closure (|
-                            Ty.path "bool",
-                            BinOp.lt,
-                            [
-                              M.read (| c |);
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_trait_method (|
-                                  "p3_matrix::Matrix",
-                                  First,
-                                  [],
-                                  [ T ],
-                                  "width",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "p3_matrix::stack::HorizontalPair",
-                                      "first"
-                                    |)
+                          BinOp.lt,
+                          [
+                            M.read (| c |);
+                            M.call_closure (|
+                              Ty.path "usize",
+                              M.get_trait_method (|
+                                "p3_matrix::Matrix",
+                                First,
+                                [],
+                                [ T ],
+                                "width",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "p3_matrix::stack::HorizontalPair",
+                                    "first"
                                   |)
-                                ]
-                              |)
-                            ]
-                          |)
-                        |)) in
-                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.alloc (|
-                      T,
-                      M.call_closure (|
-                        T,
-                        M.get_trait_method (|
-                          "p3_matrix::Matrix",
-                          First,
-                          [],
-                          [ T ],
-                          "get",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "p3_matrix::stack::HorizontalPair",
-                              "first"
+                                |)
+                              ]
                             |)
-                          |);
-                          M.read (| r |);
-                          M.read (| c |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (M.alloc (|
-                      T,
+                          ]
+                        |)
+                      |)) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  M.call_closure (|
+                    T,
+                    M.get_trait_method (| "p3_matrix::Matrix", First, [], [ T ], "get", [], [] |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "p3_matrix::stack::HorizontalPair",
+                          "first"
+                        |)
+                      |);
+                      M.read (| r |);
+                      M.read (| c |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (M.call_closure (|
+                    T,
+                    M.get_trait_method (| "p3_matrix::Matrix", Second, [], [ T ], "get", [], [] |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "p3_matrix::stack::HorizontalPair",
+                          "second"
+                        |)
+                      |);
+                      M.read (| r |);
                       M.call_closure (|
-                        T,
-                        M.get_trait_method (|
-                          "p3_matrix::Matrix",
-                          Second,
-                          [],
-                          [ T ],
-                          "get",
-                          [],
-                          []
-                        |),
+                        Ty.path "usize",
+                        BinOp.Wrap.sub,
                         [
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "p3_matrix::stack::HorizontalPair",
-                              "second"
-                            |)
-                          |);
-                          M.read (| r |);
+                          M.read (| c |);
                           M.call_closure (|
                             Ty.path "usize",
-                            BinOp.Wrap.sub,
+                            M.get_trait_method (|
+                              "p3_matrix::Matrix",
+                              First,
+                              [],
+                              [ T ],
+                              "width",
+                              [],
+                              []
+                            |),
                             [
-                              M.read (| c |);
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_trait_method (|
-                                  "p3_matrix::Matrix",
-                                  First,
-                                  [],
-                                  [ T ],
-                                  "width",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "p3_matrix::stack::HorizontalPair",
-                                      "first"
-                                    |)
-                                  |)
-                                ]
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "p3_matrix::stack::HorizontalPair",
+                                  "first"
+                                |)
                               |)
                             ]
                           |)
                         ]
                       |)
-                    |)))
-              ]
-            |)
+                    ]
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1926,92 +1769,78 @@ Module stack.
             |) in
           let f :=
             M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "p3_matrix::stack::EitherRow::Left",
-                        0
-                      |) in
-                    let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ L ], γ1_0 |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_tuple_field1_finish",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Left" |) |) |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                            |))
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "p3_matrix::stack::EitherRow::Right",
-                        0
-                      |) in
-                    let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ R ], γ1_0 |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_tuple_field1_finish",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Right" |) |) |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                            |))
-                        ]
-                      |)
-                    |)))
-              ]
-            |)
+          M.match_operator (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "p3_matrix::stack::EitherRow::Left",
+                      0
+                    |) in
+                  let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ L ], γ1_0 |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "debug_tuple_field1_finish",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Left" |) |) |);
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                        |))
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "p3_matrix::stack::EitherRow::Right",
+                      0
+                    |) in
+                  let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ R ], γ1_0 |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "debug_tuple_field1_finish",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Right" |) |) |);
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                        |))
+                    ]
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2054,65 +1883,57 @@ Module stack.
                 [ Ty.apply (Ty.path "p3_matrix::stack::EitherRow") [] [ L; R ] ],
               self
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply (Ty.path "core::option::Option") [] [ T ],
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "p3_matrix::stack::EitherRow::Left",
-                        0
-                      |) in
-                    let l := M.alloc (| Ty.apply (Ty.path "&mut") [] [ L ], γ1_0 |) in
-                    M.alloc (|
-                      Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                      M.call_closure (|
-                        Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                        M.get_trait_method (|
-                          "core::iter::traits::iterator::Iterator",
-                          L,
-                          [],
-                          [],
-                          "next",
-                          [],
-                          []
-                        |),
-                        [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| l |) |) |) ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "p3_matrix::stack::EitherRow::Right",
-                        0
-                      |) in
-                    let r := M.alloc (| Ty.apply (Ty.path "&mut") [] [ R ], γ1_0 |) in
-                    M.alloc (|
-                      Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                      M.call_closure (|
-                        Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                        M.get_trait_method (|
-                          "core::iter::traits::iterator::Iterator",
-                          R,
-                          [],
-                          [],
-                          "next",
-                          [],
-                          []
-                        |),
-                        [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| r |) |) |) ]
-                      |)
-                    |)))
-              ]
-            |)
+          M.match_operator (|
+            Ty.apply (Ty.path "core::option::Option") [] [ T ],
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "p3_matrix::stack::EitherRow::Left",
+                      0
+                    |) in
+                  let l := M.alloc (| Ty.apply (Ty.path "&mut") [] [ L ], γ1_0 |) in
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::option::Option") [] [ T ],
+                    M.get_trait_method (|
+                      "core::iter::traits::iterator::Iterator",
+                      L,
+                      [],
+                      [],
+                      "next",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| l |) |) |) ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "p3_matrix::stack::EitherRow::Right",
+                      0
+                    |) in
+                  let r := M.alloc (| Ty.apply (Ty.path "&mut") [] [ R ], γ1_0 |) in
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::option::Option") [] [ T ],
+                    M.get_trait_method (|
+                      "core::iter::traits::iterator::Iterator",
+                      R,
+                      [],
+                      [],
+                      "next",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| r |) |) |) ]
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2162,83 +1983,67 @@ Module stack.
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
-                  M.read (|
-                    M.match_operator (|
-                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                      self,
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ := M.read (| γ |) in
-                            let γ1_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "p3_matrix::stack::EitherRow::Left",
-                                0
-                              |) in
-                            let l := M.alloc (| Ty.apply (Ty.path "&") [] [ L ], γ1_0 |) in
-                            M.alloc (|
-                              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.call_closure (|
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                    M.get_trait_method (|
-                                      "core::ops::deref::Deref",
-                                      L,
-                                      [],
-                                      [],
-                                      "deref",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| l |) |) |)
-                                    ]
-                                  |)
-                                |)
+                  M.match_operator (|
+                    Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                    self,
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ := M.read (| γ |) in
+                          let γ1_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ,
+                              "p3_matrix::stack::EitherRow::Left",
+                              0
+                            |) in
+                          let l := M.alloc (| Ty.apply (Ty.path "&") [] [ L ], γ1_0 |) in
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                M.get_trait_method (|
+                                  "core::ops::deref::Deref",
+                                  L,
+                                  [],
+                                  [],
+                                  "deref",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| l |) |) |) ]
                               |)
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ := M.read (| γ |) in
-                            let γ1_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "p3_matrix::stack::EitherRow::Right",
-                                0
-                              |) in
-                            let r := M.alloc (| Ty.apply (Ty.path "&") [] [ R ], γ1_0 |) in
-                            M.alloc (|
-                              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.call_closure (|
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                    M.get_trait_method (|
-                                      "core::ops::deref::Deref",
-                                      R,
-                                      [],
-                                      [],
-                                      "deref",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| r |) |) |)
-                                    ]
-                                  |)
-                                |)
+                            |)
+                          |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ := M.read (| γ |) in
+                          let γ1_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ,
+                              "p3_matrix::stack::EitherRow::Right",
+                              0
+                            |) in
+                          let r := M.alloc (| Ty.apply (Ty.path "&") [] [ R ], γ1_0 |) in
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.call_closure (|
+                                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                M.get_trait_method (|
+                                  "core::ops::deref::Deref",
+                                  R,
+                                  [],
+                                  [],
+                                  "deref",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| r |) |) |) ]
                               |)
-                            |)))
-                      ]
-                    |)
+                            |)
+                          |)))
+                    ]
                   |)
                 |)
               |)

@@ -44,48 +44,46 @@ Module fmt.
                 Ty.apply (Ty.path "&") [] [ Ty.path "core::fmt::rt::Placeholder" ],
                 self
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.path "core::fmt::rt::Placeholder",
-                Value.DeclaredButUndefined,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.match_operator (|
-                        Ty.path "core::fmt::rt::Placeholder",
-                        Value.DeclaredButUndefined,
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (M.match_operator (|
-                                Ty.path "core::fmt::rt::Placeholder",
-                                Value.DeclaredButUndefined,
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (M.match_operator (|
-                                        Ty.path "core::fmt::rt::Placeholder",
-                                        Value.DeclaredButUndefined,
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (M.match_operator (|
-                                                Ty.path "core::fmt::rt::Placeholder",
-                                                Value.DeclaredButUndefined,
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (M.deref (| M.read (| self |) |)))
-                                                ]
-                                              |)))
-                                        ]
-                                      |)))
-                                ]
-                              |)))
-                        ]
-                      |)))
-                ]
-              |)
+            M.match_operator (|
+              Ty.path "core::fmt::rt::Placeholder",
+              Value.DeclaredButUndefined,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                      Ty.path "core::fmt::rt::Placeholder",
+                      Value.DeclaredButUndefined,
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              Ty.path "core::fmt::rt::Placeholder",
+                              Value.DeclaredButUndefined,
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (M.match_operator (|
+                                      Ty.path "core::fmt::rt::Placeholder",
+                                      Value.DeclaredButUndefined,
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (M.match_operator (|
+                                              Ty.path "core::fmt::rt::Placeholder",
+                                              Value.DeclaredButUndefined,
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (M.read (| M.deref (| M.read (| self |) |) |)))
+                                              ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                      ]
+                    |)))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -366,12 +364,10 @@ Module fmt.
           ltac:(M.monadic
             (let self :=
               M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::fmt::rt::Count" ], self |) in
-            M.read (|
-              M.match_operator (|
-                Ty.path "core::fmt::rt::Count",
-                Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
-              |)
+            M.match_operator (|
+              Ty.path "core::fmt::rt::Count",
+              Value.DeclaredButUndefined,
+              [ fun γ => ltac:(M.monadic (M.read (| M.deref (| M.read (| self |) |) |))) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -533,39 +529,38 @@ Module fmt.
                 Ty.apply (Ty.path "&") [] [ Ty.path "core::fmt::rt::ArgumentType" ],
                 self
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.path "core::fmt::rt::ArgumentType",
-                Value.DeclaredButUndefined,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.match_operator (|
-                        Ty.path "core::fmt::rt::ArgumentType",
-                        Value.DeclaredButUndefined,
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (M.match_operator (|
-                                Ty.path "core::fmt::rt::ArgumentType",
-                                Value.DeclaredButUndefined,
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (M.match_operator (|
-                                        Ty.path "core::fmt::rt::ArgumentType",
-                                        Value.DeclaredButUndefined,
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic (M.deref (| M.read (| self |) |)))
-                                        ]
-                                      |)))
-                                ]
-                              |)))
-                        ]
-                      |)))
-                ]
-              |)
+            M.match_operator (|
+              Ty.path "core::fmt::rt::ArgumentType",
+              Value.DeclaredButUndefined,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                      Ty.path "core::fmt::rt::ArgumentType",
+                      Value.DeclaredButUndefined,
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              Ty.path "core::fmt::rt::ArgumentType",
+                              Value.DeclaredButUndefined,
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (M.match_operator (|
+                                      Ty.path "core::fmt::rt::ArgumentType",
+                                      Value.DeclaredButUndefined,
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (M.read (| M.deref (| M.read (| self |) |) |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                      ]
+                    |)))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -609,12 +604,10 @@ Module fmt.
           ltac:(M.monadic
             (let self :=
               M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::fmt::rt::Argument" ], self |) in
-            M.read (|
-              M.match_operator (|
-                Ty.path "core::fmt::rt::Argument",
-                Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
-              |)
+            M.match_operator (|
+              Ty.path "core::fmt::rt::Argument",
+              Value.DeclaredButUndefined,
+              [ fun γ => ltac:(M.monadic (M.read (| M.deref (| M.read (| self |) |) |))) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1150,90 +1143,76 @@ Module fmt.
               M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::fmt::rt::Argument" ], self |) in
             let f :=
               M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
-            M.read (|
-              M.match_operator (|
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                M.SubPointer.get_struct_record_field (|
-                  M.deref (| M.read (| self |) |),
-                  "core::fmt::rt::Argument",
-                  "ty"
-                |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_record_field (|
-                          γ,
-                          "core::fmt::rt::ArgumentType::Placeholder",
-                          "formatter"
-                        |) in
-                      let γ0_1 :=
-                        M.SubPointer.get_struct_record_field (|
-                          γ,
-                          "core::fmt::rt::ArgumentType::Placeholder",
-                          "value"
-                        |) in
-                      let formatter :=
-                        M.copy (|
-                          Ty.function
-                            [
-                              Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.tuple [] ];
-                              Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]
-                            ]
-                            (Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
-                          γ0_0
-                        |) in
-                      let value :=
-                        M.copy (|
-                          Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.tuple [] ],
-                          γ0_1
-                        |) in
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.call_closure (|
-                          Ty.apply
+            M.match_operator (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+              M.SubPointer.get_struct_record_field (|
+                M.deref (| M.read (| self |) |),
+                "core::fmt::rt::Argument",
+                "ty"
+              |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_record_field (|
+                        γ,
+                        "core::fmt::rt::ArgumentType::Placeholder",
+                        "formatter"
+                      |) in
+                    let γ0_1 :=
+                      M.SubPointer.get_struct_record_field (|
+                        γ,
+                        "core::fmt::rt::ArgumentType::Placeholder",
+                        "value"
+                      |) in
+                    let formatter :=
+                      M.copy (|
+                        Ty.function
+                          [
+                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.tuple [] ];
+                            Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]
+                          ]
+                          (Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                          M.read (| formatter |),
-                          [
-                            M.read (| value |);
-                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
-                          ]
-                        |)
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::fmt::rt::ArgumentType::Count",
-                          0
-                        |) in
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.never_to_any (|
-                          M.call_closure (|
-                            Ty.path "never",
-                            M.get_function (| "core::hint::unreachable_unchecked", [], [] |),
-                            []
-                          |)
-                        |)
-                      |)))
-                ]
-              |)
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                        γ0_0
+                      |) in
+                    let value :=
+                      M.copy (|
+                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.tuple [] ],
+                        γ0_1
+                      |) in
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                      M.read (| formatter |),
+                      [
+                        M.read (| value |);
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+                      ]
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::fmt::rt::ArgumentType::Count",
+                        0
+                      |) in
+                    M.never_to_any (|
+                      M.call_closure (|
+                        Ty.path "never",
+                        M.get_function (| "core::hint::unreachable_unchecked", [], [] |),
+                        []
+                      |)
+                    |)))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1256,42 +1235,34 @@ Module fmt.
           ltac:(M.monadic
             (let self :=
               M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::fmt::rt::Argument" ], self |) in
-            M.read (|
-              M.match_operator (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
-                M.SubPointer.get_struct_record_field (|
-                  M.deref (| M.read (| self |) |),
-                  "core::fmt::rt::Argument",
-                  "ty"
-                |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::fmt::rt::ArgumentType::Count",
-                          0
-                        |) in
-                      let count := M.copy (| Ty.path "usize", γ0_0 |) in
-                      M.alloc (|
-                        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
-                        Value.StructTuple
-                          "core::option::Option::Some"
-                          []
-                          [ Ty.path "usize" ]
-                          [ M.read (| count |) ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let _ :=
-                        M.is_struct_tuple (| γ, "core::fmt::rt::ArgumentType::Placeholder" |) in
-                      M.alloc (|
-                        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
-                        Value.StructTuple "core::option::Option::None" [] [ Ty.path "usize" ] []
-                      |)))
-                ]
-              |)
+            M.match_operator (|
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
+              M.SubPointer.get_struct_record_field (|
+                M.deref (| M.read (| self |) |),
+                "core::fmt::rt::Argument",
+                "ty"
+              |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::fmt::rt::ArgumentType::Count",
+                        0
+                      |) in
+                    let count := M.copy (| Ty.path "usize", γ0_0 |) in
+                    Value.StructTuple
+                      "core::option::Option::Some"
+                      []
+                      [ Ty.path "usize" ]
+                      [ M.read (| count |) ]));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ :=
+                      M.is_struct_tuple (| γ, "core::fmt::rt::ArgumentType::Placeholder" |) in
+                    Value.StructTuple "core::option::Option::None" [] [ Ty.path "usize" ] []))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

@@ -58,12 +58,10 @@ Module Impl_core_clone_Clone_for_call_builder_AccountId.
       ltac:(M.monadic
         (let self :=
           M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "call_builder::AccountId" ], self |) in
-        M.read (|
-          M.match_operator (|
-            Ty.path "call_builder::AccountId",
-            Value.DeclaredButUndefined,
-            [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
-          |)
+        M.match_operator (|
+          Ty.path "call_builder::AccountId",
+          Value.DeclaredButUndefined,
+          [ fun γ => ltac:(M.monadic (M.read (| M.deref (| M.read (| self |) |) |))) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -265,52 +263,37 @@ Module Impl_call_builder_CallBuilderTest.
                 [ mk_str (| "not yet implemented" |) ]
               |)
             |) in
-          M.match_operator (|
+          M.alloc (|
             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "call_builder::LangError" ],
-            result,
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ0_0 :=
-                    M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                  M.alloc (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.path "call_builder::LangError" ],
+            M.match_operator (|
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "call_builder::LangError" ],
+              result,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                     Value.StructTuple
                       "core::option::Option::None"
                       []
                       [ Ty.path "call_builder::LangError" ]
-                      []
-                  |)));
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ0_0 :=
-                    M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                  let e := M.copy (| Ty.path "call_builder::LangError", γ0_0 |) in
-                  let _ :=
-                    M.is_struct_tuple (| γ0_0, "call_builder::LangError::CouldNotReadInput" |) in
-                  M.alloc (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.path "call_builder::LangError" ],
+                      []));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
+                    let e := M.copy (| Ty.path "call_builder::LangError", γ0_0 |) in
+                    let _ :=
+                      M.is_struct_tuple (| γ0_0, "call_builder::LangError::CouldNotReadInput" |) in
                     Value.StructTuple
                       "core::option::Option::Some"
                       []
                       [ Ty.path "call_builder::LangError" ]
-                      [ M.read (| e |) ]
-                  |)));
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ0_0 :=
-                    M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                  M.alloc (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.path "call_builder::LangError" ],
+                      [ M.read (| e |) ]));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                     M.never_to_any (|
                       M.call_closure (|
                         Ty.path "never",
@@ -377,9 +360,9 @@ Module Impl_call_builder_CallBuilderTest.
                           |)
                         ]
                       |)
-                    |)
-                  |)))
-            ]
+                    |)))
+              ]
+            |)
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"

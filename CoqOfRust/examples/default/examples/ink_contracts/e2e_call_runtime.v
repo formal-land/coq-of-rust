@@ -58,12 +58,10 @@ Module Impl_core_clone_Clone_for_e2e_call_runtime_AccountId.
       ltac:(M.monadic
         (let self :=
           M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "e2e_call_runtime::AccountId" ], self |) in
-        M.read (|
-          M.match_operator (|
-            Ty.path "e2e_call_runtime::AccountId",
-            Value.DeclaredButUndefined,
-            [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
-          |)
+        M.match_operator (|
+          Ty.path "e2e_call_runtime::AccountId",
+          Value.DeclaredButUndefined,
+          [ fun γ => ltac:(M.monadic (M.read (| M.deref (| M.read (| self |) |) |))) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

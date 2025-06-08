@@ -190,7 +190,7 @@
 
 ## Contract/Pop_extcall_target_address
 
-- [ ] `pop_extcall_target_address`
+- [x] `pop_extcall_target_address`
 
 ## Contract/Return_contract
 
@@ -203,6 +203,6 @@
 ## Summary
 
 - Total: 120
-- Admitted: 9
-- Defined: 111
-- Percentage: 92.50%
+- Admitted: 8
+- Defined: 112
+- Percentage: 93.33%

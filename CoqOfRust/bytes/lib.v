@@ -52,52 +52,47 @@ Definition saturating_sub_usize_u64 (ε : list Value.t) (τ : list Ty.t) (α : l
     ltac:(M.monadic
       (let a := M.alloc (| Ty.path "usize", a |) in
       let b := M.alloc (| Ty.path "u64", b |) in
-      M.read (|
-        M.match_operator (|
-          Ty.path "usize",
-          M.alloc (|
+      M.match_operator (|
+        Ty.path "usize",
+        M.alloc (|
+          Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ],
+          M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
               []
               [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ],
-            M.call_closure (|
-              Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ],
-              M.get_trait_method (|
-                "core::convert::TryFrom",
+            M.get_trait_method (|
+              "core::convert::TryFrom",
+              Ty.path "usize",
+              [],
+              [ Ty.path "u64" ],
+              "try_from",
+              [],
+              []
+            |),
+            [ M.read (| b |) ]
+          |)
+        |),
+        [
+          fun γ =>
+            ltac:(M.monadic
+              (let γ0_0 :=
+                M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
+              let b := M.copy (| Ty.path "usize", γ0_0 |) in
+              M.call_closure (|
                 Ty.path "usize",
-                [],
-                [ Ty.path "u64" ],
-                "try_from",
-                [],
-                []
-              |),
-              [ M.read (| b |) ]
-            |)
-          |),
-          [
-            fun γ =>
-              ltac:(M.monadic
-                (let γ0_0 :=
-                  M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                let b := M.copy (| Ty.path "usize", γ0_0 |) in
-                M.alloc (|
-                  Ty.path "usize",
-                  M.call_closure (|
-                    Ty.path "usize",
-                    M.get_associated_function (| Ty.path "usize", "saturating_sub", [], [] |),
-                    [ M.read (| a |); M.read (| b |) ]
-                  |)
-                |)));
-            fun γ =>
-              ltac:(M.monadic
-                (let γ0_0 :=
-                  M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                M.alloc (| Ty.path "usize", Value.Integer IntegerKind.Usize 0 |)))
-          ]
-        |)
+                M.get_associated_function (| Ty.path "usize", "saturating_sub", [], [] |),
+                [ M.read (| a |); M.read (| b |) ]
+              |)));
+          fun γ =>
+            ltac:(M.monadic
+              (let γ0_0 :=
+                M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
+              Value.Integer IntegerKind.Usize 0))
+        ]
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
@@ -122,60 +117,47 @@ Definition min_u64_usize (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
     ltac:(M.monadic
       (let a := M.alloc (| Ty.path "u64", a |) in
       let b := M.alloc (| Ty.path "usize", b |) in
-      M.read (|
-        M.match_operator (|
-          Ty.path "usize",
-          M.alloc (|
+      M.match_operator (|
+        Ty.path "usize",
+        M.alloc (|
+          Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ],
+          M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
               []
               [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ],
-            M.call_closure (|
-              Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ],
-              M.get_trait_method (|
-                "core::convert::TryFrom",
+            M.get_trait_method (|
+              "core::convert::TryFrom",
+              Ty.path "usize",
+              [],
+              [ Ty.path "u64" ],
+              "try_from",
+              [],
+              []
+            |),
+            [ M.read (| a |) ]
+          |)
+        |),
+        [
+          fun γ =>
+            ltac:(M.monadic
+              (let γ0_0 :=
+                M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
+              let a := M.copy (| Ty.path "usize", γ0_0 |) in
+              M.call_closure (|
                 Ty.path "usize",
-                [],
-                [ Ty.path "u64" ],
-                "try_from",
-                [],
-                []
-              |),
-              [ M.read (| a |) ]
-            |)
-          |),
-          [
-            fun γ =>
-              ltac:(M.monadic
-                (let γ0_0 :=
-                  M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                let a := M.copy (| Ty.path "usize", γ0_0 |) in
-                M.alloc (|
-                  Ty.path "usize",
-                  M.call_closure (|
-                    Ty.path "usize",
-                    M.get_trait_method (|
-                      "core::cmp::Ord",
-                      Ty.path "usize",
-                      [],
-                      [],
-                      "min",
-                      [],
-                      []
-                    |),
-                    [ M.read (| a |); M.read (| b |) ]
-                  |)
-                |)));
-            fun γ =>
-              ltac:(M.monadic
-                (let γ0_0 :=
-                  M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                b))
-          ]
-        |)
+                M.get_trait_method (| "core::cmp::Ord", Ty.path "usize", [], [], "min", [], [] |),
+                [ M.read (| a |); M.read (| b |) ]
+              |)));
+          fun γ =>
+            ltac:(M.monadic
+              (let γ0_0 :=
+                M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
+              M.read (| b |)))
+        ]
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

@@ -45,79 +45,53 @@ Module ops.
                   [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ] ],
                 self
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ],
-                self,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::ops::coroutine::CoroutineState::Yielded",
-                          0
-                        |) in
-                      let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ Y ], γ1_0 |) in
-                      M.alloc (|
-                        Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ],
-                        Value.StructTuple
-                          "core::ops::coroutine::CoroutineState::Yielded"
-                          []
-                          [ Y; R ]
-                          [
-                            M.call_closure (|
-                              Y,
-                              M.get_trait_method (|
-                                "core::clone::Clone",
-                                Y,
-                                [],
-                                [],
-                                "clone",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |)
-                              ]
-                            |)
-                          ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::ops::coroutine::CoroutineState::Complete",
-                          0
-                        |) in
-                      let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ R ], γ1_0 |) in
-                      M.alloc (|
-                        Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ],
-                        Value.StructTuple
-                          "core::ops::coroutine::CoroutineState::Complete"
-                          []
-                          [ Y; R ]
-                          [
-                            M.call_closure (|
-                              R,
-                              M.get_trait_method (|
-                                "core::clone::Clone",
-                                R,
-                                [],
-                                [],
-                                "clone",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |)
-                              ]
-                            |)
-                          ]
-                      |)))
-                ]
-              |)
+            M.match_operator (|
+              Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ],
+              self,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::ops::coroutine::CoroutineState::Yielded",
+                        0
+                      |) in
+                    let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ Y ], γ1_0 |) in
+                    Value.StructTuple
+                      "core::ops::coroutine::CoroutineState::Yielded"
+                      []
+                      [ Y; R ]
+                      [
+                        M.call_closure (|
+                          Y,
+                          M.get_trait_method (| "core::clone::Clone", Y, [], [], "clone", [], [] |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
+                        |)
+                      ]));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::ops::coroutine::CoroutineState::Complete",
+                        0
+                      |) in
+                    let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ R ], γ1_0 |) in
+                    Value.StructTuple
+                      "core::ops::coroutine::CoroutineState::Complete"
+                      []
+                      [ Y; R ]
+                      [
+                        M.call_closure (|
+                          R,
+                          M.get_trait_method (| "core::clone::Clone", R, [], [], "clone", [], [] |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
+                        |)
+                      ]))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -216,126 +190,115 @@ Module ops.
                     [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
                   |),
                   ltac:(M.monadic
-                    (M.read (|
-                      M.match_operator (|
-                        Ty.path "bool",
-                        M.alloc (|
-                          Ty.tuple
-                            [
-                              Ty.apply
-                                (Ty.path "&")
+                    (M.match_operator (|
+                      Ty.path "bool",
+                      M.alloc (|
+                        Ty.tuple
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::ops::coroutine::CoroutineState")
+                                  []
+                                  [ Y; R ]
+                              ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::ops::coroutine::CoroutineState")
+                                  []
+                                  [ Y; R ]
+                              ]
+                          ],
+                        Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                      |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                            let γ0_0 := M.read (| γ0_0 |) in
+                            let γ2_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ0_0,
+                                "core::ops::coroutine::CoroutineState::Yielded",
+                                0
+                              |) in
+                            let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ Y ], γ2_0 |) in
+                            let γ0_1 := M.read (| γ0_1 |) in
+                            let γ2_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ0_1,
+                                "core::ops::coroutine::CoroutineState::Yielded",
+                                0
+                              |) in
+                            let __arg1_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ Y ], γ2_0 |) in
+                            M.call_closure (|
+                              Ty.path "bool",
+                              M.get_trait_method (|
+                                "core::cmp::PartialEq",
+                                Ty.apply (Ty.path "&") [] [ Y ],
+                                [],
+                                [ Ty.apply (Ty.path "&") [] [ Y ] ],
+                                "eq",
+                                [],
                                 []
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::ops::coroutine::CoroutineState")
-                                    []
-                                    [ Y; R ]
-                                ];
-                              Ty.apply
-                                (Ty.path "&")
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                              ]
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                            let γ0_0 := M.read (| γ0_0 |) in
+                            let γ2_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ0_0,
+                                "core::ops::coroutine::CoroutineState::Complete",
+                                0
+                              |) in
+                            let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ R ], γ2_0 |) in
+                            let γ0_1 := M.read (| γ0_1 |) in
+                            let γ2_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ0_1,
+                                "core::ops::coroutine::CoroutineState::Complete",
+                                0
+                              |) in
+                            let __arg1_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ R ], γ2_0 |) in
+                            M.call_closure (|
+                              Ty.path "bool",
+                              M.get_trait_method (|
+                                "core::cmp::PartialEq",
+                                Ty.apply (Ty.path "&") [] [ R ],
+                                [],
+                                [ Ty.apply (Ty.path "&") [] [ R ] ],
+                                "eq",
+                                [],
                                 []
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::ops::coroutine::CoroutineState")
-                                    []
-                                    [ Y; R ]
-                                ]
-                            ],
-                          Value.Tuple [ M.read (| self |); M.read (| other |) ]
-                        |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                              let γ0_0 := M.read (| γ0_0 |) in
-                              let γ2_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ0_0,
-                                  "core::ops::coroutine::CoroutineState::Yielded",
-                                  0
-                                |) in
-                              let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ Y ], γ2_0 |) in
-                              let γ0_1 := M.read (| γ0_1 |) in
-                              let γ2_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ0_1,
-                                  "core::ops::coroutine::CoroutineState::Yielded",
-                                  0
-                                |) in
-                              let __arg1_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ Y ], γ2_0 |) in
-                              M.alloc (|
-                                Ty.path "bool",
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_trait_method (|
-                                    "core::cmp::PartialEq",
-                                    Ty.apply (Ty.path "&") [] [ Y ],
-                                    [],
-                                    [ Ty.apply (Ty.path "&") [] [ Y ] ],
-                                    "eq",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (| Pointer.Kind.Ref, __self_0 |);
-                                    M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
-                                  ]
-                                |)
-                              |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                              let γ0_0 := M.read (| γ0_0 |) in
-                              let γ2_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ0_0,
-                                  "core::ops::coroutine::CoroutineState::Complete",
-                                  0
-                                |) in
-                              let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ R ], γ2_0 |) in
-                              let γ0_1 := M.read (| γ0_1 |) in
-                              let γ2_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ0_1,
-                                  "core::ops::coroutine::CoroutineState::Complete",
-                                  0
-                                |) in
-                              let __arg1_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ R ], γ2_0 |) in
-                              M.alloc (|
-                                Ty.path "bool",
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_trait_method (|
-                                    "core::cmp::PartialEq",
-                                    Ty.apply (Ty.path "&") [] [ R ],
-                                    [],
-                                    [ Ty.apply (Ty.path "&") [] [ R ] ],
-                                    "eq",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (| Pointer.Kind.Ref, __self_0 |);
-                                    M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
-                                  ]
-                                |)
-                              |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (M.alloc (|
-                                Ty.path "bool",
-                                M.never_to_any (|
-                                  M.call_closure (|
-                                    Ty.path "never",
-                                    M.get_function (| "core::intrinsics::unreachable", [], [] |),
-                                    []
-                                  |)
-                                |)
-                              |)))
-                        ]
-                      |)
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                              ]
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (M.never_to_any (|
+                              M.call_closure (|
+                                Ty.path "never",
+                                M.get_function (| "core::intrinsics::unreachable", [], [] |),
+                                []
+                              |)
+                            |)))
+                      ]
                     |)))
                 |)
               |)
@@ -406,48 +369,45 @@ Module ops.
                   |),
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |) in
-              M.match_operator (|
+              M.alloc (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
-                M.alloc (|
-                  Ty.tuple
-                    [
-                      Ty.apply
-                        (Ty.path "&")
-                        []
-                        [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ] ];
-                      Ty.apply
-                        (Ty.path "&")
-                        []
-                        [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ] ]
-                    ],
-                  Value.Tuple [ M.read (| self |); M.read (| other |) ]
-                |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                      let γ0_0 := M.read (| γ0_0 |) in
-                      let γ2_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ0_0,
-                          "core::ops::coroutine::CoroutineState::Yielded",
-                          0
-                        |) in
-                      let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ Y ], γ2_0 |) in
-                      let γ0_1 := M.read (| γ0_1 |) in
-                      let γ2_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ0_1,
-                          "core::ops::coroutine::CoroutineState::Yielded",
-                          0
-                        |) in
-                      let __arg1_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ Y ], γ2_0 |) in
-                      M.alloc (|
+                M.match_operator (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
+                  M.alloc (|
+                    Ty.tuple
+                      [
                         Ty.apply
-                          (Ty.path "core::option::Option")
+                          (Ty.path "&")
                           []
-                          [ Ty.path "core::cmp::Ordering" ],
+                          [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ] ];
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ] ]
+                      ],
+                    Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                  |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                        let γ0_0 := M.read (| γ0_0 |) in
+                        let γ2_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ0_0,
+                            "core::ops::coroutine::CoroutineState::Yielded",
+                            0
+                          |) in
+                        let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ Y ], γ2_0 |) in
+                        let γ0_1 := M.read (| γ0_1 |) in
+                        let γ2_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ0_1,
+                            "core::ops::coroutine::CoroutineState::Yielded",
+                            0
+                          |) in
+                        let __arg1_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ Y ], γ2_0 |) in
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::option::Option")
@@ -466,33 +426,27 @@ Module ops.
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __arg1_0 |) |) |)
                           ]
-                        |)
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                      let γ0_0 := M.read (| γ0_0 |) in
-                      let γ2_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ0_0,
-                          "core::ops::coroutine::CoroutineState::Complete",
-                          0
-                        |) in
-                      let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ R ], γ2_0 |) in
-                      let γ0_1 := M.read (| γ0_1 |) in
-                      let γ2_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ0_1,
-                          "core::ops::coroutine::CoroutineState::Complete",
-                          0
-                        |) in
-                      let __arg1_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ R ], γ2_0 |) in
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::option::Option")
-                          []
-                          [ Ty.path "core::cmp::Ordering" ],
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                        let γ0_0 := M.read (| γ0_0 |) in
+                        let γ2_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ0_0,
+                            "core::ops::coroutine::CoroutineState::Complete",
+                            0
+                          |) in
+                        let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ R ], γ2_0 |) in
+                        let γ0_1 := M.read (| γ0_1 |) in
+                        let γ2_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ0_1,
+                            "core::ops::coroutine::CoroutineState::Complete",
+                            0
+                          |) in
+                        let __arg1_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ R ], γ2_0 |) in
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::option::Option")
@@ -511,16 +465,10 @@ Module ops.
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __arg1_0 |) |) |)
                           ]
-                        |)
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::option::Option")
-                          []
-                          [ Ty.path "core::cmp::Ordering" ],
-                        M.call_closure (|
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (M.call_closure (|
                           Ty.apply
                             (Ty.path "core::option::Option")
                             []
@@ -544,9 +492,9 @@ Module ops.
                               M.deref (| M.borrow (| Pointer.Kind.Ref, __arg1_discr |) |)
                             |)
                           ]
-                        |)
-                      |)))
-                ]
+                        |)))
+                  ]
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -586,20 +534,18 @@ Module ops.
                   [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ] ],
                 self
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.tuple [],
-                Value.DeclaredButUndefined,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.match_operator (|
-                        Ty.tuple [],
-                        Value.DeclaredButUndefined,
-                        [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
-                      |)))
-                ]
-              |)
+            M.match_operator (|
+              Ty.tuple [],
+              Value.DeclaredButUndefined,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                      Ty.tuple [],
+                      Value.DeclaredButUndefined,
+                      [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
+                    |)))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -663,86 +609,88 @@ Module ops.
                   |),
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |) in
-              M.match_operator (|
+              M.alloc (|
                 Ty.path "core::cmp::Ordering",
-                M.alloc (|
+                M.match_operator (|
                   Ty.path "core::cmp::Ordering",
-                  M.call_closure (|
+                  M.alloc (|
                     Ty.path "core::cmp::Ordering",
-                    M.get_trait_method (|
-                      "core::cmp::Ord",
-                      Ty.path "isize",
-                      [],
-                      [],
-                      "cmp",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
-                      |);
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (| M.borrow (| Pointer.Kind.Ref, __arg1_discr |) |)
-                      |)
-                    ]
-                  |)
-                |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
-                      M.match_operator (|
-                        Ty.path "core::cmp::Ordering",
-                        M.alloc (|
-                          Ty.tuple
-                            [
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::ops::coroutine::CoroutineState")
-                                    []
-                                    [ Y; R ]
-                                ];
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::ops::coroutine::CoroutineState")
-                                    []
-                                    [ Y; R ]
-                                ]
-                            ],
-                          Value.Tuple [ M.read (| self |); M.read (| other |) ]
-                        |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                              let γ0_0 := M.read (| γ0_0 |) in
-                              let γ2_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ0_0,
-                                  "core::ops::coroutine::CoroutineState::Yielded",
-                                  0
-                                |) in
-                              let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ Y ], γ2_0 |) in
-                              let γ0_1 := M.read (| γ0_1 |) in
-                              let γ2_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ0_1,
-                                  "core::ops::coroutine::CoroutineState::Yielded",
-                                  0
-                                |) in
-                              let __arg1_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ Y ], γ2_0 |) in
-                              M.alloc (|
-                                Ty.path "core::cmp::Ordering",
+                    M.call_closure (|
+                      Ty.path "core::cmp::Ordering",
+                      M.get_trait_method (|
+                        "core::cmp::Ord",
+                        Ty.path "isize",
+                        [],
+                        [],
+                        "cmp",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.borrow (| Pointer.Kind.Ref, __arg1_discr |) |)
+                        |)
+                      ]
+                    |)
+                  |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
+                        M.match_operator (|
+                          Ty.path "core::cmp::Ordering",
+                          M.alloc (|
+                            Ty.tuple
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::ops::coroutine::CoroutineState")
+                                      []
+                                      [ Y; R ]
+                                  ];
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::ops::coroutine::CoroutineState")
+                                      []
+                                      [ Y; R ]
+                                  ]
+                              ],
+                            Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                          |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                let γ0_0 := M.read (| γ0_0 |) in
+                                let γ2_0 :=
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    γ0_0,
+                                    "core::ops::coroutine::CoroutineState::Yielded",
+                                    0
+                                  |) in
+                                let __self_0 :=
+                                  M.alloc (| Ty.apply (Ty.path "&") [] [ Y ], γ2_0 |) in
+                                let γ0_1 := M.read (| γ0_1 |) in
+                                let γ2_0 :=
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    γ0_1,
+                                    "core::ops::coroutine::CoroutineState::Yielded",
+                                    0
+                                  |) in
+                                let __arg1_0 :=
+                                  M.alloc (| Ty.apply (Ty.path "&") [] [ Y ], γ2_0 |) in
                                 M.call_closure (|
                                   Ty.path "core::cmp::Ordering",
                                   M.get_trait_method (|
@@ -764,30 +712,29 @@ Module ops.
                                       M.deref (| M.read (| __arg1_0 |) |)
                                     |)
                                   ]
-                                |)
-                              |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                              let γ0_0 := M.read (| γ0_0 |) in
-                              let γ2_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ0_0,
-                                  "core::ops::coroutine::CoroutineState::Complete",
-                                  0
-                                |) in
-                              let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ R ], γ2_0 |) in
-                              let γ0_1 := M.read (| γ0_1 |) in
-                              let γ2_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ0_1,
-                                  "core::ops::coroutine::CoroutineState::Complete",
-                                  0
-                                |) in
-                              let __arg1_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ R ], γ2_0 |) in
-                              M.alloc (|
-                                Ty.path "core::cmp::Ordering",
+                                |)));
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                let γ0_0 := M.read (| γ0_0 |) in
+                                let γ2_0 :=
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    γ0_0,
+                                    "core::ops::coroutine::CoroutineState::Complete",
+                                    0
+                                  |) in
+                                let __self_0 :=
+                                  M.alloc (| Ty.apply (Ty.path "&") [] [ R ], γ2_0 |) in
+                                let γ0_1 := M.read (| γ0_1 |) in
+                                let γ2_0 :=
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    γ0_1,
+                                    "core::ops::coroutine::CoroutineState::Complete",
+                                    0
+                                  |) in
+                                let __arg1_0 :=
+                                  M.alloc (| Ty.apply (Ty.path "&") [] [ R ], γ2_0 |) in
                                 M.call_closure (|
                                   Ty.path "core::cmp::Ordering",
                                   M.get_trait_method (|
@@ -809,27 +756,24 @@ Module ops.
                                       M.deref (| M.read (| __arg1_0 |) |)
                                     |)
                                   ]
-                                |)
-                              |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (M.alloc (|
-                                Ty.path "core::cmp::Ordering",
-                                M.never_to_any (|
+                                |)));
+                            fun γ =>
+                              ltac:(M.monadic
+                                (M.never_to_any (|
                                   M.call_closure (|
                                     Ty.path "never",
                                     M.get_function (| "core::intrinsics::unreachable", [], [] |),
                                     []
                                   |)
-                                |)
-                              |)))
-                        ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let cmp := M.copy (| Ty.path "core::cmp::Ordering", γ |) in
-                      cmp))
-                ]
+                                |)))
+                          ]
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let cmp := M.copy (| Ty.path "core::cmp::Ordering", γ |) in
+                        M.read (| cmp |)))
+                  ]
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -865,92 +809,78 @@ Module ops.
               |) in
             let f :=
               M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
-            M.read (|
-              M.match_operator (|
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                self,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::ops::coroutine::CoroutineState::Yielded",
-                          0
-                        |) in
-                      let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ Y ], γ1_0 |) in
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::Formatter",
-                            "debug_tuple_field1_finish",
-                            [],
-                            []
-                          |),
-                          [
-                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Yielded" |) |) |);
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                              |))
-                          ]
-                        |)
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::ops::coroutine::CoroutineState::Complete",
-                          0
-                        |) in
-                      let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ R ], γ1_0 |) in
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::Formatter",
-                            "debug_tuple_field1_finish",
-                            [],
-                            []
-                          |),
-                          [
-                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Complete" |) |) |);
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                              |))
-                          ]
-                        |)
-                      |)))
-                ]
-              |)
+            M.match_operator (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+              self,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::ops::coroutine::CoroutineState::Yielded",
+                        0
+                      |) in
+                    let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ Y ], γ1_0 |) in
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Formatter",
+                        "debug_tuple_field1_finish",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Yielded" |) |) |);
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |))
+                      ]
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::ops::coroutine::CoroutineState::Complete",
+                        0
+                      |) in
+                    let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ R ], γ1_0 |) in
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Formatter",
+                        "debug_tuple_field1_finish",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Complete" |) |) |);
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |))
+                      ]
+                    |)))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1015,22 +945,22 @@ Module ops.
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                   ]
                 |) in
-              M.match_operator (|
+              M.alloc (|
                 Ty.tuple [],
-                self,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::ops::coroutine::CoroutineState::Yielded",
-                          0
-                        |) in
-                      let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ Y ], γ1_0 |) in
-                      M.alloc (|
-                        Ty.tuple [],
+                M.match_operator (|
+                  Ty.tuple [],
+                  self,
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.read (| γ |) in
+                        let γ1_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "core::ops::coroutine::CoroutineState::Yielded",
+                            0
+                          |) in
+                        let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ Y ], γ1_0 |) in
                         M.call_closure (|
                           Ty.tuple [],
                           M.get_trait_method (|
@@ -1046,20 +976,17 @@ Module ops.
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                           ]
-                        |)
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::ops::coroutine::CoroutineState::Complete",
-                          0
-                        |) in
-                      let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ R ], γ1_0 |) in
-                      M.alloc (|
-                        Ty.tuple [],
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.read (| γ |) in
+                        let γ1_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "core::ops::coroutine::CoroutineState::Complete",
+                            0
+                          |) in
+                        let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ R ], γ1_0 |) in
                         M.call_closure (|
                           Ty.tuple [],
                           M.get_trait_method (|
@@ -1075,9 +1002,9 @@ Module ops.
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                           ]
-                        |)
-                      |)))
-                ]
+                        |)))
+                  ]
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"

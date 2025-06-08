@@ -202,8 +202,7 @@ fn build_inner_match(
                                                         .iter()
                                                         .map(|(name, _)| Expr::local_var(name))
                                                         .collect(),
-                                                })
-                                                .alloc(free_vars_ty.clone()),
+                                                }),
                                                 0,
                                             ),
                                         })
@@ -510,21 +509,22 @@ pub(crate) fn compile_expr<'a>(
             };
 
             build_match(
-                ty,
+                ty.clone(),
                 Expr::tt(),
                 vec![
                     MatchArm {
                         pattern: Rc::new(Pattern::Wild),
                         if_let_guard: conditions,
-                        body: success,
+                        body: success.read(),
                     },
                     MatchArm {
                         pattern: Rc::new(Pattern::Wild),
                         if_let_guard: vec![],
-                        body: failure,
+                        body: failure.read(),
                     },
                 ],
             )
+            .alloc(ty)
         }
         thir::ExprKind::Call { fun, args, .. } => {
             let args = args
@@ -658,7 +658,7 @@ pub(crate) fn compile_expr<'a>(
                         Some(expr_id) => get_if_conditions(env, generics, thir, expr_id),
                         None => vec![],
                     };
-                    let body = compile_expr(env, generics, thir, &arm.body);
+                    let body = compile_expr(env, generics, thir, &arm.body).read();
 
                     MatchArm {
                         pattern,
@@ -668,7 +668,7 @@ pub(crate) fn compile_expr<'a>(
                 })
                 .collect();
 
-            build_match(ty, scrutinee, arms)
+            build_match(ty.clone(), scrutinee, arms).alloc(ty)
         }
         thir::ExprKind::Block { block: block_id } => compile_block(env, generics, thir, block_id),
         thir::ExprKind::Assign { lhs, rhs } => {
@@ -1350,9 +1350,10 @@ fn compile_stmts<'a>(
                             vec![MatchArm {
                                 pattern: compiled_pattern,
                                 if_let_guard: vec![],
-                                body,
+                                body: body.read(),
                             }],
-                        ),
+                        )
+                        .alloc(return_ty.clone()),
                     }
                 }
                 thir::StmtKind::Expr { expr: expr_id, .. } => {

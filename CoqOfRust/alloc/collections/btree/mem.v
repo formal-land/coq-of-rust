@@ -101,59 +101,64 @@ Module collections.
                   M.get_function (| "core::ptr::read", [], [ T ] |),
                   [ M.borrow (| Pointer.Kind.ConstPointer, M.deref (| M.read (| v |) |) |) ]
                 |) in
-              M.match_operator (|
+              M.alloc (|
                 R,
-                M.alloc (|
-                  Ty.tuple [ T; R ],
-                  M.call_closure (|
+                M.match_operator (|
+                  R,
+                  M.alloc (|
                     Ty.tuple [ T; R ],
-                    M.get_trait_method (|
-                      "core::ops::function::FnOnce",
-                      impl_FnOnce_T__arrow__T__R_,
-                      [],
-                      [ Ty.tuple [ T ] ],
-                      "call_once",
-                      [],
-                      []
-                    |),
-                    [ M.read (| change |); Value.Tuple [ M.read (| value |) ] ]
-                  |)
-                |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                      let new_value := M.copy (| T, γ0_0 |) in
-                      let ret := M.copy (| R, γ0_1 |) in
-                      let~ _ : Ty.tuple [] :=
+                    M.call_closure (|
+                      Ty.tuple [ T; R ],
+                      M.get_trait_method (|
+                        "core::ops::function::FnOnce",
+                        impl_FnOnce_T__arrow__T__R_,
+                        [],
+                        [ Ty.tuple [ T ] ],
+                        "call_once",
+                        [],
+                        []
+                      |),
+                      [ M.read (| change |); Value.Tuple [ M.read (| value |) ] ]
+                    |)
+                  |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                        let new_value := M.copy (| T, γ0_0 |) in
+                        let ret := M.copy (| R, γ0_1 |) in
                         M.read (|
+                          let~ _ : Ty.tuple [] :=
+                            M.read (|
+                              let~ _ : Ty.tuple [] :=
+                                M.call_closure (|
+                                  Ty.tuple [],
+                                  M.get_function (| "core::ptr::write", [], [ T ] |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutPointer,
+                                      M.deref (| M.read (| v |) |)
+                                    |);
+                                    M.read (| new_value |)
+                                  ]
+                                |) in
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                            |) in
                           let~ _ : Ty.tuple [] :=
                             M.call_closure (|
                               Ty.tuple [],
-                              M.get_function (| "core::ptr::write", [], [ T ] |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.MutPointer,
-                                  M.deref (| M.read (| v |) |)
-                                |);
-                                M.read (| new_value |)
-                              ]
+                              M.get_function (|
+                                "core::mem::forget",
+                                [],
+                                [ Ty.path "alloc::collections::btree::mem::replace::PanicGuard" ]
+                              |),
+                              [ M.read (| guard |) ]
                             |) in
-                          M.alloc (| Ty.tuple [], Value.Tuple [] |)
-                        |) in
-                      let~ _ : Ty.tuple [] :=
-                        M.call_closure (|
-                          Ty.tuple [],
-                          M.get_function (|
-                            "core::mem::forget",
-                            [],
-                            [ Ty.path "alloc::collections::btree::mem::replace::PanicGuard" ]
-                          |),
-                          [ M.read (| guard |) ]
-                        |) in
-                      ret))
-                ]
+                          ret
+                        |)))
+                  ]
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"

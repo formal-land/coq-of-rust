@@ -334,70 +334,70 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   match ε, τ, α with
   | [], [], [] =>
     ltac:(M.monadic
-      (M.read (|
-        M.catch_return (Ty.tuple []) (|
-          ltac:(M.monadic
-            (M.alloc (|
-              Ty.tuple [],
-              M.read (|
-                let~ args :
-                    Ty.apply
-                      (Ty.path "alloc::vec::Vec")
-                      []
-                      [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ] :=
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "alloc::vec::Vec")
-                      []
-                      [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ],
-                    M.get_trait_method (|
-                      "core::iter::traits::iterator::Iterator",
-                      Ty.path "std::env::Args",
-                      [],
-                      [],
-                      "collect",
-                      [],
-                      [
-                        Ty.apply
-                          (Ty.path "alloc::vec::Vec")
-                          []
-                          [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ]
-                      ]
-                    |),
-                    [
-                      M.call_closure (|
-                        Ty.path "std::env::Args",
-                        M.get_function (| "std::env::args", [], [] |),
-                        []
-                      |)
-                    ]
-                  |) in
-                M.match_operator (|
-                  Ty.tuple [],
-                  M.alloc (|
-                    Ty.path "usize",
-                    M.call_closure (|
-                      Ty.path "usize",
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::vec::Vec")
-                          []
-                          [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ],
-                        "len",
-                        [],
-                        []
-                      |),
-                      [ M.borrow (| Pointer.Kind.Ref, args |) ]
-                    |)
-                  |),
+      (M.catch_return (Ty.tuple []) (|
+        ltac:(M.monadic
+          (M.read (|
+            let~ args :
+                Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  []
+                  [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ] :=
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  []
+                  [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ],
+                M.get_trait_method (|
+                  "core::iter::traits::iterator::Iterator",
+                  Ty.path "std::env::Args",
+                  [],
+                  [],
+                  "collect",
+                  [],
                   [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let _ :=
-                          is_constant_or_break_match (|
-                            M.read (| γ |),
-                            Value.Integer IntegerKind.Usize 1
-                          |) in
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ]
+                  ]
+                |),
+                [
+                  M.call_closure (|
+                    Ty.path "std::env::Args",
+                    M.get_function (| "std::env::args", [], [] |),
+                    []
+                  |)
+                ]
+              |) in
+            M.alloc (|
+              Ty.tuple [],
+              M.match_operator (|
+                Ty.tuple [],
+                M.alloc (|
+                  Ty.path "usize",
+                  M.call_closure (|
+                    Ty.path "usize",
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [ Ty.path "alloc::string::String"; Ty.path "alloc::alloc::Global" ],
+                      "len",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, args |) ]
+                  |)
+                |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let _ :=
+                        is_constant_or_break_match (|
+                          M.read (| γ |),
+                          Value.Integer IntegerKind.Usize 1
+                        |) in
+                      M.read (|
                         let~ _ : Ty.tuple [] :=
                           M.read (|
                             let~ _ : Ty.tuple [] :=
@@ -441,99 +441,101 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               |) in
                             M.alloc (| Ty.tuple [], Value.Tuple [] |)
                           |) in
-                        M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let _ :=
-                          is_constant_or_break_match (|
-                            M.read (| γ |),
-                            Value.Integer IntegerKind.Usize 2
-                          |) in
-                        M.match_operator (|
-                          Ty.tuple [],
-                          M.alloc (|
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let _ :=
+                        is_constant_or_break_match (|
+                          M.read (| γ |),
+                          Value.Integer IntegerKind.Usize 2
+                        |) in
+                      M.match_operator (|
+                        Ty.tuple [],
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
+                          M.call_closure (|
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
                               [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
-                              M.get_associated_function (|
-                                Ty.path "str",
-                                "parse",
-                                [],
-                                [ Ty.path "i32" ]
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.call_closure (|
-                                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                                      M.get_trait_method (|
-                                        "core::ops::deref::Deref",
-                                        Ty.path "alloc::string::String",
-                                        [],
-                                        [],
-                                        "deref",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (|
-                                            M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "str",
+                              "parse",
+                              [],
+                              [ Ty.path "i32" ]
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                                    M.get_trait_method (|
+                                      "core::ops::deref::Deref",
+                                      Ty.path "alloc::string::String",
+                                      [],
+                                      [],
+                                      "deref",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.path "alloc::string::String" ],
+                                            M.get_trait_method (|
+                                              "core::ops::index::Index",
                                               Ty.apply
-                                                (Ty.path "&")
+                                                (Ty.path "alloc::vec::Vec")
                                                 []
-                                                [ Ty.path "alloc::string::String" ],
-                                              M.get_trait_method (|
-                                                "core::ops::index::Index",
-                                                Ty.apply
-                                                  (Ty.path "alloc::vec::Vec")
-                                                  []
-                                                  [
-                                                    Ty.path "alloc::string::String";
-                                                    Ty.path "alloc::alloc::Global"
-                                                  ],
-                                                [],
-                                                [ Ty.path "usize" ],
-                                                "index",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.borrow (| Pointer.Kind.Ref, args |);
-                                                Value.Integer IntegerKind.Usize 1
-                                              ]
-                                            |)
+                                                [
+                                                  Ty.path "alloc::string::String";
+                                                  Ty.path "alloc::alloc::Global"
+                                                ],
+                                              [],
+                                              [ Ty.path "usize" ],
+                                              "index",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (| Pointer.Kind.Ref, args |);
+                                              Value.Integer IntegerKind.Usize 1
+                                            ]
                                           |)
                                         |)
-                                      ]
-                                    |)
+                                      |)
+                                    ]
                                   |)
                                 |)
-                              ]
-                            |)
-                          |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ0_0 :=
-                                  M.SubPointer.get_struct_tuple_field (|
-                                    γ,
-                                    "core::result::Result::Ok",
-                                    0
-                                  |) in
-                                let _ :=
-                                  is_constant_or_break_match (|
-                                    M.read (| γ0_0 |),
-                                    Value.Integer IntegerKind.I32 42
-                                  |) in
+                              |)
+                            ]
+                          |)
+                        |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ0_0 :=
+                                M.SubPointer.get_struct_tuple_field (|
+                                  γ,
+                                  "core::result::Result::Ok",
+                                  0
+                                |) in
+                              let _ :=
+                                is_constant_or_break_match (|
+                                  M.read (| γ0_0 |),
+                                  Value.Integer IntegerKind.I32 42
+                                |) in
+                              M.read (|
                                 let~ _ : Ty.tuple [] :=
                                   M.call_closure (|
                                     Ty.tuple [],
@@ -569,10 +571,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       |)
                                     ]
                                   |) in
-                                M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let~ _ : Ty.tuple [] :=
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                              |)));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (M.read (|
+                                let~ _ : Ty.tuple [] :=
                                   M.call_closure (|
                                     Ty.tuple [],
                                     M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -607,16 +611,18 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       |)
                                     ]
                                   |) in
-                                M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                          ]
-                        |)));
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let _ :=
-                          is_constant_or_break_match (|
-                            M.read (| γ |),
-                            Value.Integer IntegerKind.Usize 3
-                          |) in
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                              |)))
+                        ]
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let _ :=
+                        is_constant_or_break_match (|
+                          M.read (| γ |),
+                          Value.Integer IntegerKind.Usize 3
+                        |) in
+                      M.read (|
                         let~ cmd : Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] :=
                           M.borrow (|
                             Pointer.Kind.Ref,
@@ -674,184 +680,178 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             |)
                           |) in
                         let~ number : Ty.path "i32" :=
-                          M.read (|
-                            M.match_operator (|
-                              Ty.path "i32",
-                              M.alloc (|
+                          M.match_operator (|
+                            Ty.path "i32",
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
+                              M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
                                   []
                                   [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
-                                M.call_closure (|
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
-                                  M.get_associated_function (|
-                                    Ty.path "str",
-                                    "parse",
-                                    [],
-                                    [ Ty.path "i32" ]
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (|
-                                        M.call_closure (|
-                                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                                          M.get_trait_method (|
-                                            "core::ops::deref::Deref",
-                                            Ty.path "alloc::string::String",
-                                            [],
-                                            [],
-                                            "deref",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (| M.read (| num |) |)
-                                            |)
-                                          ]
-                                        |)
+                                M.get_associated_function (|
+                                  Ty.path "str",
+                                  "parse",
+                                  [],
+                                  [ Ty.path "i32" ]
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
+                                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                                        M.get_trait_method (|
+                                          "core::ops::deref::Deref",
+                                          Ty.path "alloc::string::String",
+                                          [],
+                                          [],
+                                          "deref",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| num |) |)
+                                          |)
+                                        ]
                                       |)
                                     |)
-                                  ]
-                                |)
-                              |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ0_0 :=
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        γ,
-                                        "core::result::Result::Ok",
-                                        0
-                                      |) in
-                                    let n := M.copy (| Ty.path "i32", γ0_0 |) in
-                                    n));
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ0_0 :=
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        γ,
-                                        "core::result::Result::Err",
-                                        0
-                                      |) in
-                                    M.alloc (|
-                                      Ty.path "i32",
-                                      M.never_to_any (|
+                                  |)
+                                ]
+                              |)
+                            |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::result::Result::Ok",
+                                      0
+                                    |) in
+                                  let n := M.copy (| Ty.path "i32", γ0_0 |) in
+                                  M.read (| n |)));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::result::Result::Err",
+                                      0
+                                    |) in
+                                  M.never_to_any (|
+                                    M.read (|
+                                      let~ _ : Ty.tuple [] :=
                                         M.read (|
-                                          let~ _ : Ty.tuple [] :=
-                                            M.read (|
-                                              let~ _ : Ty.tuple [] :=
-                                                M.call_closure (|
-                                                  Ty.tuple [],
-                                                  M.get_function (|
-                                                    "std::io::stdio::_eprint",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.call_closure (|
-                                                      Ty.path "core::fmt::Arguments",
-                                                      M.get_associated_function (|
-                                                        Ty.path "core::fmt::Arguments",
-                                                        "new_const",
-                                                        [ Value.Integer IntegerKind.Usize 1 ],
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.borrow (|
-                                                          Pointer.Kind.Ref,
-                                                          M.deref (|
-                                                            M.borrow (|
-                                                              Pointer.Kind.Ref,
-                                                              M.alloc (|
-                                                                Ty.apply
-                                                                  (Ty.path "array")
-                                                                  [
-                                                                    Value.Integer
-                                                                      IntegerKind.Usize
-                                                                      1
-                                                                  ]
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path "&")
-                                                                      []
-                                                                      [ Ty.path "str" ]
-                                                                  ],
-                                                                Value.Array
-                                                                  [
-                                                                    mk_str (|
-                                                                      "error: second argument not an integer
-"
-                                                                    |)
-                                                                  ]
-                                                              |)
-                                                            |)
-                                                          |)
-                                                        |)
-                                                      ]
-                                                    |)
-                                                  ]
-                                                |) in
-                                              M.alloc (| Ty.tuple [], Value.Tuple [] |)
-                                            |) in
                                           let~ _ : Ty.tuple [] :=
                                             M.call_closure (|
                                               Ty.tuple [],
                                               M.get_function (|
-                                                "program_arguments_parsing::help",
+                                                "std::io::stdio::_eprint",
                                                 [],
                                                 []
                                               |),
-                                              []
+                                              [
+                                                M.call_closure (|
+                                                  Ty.path "core::fmt::Arguments",
+                                                  M.get_associated_function (|
+                                                    Ty.path "core::fmt::Arguments",
+                                                    "new_const",
+                                                    [ Value.Integer IntegerKind.Usize 1 ],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.alloc (|
+                                                            Ty.apply
+                                                              (Ty.path "array")
+                                                              [ Value.Integer IntegerKind.Usize 1 ]
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [ Ty.path "str" ]
+                                                              ],
+                                                            Value.Array
+                                                              [
+                                                                mk_str (|
+                                                                  "error: second argument not an integer
+"
+                                                                |)
+                                                              ]
+                                                          |)
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  ]
+                                                |)
+                                              ]
                                             |) in
-                                          M.return_ (| Value.Tuple [] |)
-                                        |)
-                                      |)
-                                    |)))
-                              ]
-                            |)
+                                          M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                                        |) in
+                                      let~ _ : Ty.tuple [] :=
+                                        M.call_closure (|
+                                          Ty.tuple [],
+                                          M.get_function (|
+                                            "program_arguments_parsing::help",
+                                            [],
+                                            []
+                                          |),
+                                          []
+                                        |) in
+                                      M.return_ (| Value.Tuple [] |)
+                                    |)
+                                  |)))
+                            ]
                           |) in
-                        M.match_operator (|
+                        M.alloc (|
                           Ty.tuple [],
-                          M.alloc (|
-                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.call_closure (|
-                                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                                  M.get_trait_method (|
-                                    "core::ops::index::Index",
-                                    Ty.path "alloc::string::String",
-                                    [],
-                                    [ Ty.path "core::ops::range::RangeFull" ],
-                                    "index",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| cmd |) |) |);
-                                    Value.StructTuple "core::ops::range::RangeFull" [] [] []
-                                  ]
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (|
+                              Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
+                                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                                    M.get_trait_method (|
+                                      "core::ops::index::Index",
+                                      Ty.path "alloc::string::String",
+                                      [],
+                                      [ Ty.path "core::ops::range::RangeFull" ],
+                                      "index",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| cmd |) |)
+                                      |);
+                                      Value.StructTuple "core::ops::range::RangeFull" [] [] []
+                                    ]
+                                  |)
                                 |)
                               |)
-                            |)
-                          |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let _ :=
-                                  is_constant_or_break_match (|
-                                    M.read (| γ |),
-                                    mk_str (| "increase" |)
-                                  |) in
-                                M.alloc (|
-                                  Ty.tuple [],
+                            |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let _ :=
+                                    is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      mk_str (| "increase" |)
+                                    |) in
                                   M.call_closure (|
                                     Ty.tuple [],
                                     M.get_function (|
@@ -860,17 +860,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       []
                                     |),
                                     [ M.read (| number |) ]
-                                  |)
-                                |)));
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let _ :=
-                                  is_constant_or_break_match (|
-                                    M.read (| γ |),
-                                    mk_str (| "decrease" |)
-                                  |) in
-                                M.alloc (|
-                                  Ty.tuple [],
+                                  |)));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let _ :=
+                                    is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      mk_str (| "decrease" |)
+                                    |) in
                                   M.call_closure (|
                                     Ty.tuple [],
                                     M.get_function (|
@@ -879,77 +876,86 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       []
                                     |),
                                     [ M.read (| number |) ]
-                                  |)
-                                |)));
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let~ _ : Ty.tuple [] :=
-                                  M.read (|
+                                  |)));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (M.read (|
+                                    let~ _ : Ty.tuple [] :=
+                                      M.read (|
+                                        let~ _ : Ty.tuple [] :=
+                                          M.call_closure (|
+                                            Ty.tuple [],
+                                            M.get_function (| "std::io::stdio::_eprint", [], [] |),
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "core::fmt::Arguments",
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::Arguments",
+                                                  "new_const",
+                                                  [ Value.Integer IntegerKind.Usize 1 ],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.alloc (|
+                                                          Ty.apply
+                                                            (Ty.path "array")
+                                                            [ Value.Integer IntegerKind.Usize 1 ]
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [ Ty.path "str" ]
+                                                            ],
+                                                          Value.Array
+                                                            [ mk_str (| "error: invalid command
+" |)
+                                                            ]
+                                                        |)
+                                                      |)
+                                                    |)
+                                                  |)
+                                                ]
+                                              |)
+                                            ]
+                                          |) in
+                                        M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                                      |) in
                                     let~ _ : Ty.tuple [] :=
                                       M.call_closure (|
                                         Ty.tuple [],
-                                        M.get_function (| "std::io::stdio::_eprint", [], [] |),
-                                        [
-                                          M.call_closure (|
-                                            Ty.path "core::fmt::Arguments",
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::Arguments",
-                                              "new_const",
-                                              [ Value.Integer IntegerKind.Usize 1 ],
-                                              []
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (|
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.alloc (|
-                                                      Ty.apply
-                                                        (Ty.path "array")
-                                                        [ Value.Integer IntegerKind.Usize 1 ]
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "&")
-                                                            []
-                                                            [ Ty.path "str" ]
-                                                        ],
-                                                      Value.Array
-                                                        [ mk_str (| "error: invalid command
-" |) ]
-                                                    |)
-                                                  |)
-                                                |)
-                                              |)
-                                            ]
-                                          |)
-                                        ]
+                                        M.get_function (|
+                                          "program_arguments_parsing::help",
+                                          [],
+                                          []
+                                        |),
+                                        []
                                       |) in
                                     M.alloc (| Ty.tuple [], Value.Tuple [] |)
-                                  |) in
-                                let~ _ : Ty.tuple [] :=
-                                  M.call_closure (|
-                                    Ty.tuple [],
-                                    M.get_function (| "program_arguments_parsing::help", [], [] |),
-                                    []
-                                  |) in
-                                M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                          ]
-                        |)));
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let~ _ : Ty.tuple [] :=
+                                  |)))
+                            ]
+                          |)
+                        |)
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.read (|
+                        let~ _ : Ty.tuple [] :=
                           M.call_closure (|
                             Ty.tuple [],
                             M.get_function (| "program_arguments_parsing::help", [], [] |),
                             []
                           |) in
-                        M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                  ]
-                |)
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                      |)))
+                ]
               |)
-            |)))
-        |)
+            |)
+          |)))
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

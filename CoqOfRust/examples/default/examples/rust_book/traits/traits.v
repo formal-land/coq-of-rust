@@ -204,29 +204,24 @@ Module Impl_traits_Sheep.
     | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "traits::Sheep" ], self |) in
-        M.read (|
-          M.match_operator (|
-            Ty.tuple [],
-            M.alloc (| Ty.tuple [], Value.Tuple [] |),
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ :=
-                    M.use
-                      (M.alloc (|
+        M.match_operator (|
+          Ty.tuple [],
+          M.alloc (| Ty.tuple [], Value.Tuple [] |),
+          [
+            fun γ =>
+              ltac:(M.monadic
+                (let γ :=
+                  M.use
+                    (M.alloc (|
+                      Ty.path "bool",
+                      M.call_closure (|
                         Ty.path "bool",
-                        M.call_closure (|
-                          Ty.path "bool",
-                          M.get_associated_function (|
-                            Ty.path "traits::Sheep",
-                            "is_naked",
-                            [],
-                            []
-                          |),
-                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                        |)
-                      |)) in
-                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.get_associated_function (| Ty.path "traits::Sheep", "is_naked", [], [] |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      |)
+                    |)) in
+                let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.read (|
                       let~ _ : Ty.tuple [] :=
@@ -329,10 +324,12 @@ Module Impl_traits_Sheep.
                         |) in
                       M.alloc (| Ty.tuple [], Value.Tuple [] |)
                     |) in
-                  M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-              fun γ =>
-                ltac:(M.monadic
-                  (let~ _ : Ty.tuple [] :=
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                |)));
+            fun γ =>
+              ltac:(M.monadic
+                (M.read (|
+                  let~ _ : Ty.tuple [] :=
                     M.read (|
                       let~ _ : Ty.tuple [] :=
                         M.call_closure (|
@@ -424,9 +421,9 @@ Module Impl_traits_Sheep.
                       |),
                       Value.Bool true
                     |) in
-                  M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-            ]
-          |)
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                |)))
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -494,41 +491,26 @@ Module Impl_traits_Animal_for_traits_Sheep.
     | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "traits::Sheep" ], self |) in
-        M.read (|
-          M.match_operator (|
-            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-            M.alloc (| Ty.tuple [], Value.Tuple [] |),
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ :=
-                    M.use
-                      (M.alloc (|
+        M.match_operator (|
+          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+          M.alloc (| Ty.tuple [], Value.Tuple [] |),
+          [
+            fun γ =>
+              ltac:(M.monadic
+                (let γ :=
+                  M.use
+                    (M.alloc (|
+                      Ty.path "bool",
+                      M.call_closure (|
                         Ty.path "bool",
-                        M.call_closure (|
-                          Ty.path "bool",
-                          M.get_associated_function (|
-                            Ty.path "traits::Sheep",
-                            "is_naked",
-                            [],
-                            []
-                          |),
-                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                        |)
-                      |)) in
-                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  M.alloc (|
-                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                    mk_str (| "baaaaah?" |)
-                  |)));
-              fun γ =>
-                ltac:(M.monadic
-                  (M.alloc (|
-                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                    mk_str (| "baaaaah!" |)
-                  |)))
-            ]
-          |)
+                        M.get_associated_function (| Ty.path "traits::Sheep", "is_naked", [], [] |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      |)
+                    |)) in
+                let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                mk_str (| "baaaaah?" |)));
+            fun γ => ltac:(M.monadic (mk_str (| "baaaaah!" |)))
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

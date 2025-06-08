@@ -120,84 +120,79 @@ Module Impl_associated_functions_and_methods_Rectangle.
             Ty.apply (Ty.path "&") [] [ Ty.path "associated_functions_and_methods::Rectangle" ],
             self
           |) in
-        M.read (|
-          M.match_operator (|
-            Ty.path "f64",
-            M.SubPointer.get_struct_record_field (|
-              M.deref (| M.read (| self |) |),
-              "associated_functions_and_methods::Rectangle",
-              "p1"
-            |),
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ0_0 :=
-                    M.SubPointer.get_struct_record_field (|
-                      γ,
-                      "associated_functions_and_methods::Point",
-                      "x"
-                    |) in
-                  let γ0_1 :=
-                    M.SubPointer.get_struct_record_field (|
-                      γ,
-                      "associated_functions_and_methods::Point",
-                      "y"
-                    |) in
-                  let x1 := M.copy (| Ty.path "f64", γ0_0 |) in
-                  let y1 := M.copy (| Ty.path "f64", γ0_1 |) in
-                  M.match_operator (|
-                    Ty.path "f64",
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "associated_functions_and_methods::Rectangle",
-                      "p2"
-                    |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ0_0 :=
-                            M.SubPointer.get_struct_record_field (|
-                              γ,
-                              "associated_functions_and_methods::Point",
-                              "x"
-                            |) in
-                          let γ0_1 :=
-                            M.SubPointer.get_struct_record_field (|
-                              γ,
-                              "associated_functions_and_methods::Point",
-                              "y"
-                            |) in
-                          let x2 := M.copy (| Ty.path "f64", γ0_0 |) in
-                          let y2 := M.copy (| Ty.path "f64", γ0_1 |) in
-                          M.alloc (|
-                            Ty.path "f64",
+        M.match_operator (|
+          Ty.path "f64",
+          M.SubPointer.get_struct_record_field (|
+            M.deref (| M.read (| self |) |),
+            "associated_functions_and_methods::Rectangle",
+            "p1"
+          |),
+          [
+            fun γ =>
+              ltac:(M.monadic
+                (let γ0_0 :=
+                  M.SubPointer.get_struct_record_field (|
+                    γ,
+                    "associated_functions_and_methods::Point",
+                    "x"
+                  |) in
+                let γ0_1 :=
+                  M.SubPointer.get_struct_record_field (|
+                    γ,
+                    "associated_functions_and_methods::Point",
+                    "y"
+                  |) in
+                let x1 := M.copy (| Ty.path "f64", γ0_0 |) in
+                let y1 := M.copy (| Ty.path "f64", γ0_1 |) in
+                M.match_operator (|
+                  Ty.path "f64",
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "associated_functions_and_methods::Rectangle",
+                    "p2"
+                  |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.SubPointer.get_struct_record_field (|
+                            γ,
+                            "associated_functions_and_methods::Point",
+                            "x"
+                          |) in
+                        let γ0_1 :=
+                          M.SubPointer.get_struct_record_field (|
+                            γ,
+                            "associated_functions_and_methods::Point",
+                            "y"
+                          |) in
+                        let x2 := M.copy (| Ty.path "f64", γ0_0 |) in
+                        let y2 := M.copy (| Ty.path "f64", γ0_1 |) in
+                        M.call_closure (|
+                          Ty.path "f64",
+                          M.get_associated_function (| Ty.path "f64", "abs", [], [] |),
+                          [
                             M.call_closure (|
                               Ty.path "f64",
-                              M.get_associated_function (| Ty.path "f64", "abs", [], [] |),
+                              BinOp.Wrap.mul,
                               [
                                 M.call_closure (|
                                   Ty.path "f64",
-                                  BinOp.Wrap.mul,
-                                  [
-                                    M.call_closure (|
-                                      Ty.path "f64",
-                                      BinOp.Wrap.sub,
-                                      [ M.read (| x1 |); M.read (| x2 |) ]
-                                    |);
-                                    M.call_closure (|
-                                      Ty.path "f64",
-                                      BinOp.Wrap.sub,
-                                      [ M.read (| y1 |); M.read (| y2 |) ]
-                                    |)
-                                  ]
+                                  BinOp.Wrap.sub,
+                                  [ M.read (| x1 |); M.read (| x2 |) ]
+                                |);
+                                M.call_closure (|
+                                  Ty.path "f64",
+                                  BinOp.Wrap.sub,
+                                  [ M.read (| y1 |); M.read (| y2 |) ]
                                 |)
                               ]
                             |)
-                          |)))
-                    ]
-                  |)))
-            ]
-          |)
+                          ]
+                        |)))
+                  ]
+                |)))
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -223,97 +218,92 @@ Module Impl_associated_functions_and_methods_Rectangle.
             Ty.apply (Ty.path "&") [] [ Ty.path "associated_functions_and_methods::Rectangle" ],
             self
           |) in
-        M.read (|
-          M.match_operator (|
-            Ty.path "f64",
-            M.SubPointer.get_struct_record_field (|
-              M.deref (| M.read (| self |) |),
-              "associated_functions_and_methods::Rectangle",
-              "p1"
-            |),
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ0_0 :=
-                    M.SubPointer.get_struct_record_field (|
-                      γ,
-                      "associated_functions_and_methods::Point",
-                      "x"
-                    |) in
-                  let γ0_1 :=
-                    M.SubPointer.get_struct_record_field (|
-                      γ,
-                      "associated_functions_and_methods::Point",
-                      "y"
-                    |) in
-                  let x1 := M.copy (| Ty.path "f64", γ0_0 |) in
-                  let y1 := M.copy (| Ty.path "f64", γ0_1 |) in
-                  M.match_operator (|
-                    Ty.path "f64",
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "associated_functions_and_methods::Rectangle",
-                      "p2"
-                    |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ0_0 :=
-                            M.SubPointer.get_struct_record_field (|
-                              γ,
-                              "associated_functions_and_methods::Point",
-                              "x"
-                            |) in
-                          let γ0_1 :=
-                            M.SubPointer.get_struct_record_field (|
-                              γ,
-                              "associated_functions_and_methods::Point",
-                              "y"
-                            |) in
-                          let x2 := M.copy (| Ty.path "f64", γ0_0 |) in
-                          let y2 := M.copy (| Ty.path "f64", γ0_1 |) in
-                          M.alloc (|
-                            Ty.path "f64",
+        M.match_operator (|
+          Ty.path "f64",
+          M.SubPointer.get_struct_record_field (|
+            M.deref (| M.read (| self |) |),
+            "associated_functions_and_methods::Rectangle",
+            "p1"
+          |),
+          [
+            fun γ =>
+              ltac:(M.monadic
+                (let γ0_0 :=
+                  M.SubPointer.get_struct_record_field (|
+                    γ,
+                    "associated_functions_and_methods::Point",
+                    "x"
+                  |) in
+                let γ0_1 :=
+                  M.SubPointer.get_struct_record_field (|
+                    γ,
+                    "associated_functions_and_methods::Point",
+                    "y"
+                  |) in
+                let x1 := M.copy (| Ty.path "f64", γ0_0 |) in
+                let y1 := M.copy (| Ty.path "f64", γ0_1 |) in
+                M.match_operator (|
+                  Ty.path "f64",
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "associated_functions_and_methods::Rectangle",
+                    "p2"
+                  |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.SubPointer.get_struct_record_field (|
+                            γ,
+                            "associated_functions_and_methods::Point",
+                            "x"
+                          |) in
+                        let γ0_1 :=
+                          M.SubPointer.get_struct_record_field (|
+                            γ,
+                            "associated_functions_and_methods::Point",
+                            "y"
+                          |) in
+                        let x2 := M.copy (| Ty.path "f64", γ0_0 |) in
+                        let y2 := M.copy (| Ty.path "f64", γ0_1 |) in
+                        M.call_closure (|
+                          Ty.path "f64",
+                          BinOp.Wrap.mul,
+                          [
+                            M.read (| UnsupportedLiteral |);
                             M.call_closure (|
                               Ty.path "f64",
-                              BinOp.Wrap.mul,
+                              BinOp.Wrap.add,
                               [
-                                M.read (| UnsupportedLiteral |);
                                 M.call_closure (|
                                   Ty.path "f64",
-                                  BinOp.Wrap.add,
+                                  M.get_associated_function (| Ty.path "f64", "abs", [], [] |),
                                   [
                                     M.call_closure (|
                                       Ty.path "f64",
-                                      M.get_associated_function (| Ty.path "f64", "abs", [], [] |),
-                                      [
-                                        M.call_closure (|
-                                          Ty.path "f64",
-                                          BinOp.Wrap.sub,
-                                          [ M.read (| x1 |); M.read (| x2 |) ]
-                                        |)
-                                      ]
-                                    |);
+                                      BinOp.Wrap.sub,
+                                      [ M.read (| x1 |); M.read (| x2 |) ]
+                                    |)
+                                  ]
+                                |);
+                                M.call_closure (|
+                                  Ty.path "f64",
+                                  M.get_associated_function (| Ty.path "f64", "abs", [], [] |),
+                                  [
                                     M.call_closure (|
                                       Ty.path "f64",
-                                      M.get_associated_function (| Ty.path "f64", "abs", [], [] |),
-                                      [
-                                        M.call_closure (|
-                                          Ty.path "f64",
-                                          BinOp.Wrap.sub,
-                                          [ M.read (| y1 |); M.read (| y2 |) ]
-                                        |)
-                                      ]
+                                      BinOp.Wrap.sub,
+                                      [ M.read (| y1 |); M.read (| y2 |) ]
                                     |)
                                   ]
                                 |)
                               ]
                             |)
-                          |)))
-                    ]
-                  |)))
-            ]
-          |)
+                          ]
+                        |)))
+                  ]
+                |)))
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -445,41 +435,41 @@ Module Impl_associated_functions_and_methods_Pair.
     | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| Ty.path "associated_functions_and_methods::Pair", self |) in
-        M.read (|
-          M.match_operator (|
-            Ty.tuple [],
-            self,
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ0_0 :=
-                    M.SubPointer.get_struct_tuple_field (|
-                      γ,
-                      "associated_functions_and_methods::Pair",
-                      0
-                    |) in
-                  let γ0_1 :=
-                    M.SubPointer.get_struct_tuple_field (|
-                      γ,
-                      "associated_functions_and_methods::Pair",
-                      1
-                    |) in
-                  let first :=
-                    M.copy (|
-                      Ty.apply
-                        (Ty.path "alloc::boxed::Box")
-                        []
-                        [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
-                      γ0_0
-                    |) in
-                  let second :=
-                    M.copy (|
-                      Ty.apply
-                        (Ty.path "alloc::boxed::Box")
-                        []
-                        [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
-                      γ0_1
-                    |) in
+        M.match_operator (|
+          Ty.tuple [],
+          self,
+          [
+            fun γ =>
+              ltac:(M.monadic
+                (let γ0_0 :=
+                  M.SubPointer.get_struct_tuple_field (|
+                    γ,
+                    "associated_functions_and_methods::Pair",
+                    0
+                  |) in
+                let γ0_1 :=
+                  M.SubPointer.get_struct_tuple_field (|
+                    γ,
+                    "associated_functions_and_methods::Pair",
+                    1
+                  |) in
+                let first :=
+                  M.copy (|
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      []
+                      [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
+                    γ0_0
+                  |) in
+                let second :=
+                  M.copy (|
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      []
+                      [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
+                    γ0_1
+                  |) in
+                M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.read (|
                       let~ _ : Ty.tuple [] :=
@@ -589,9 +579,9 @@ Module Impl_associated_functions_and_methods_Pair.
                         |) in
                       M.alloc (| Ty.tuple [], Value.Tuple [] |)
                     |) in
-                  M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-            ]
-          |)
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                |)))
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

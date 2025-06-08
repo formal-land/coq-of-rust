@@ -1837,111 +1837,111 @@ Module interpreter.
               instruction_table
             |) in
           let host := M.alloc (| Ty.apply (Ty.path "&mut") [] [ H ], host |) in
-          M.read (|
-            M.catch_return (Ty.path "revm_interpreter::interpreter_action::InterpreterAction") (|
-              ltac:(M.monadic
-                (M.alloc (|
-                  Ty.path "revm_interpreter::interpreter_action::InterpreterAction",
+          M.catch_return (Ty.path "revm_interpreter::interpreter_action::InterpreterAction") (|
+            ltac:(M.monadic
+              (M.read (|
+                let~ _ : Ty.tuple [] :=
+                  M.call_closure (|
+                    Ty.tuple [],
+                    M.get_trait_method (|
+                      "revm_interpreter::interpreter_types::LoopControl",
+                      Ty.associated_in_trait
+                        "revm_interpreter::interpreter_types::InterpreterTypes"
+                        []
+                        []
+                        IW
+                        "Control",
+                      [],
+                      [],
+                      "set_next_action",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "revm_interpreter::interpreter::Interpreter",
+                          "control"
+                        |)
+                      |);
+                      Value.StructTuple
+                        "revm_interpreter::interpreter_action::InterpreterAction::None"
+                        []
+                        []
+                        [];
+                      Value.StructTuple
+                        "revm_interpreter::instruction_result::InstructionResult::Continue"
+                        []
+                        []
+                        []
+                    ]
+                  |) in
+                let~ _ : Ty.tuple [] :=
                   M.read (|
-                    let~ _ : Ty.tuple [] :=
-                      M.call_closure (|
-                        Ty.tuple [],
-                        M.get_trait_method (|
-                          "revm_interpreter::interpreter_types::LoopControl",
-                          Ty.associated_in_trait
-                            "revm_interpreter::interpreter_types::InterpreterTypes"
-                            []
-                            []
-                            IW
-                            "Control",
-                          [],
-                          [],
-                          "set_next_action",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (|
-                            Pointer.Kind.MutRef,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "revm_interpreter::interpreter::Interpreter",
-                              "control"
-                            |)
-                          |);
-                          Value.StructTuple
-                            "revm_interpreter::interpreter_action::InterpreterAction::None"
-                            []
-                            []
-                            [];
-                          Value.StructTuple
-                            "revm_interpreter::instruction_result::InstructionResult::Continue"
-                            []
-                            []
-                            []
-                        ]
-                      |) in
-                    let~ _ : Ty.tuple [] :=
-                      M.read (|
-                        M.loop (|
+                    M.loop (|
+                      Ty.tuple [],
+                      ltac:(M.monadic
+                        (M.alloc (|
                           Ty.tuple [],
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              Ty.tuple [],
-                              M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ :=
-                                      M.use
-                                        (M.alloc (|
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
+                                        Ty.path "bool",
+                                        M.call_closure (|
                                           Ty.path "bool",
-                                          M.call_closure (|
-                                            Ty.path "bool",
-                                            M.get_associated_function (|
+                                          M.get_associated_function (|
+                                            Ty.path
+                                              "revm_interpreter::instruction_result::InstructionResult",
+                                            "is_continue",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.call_closure (|
                                               Ty.path
                                                 "revm_interpreter::instruction_result::InstructionResult",
-                                              "is_continue",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.call_closure (|
-                                                Ty.path
-                                                  "revm_interpreter::instruction_result::InstructionResult",
-                                                M.get_trait_method (|
-                                                  "revm_interpreter::interpreter_types::LoopControl",
-                                                  Ty.associated_in_trait
-                                                    "revm_interpreter::interpreter_types::InterpreterTypes"
-                                                    []
-                                                    []
-                                                    IW
-                                                    "Control",
-                                                  [],
-                                                  [],
-                                                  "instruction_result",
-                                                  [],
+                                              M.get_trait_method (|
+                                                "revm_interpreter::interpreter_types::LoopControl",
+                                                Ty.associated_in_trait
+                                                  "revm_interpreter::interpreter_types::InterpreterTypes"
                                                   []
-                                                |),
-                                                [
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.deref (| M.read (| self |) |),
-                                                      "revm_interpreter::interpreter::Interpreter",
-                                                      "control"
-                                                    |)
+                                                  []
+                                                  IW
+                                                  "Control",
+                                                [],
+                                                [],
+                                                "instruction_result",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "revm_interpreter::interpreter::Interpreter",
+                                                    "control"
                                                   |)
-                                                ]
-                                              |)
-                                            ]
-                                          |)
-                                        |)) in
-                                    let _ :=
-                                      is_constant_or_break_match (|
-                                        M.read (| γ |),
-                                        Value.Bool true
-                                      |) in
+                                                |)
+                                              ]
+                                            |)
+                                          ]
+                                        |)
+                                      |)) in
+                                  let _ :=
+                                    is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  M.read (|
                                     let~ _ : Ty.tuple [] :=
                                       M.call_closure (|
                                         Ty.tuple [],
@@ -1969,108 +1969,139 @@ Module interpreter.
                                           |)
                                         ]
                                       |) in
-                                    M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (M.alloc (|
-                                      Ty.tuple [],
-                                      M.never_to_any (|
-                                        M.read (|
-                                          let~ _ : Ty.tuple [] :=
-                                            M.never_to_any (| M.read (| M.break (||) |) |) in
-                                          M.alloc (| Ty.tuple [], Value.Tuple [] |)
-                                        |)
-                                      |)
-                                    |)))
-                              ]
-                            |)))
-                        |)
-                      |) in
-                    let~ action :
-                        Ty.path "revm_interpreter::interpreter_action::InterpreterAction" :=
-                      M.call_closure (|
-                        Ty.path "revm_interpreter::interpreter_action::InterpreterAction",
-                        M.get_trait_method (|
-                          "revm_interpreter::interpreter_types::LoopControl",
-                          Ty.associated_in_trait
-                            "revm_interpreter::interpreter_types::InterpreterTypes"
-                            []
-                            []
-                            IW
-                            "Control",
-                          [],
-                          [],
-                          "take_next_action",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (|
-                            Pointer.Kind.MutRef,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "revm_interpreter::interpreter::Interpreter",
-                              "control"
-                            |)
+                                    M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                                  |)));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (M.never_to_any (|
+                                    M.read (|
+                                      let~ _ : Ty.tuple [] :=
+                                        M.never_to_any (| M.read (| M.break (||) |) |) in
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                                    |)
+                                  |)))
+                            ]
                           |)
-                        ]
-                      |) in
-                    let~ _ : Ty.tuple [] :=
-                      M.read (|
-                        M.match_operator (|
-                          Ty.tuple [],
-                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ :=
-                                  M.use
-                                    (M.alloc (|
-                                      Ty.path "bool",
-                                      M.call_closure (|
-                                        Ty.path "bool",
-                                        M.get_associated_function (|
-                                          Ty.path
-                                            "revm_interpreter::interpreter_action::InterpreterAction",
-                                          "is_some",
-                                          [],
-                                          []
-                                        |),
-                                        [ M.borrow (| Pointer.Kind.Ref, action |) ]
-                                      |)
-                                    |)) in
-                                let _ :=
-                                  is_constant_or_break_match (|
-                                    M.read (| γ |),
-                                    Value.Bool true
-                                  |) in
-                                M.alloc (|
-                                  Ty.tuple [],
-                                  M.never_to_any (|
-                                    M.read (| M.return_ (| M.read (| action |) |) |)
-                                  |)
-                                |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                          ]
+                        |)))
+                    |)
+                  |) in
+                let~ action : Ty.path "revm_interpreter::interpreter_action::InterpreterAction" :=
+                  M.call_closure (|
+                    Ty.path "revm_interpreter::interpreter_action::InterpreterAction",
+                    M.get_trait_method (|
+                      "revm_interpreter::interpreter_types::LoopControl",
+                      Ty.associated_in_trait
+                        "revm_interpreter::interpreter_types::InterpreterTypes"
+                        []
+                        []
+                        IW
+                        "Control",
+                      [],
+                      [],
+                      "take_next_action",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "revm_interpreter::interpreter::Interpreter",
+                          "control"
                         |)
-                      |) in
-                    M.alloc (|
-                      Ty.path "revm_interpreter::interpreter_action::InterpreterAction",
-                      Value.mkStructRecord
-                        "revm_interpreter::interpreter_action::InterpreterAction::Return"
-                        []
-                        []
-                        [
-                          ("result",
-                            Value.mkStructRecord
-                              "revm_interpreter::interpreter::InterpreterResult"
-                              []
-                              []
-                              [
-                                ("result",
-                                  M.call_closure (|
+                      |)
+                    ]
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.match_operator (|
+                    Ty.tuple [],
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ :=
+                            M.use
+                              (M.alloc (|
+                                Ty.path "bool",
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  M.get_associated_function (|
                                     Ty.path
-                                      "revm_interpreter::instruction_result::InstructionResult",
+                                      "revm_interpreter::interpreter_action::InterpreterAction",
+                                    "is_some",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, action |) ]
+                                |)
+                              |)) in
+                          let _ :=
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          M.never_to_any (| M.read (| M.return_ (| M.read (| action |) |) |) |)));
+                      fun γ => ltac:(M.monadic (Value.Tuple []))
+                    ]
+                  |) in
+                M.alloc (|
+                  Ty.path "revm_interpreter::interpreter_action::InterpreterAction",
+                  Value.mkStructRecord
+                    "revm_interpreter::interpreter_action::InterpreterAction::Return"
+                    []
+                    []
+                    [
+                      ("result",
+                        Value.mkStructRecord
+                          "revm_interpreter::interpreter::InterpreterResult"
+                          []
+                          []
+                          [
+                            ("result",
+                              M.call_closure (|
+                                Ty.path "revm_interpreter::instruction_result::InstructionResult",
+                                M.get_trait_method (|
+                                  "revm_interpreter::interpreter_types::LoopControl",
+                                  Ty.associated_in_trait
+                                    "revm_interpreter::interpreter_types::InterpreterTypes"
+                                    []
+                                    []
+                                    IW
+                                    "Control",
+                                  [],
+                                  [],
+                                  "instruction_result",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "revm_interpreter::interpreter::Interpreter",
+                                      "control"
+                                    |)
+                                  |)
+                                ]
+                              |));
+                            ("output",
+                              M.call_closure (|
+                                Ty.path "alloy_primitives::bytes_::Bytes",
+                                M.get_associated_function (|
+                                  Ty.path "alloy_primitives::bytes_::Bytes",
+                                  "new",
+                                  [],
+                                  []
+                                |),
+                                []
+                              |));
+                            ("gas",
+                              M.read (|
+                                M.deref (|
+                                  M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [ Ty.path "revm_interpreter::gas::Gas" ],
                                     M.get_trait_method (|
                                       "revm_interpreter::interpreter_types::LoopControl",
                                       Ty.associated_in_trait
@@ -2081,13 +2112,13 @@ Module interpreter.
                                         "Control",
                                       [],
                                       [],
-                                      "instruction_result",
+                                      "gas",
                                       [],
                                       []
                                     |),
                                     [
                                       M.borrow (|
-                                        Pointer.Kind.Ref,
+                                        Pointer.Kind.MutRef,
                                         M.SubPointer.get_struct_record_field (|
                                           M.deref (| M.read (| self |) |),
                                           "revm_interpreter::interpreter::Interpreter",
@@ -2095,59 +2126,13 @@ Module interpreter.
                                         |)
                                       |)
                                     ]
-                                  |));
-                                ("output",
-                                  M.call_closure (|
-                                    Ty.path "alloy_primitives::bytes_::Bytes",
-                                    M.get_associated_function (|
-                                      Ty.path "alloy_primitives::bytes_::Bytes",
-                                      "new",
-                                      [],
-                                      []
-                                    |),
-                                    []
-                                  |));
-                                ("gas",
-                                  M.read (|
-                                    M.deref (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "&mut")
-                                          []
-                                          [ Ty.path "revm_interpreter::gas::Gas" ],
-                                        M.get_trait_method (|
-                                          "revm_interpreter::interpreter_types::LoopControl",
-                                          Ty.associated_in_trait
-                                            "revm_interpreter::interpreter_types::InterpreterTypes"
-                                            []
-                                            []
-                                            IW
-                                            "Control",
-                                          [],
-                                          [],
-                                          "gas",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.MutRef,
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.deref (| M.read (| self |) |),
-                                              "revm_interpreter::interpreter::Interpreter",
-                                              "control"
-                                            |)
-                                          |)
-                                        ]
-                                      |)
-                                    |)
-                                  |))
-                              ])
-                        ]
-                    |)
-                  |)
-                |)))
-            |)
+                                  |)
+                                |)
+                              |))
+                          ])
+                    ]
+                |)
+              |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2554,31 +2539,26 @@ Module interpreter.
                 [ Ty.path "revm_interpreter::interpreter::InterpreterResult" ],
               self
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.tuple [],
-              Value.DeclaredButUndefined,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (M.match_operator (|
-                      Ty.tuple [],
-                      Value.DeclaredButUndefined,
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              Ty.tuple [],
-                              Value.DeclaredButUndefined,
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                              ]
-                            |)))
-                      ]
-                    |)))
-              ]
-            |)
+          M.match_operator (|
+            Ty.tuple [],
+            Value.DeclaredButUndefined,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (M.match_operator (|
+                    Ty.tuple [],
+                    Value.DeclaredButUndefined,
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            Ty.tuple [],
+                            Value.DeclaredButUndefined,
+                            [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
+                          |)))
+                    ]
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.

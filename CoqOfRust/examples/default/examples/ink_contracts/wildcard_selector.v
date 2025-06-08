@@ -67,25 +67,41 @@ Module Impl_wildcard_selector_WildcardSelector.
             Ty.apply (Ty.path "&mut") [] [ Ty.path "wildcard_selector::WildcardSelector" ],
             self
           |) in
-        M.read (|
-          M.match_operator (|
-            Ty.tuple [],
-            M.alloc (|
+        M.match_operator (|
+          Ty.tuple [],
+          M.alloc (|
+            Ty.tuple
+              [
+                Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ];
+                Ty.path "alloc::string::String"
+              ],
+            M.call_closure (|
               Ty.tuple
                 [
                   Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ];
                   Ty.path "alloc::string::String"
                 ],
-              M.call_closure (|
-                Ty.tuple
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
                   [
-                    Ty.apply
-                      (Ty.path "array")
-                      [ Value.Integer IntegerKind.Usize 4 ]
-                      [ Ty.path "u8" ];
-                    Ty.path "alloc::string::String"
+                    Ty.tuple
+                      [
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 4 ]
+                          [ Ty.path "u8" ];
+                        Ty.path "alloc::string::String"
+                      ];
+                    Ty.tuple []
                   ],
-                M.get_associated_function (|
+                "unwrap",
+                [],
+                []
+              |),
+              [
+                M.call_closure (|
                   Ty.apply
                     (Ty.path "core::result::Result")
                     []
@@ -100,59 +116,40 @@ Module Impl_wildcard_selector_WildcardSelector.
                         ];
                       Ty.tuple []
                     ],
-                  "unwrap",
-                  [],
+                  M.get_function (|
+                    "wildcard_selector::decode_input",
+                    [],
+                    [
+                      Ty.tuple
+                        [
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 4 ]
+                            [ Ty.path "u8" ];
+                          Ty.path "alloc::string::String"
+                        ]
+                    ]
+                  |),
                   []
-                |),
-                [
-                  M.call_closure (|
+                |)
+              ]
+            |)
+          |),
+          [
+            fun γ =>
+              ltac:(M.monadic
+                (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                let _selector :=
+                  M.copy (|
                     Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [
-                        Ty.tuple
-                          [
-                            Ty.apply
-                              (Ty.path "array")
-                              [ Value.Integer IntegerKind.Usize 4 ]
-                              [ Ty.path "u8" ];
-                            Ty.path "alloc::string::String"
-                          ];
-                        Ty.tuple []
-                      ],
-                    M.get_function (|
-                      "wildcard_selector::decode_input",
-                      [],
-                      [
-                        Ty.tuple
-                          [
-                            Ty.apply
-                              (Ty.path "array")
-                              [ Value.Integer IntegerKind.Usize 4 ]
-                              [ Ty.path "u8" ];
-                            Ty.path "alloc::string::String"
-                          ]
-                      ]
-                    |),
-                    []
-                  |)
-                ]
-              |)
-            |),
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                  let _selector :=
-                    M.copy (|
-                      Ty.apply
-                        (Ty.path "array")
-                        [ Value.Integer IntegerKind.Usize 4 ]
-                        [ Ty.path "u8" ],
-                      γ0_0
-                    |) in
-                  let _message := M.copy (| Ty.path "alloc::string::String", γ0_1 |) in
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 4 ]
+                      [ Ty.path "u8" ],
+                    γ0_0
+                  |) in
+                let _message := M.copy (| Ty.path "alloc::string::String", γ0_1 |) in
+                M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.read (|
                       let~ _ : Ty.tuple [] :=
@@ -255,9 +252,9 @@ Module Impl_wildcard_selector_WildcardSelector.
                         |) in
                       M.alloc (| Ty.tuple [], Value.Tuple [] |)
                     |) in
-                  M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-            ]
-          |)
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                |)))
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

@@ -155,116 +155,108 @@ Module table.
                 (Ty.tuple []),
               instruction
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.tuple [],
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_interpreter::table::InstructionTables::Plain",
-                        0
-                      |) in
-                    let table :=
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&mut")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "array")
-                                  [ Value.Integer IntegerKind.Usize 256 ]
-                                  [
-                                    Ty.function
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&mut")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "revm_interpreter::interpreter::Interpreter")
-                                              []
-                                              [ WIRE ]
-                                          ];
-                                        Ty.apply (Ty.path "&mut") [] [ H ]
-                                      ]
-                                      (Ty.tuple [])
-                                  ];
-                                Ty.path "alloc::alloc::Global"
-                              ]
-                          ],
-                        γ1_0
-                      |) in
+          M.match_operator (|
+            Ty.tuple [],
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "revm_interpreter::table::InstructionTables::Plain",
+                      0
+                    |) in
+                  let table :=
                     M.alloc (|
-                      Ty.tuple [],
-                      M.write (|
-                        M.SubPointer.get_array_field (|
-                          M.deref (| M.read (| M.deref (| M.read (| table |) |) |) |),
-                          M.cast (Ty.path "usize") (M.read (| opcode |))
-                        |),
-                        M.read (| instruction |)
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "revm_interpreter::table::InstructionTables::Custom",
-                        0
-                      |) in
-                    let table :=
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&mut")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "array")
-                                  [ Value.Integer IntegerKind.Usize 256 ]
-                                  [ CI ];
-                                Ty.path "alloc::alloc::Global"
-                              ]
-                          ],
-                        γ1_0
-                      |) in
-                    M.alloc (|
-                      Ty.tuple [],
-                      M.write (|
-                        M.SubPointer.get_array_field (|
-                          M.deref (| M.read (| M.deref (| M.read (| table |) |) |) |),
-                          M.cast (Ty.path "usize") (M.read (| opcode |))
-                        |),
-                        M.call_closure (|
-                          CI,
-                          M.get_trait_method (|
-                            "revm_interpreter::table::CustomInstruction",
-                            CI,
-                            [],
-                            [],
-                            "from_base",
-                            [],
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::boxed::Box")
                             []
-                          |),
-                          [ M.read (| instruction |) ]
-                        |)
-                      |)
-                    |)))
-              ]
-            |)
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 256 ]
+                                [
+                                  Ty.function
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&mut")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "revm_interpreter::interpreter::Interpreter")
+                                            []
+                                            [ WIRE ]
+                                        ];
+                                      Ty.apply (Ty.path "&mut") [] [ H ]
+                                    ]
+                                    (Ty.tuple [])
+                                ];
+                              Ty.path "alloc::alloc::Global"
+                            ]
+                        ],
+                      γ1_0
+                    |) in
+                  M.write (|
+                    M.SubPointer.get_array_field (|
+                      M.deref (| M.read (| M.deref (| M.read (| table |) |) |) |),
+                      M.cast (Ty.path "usize") (M.read (| opcode |))
+                    |),
+                    M.read (| instruction |)
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "revm_interpreter::table::InstructionTables::Custom",
+                      0
+                    |) in
+                  let table :=
+                    M.alloc (|
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::boxed::Box")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 256 ]
+                                [ CI ];
+                              Ty.path "alloc::alloc::Global"
+                            ]
+                        ],
+                      γ1_0
+                    |) in
+                  M.write (|
+                    M.SubPointer.get_array_field (|
+                      M.deref (| M.read (| M.deref (| M.read (| table |) |) |) |),
+                      M.cast (Ty.path "usize") (M.read (| opcode |))
+                    |),
+                    M.call_closure (|
+                      CI,
+                      M.get_trait_method (|
+                        "revm_interpreter::table::CustomInstruction",
+                        CI,
+                        [],
+                        [],
+                        "from_base",
+                        [],
+                        []
+                      |),
+                      [ M.read (| instruction |) ]
+                    |)
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -480,112 +472,87 @@ Module table.
               M.borrow (|
                 Pointer.Kind.MutRef,
                 M.deref (|
-                  M.read (|
-                    M.match_operator (|
-                      Ty.apply
-                        (Ty.path "&mut")
-                        []
-                        [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 256 ] [ CI ]
-                        ],
-                      self,
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ := M.read (| γ |) in
-                            let γ1_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "revm_interpreter::table::InstructionTables::Plain",
-                                0
-                              |) in
-                            M.alloc (|
-                              Ty.apply
-                                (Ty.path "&mut")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "array")
-                                    [ Value.Integer IntegerKind.Usize 256 ]
-                                    [ CI ]
-                                ],
-                              M.borrow (|
-                                Pointer.Kind.MutRef,
-                                M.deref (|
-                                  M.call_closure (|
-                                    Ty.apply
-                                      (Ty.path "&mut")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "array")
-                                          [ Value.Integer IntegerKind.Usize 256 ]
-                                          [ CI ]
-                                      ],
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "revm_interpreter::table::InstructionTables")
-                                        []
-                                        [ WIRE; H; CI ],
-                                      "to_custom_with_slow",
-                                      [],
-                                      [ F ]
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.MutRef,
-                                        M.deref (| M.read (| self |) |)
-                                      |);
-                                      M.read (| f |)
-                                    ]
-                                  |)
-                                |)
-                              |)
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ := M.read (| γ |) in
-                            let γ1_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "revm_interpreter::table::InstructionTables::Custom",
-                                0
-                              |) in
-                            let boxed :=
-                              M.alloc (|
+                  M.match_operator (|
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 256 ] [ CI ] ],
+                    self,
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ := M.read (| γ |) in
+                          let γ1_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ,
+                              "revm_interpreter::table::InstructionTables::Plain",
+                              0
+                            |) in
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.call_closure (|
                                 Ty.apply
                                   (Ty.path "&mut")
                                   []
                                   [
                                     Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "array")
-                                          [ Value.Integer IntegerKind.Usize 256 ]
-                                          [ CI ];
-                                        Ty.path "alloc::alloc::Global"
-                                      ]
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 256 ]
+                                      [ CI ]
                                   ],
-                                γ1_0
-                              |) in
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "revm_interpreter::table::InstructionTables")
+                                    []
+                                    [ WIRE; H; CI ],
+                                  "to_custom_with_slow",
+                                  [],
+                                  [ F ]
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (| M.read (| self |) |)
+                                  |);
+                                  M.read (| f |)
+                                ]
+                              |)
+                            |)
+                          |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ := M.read (| γ |) in
+                          let γ1_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ,
+                              "revm_interpreter::table::InstructionTables::Custom",
+                              0
+                            |) in
+                          let boxed :=
                             M.alloc (|
                               Ty.apply
                                 (Ty.path "&mut")
                                 []
                                 [
                                   Ty.apply
-                                    (Ty.path "array")
-                                    [ Value.Integer IntegerKind.Usize 256 ]
-                                    [ CI ]
+                                    (Ty.path "alloc::boxed::Box")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 256 ]
+                                        [ CI ];
+                                      Ty.path "alloc::alloc::Global"
+                                    ]
                                 ],
-                              M.borrow (|
-                                Pointer.Kind.MutRef,
-                                M.deref (| M.read (| M.deref (| M.read (| boxed |) |) |) |)
-                              |)
-                            |)))
-                      ]
-                    |)
+                              γ1_0
+                            |) in
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (| M.read (| M.deref (| M.read (| boxed |) |) |) |)
+                          |)))
+                    ]
                   |)
                 |)
               |)
@@ -638,58 +605,58 @@ Module table.
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|
-              M.read (|
-                M.match_operator (|
-                  Ty.apply
-                    (Ty.path "&mut")
-                    []
-                    [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 256 ] [ CI ] ],
-                  self,
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
-                        let γ1_0 :=
-                          M.SubPointer.get_struct_tuple_field (|
-                            γ,
-                            "revm_interpreter::table::InstructionTables::Plain",
-                            0
-                          |) in
-                        let table :=
-                          M.alloc (|
-                            Ty.apply
-                              (Ty.path "&mut")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "alloc::boxed::Box")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "array")
-                                      [ Value.Integer IntegerKind.Usize 256 ]
-                                      [
-                                        Ty.function
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&mut")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path
-                                                    "revm_interpreter::interpreter::Interpreter")
-                                                  []
-                                                  [ WIRE ]
-                                              ];
-                                            Ty.apply (Ty.path "&mut") [] [ H ]
-                                          ]
-                                          (Ty.tuple [])
-                                      ];
-                                    Ty.path "alloc::alloc::Global"
-                                  ]
-                              ],
-                            γ1_0
-                          |) in
+              M.match_operator (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 256 ] [ CI ] ],
+                self,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let γ1_0 :=
+                        M.SubPointer.get_struct_tuple_field (|
+                          γ,
+                          "revm_interpreter::table::InstructionTables::Plain",
+                          0
+                        |) in
+                      let table :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::boxed::Box")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 256 ]
+                                    [
+                                      Ty.function
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&mut")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path
+                                                  "revm_interpreter::interpreter::Interpreter")
+                                                []
+                                                [ WIRE ]
+                                            ];
+                                          Ty.apply (Ty.path "&mut") [] [ H ]
+                                        ]
+                                        (Ty.tuple [])
+                                    ];
+                                  Ty.path "alloc::alloc::Global"
+                                ]
+                            ],
+                          γ1_0
+                        |) in
+                      M.read (|
                         let~ _ : Ty.tuple [] :=
                           M.write (|
                             M.deref (| M.read (| self |) |),
@@ -749,7 +716,7 @@ Module table.
                                 |)
                               ]
                           |) in
-                        M.match_operator (|
+                        M.alloc (|
                           Ty.apply
                             (Ty.path "&mut")
                             []
@@ -759,55 +726,55 @@ Module table.
                                 [ Value.Integer IntegerKind.Usize 256 ]
                                 [ CI ]
                             ],
-                          self,
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ := M.read (| γ |) in
-                                let γ1_0 :=
-                                  M.SubPointer.get_struct_tuple_field (|
-                                    γ,
-                                    "revm_interpreter::table::InstructionTables::Custom",
-                                    0
-                                  |) in
-                                let boxed :=
-                                  M.alloc (|
-                                    Ty.apply
-                                      (Ty.path "&mut")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloc::boxed::Box")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "array")
-                                              [ Value.Integer IntegerKind.Usize 256 ]
-                                              [ CI ];
-                                            Ty.path "alloc::alloc::Global"
-                                          ]
-                                      ],
-                                    γ1_0
-                                  |) in
-                                M.alloc (|
-                                  Ty.apply
-                                    (Ty.path "&mut")
-                                    []
-                                    [
+                          M.match_operator (|
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 256 ]
+                                  [ CI ]
+                              ],
+                            self,
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ := M.read (| γ |) in
+                                  let γ1_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "revm_interpreter::table::InstructionTables::Custom",
+                                      0
+                                    |) in
+                                  let boxed :=
+                                    M.alloc (|
                                       Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer IntegerKind.Usize 256 ]
-                                        [ CI ]
-                                    ],
+                                        (Ty.path "&mut")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloc::boxed::Box")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 256 ]
+                                                [ CI ];
+                                              Ty.path "alloc::alloc::Global"
+                                            ]
+                                        ],
+                                      γ1_0
+                                    |) in
                                   M.borrow (|
                                     Pointer.Kind.MutRef,
                                     M.deref (| M.read (| M.deref (| M.read (| boxed |) |) |) |)
-                                  |)
-                                |)))
-                          ]
-                        |)))
-                  ]
-                |)
+                                  |)))
+                            ]
+                          |)
+                        |)
+                      |)))
+                ]
               |)
             |)
           |)))

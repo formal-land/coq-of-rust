@@ -47,92 +47,78 @@ Module ops.
               |) in
             let f :=
               M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
-            M.read (|
-              M.match_operator (|
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                self,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::ops::control_flow::ControlFlow::Continue",
-                          0
-                        |) in
-                      let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ C ], γ1_0 |) in
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::Formatter",
-                            "debug_tuple_field1_finish",
-                            [],
-                            []
-                          |),
-                          [
-                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Continue" |) |) |);
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                              |))
-                          ]
-                        |)
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::ops::control_flow::ControlFlow::Break",
-                          0
-                        |) in
-                      let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ B ], γ1_0 |) in
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::Formatter",
-                            "debug_tuple_field1_finish",
-                            [],
-                            []
-                          |),
-                          [
-                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Break" |) |) |);
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                              |))
-                          ]
-                        |)
-                      |)))
-                ]
-              |)
+            M.match_operator (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+              self,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::ops::control_flow::ControlFlow::Continue",
+                        0
+                      |) in
+                    let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ C ], γ1_0 |) in
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Formatter",
+                        "debug_tuple_field1_finish",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Continue" |) |) |);
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |))
+                      ]
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::ops::control_flow::ControlFlow::Break",
+                        0
+                      |) in
+                    let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ B ], γ1_0 |) in
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Formatter",
+                        "debug_tuple_field1_finish",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Break" |) |) |);
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |))
+                      ]
+                    |)))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -165,79 +151,53 @@ Module ops.
                   [ Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ] ],
                 self
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ],
-                self,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::ops::control_flow::ControlFlow::Continue",
-                          0
-                        |) in
-                      let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ C ], γ1_0 |) in
-                      M.alloc (|
-                        Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ],
-                        Value.StructTuple
-                          "core::ops::control_flow::ControlFlow::Continue"
-                          []
-                          [ B; C ]
-                          [
-                            M.call_closure (|
-                              C,
-                              M.get_trait_method (|
-                                "core::clone::Clone",
-                                C,
-                                [],
-                                [],
-                                "clone",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |)
-                              ]
-                            |)
-                          ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::ops::control_flow::ControlFlow::Break",
-                          0
-                        |) in
-                      let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ B ], γ1_0 |) in
-                      M.alloc (|
-                        Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ],
-                        Value.StructTuple
-                          "core::ops::control_flow::ControlFlow::Break"
-                          []
-                          [ B; C ]
-                          [
-                            M.call_closure (|
-                              B,
-                              M.get_trait_method (|
-                                "core::clone::Clone",
-                                B,
-                                [],
-                                [],
-                                "clone",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |)
-                              ]
-                            |)
-                          ]
-                      |)))
-                ]
-              |)
+            M.match_operator (|
+              Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ],
+              self,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::ops::control_flow::ControlFlow::Continue",
+                        0
+                      |) in
+                    let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ C ], γ1_0 |) in
+                    Value.StructTuple
+                      "core::ops::control_flow::ControlFlow::Continue"
+                      []
+                      [ B; C ]
+                      [
+                        M.call_closure (|
+                          C,
+                          M.get_trait_method (| "core::clone::Clone", C, [], [], "clone", [], [] |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
+                        |)
+                      ]));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::ops::control_flow::ControlFlow::Break",
+                        0
+                      |) in
+                    let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ B ], γ1_0 |) in
+                    Value.StructTuple
+                      "core::ops::control_flow::ControlFlow::Break"
+                      []
+                      [ B; C ]
+                      [
+                        M.call_closure (|
+                          B,
+                          M.get_trait_method (| "core::clone::Clone", B, [], [], "clone", [], [] |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
+                        |)
+                      ]))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -336,126 +296,115 @@ Module ops.
                     [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
                   |),
                   ltac:(M.monadic
-                    (M.read (|
-                      M.match_operator (|
-                        Ty.path "bool",
-                        M.alloc (|
-                          Ty.tuple
-                            [
-                              Ty.apply
-                                (Ty.path "&")
+                    (M.match_operator (|
+                      Ty.path "bool",
+                      M.alloc (|
+                        Ty.tuple
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [ B; C ]
+                              ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [ B; C ]
+                              ]
+                          ],
+                        Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                      |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                            let γ0_0 := M.read (| γ0_0 |) in
+                            let γ2_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ0_0,
+                                "core::ops::control_flow::ControlFlow::Continue",
+                                0
+                              |) in
+                            let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ C ], γ2_0 |) in
+                            let γ0_1 := M.read (| γ0_1 |) in
+                            let γ2_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ0_1,
+                                "core::ops::control_flow::ControlFlow::Continue",
+                                0
+                              |) in
+                            let __arg1_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ C ], γ2_0 |) in
+                            M.call_closure (|
+                              Ty.path "bool",
+                              M.get_trait_method (|
+                                "core::cmp::PartialEq",
+                                Ty.apply (Ty.path "&") [] [ C ],
+                                [],
+                                [ Ty.apply (Ty.path "&") [] [ C ] ],
+                                "eq",
+                                [],
                                 []
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::ops::control_flow::ControlFlow")
-                                    []
-                                    [ B; C ]
-                                ];
-                              Ty.apply
-                                (Ty.path "&")
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                              ]
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                            let γ0_0 := M.read (| γ0_0 |) in
+                            let γ2_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ0_0,
+                                "core::ops::control_flow::ControlFlow::Break",
+                                0
+                              |) in
+                            let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ B ], γ2_0 |) in
+                            let γ0_1 := M.read (| γ0_1 |) in
+                            let γ2_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ0_1,
+                                "core::ops::control_flow::ControlFlow::Break",
+                                0
+                              |) in
+                            let __arg1_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ B ], γ2_0 |) in
+                            M.call_closure (|
+                              Ty.path "bool",
+                              M.get_trait_method (|
+                                "core::cmp::PartialEq",
+                                Ty.apply (Ty.path "&") [] [ B ],
+                                [],
+                                [ Ty.apply (Ty.path "&") [] [ B ] ],
+                                "eq",
+                                [],
                                 []
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::ops::control_flow::ControlFlow")
-                                    []
-                                    [ B; C ]
-                                ]
-                            ],
-                          Value.Tuple [ M.read (| self |); M.read (| other |) ]
-                        |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                              let γ0_0 := M.read (| γ0_0 |) in
-                              let γ2_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ0_0,
-                                  "core::ops::control_flow::ControlFlow::Continue",
-                                  0
-                                |) in
-                              let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ C ], γ2_0 |) in
-                              let γ0_1 := M.read (| γ0_1 |) in
-                              let γ2_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ0_1,
-                                  "core::ops::control_flow::ControlFlow::Continue",
-                                  0
-                                |) in
-                              let __arg1_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ C ], γ2_0 |) in
-                              M.alloc (|
-                                Ty.path "bool",
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_trait_method (|
-                                    "core::cmp::PartialEq",
-                                    Ty.apply (Ty.path "&") [] [ C ],
-                                    [],
-                                    [ Ty.apply (Ty.path "&") [] [ C ] ],
-                                    "eq",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (| Pointer.Kind.Ref, __self_0 |);
-                                    M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
-                                  ]
-                                |)
-                              |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                              let γ0_0 := M.read (| γ0_0 |) in
-                              let γ2_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ0_0,
-                                  "core::ops::control_flow::ControlFlow::Break",
-                                  0
-                                |) in
-                              let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ B ], γ2_0 |) in
-                              let γ0_1 := M.read (| γ0_1 |) in
-                              let γ2_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ0_1,
-                                  "core::ops::control_flow::ControlFlow::Break",
-                                  0
-                                |) in
-                              let __arg1_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ B ], γ2_0 |) in
-                              M.alloc (|
-                                Ty.path "bool",
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_trait_method (|
-                                    "core::cmp::PartialEq",
-                                    Ty.apply (Ty.path "&") [] [ B ],
-                                    [],
-                                    [ Ty.apply (Ty.path "&") [] [ B ] ],
-                                    "eq",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (| Pointer.Kind.Ref, __self_0 |);
-                                    M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
-                                  ]
-                                |)
-                              |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (M.alloc (|
-                                Ty.path "bool",
-                                M.never_to_any (|
-                                  M.call_closure (|
-                                    Ty.path "never",
-                                    M.get_function (| "core::intrinsics::unreachable", [], [] |),
-                                    []
-                                  |)
-                                |)
-                              |)))
-                        ]
-                      |)
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                              ]
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (M.never_to_any (|
+                              M.call_closure (|
+                                Ty.path "never",
+                                M.get_function (| "core::intrinsics::unreachable", [], [] |),
+                                []
+                              |)
+                            |)))
+                      ]
                     |)))
                 |)
               |)
@@ -497,20 +446,18 @@ Module ops.
                   [ Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ] ],
                 self
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.tuple [],
-                Value.DeclaredButUndefined,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.match_operator (|
-                        Ty.tuple [],
-                        Value.DeclaredButUndefined,
-                        [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
-                      |)))
-                ]
-              |)
+            M.match_operator (|
+              Ty.tuple [],
+              Value.DeclaredButUndefined,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                      Ty.tuple [],
+                      Value.DeclaredButUndefined,
+                      [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
+                    |)))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -577,22 +524,22 @@ Module ops.
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                   ]
                 |) in
-              M.match_operator (|
+              M.alloc (|
                 Ty.tuple [],
-                self,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::ops::control_flow::ControlFlow::Continue",
-                          0
-                        |) in
-                      let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ C ], γ1_0 |) in
-                      M.alloc (|
-                        Ty.tuple [],
+                M.match_operator (|
+                  Ty.tuple [],
+                  self,
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.read (| γ |) in
+                        let γ1_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "core::ops::control_flow::ControlFlow::Continue",
+                            0
+                          |) in
+                        let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ C ], γ1_0 |) in
                         M.call_closure (|
                           Ty.tuple [],
                           M.get_trait_method (|
@@ -608,20 +555,17 @@ Module ops.
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                           ]
-                        |)
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::ops::control_flow::ControlFlow::Break",
-                          0
-                        |) in
-                      let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ B ], γ1_0 |) in
-                      M.alloc (|
-                        Ty.tuple [],
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.read (| γ |) in
+                        let γ1_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "core::ops::control_flow::ControlFlow::Break",
+                            0
+                          |) in
+                        let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ B ], γ1_0 |) in
                         M.call_closure (|
                           Ty.tuple [],
                           M.get_trait_method (|
@@ -637,9 +581,9 @@ Module ops.
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                           ]
-                        |)
-                      |)))
-                ]
+                        |)))
+                  ]
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -720,92 +664,66 @@ Module ops.
                 Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ],
                 self
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.apply
-                  (Ty.path "core::ops::control_flow::ControlFlow")
-                  []
-                  [
-                    Ty.apply
-                      (Ty.path "core::ops::control_flow::ControlFlow")
-                      []
-                      [ B; Ty.path "core::convert::Infallible" ];
-                    C
-                  ],
-                self,
+            M.match_operator (|
+              Ty.apply
+                (Ty.path "core::ops::control_flow::ControlFlow")
+                []
                 [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::ops::control_flow::ControlFlow::Continue",
-                          0
-                        |) in
-                      let c := M.copy (| C, γ0_0 |) in
-                      M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::ops::control_flow::ControlFlow")
+                    []
+                    [ B; Ty.path "core::convert::Infallible" ];
+                  C
+                ],
+              self,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::ops::control_flow::ControlFlow::Continue",
+                        0
+                      |) in
+                    let c := M.copy (| C, γ0_0 |) in
+                    Value.StructTuple
+                      "core::ops::control_flow::ControlFlow::Continue"
+                      []
+                      [
                         Ty.apply
                           (Ty.path "core::ops::control_flow::ControlFlow")
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "core::ops::control_flow::ControlFlow")
-                              []
-                              [ B; Ty.path "core::convert::Infallible" ];
-                            C
-                          ],
-                        Value.StructTuple
-                          "core::ops::control_flow::ControlFlow::Continue"
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "core::ops::control_flow::ControlFlow")
-                              []
-                              [ B; Ty.path "core::convert::Infallible" ];
-                            C
-                          ]
-                          [ M.read (| c |) ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::ops::control_flow::ControlFlow::Break",
-                          0
-                        |) in
-                      let b := M.copy (| B, γ0_0 |) in
-                      M.alloc (|
+                          [ B; Ty.path "core::convert::Infallible" ];
+                        C
+                      ]
+                      [ M.read (| c |) ]));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::ops::control_flow::ControlFlow::Break",
+                        0
+                      |) in
+                    let b := M.copy (| B, γ0_0 |) in
+                    Value.StructTuple
+                      "core::ops::control_flow::ControlFlow::Break"
+                      []
+                      [
                         Ty.apply
                           (Ty.path "core::ops::control_flow::ControlFlow")
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "core::ops::control_flow::ControlFlow")
-                              []
-                              [ B; Ty.path "core::convert::Infallible" ];
-                            C
-                          ],
+                          [ B; Ty.path "core::convert::Infallible" ];
+                        C
+                      ]
+                      [
                         Value.StructTuple
                           "core::ops::control_flow::ControlFlow::Break"
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "core::ops::control_flow::ControlFlow")
-                              []
-                              [ B; Ty.path "core::convert::Infallible" ];
-                            C
-                          ]
-                          [
-                            Value.StructTuple
-                              "core::ops::control_flow::ControlFlow::Break"
-                              []
-                              [ B; Ty.path "core::convert::Infallible" ]
-                              [ M.read (| b |) ]
-                          ]
-                      |)))
-                ]
-              |)
+                          [ B; Ty.path "core::convert::Infallible" ]
+                          [ M.read (| b |) ]
+                      ]))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -855,30 +773,25 @@ Module ops.
                   [ B; Ty.path "core::convert::Infallible" ],
                 residual
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ],
-                residual,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::ops::control_flow::ControlFlow::Break",
-                          0
-                        |) in
-                      let b := M.copy (| B, γ0_0 |) in
-                      M.alloc (|
-                        Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ],
-                        Value.StructTuple
-                          "core::ops::control_flow::ControlFlow::Break"
-                          []
-                          [ B; C ]
-                          [ M.read (| b |) ]
-                      |)))
-                ]
-              |)
+            M.match_operator (|
+              Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ],
+              residual,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::ops::control_flow::ControlFlow::Break",
+                        0
+                      |) in
+                    let b := M.copy (| B, γ0_0 |) in
+                    Value.StructTuple
+                      "core::ops::control_flow::ControlFlow::Break"
+                      []
+                      [ B; C ]
+                      [ M.read (| b |) ]))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -942,23 +855,21 @@ Module ops.
                   [ Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ] ],
                 self
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.path "bool",
-                M.deref (| M.read (| self |) |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::ops::control_flow::ControlFlow::Break",
-                          0
-                        |) in
-                      M.alloc (| Ty.path "bool", Value.Bool true |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
-                ]
-              |)
+            M.match_operator (|
+              Ty.path "bool",
+              M.deref (| M.read (| self |) |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::ops::control_flow::ControlFlow::Break",
+                        0
+                      |) in
+                    Value.Bool true));
+                fun γ => ltac:(M.monadic (Value.Bool false))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -992,23 +903,21 @@ Module ops.
                   [ Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ] ],
                 self
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.path "bool",
-                M.deref (| M.read (| self |) |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::ops::control_flow::ControlFlow::Continue",
-                          0
-                        |) in
-                      M.alloc (| Ty.path "bool", Value.Bool true |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
-                ]
-              |)
+            M.match_operator (|
+              Ty.path "bool",
+              M.deref (| M.read (| self |) |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::ops::control_flow::ControlFlow::Continue",
+                        0
+                      |) in
+                    Value.Bool true));
+                fun γ => ltac:(M.monadic (Value.Bool false))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1042,37 +951,26 @@ Module ops.
                 Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ],
                 self
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.apply (Ty.path "core::option::Option") [] [ B ],
-                self,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let _ :=
-                        M.is_struct_tuple (|
-                          γ,
-                          "core::ops::control_flow::ControlFlow::Continue"
-                        |) in
-                      M.alloc (|
-                        Ty.apply (Ty.path "core::option::Option") [] [ B ],
-                        Value.StructTuple "core::option::Option::None" [] [ B ] []
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::ops::control_flow::ControlFlow::Break",
-                          0
-                        |) in
-                      let x := M.copy (| B, γ0_0 |) in
-                      M.alloc (|
-                        Ty.apply (Ty.path "core::option::Option") [] [ B ],
-                        Value.StructTuple "core::option::Option::Some" [] [ B ] [ M.read (| x |) ]
-                      |)))
-                ]
-              |)
+            M.match_operator (|
+              Ty.apply (Ty.path "core::option::Option") [] [ B ],
+              self,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ :=
+                      M.is_struct_tuple (| γ, "core::ops::control_flow::ControlFlow::Continue" |) in
+                    Value.StructTuple "core::option::Option::None" [] [ B ] []));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::ops::control_flow::ControlFlow::Break",
+                        0
+                      |) in
+                    let x := M.copy (| B, γ0_0 |) in
+                    Value.StructTuple "core::option::Option::Some" [] [ B ] [ M.read (| x |) ]))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1102,61 +1000,53 @@ Module ops.
                 self
               |) in
             let f := M.alloc (| impl_FnOnce_B__arrow_T, f |) in
-            M.read (|
-              M.match_operator (|
-                Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ T; C ],
-                self,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::ops::control_flow::ControlFlow::Continue",
-                          0
-                        |) in
-                      let x := M.copy (| C, γ0_0 |) in
-                      M.alloc (|
-                        Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ T; C ],
-                        Value.StructTuple
-                          "core::ops::control_flow::ControlFlow::Continue"
-                          []
-                          [ T; C ]
-                          [ M.read (| x |) ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::ops::control_flow::ControlFlow::Break",
-                          0
-                        |) in
-                      let x := M.copy (| B, γ0_0 |) in
-                      M.alloc (|
-                        Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ T; C ],
-                        Value.StructTuple
-                          "core::ops::control_flow::ControlFlow::Break"
-                          []
-                          [ T; C ]
-                          [
-                            M.call_closure (|
-                              T,
-                              M.get_trait_method (|
-                                "core::ops::function::FnOnce",
-                                impl_FnOnce_B__arrow_T,
-                                [],
-                                [ Ty.tuple [ B ] ],
-                                "call_once",
-                                [],
-                                []
-                              |),
-                              [ M.read (| f |); Value.Tuple [ M.read (| x |) ] ]
-                            |)
-                          ]
-                      |)))
-                ]
-              |)
+            M.match_operator (|
+              Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ T; C ],
+              self,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::ops::control_flow::ControlFlow::Continue",
+                        0
+                      |) in
+                    let x := M.copy (| C, γ0_0 |) in
+                    Value.StructTuple
+                      "core::ops::control_flow::ControlFlow::Continue"
+                      []
+                      [ T; C ]
+                      [ M.read (| x |) ]));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::ops::control_flow::ControlFlow::Break",
+                        0
+                      |) in
+                    let x := M.copy (| B, γ0_0 |) in
+                    Value.StructTuple
+                      "core::ops::control_flow::ControlFlow::Break"
+                      []
+                      [ T; C ]
+                      [
+                        M.call_closure (|
+                          T,
+                          M.get_trait_method (|
+                            "core::ops::function::FnOnce",
+                            impl_FnOnce_B__arrow_T,
+                            [],
+                            [ Ty.tuple [ B ] ],
+                            "call_once",
+                            [],
+                            []
+                          |),
+                          [ M.read (| f |); Value.Tuple [ M.read (| x |) ] ]
+                        |)
+                      ]))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1190,34 +1080,26 @@ Module ops.
                 Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ],
                 self
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.apply (Ty.path "core::option::Option") [] [ C ],
-                self,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::ops::control_flow::ControlFlow::Continue",
-                          0
-                        |) in
-                      let x := M.copy (| C, γ0_0 |) in
-                      M.alloc (|
-                        Ty.apply (Ty.path "core::option::Option") [] [ C ],
-                        Value.StructTuple "core::option::Option::Some" [] [ C ] [ M.read (| x |) ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let _ :=
-                        M.is_struct_tuple (| γ, "core::ops::control_flow::ControlFlow::Break" |) in
-                      M.alloc (|
-                        Ty.apply (Ty.path "core::option::Option") [] [ C ],
-                        Value.StructTuple "core::option::Option::None" [] [ C ] []
-                      |)))
-                ]
-              |)
+            M.match_operator (|
+              Ty.apply (Ty.path "core::option::Option") [] [ C ],
+              self,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::ops::control_flow::ControlFlow::Continue",
+                        0
+                      |) in
+                    let x := M.copy (| C, γ0_0 |) in
+                    Value.StructTuple "core::option::Option::Some" [] [ C ] [ M.read (| x |) ]));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ :=
+                      M.is_struct_tuple (| γ, "core::ops::control_flow::ControlFlow::Break" |) in
+                    Value.StructTuple "core::option::Option::None" [] [ C ] []))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1252,61 +1134,53 @@ Module ops.
                 self
               |) in
             let f := M.alloc (| impl_FnOnce_C__arrow_T, f |) in
-            M.read (|
-              M.match_operator (|
-                Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; T ],
-                self,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::ops::control_flow::ControlFlow::Continue",
-                          0
-                        |) in
-                      let x := M.copy (| C, γ0_0 |) in
-                      M.alloc (|
-                        Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; T ],
-                        Value.StructTuple
-                          "core::ops::control_flow::ControlFlow::Continue"
-                          []
-                          [ B; T ]
-                          [
-                            M.call_closure (|
-                              T,
-                              M.get_trait_method (|
-                                "core::ops::function::FnOnce",
-                                impl_FnOnce_C__arrow_T,
-                                [],
-                                [ Ty.tuple [ C ] ],
-                                "call_once",
-                                [],
-                                []
-                              |),
-                              [ M.read (| f |); Value.Tuple [ M.read (| x |) ] ]
-                            |)
-                          ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::ops::control_flow::ControlFlow::Break",
-                          0
-                        |) in
-                      let x := M.copy (| B, γ0_0 |) in
-                      M.alloc (|
-                        Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; T ],
-                        Value.StructTuple
-                          "core::ops::control_flow::ControlFlow::Break"
-                          []
-                          [ B; T ]
-                          [ M.read (| x |) ]
-                      |)))
-                ]
-              |)
+            M.match_operator (|
+              Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; T ],
+              self,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::ops::control_flow::ControlFlow::Continue",
+                        0
+                      |) in
+                    let x := M.copy (| C, γ0_0 |) in
+                    Value.StructTuple
+                      "core::ops::control_flow::ControlFlow::Continue"
+                      []
+                      [ B; T ]
+                      [
+                        M.call_closure (|
+                          T,
+                          M.get_trait_method (|
+                            "core::ops::function::FnOnce",
+                            impl_FnOnce_C__arrow_T,
+                            [],
+                            [ Ty.tuple [ C ] ],
+                            "call_once",
+                            [],
+                            []
+                          |),
+                          [ M.read (| f |); Value.Tuple [ M.read (| x |) ] ]
+                        |)
+                      ]));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::ops::control_flow::ControlFlow::Break",
+                        0
+                      |) in
+                    let x := M.copy (| B, γ0_0 |) in
+                    Value.StructTuple
+                      "core::ops::control_flow::ControlFlow::Break"
+                      []
+                      [ B; T ]
+                      [ M.read (| x |) ]))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1339,13 +1213,20 @@ Module ops.
         | [], [], [ r ] =>
           ltac:(M.monadic
             (let r := M.alloc (| R, r |) in
-            M.read (|
-              M.match_operator (|
+            M.match_operator (|
+              Ty.apply
+                (Ty.path "core::ops::control_flow::ControlFlow")
+                []
+                [ R; Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output" ],
+              M.alloc (|
                 Ty.apply
                   (Ty.path "core::ops::control_flow::ControlFlow")
                   []
-                  [ R; Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output" ],
-                M.alloc (|
+                  [
+                    Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Residual";
+                    Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output"
+                  ],
+                M.call_closure (|
                   Ty.apply
                     (Ty.path "core::ops::control_flow::ControlFlow")
                     []
@@ -1353,100 +1234,63 @@ Module ops.
                       Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Residual";
                       Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output"
                     ],
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "core::ops::control_flow::ControlFlow")
+                  M.get_trait_method (| "core::ops::try_trait::Try", R, [], [], "branch", [], [] |),
+                  [ M.read (| r |) ]
+                |)
+              |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::ops::control_flow::ControlFlow::Continue",
+                        0
+                      |) in
+                    let v :=
+                      M.copy (|
+                        Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output",
+                        γ0_0
+                      |) in
+                    Value.StructTuple
+                      "core::ops::control_flow::ControlFlow::Continue"
                       []
+                      [ R; Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output" ]
+                      [ M.read (| v |) ]));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::ops::control_flow::ControlFlow::Break",
+                        0
+                      |) in
+                    let v :=
+                      M.copy (|
+                        Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Residual",
+                        γ0_0
+                      |) in
+                    Value.StructTuple
+                      "core::ops::control_flow::ControlFlow::Break"
+                      []
+                      [ R; Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output" ]
                       [
-                        Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Residual";
-                        Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output"
-                      ],
-                    M.get_trait_method (|
-                      "core::ops::try_trait::Try",
-                      R,
-                      [],
-                      [],
-                      "branch",
-                      [],
-                      []
-                    |),
-                    [ M.read (| r |) ]
-                  |)
-                |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::ops::control_flow::ControlFlow::Continue",
-                          0
-                        |) in
-                      let v :=
-                        M.copy (|
-                          Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output",
-                          γ0_0
-                        |) in
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::ops::control_flow::ControlFlow")
-                          []
-                          [ R; Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output"
-                          ],
-                        Value.StructTuple
-                          "core::ops::control_flow::ControlFlow::Continue"
-                          []
-                          [ R; Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output" ]
+                        M.call_closure (|
+                          R,
+                          M.get_trait_method (|
+                            "core::ops::try_trait::FromResidual",
+                            R,
+                            [],
+                            [ Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Residual"
+                            ],
+                            "from_residual",
+                            [],
+                            []
+                          |),
                           [ M.read (| v |) ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::ops::control_flow::ControlFlow::Break",
-                          0
-                        |) in
-                      let v :=
-                        M.copy (|
-                          Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Residual",
-                          γ0_0
-                        |) in
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::ops::control_flow::ControlFlow")
-                          []
-                          [ R; Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output"
-                          ],
-                        Value.StructTuple
-                          "core::ops::control_flow::ControlFlow::Break"
-                          []
-                          [ R; Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output" ]
-                          [
-                            M.call_closure (|
-                              R,
-                              M.get_trait_method (|
-                                "core::ops::try_trait::FromResidual",
-                                R,
-                                [],
-                                [
-                                  Ty.associated_in_trait
-                                    "core::ops::try_trait::Try"
-                                    []
-                                    []
-                                    R
-                                    "Residual"
-                                ],
-                                "from_residual",
-                                [],
-                                []
-                              |),
-                              [ M.read (| v |) ]
-                            |)
-                          ]
-                      |)))
-                ]
-              |)
+                        |)
+                      ]))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1478,52 +1322,47 @@ Module ops.
                   [ R; Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output" ],
                 self
               |) in
-            M.read (|
-              M.match_operator (|
-                R,
-                self,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::ops::control_flow::ControlFlow::Continue",
-                          0
-                        |) in
-                      let v :=
-                        M.copy (|
-                          Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output",
-                          γ0_0
-                        |) in
-                      M.alloc (|
+            M.match_operator (|
+              R,
+              self,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::ops::control_flow::ControlFlow::Continue",
+                        0
+                      |) in
+                    let v :=
+                      M.copy (|
+                        Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output",
+                        γ0_0
+                      |) in
+                    M.call_closure (|
+                      R,
+                      M.get_trait_method (|
+                        "core::ops::try_trait::Try",
                         R,
-                        M.call_closure (|
-                          R,
-                          M.get_trait_method (|
-                            "core::ops::try_trait::Try",
-                            R,
-                            [],
-                            [],
-                            "from_output",
-                            [],
-                            []
-                          |),
-                          [ M.read (| v |) ]
-                        |)
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::ops::control_flow::ControlFlow::Break",
-                          0
-                        |) in
-                      let v := M.copy (| R, γ0_0 |) in
-                      v))
-                ]
-              |)
+                        [],
+                        [],
+                        "from_output",
+                        [],
+                        []
+                      |),
+                      [ M.read (| v |) ]
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::ops::control_flow::ControlFlow::Break",
+                        0
+                      |) in
+                    let v := M.copy (| R, γ0_0 |) in
+                    M.read (| v |)))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

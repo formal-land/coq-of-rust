@@ -109,18 +109,18 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ _ : Ty.tuple [] :=
-          M.read (|
-            M.match_operator (|
-              Ty.tuple [],
-              number,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ :=
-                      is_constant_or_break_match (|
-                        M.read (| γ |),
-                        Value.Integer IntegerKind.I32 1
-                      |) in
+          M.match_operator (|
+            Ty.tuple [],
+            number,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ :=
+                    is_constant_or_break_match (|
+                      M.read (| γ |),
+                      Value.Integer IntegerKind.I32 1
+                    |) in
+                  M.read (|
                     let~ _ : Ty.tuple [] :=
                       M.call_closure (|
                         Ty.tuple [],
@@ -155,59 +155,61 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           |)
                         ]
                       |) in
-                    M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (M.find_or_pattern (Ty.tuple []) (|
-                      γ,
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let _ :=
-                              is_constant_or_break_match (|
-                                M.read (| γ |),
-                                Value.Integer IntegerKind.I32 2
-                              |) in
-                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let _ :=
-                              is_constant_or_break_match (|
-                                M.read (| γ |),
-                                Value.Integer IntegerKind.I32 3
-                              |) in
-                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let _ :=
-                              is_constant_or_break_match (|
-                                M.read (| γ |),
-                                Value.Integer IntegerKind.I32 5
-                              |) in
-                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let _ :=
-                              is_constant_or_break_match (|
-                                M.read (| γ |),
-                                Value.Integer IntegerKind.I32 7
-                              |) in
-                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let _ :=
-                              is_constant_or_break_match (|
-                                M.read (| γ |),
-                                Value.Integer IntegerKind.I32 11
-                              |) in
-                            M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                      ],
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (M.find_or_pattern (Ty.tuple []) (|
+                    γ,
+                    [
                       fun γ =>
                         ltac:(M.monadic
-                          match γ with
-                          | [] =>
-                            ltac:(M.monadic
-                              (let~ _ : Ty.tuple [] :=
+                          (let _ :=
+                            is_constant_or_break_match (|
+                              M.read (| γ |),
+                              Value.Integer IntegerKind.I32 2
+                            |) in
+                          Value.Tuple []));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let _ :=
+                            is_constant_or_break_match (|
+                              M.read (| γ |),
+                              Value.Integer IntegerKind.I32 3
+                            |) in
+                          Value.Tuple []));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let _ :=
+                            is_constant_or_break_match (|
+                              M.read (| γ |),
+                              Value.Integer IntegerKind.I32 5
+                            |) in
+                          Value.Tuple []));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let _ :=
+                            is_constant_or_break_match (|
+                              M.read (| γ |),
+                              Value.Integer IntegerKind.I32 7
+                            |) in
+                          Value.Tuple []));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let _ :=
+                            is_constant_or_break_match (|
+                              M.read (| γ |),
+                              Value.Integer IntegerKind.I32 11
+                            |) in
+                          Value.Tuple []))
+                    ],
+                    fun γ =>
+                      ltac:(M.monadic
+                        match γ with
+                        | [] =>
+                          ltac:(M.monadic
+                            (M.read (|
+                              let~ _ : Ty.tuple [] :=
                                 M.call_closure (|
                                   Ty.tuple [],
                                   M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -241,13 +243,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     |)
                                   ]
                                 |) in
-                              M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                          | _ => M.impossible "wrong number of arguments"
-                          end)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let~ _ : Ty.tuple [] :=
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
+                        end)
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (M.read (|
+                    let~ _ : Ty.tuple [] :=
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -281,10 +285,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           |)
                         ]
                       |) in
-                    M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let~ _ : Ty.tuple [] :=
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (M.read (|
+                    let~ _ : Ty.tuple [] :=
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -318,27 +324,25 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           |)
                         ]
                       |) in
-                    M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-              ]
-            |)
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                  |)))
+            ]
           |) in
         let~ boolean : Ty.path "bool" := Value.Bool true in
         let~ binary : Ty.path "i32" :=
-          M.read (|
-            M.match_operator (|
-              Ty.path "i32",
-              boolean,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool false |) in
-                    M.alloc (| Ty.path "i32", Value.Integer IntegerKind.I32 0 |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.alloc (| Ty.path "i32", Value.Integer IntegerKind.I32 1 |)))
-              ]
-            |)
+          M.match_operator (|
+            Ty.path "i32",
+            boolean,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool false |) in
+                  Value.Integer IntegerKind.I32 0));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  Value.Integer IntegerKind.I32 1))
+            ]
           |) in
         let~ _ : Ty.tuple [] :=
           M.read (|

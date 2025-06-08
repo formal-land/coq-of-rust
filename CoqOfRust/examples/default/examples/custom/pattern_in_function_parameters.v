@@ -93,182 +93,181 @@ Definition steps_between (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                       M.read (|
                         let~ start : Ty.path "u32" := M.cast (Ty.path "u32") (M.read (| start |)) in
                         let~ end_ : Ty.path "u32" := M.cast (Ty.path "u32") (M.read (| end_ |)) in
-                        M.match_operator (|
+                        M.alloc (|
                           Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
-                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ :=
-                                  M.use
-                                    (M.alloc (|
-                                      Ty.path "bool",
-                                      M.call_closure (|
+                          M.match_operator (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
                                         Ty.path "bool",
-                                        BinOp.le,
-                                        [ M.read (| start |); M.read (| end_ |) ]
-                                      |)
-                                    |)) in
-                                let _ :=
-                                  is_constant_or_break_match (|
-                                    M.read (| γ |),
-                                    Value.Bool true
-                                  |) in
-                                let~ count : Ty.path "u32" :=
-                                  M.call_closure (|
-                                    Ty.path "u32",
-                                    BinOp.Wrap.sub,
-                                    [ M.read (| end_ |); M.read (| start |) ]
-                                  |) in
-                                M.match_operator (|
-                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
-                                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let γ :=
-                                          M.use
-                                            (M.alloc (|
-                                              Ty.path "bool",
-                                              LogicalOp.and (|
-                                                M.call_closure (|
-                                                  Ty.path "bool",
-                                                  BinOp.lt,
-                                                  [
-                                                    M.read (| start |);
-                                                    Value.Integer IntegerKind.U32 55296
-                                                  ]
-                                                |),
-                                                ltac:(M.monadic
-                                                  (M.call_closure (|
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.le,
+                                          [ M.read (| start |); M.read (| end_ |) ]
+                                        |)
+                                      |)) in
+                                  let _ :=
+                                    is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  M.read (|
+                                    let~ count : Ty.path "u32" :=
+                                      M.call_closure (|
+                                        Ty.path "u32",
+                                        BinOp.Wrap.sub,
+                                        [ M.read (| end_ |); M.read (| start |) ]
+                                      |) in
+                                    M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "usize" ],
+                                      M.match_operator (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "usize" ],
+                                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ :=
+                                                M.use
+                                                  (M.alloc (|
                                                     Ty.path "bool",
-                                                    BinOp.le,
-                                                    [
-                                                      Value.Integer IntegerKind.U32 57344;
-                                                      M.read (| end_ |)
-                                                    ]
-                                                  |)))
-                                              |)
-                                            |)) in
-                                        let _ :=
-                                          is_constant_or_break_match (|
-                                            M.read (| γ |),
-                                            Value.Bool true
-                                          |) in
-                                        M.alloc (|
-                                          Ty.apply
-                                            (Ty.path "core::option::Option")
-                                            []
-                                            [ Ty.path "usize" ],
-                                          M.call_closure (|
-                                            Ty.apply
-                                              (Ty.path "core::option::Option")
-                                              []
-                                              [ Ty.path "usize" ],
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.path "usize";
-                                                  Ty.path "core::num::error::TryFromIntError"
-                                                ],
-                                              "ok",
-                                              [],
-                                              []
-                                            |),
-                                            [
+                                                    LogicalOp.and (|
+                                                      M.call_closure (|
+                                                        Ty.path "bool",
+                                                        BinOp.lt,
+                                                        [
+                                                          M.read (| start |);
+                                                          Value.Integer IntegerKind.U32 55296
+                                                        ]
+                                                      |),
+                                                      ltac:(M.monadic
+                                                        (M.call_closure (|
+                                                          Ty.path "bool",
+                                                          BinOp.le,
+                                                          [
+                                                            Value.Integer IntegerKind.U32 57344;
+                                                            M.read (| end_ |)
+                                                          ]
+                                                        |)))
+                                                    |)
+                                                  |)) in
+                                              let _ :=
+                                                is_constant_or_break_match (|
+                                                  M.read (| γ |),
+                                                  Value.Bool true
+                                                |) in
                                               M.call_closure (|
                                                 Ty.apply
-                                                  (Ty.path "core::result::Result")
+                                                  (Ty.path "core::option::Option")
                                                   []
-                                                  [
-                                                    Ty.path "usize";
-                                                    Ty.path "core::num::error::TryFromIntError"
-                                                  ],
-                                                M.get_trait_method (|
-                                                  "core::convert::TryFrom",
-                                                  Ty.path "usize",
-                                                  [],
-                                                  [ Ty.path "u32" ],
-                                                  "try_from",
+                                                  [ Ty.path "usize" ],
+                                                M.get_associated_function (|
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.path "usize";
+                                                      Ty.path "core::num::error::TryFromIntError"
+                                                    ],
+                                                  "ok",
                                                   [],
                                                   []
                                                 |),
                                                 [
                                                   M.call_closure (|
-                                                    Ty.path "u32",
-                                                    BinOp.Wrap.sub,
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "usize";
+                                                        Ty.path "core::num::error::TryFromIntError"
+                                                      ],
+                                                    M.get_trait_method (|
+                                                      "core::convert::TryFrom",
+                                                      Ty.path "usize",
+                                                      [],
+                                                      [ Ty.path "u32" ],
+                                                      "try_from",
+                                                      [],
+                                                      []
+                                                    |),
                                                     [
-                                                      M.read (| count |);
-                                                      Value.Integer IntegerKind.U32 2048
+                                                      M.call_closure (|
+                                                        Ty.path "u32",
+                                                        BinOp.Wrap.sub,
+                                                        [
+                                                          M.read (| count |);
+                                                          Value.Integer IntegerKind.U32 2048
+                                                        ]
+                                                      |)
                                                     ]
                                                   |)
                                                 ]
-                                              |)
-                                            ]
-                                          |)
-                                        |)));
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (M.alloc (|
-                                          Ty.apply
-                                            (Ty.path "core::option::Option")
-                                            []
-                                            [ Ty.path "usize" ],
-                                          M.call_closure (|
-                                            Ty.apply
-                                              (Ty.path "core::option::Option")
-                                              []
-                                              [ Ty.path "usize" ],
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "core::result::Result")
-                                                []
-                                                [
-                                                  Ty.path "usize";
-                                                  Ty.path "core::num::error::TryFromIntError"
-                                                ],
-                                              "ok",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.call_closure (|
+                                              |)));
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (M.call_closure (|
                                                 Ty.apply
-                                                  (Ty.path "core::result::Result")
+                                                  (Ty.path "core::option::Option")
                                                   []
-                                                  [
-                                                    Ty.path "usize";
-                                                    Ty.path "core::num::error::TryFromIntError"
-                                                  ],
-                                                M.get_trait_method (|
-                                                  "core::convert::TryFrom",
-                                                  Ty.path "usize",
-                                                  [],
-                                                  [ Ty.path "u32" ],
-                                                  "try_from",
+                                                  [ Ty.path "usize" ],
+                                                M.get_associated_function (|
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.path "usize";
+                                                      Ty.path "core::num::error::TryFromIntError"
+                                                    ],
+                                                  "ok",
                                                   [],
                                                   []
                                                 |),
-                                                [ M.read (| count |) ]
-                                              |)
-                                            ]
-                                          |)
-                                        |)))
-                                  ]
-                                |)));
-                            fun γ =>
-                              ltac:(M.monadic
-                                (M.alloc (|
-                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
-                                  Value.StructTuple
+                                                [
+                                                  M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "usize";
+                                                        Ty.path "core::num::error::TryFromIntError"
+                                                      ],
+                                                    M.get_trait_method (|
+                                                      "core::convert::TryFrom",
+                                                      Ty.path "usize",
+                                                      [],
+                                                      [ Ty.path "u32" ],
+                                                      "try_from",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [ M.read (| count |) ]
+                                                  |)
+                                                ]
+                                              |)))
+                                        ]
+                                      |)
+                                    |)
+                                  |)));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (Value.StructTuple
                                     "core::option::Option::None"
                                     []
                                     [ Ty.path "usize" ]
-                                    []
-                                |)))
-                          ]
+                                    []))
+                            ]
+                          |)
                         |)
                       |)))
                 ]

@@ -61,12 +61,10 @@ Module Impl_core_clone_Clone_for_conditional_compilation_AccountId.
             Ty.apply (Ty.path "&") [] [ Ty.path "conditional_compilation::AccountId" ],
             self
           |) in
-        M.read (|
-          M.match_operator (|
-            Ty.path "conditional_compilation::AccountId",
-            Value.DeclaredButUndefined,
-            [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
-          |)
+        M.match_operator (|
+          Ty.path "conditional_compilation::AccountId",
+          Value.DeclaredButUndefined,
+          [ fun γ => ltac:(M.monadic (M.read (| M.deref (| M.read (| self |) |) |))) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

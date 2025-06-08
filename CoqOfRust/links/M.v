@@ -1555,14 +1555,14 @@ Module Function1.
 
   Global Instance IsLink (A Output : Set) `{Link A} `{Link Output} :
       Link (t A Output) := {
-    Φ := Ty.function [Φ A] (Φ Output);
+    Φ := Ty.function [Ty.tuple [Φ A]] (Φ Output);
     φ x := Value.Closure (existS (_, _) x.(f));
   }.
 
   Definition of_ty (ty1 ty2 : Ty.t) :
     OfTy.t ty1 ->
     OfTy.t ty2 ->
-    OfTy.t (Ty.function [ty1] ty2).
+    OfTy.t (Ty.function [Ty.tuple [ty1]] ty2).
   Proof.
     intros [A] [Output].
     eapply OfTy.Make with (A := t A Output).

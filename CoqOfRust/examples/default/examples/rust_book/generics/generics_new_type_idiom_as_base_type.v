@@ -35,21 +35,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               0
             |)
           |) in
-        M.match_operator (|
+        M.alloc (|
           Ty.tuple [],
-          years,
-          [
-            fun γ =>
-              ltac:(M.monadic
-                (let γ0_0 :=
-                  M.SubPointer.get_struct_tuple_field (|
-                    γ,
-                    "generics_new_type_idiom_as_base_type::Years",
-                    0
-                  |) in
-                let years_as_primitive_2 := M.copy (| Ty.path "i64", γ0_0 |) in
-                M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-          ]
+          M.match_operator (|
+            Ty.tuple [],
+            years,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "generics_new_type_idiom_as_base_type::Years",
+                      0
+                    |) in
+                  let years_as_primitive_2 := M.copy (| Ty.path "i64", γ0_0 |) in
+                  Value.Tuple []))
+            ]
+          |)
         |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"

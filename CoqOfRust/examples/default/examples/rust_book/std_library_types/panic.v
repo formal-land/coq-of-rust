@@ -17,50 +17,42 @@ Definition division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
     ltac:(M.monadic
       (let dividend := M.alloc (| Ty.path "i32", dividend |) in
       let divisor := M.alloc (| Ty.path "i32", divisor |) in
-      M.read (|
-        M.match_operator (|
-          Ty.path "i32",
-          M.alloc (| Ty.tuple [], Value.Tuple [] |),
-          [
-            fun γ =>
-              ltac:(M.monadic
-                (let γ :=
-                  M.use
-                    (M.alloc (|
-                      Ty.path "bool",
-                      M.call_closure (|
-                        Ty.path "bool",
-                        BinOp.eq,
-                        [ M.read (| divisor |); Value.Integer IntegerKind.I32 0 ]
-                      |)
-                    |)) in
-                let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                M.alloc (|
-                  Ty.path "i32",
-                  M.never_to_any (|
+      M.match_operator (|
+        Ty.path "i32",
+        M.alloc (| Ty.tuple [], Value.Tuple [] |),
+        [
+          fun γ =>
+            ltac:(M.monadic
+              (let γ :=
+                M.use
+                  (M.alloc (|
+                    Ty.path "bool",
                     M.call_closure (|
-                      Ty.path "never",
-                      M.get_function (|
-                        "std::panicking::begin_panic",
-                        [],
-                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                      |),
-                      [ mk_str (| "division by zero" |) ]
+                      Ty.path "bool",
+                      BinOp.eq,
+                      [ M.read (| divisor |); Value.Integer IntegerKind.I32 0 ]
                     |)
-                  |)
-                |)));
-            fun γ =>
-              ltac:(M.monadic
-                (M.alloc (|
-                  Ty.path "i32",
-                  M.call_closure (|
-                    Ty.path "i32",
-                    BinOp.Wrap.div,
-                    [ M.read (| dividend |); M.read (| divisor |) ]
-                  |)
-                |)))
-          ]
-        |)
+                  |)) in
+              let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+              M.never_to_any (|
+                M.call_closure (|
+                  Ty.path "never",
+                  M.get_function (|
+                    "std::panicking::begin_panic",
+                    [],
+                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                  |),
+                  [ mk_str (| "division by zero" |) ]
+                |)
+              |)));
+          fun γ =>
+            ltac:(M.monadic
+              (M.call_closure (|
+                Ty.path "i32",
+                BinOp.Wrap.div,
+                [ M.read (| dividend |); M.read (| divisor |) ]
+              |)))
+        ]
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

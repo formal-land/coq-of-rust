@@ -50,45 +50,37 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
           |) in
         let x := M.alloc (| Ty.path "i32", x |) in
         let y := M.alloc (| Ty.path "i32", y |) in
-        M.read (|
-          M.match_operator (|
-            Ty.path "i32",
-            self,
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
-                  let _ :=
-                    M.is_struct_tuple (|
-                      γ,
-                      "enums_type_aliases_v2::VeryVerboseEnumOfThingsToDoWithNumbers::Add"
-                    |) in
-                  M.alloc (|
-                    Ty.path "i32",
-                    M.call_closure (|
-                      Ty.path "i32",
-                      BinOp.Wrap.add,
-                      [ M.read (| x |); M.read (| y |) ]
-                    |)
-                  |)));
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
-                  let _ :=
-                    M.is_struct_tuple (|
-                      γ,
-                      "enums_type_aliases_v2::VeryVerboseEnumOfThingsToDoWithNumbers::Subtract"
-                    |) in
-                  M.alloc (|
-                    Ty.path "i32",
-                    M.call_closure (|
-                      Ty.path "i32",
-                      BinOp.Wrap.sub,
-                      [ M.read (| x |); M.read (| y |) ]
-                    |)
-                  |)))
-            ]
-          |)
+        M.match_operator (|
+          Ty.path "i32",
+          self,
+          [
+            fun γ =>
+              ltac:(M.monadic
+                (let γ := M.read (| γ |) in
+                let _ :=
+                  M.is_struct_tuple (|
+                    γ,
+                    "enums_type_aliases_v2::VeryVerboseEnumOfThingsToDoWithNumbers::Add"
+                  |) in
+                M.call_closure (|
+                  Ty.path "i32",
+                  BinOp.Wrap.add,
+                  [ M.read (| x |); M.read (| y |) ]
+                |)));
+            fun γ =>
+              ltac:(M.monadic
+                (let γ := M.read (| γ |) in
+                let _ :=
+                  M.is_struct_tuple (|
+                    γ,
+                    "enums_type_aliases_v2::VeryVerboseEnumOfThingsToDoWithNumbers::Subtract"
+                  |) in
+                M.call_closure (|
+                  Ty.path "i32",
+                  BinOp.Wrap.sub,
+                  [ M.read (| x |); M.read (| y |) ]
+                |)))
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

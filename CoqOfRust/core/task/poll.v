@@ -52,54 +52,37 @@ Module task.
                 Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ],
                 self
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ],
-                self,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::task::poll::Poll::Ready",
-                          0
-                        |) in
-                      let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ1_0 |) in
-                      M.alloc (|
-                        Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ],
-                        Value.StructTuple
-                          "core::task::poll::Poll::Ready"
-                          []
-                          [ T ]
-                          [
-                            M.call_closure (|
-                              T,
-                              M.get_trait_method (|
-                                "core::clone::Clone",
-                                T,
-                                [],
-                                [],
-                                "clone",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |)
-                              ]
-                            |)
-                          ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let _ := M.is_struct_tuple (| γ, "core::task::poll::Poll::Pending" |) in
-                      M.alloc (|
-                        Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ],
-                        Value.StructTuple "core::task::poll::Poll::Pending" [] [ T ] []
-                      |)))
-                ]
-              |)
+            M.match_operator (|
+              Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ],
+              self,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::task::poll::Poll::Ready",
+                        0
+                      |) in
+                    let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ1_0 |) in
+                    Value.StructTuple
+                      "core::task::poll::Poll::Ready"
+                      []
+                      [ T ]
+                      [
+                        M.call_closure (|
+                          T,
+                          M.get_trait_method (| "core::clone::Clone", T, [], [], "clone", [], [] |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
+                        |)
+                      ]));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let _ := M.is_struct_tuple (| γ, "core::task::poll::Poll::Pending" |) in
+                    Value.StructTuple "core::task::poll::Poll::Pending" [] [ T ] []))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -130,80 +113,66 @@ Module task.
               |) in
             let f :=
               M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
-            M.read (|
-              M.match_operator (|
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                self,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::task::poll::Poll::Ready",
-                          0
-                        |) in
-                      let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ1_0 |) in
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::Formatter",
-                            "debug_tuple_field1_finish",
-                            [],
-                            []
-                          |),
-                          [
-                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Ready" |) |) |);
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                              |))
-                          ]
-                        |)
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let _ := M.is_struct_tuple (| γ, "core::task::poll::Poll::Pending" |) in
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::Formatter",
-                            "write_str",
-                            [],
-                            []
-                          |),
-                          [
-                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Pending" |) |) |)
-                          ]
-                        |)
-                      |)))
-                ]
-              |)
+            M.match_operator (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+              self,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::task::poll::Poll::Ready",
+                        0
+                      |) in
+                    let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ1_0 |) in
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Formatter",
+                        "debug_tuple_field1_finish",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Ready" |) |) |);
+                        (* Unsize *)
+                        M.pointer_coercion
+                          (M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |))
+                      ]
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let _ := M.is_struct_tuple (| γ, "core::task::poll::Poll::Pending" |) in
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Formatter",
+                        "write_str",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Pending" |) |) |)
+                      ]
+                    |)))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -237,12 +206,10 @@ Module task.
                 Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ],
                 self
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.tuple [],
-                Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
-              |)
+            M.match_operator (|
+              Ty.tuple [],
+              Value.DeclaredButUndefined,
+              [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -320,66 +287,61 @@ Module task.
                     [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
                   |),
                   ltac:(M.monadic
-                    (M.read (|
-                      M.match_operator (|
-                        Ty.path "bool",
-                        M.alloc (|
-                          Ty.tuple
-                            [
-                              Ty.apply
-                                (Ty.path "&")
+                    (M.match_operator (|
+                      Ty.path "bool",
+                      M.alloc (|
+                        Ty.tuple
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
+                          ],
+                        Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                      |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                            let γ0_0 := M.read (| γ0_0 |) in
+                            let γ2_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ0_0,
+                                "core::task::poll::Poll::Ready",
+                                0
+                              |) in
+                            let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
+                            let γ0_1 := M.read (| γ0_1 |) in
+                            let γ2_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ0_1,
+                                "core::task::poll::Poll::Ready",
+                                0
+                              |) in
+                            let __arg1_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
+                            M.call_closure (|
+                              Ty.path "bool",
+                              M.get_trait_method (|
+                                "core::cmp::PartialEq",
+                                Ty.apply (Ty.path "&") [] [ T ],
+                                [],
+                                [ Ty.apply (Ty.path "&") [] [ T ] ],
+                                "eq",
+                                [],
                                 []
-                                [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ];
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
-                            ],
-                          Value.Tuple [ M.read (| self |); M.read (| other |) ]
-                        |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                              let γ0_0 := M.read (| γ0_0 |) in
-                              let γ2_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ0_0,
-                                  "core::task::poll::Poll::Ready",
-                                  0
-                                |) in
-                              let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
-                              let γ0_1 := M.read (| γ0_1 |) in
-                              let γ2_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ0_1,
-                                  "core::task::poll::Poll::Ready",
-                                  0
-                                |) in
-                              let __arg1_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
-                              M.alloc (|
-                                Ty.path "bool",
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_trait_method (|
-                                    "core::cmp::PartialEq",
-                                    Ty.apply (Ty.path "&") [] [ T ],
-                                    [],
-                                    [ Ty.apply (Ty.path "&") [] [ T ] ],
-                                    "eq",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (| Pointer.Kind.Ref, __self_0 |);
-                                    M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
-                                  ]
-                                |)
-                              |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool true |)))
-                        ]
-                      |)
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                              ]
+                            |)));
+                        fun γ => ltac:(M.monadic (Value.Bool true))
+                      ]
                     |)))
                 |)
               |)
@@ -437,76 +399,78 @@ Module task.
                   |),
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |) in
-              M.match_operator (|
+              M.alloc (|
                 Ty.path "core::cmp::Ordering",
-                M.alloc (|
+                M.match_operator (|
                   Ty.path "core::cmp::Ordering",
-                  M.call_closure (|
+                  M.alloc (|
                     Ty.path "core::cmp::Ordering",
-                    M.get_trait_method (|
-                      "core::cmp::Ord",
-                      Ty.path "isize",
-                      [],
-                      [],
-                      "cmp",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
-                      |);
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (| M.borrow (| Pointer.Kind.Ref, __arg1_discr |) |)
-                      |)
-                    ]
-                  |)
-                |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
-                      M.match_operator (|
-                        Ty.path "core::cmp::Ordering",
-                        M.alloc (|
-                          Ty.tuple
-                            [
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ];
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
-                            ],
-                          Value.Tuple [ M.read (| self |); M.read (| other |) ]
-                        |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                              let γ0_0 := M.read (| γ0_0 |) in
-                              let γ2_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ0_0,
-                                  "core::task::poll::Poll::Ready",
-                                  0
-                                |) in
-                              let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
-                              let γ0_1 := M.read (| γ0_1 |) in
-                              let γ2_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ0_1,
-                                  "core::task::poll::Poll::Ready",
-                                  0
-                                |) in
-                              let __arg1_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
-                              M.alloc (|
-                                Ty.path "core::cmp::Ordering",
+                    M.call_closure (|
+                      Ty.path "core::cmp::Ordering",
+                      M.get_trait_method (|
+                        "core::cmp::Ord",
+                        Ty.path "isize",
+                        [],
+                        [],
+                        "cmp",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_discr |) |)
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.borrow (| Pointer.Kind.Ref, __arg1_discr |) |)
+                        |)
+                      ]
+                    |)
+                  |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
+                        M.match_operator (|
+                          Ty.path "core::cmp::Ordering",
+                          M.alloc (|
+                            Ty.tuple
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ];
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
+                              ],
+                            Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                          |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                let γ0_0 := M.read (| γ0_0 |) in
+                                let γ2_0 :=
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    γ0_0,
+                                    "core::task::poll::Poll::Ready",
+                                    0
+                                  |) in
+                                let __self_0 :=
+                                  M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
+                                let γ0_1 := M.read (| γ0_1 |) in
+                                let γ2_0 :=
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    γ0_1,
+                                    "core::task::poll::Poll::Ready",
+                                    0
+                                  |) in
+                                let __arg1_0 :=
+                                  M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
                                 M.call_closure (|
                                   Ty.path "core::cmp::Ordering",
                                   M.get_trait_method (|
@@ -528,21 +492,18 @@ Module task.
                                       M.deref (| M.read (| __arg1_0 |) |)
                                     |)
                                   ]
-                                |)
-                              |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (M.alloc (|
-                                Ty.path "core::cmp::Ordering",
-                                Value.StructTuple "core::cmp::Ordering::Equal" [] [] []
-                              |)))
-                        ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let cmp := M.copy (| Ty.path "core::cmp::Ordering", γ |) in
-                      cmp))
-                ]
+                                |)));
+                            fun γ =>
+                              ltac:(M.monadic
+                                (Value.StructTuple "core::cmp::Ordering::Equal" [] [] []))
+                          ]
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let cmp := M.copy (| Ty.path "core::cmp::Ordering", γ |) in
+                        M.read (| cmp |)))
+                  ]
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -598,48 +559,45 @@ Module task.
                   |),
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |) in
-              M.match_operator (|
+              M.alloc (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
-                M.alloc (|
-                  Ty.tuple
-                    [
-                      Ty.apply
-                        (Ty.path "&")
-                        []
-                        [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ];
-                      Ty.apply
-                        (Ty.path "&")
-                        []
-                        [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
-                    ],
-                  Value.Tuple [ M.read (| self |); M.read (| other |) ]
-                |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                      let γ0_0 := M.read (| γ0_0 |) in
-                      let γ2_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ0_0,
-                          "core::task::poll::Poll::Ready",
-                          0
-                        |) in
-                      let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
-                      let γ0_1 := M.read (| γ0_1 |) in
-                      let γ2_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ0_1,
-                          "core::task::poll::Poll::Ready",
-                          0
-                        |) in
-                      let __arg1_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
-                      M.alloc (|
+                M.match_operator (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
+                  M.alloc (|
+                    Ty.tuple
+                      [
                         Ty.apply
-                          (Ty.path "core::option::Option")
+                          (Ty.path "&")
                           []
-                          [ Ty.path "core::cmp::Ordering" ],
+                          [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ];
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
+                      ],
+                    Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                  |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                        let γ0_0 := M.read (| γ0_0 |) in
+                        let γ2_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ0_0,
+                            "core::task::poll::Poll::Ready",
+                            0
+                          |) in
+                        let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
+                        let γ0_1 := M.read (| γ0_1 |) in
+                        let γ2_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ0_1,
+                            "core::task::poll::Poll::Ready",
+                            0
+                          |) in
+                        let __arg1_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::option::Option")
@@ -658,16 +616,10 @@ Module task.
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __arg1_0 |) |) |)
                           ]
-                        |)
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::option::Option")
-                          []
-                          [ Ty.path "core::cmp::Ordering" ],
-                        M.call_closure (|
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (M.call_closure (|
                           Ty.apply
                             (Ty.path "core::option::Option")
                             []
@@ -691,9 +643,9 @@ Module task.
                               M.deref (| M.borrow (| Pointer.Kind.Ref, __arg1_discr |) |)
                             |)
                           ]
-                        |)
-                      |)))
-                ]
+                        |)))
+                  ]
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -755,22 +707,22 @@ Module task.
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                   ]
                 |) in
-              M.match_operator (|
+              M.alloc (|
                 Ty.tuple [],
-                self,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::task::poll::Poll::Ready",
-                          0
-                        |) in
-                      let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ1_0 |) in
-                      M.alloc (|
-                        Ty.tuple [],
+                M.match_operator (|
+                  Ty.tuple [],
+                  self,
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.read (| γ |) in
+                        let γ1_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "core::task::poll::Poll::Ready",
+                            0
+                          |) in
+                        let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ1_0 |) in
                         M.call_closure (|
                           Ty.tuple [],
                           M.get_trait_method (|
@@ -786,10 +738,10 @@ Module task.
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                           ]
-                        |)
-                      |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                ]
+                        |)));
+                    fun γ => ltac:(M.monadic (Value.Tuple []))
+                  ]
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -826,51 +778,43 @@ Module task.
           ltac:(M.monadic
             (let self := M.alloc (| Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ], self |) in
             let f := M.alloc (| F, f |) in
-            M.read (|
-              M.match_operator (|
-                Ty.apply (Ty.path "core::task::poll::Poll") [] [ U ],
-                self,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::task::poll::Poll::Ready",
-                          0
-                        |) in
-                      let t := M.copy (| T, γ0_0 |) in
-                      M.alloc (|
-                        Ty.apply (Ty.path "core::task::poll::Poll") [] [ U ],
-                        Value.StructTuple
-                          "core::task::poll::Poll::Ready"
-                          []
-                          [ U ]
-                          [
-                            M.call_closure (|
-                              U,
-                              M.get_trait_method (|
-                                "core::ops::function::FnOnce",
-                                F,
-                                [],
-                                [ Ty.tuple [ T ] ],
-                                "call_once",
-                                [],
-                                []
-                              |),
-                              [ M.read (| f |); Value.Tuple [ M.read (| t |) ] ]
-                            |)
-                          ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let _ := M.is_struct_tuple (| γ, "core::task::poll::Poll::Pending" |) in
-                      M.alloc (|
-                        Ty.apply (Ty.path "core::task::poll::Poll") [] [ U ],
-                        Value.StructTuple "core::task::poll::Poll::Pending" [] [ U ] []
-                      |)))
-                ]
-              |)
+            M.match_operator (|
+              Ty.apply (Ty.path "core::task::poll::Poll") [] [ U ],
+              self,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::task::poll::Poll::Ready",
+                        0
+                      |) in
+                    let t := M.copy (| T, γ0_0 |) in
+                    Value.StructTuple
+                      "core::task::poll::Poll::Ready"
+                      []
+                      [ U ]
+                      [
+                        M.call_closure (|
+                          U,
+                          M.get_trait_method (|
+                            "core::ops::function::FnOnce",
+                            F,
+                            [],
+                            [ Ty.tuple [ T ] ],
+                            "call_once",
+                            [],
+                            []
+                          |),
+                          [ M.read (| f |); Value.Tuple [ M.read (| t |) ] ]
+                        |)
+                      ]));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::task::poll::Poll::Pending" |) in
+                    Value.StructTuple "core::task::poll::Poll::Pending" [] [ U ] []))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -896,23 +840,21 @@ Module task.
                 Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ],
                 self
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.path "bool",
-                M.deref (| M.read (| self |) |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::task::poll::Poll::Ready",
-                          0
-                        |) in
-                      M.alloc (| Ty.path "bool", Value.Bool true |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
-                ]
-              |)
+            M.match_operator (|
+              Ty.path "bool",
+              M.deref (| M.read (| self |) |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::task::poll::Poll::Ready",
+                        0
+                      |) in
+                    Value.Bool true));
+                fun γ => ltac:(M.monadic (Value.Bool false))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -993,108 +935,83 @@ Module task.
                 self
               |) in
             let f := M.alloc (| F, f |) in
-            M.read (|
-              M.match_operator (|
-                Ty.apply
-                  (Ty.path "core::task::poll::Poll")
-                  []
-                  [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ],
-                self,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::task::poll::Poll::Ready",
-                          0
-                        |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ0_0,
-                          "core::result::Result::Ok",
-                          0
-                        |) in
-                      let t := M.copy (| T, γ1_0 |) in
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::task::poll::Poll")
-                          []
-                          [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ],
+            M.match_operator (|
+              Ty.apply
+                (Ty.path "core::task::poll::Poll")
+                []
+                [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ],
+              self,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::task::poll::Poll::Ready",
+                        0
+                      |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ0_0,
+                        "core::result::Result::Ok",
+                        0
+                      |) in
+                    let t := M.copy (| T, γ1_0 |) in
+                    Value.StructTuple
+                      "core::task::poll::Poll::Ready"
+                      []
+                      [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
+                      [
                         Value.StructTuple
-                          "core::task::poll::Poll::Ready"
+                          "core::result::Result::Ok"
                           []
-                          [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
+                          [ U; E ]
                           [
-                            Value.StructTuple
-                              "core::result::Result::Ok"
-                              []
-                              [ U; E ]
-                              [
-                                M.call_closure (|
-                                  U,
-                                  M.get_trait_method (|
-                                    "core::ops::function::FnOnce",
-                                    F,
-                                    [],
-                                    [ Ty.tuple [ T ] ],
-                                    "call_once",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.read (| f |); Value.Tuple [ M.read (| t |) ] ]
-                                |)
-                              ]
+                            M.call_closure (|
+                              U,
+                              M.get_trait_method (|
+                                "core::ops::function::FnOnce",
+                                F,
+                                [],
+                                [ Ty.tuple [ T ] ],
+                                "call_once",
+                                [],
+                                []
+                              |),
+                              [ M.read (| f |); Value.Tuple [ M.read (| t |) ] ]
+                            |)
                           ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::task::poll::Poll::Ready",
-                          0
-                        |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ0_0,
-                          "core::result::Result::Err",
-                          0
-                        |) in
-                      let e := M.copy (| E, γ1_0 |) in
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::task::poll::Poll")
-                          []
-                          [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ],
-                        Value.StructTuple
-                          "core::task::poll::Poll::Ready"
-                          []
-                          [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
-                          [
-                            Value.StructTuple
-                              "core::result::Result::Err"
-                              []
-                              [ U; E ]
-                              [ M.read (| e |) ]
-                          ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let _ := M.is_struct_tuple (| γ, "core::task::poll::Poll::Pending" |) in
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::task::poll::Poll")
-                          []
-                          [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ],
-                        Value.StructTuple
-                          "core::task::poll::Poll::Pending"
-                          []
-                          [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
-                          []
-                      |)))
-                ]
-              |)
+                      ]));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::task::poll::Poll::Ready",
+                        0
+                      |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ0_0,
+                        "core::result::Result::Err",
+                        0
+                      |) in
+                    let e := M.copy (| E, γ1_0 |) in
+                    Value.StructTuple
+                      "core::task::poll::Poll::Ready"
+                      []
+                      [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
+                      [ Value.StructTuple "core::result::Result::Err" [] [ U; E ] [ M.read (| e |) ]
+                      ]));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::task::poll::Poll::Pending" |) in
+                    Value.StructTuple
+                      "core::task::poll::Poll::Pending"
+                      []
+                      [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
+                      []))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1131,108 +1048,83 @@ Module task.
                 self
               |) in
             let f := M.alloc (| F, f |) in
-            M.read (|
-              M.match_operator (|
-                Ty.apply
-                  (Ty.path "core::task::poll::Poll")
-                  []
-                  [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ],
-                self,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::task::poll::Poll::Ready",
-                          0
-                        |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ0_0,
-                          "core::result::Result::Ok",
-                          0
-                        |) in
-                      let t := M.copy (| T, γ1_0 |) in
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::task::poll::Poll")
-                          []
-                          [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ],
+            M.match_operator (|
+              Ty.apply
+                (Ty.path "core::task::poll::Poll")
+                []
+                [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ],
+              self,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::task::poll::Poll::Ready",
+                        0
+                      |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ0_0,
+                        "core::result::Result::Ok",
+                        0
+                      |) in
+                    let t := M.copy (| T, γ1_0 |) in
+                    Value.StructTuple
+                      "core::task::poll::Poll::Ready"
+                      []
+                      [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ]
+                      [ Value.StructTuple "core::result::Result::Ok" [] [ T; U ] [ M.read (| t |) ]
+                      ]));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::task::poll::Poll::Ready",
+                        0
+                      |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ0_0,
+                        "core::result::Result::Err",
+                        0
+                      |) in
+                    let e := M.copy (| E, γ1_0 |) in
+                    Value.StructTuple
+                      "core::task::poll::Poll::Ready"
+                      []
+                      [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ]
+                      [
                         Value.StructTuple
-                          "core::task::poll::Poll::Ready"
+                          "core::result::Result::Err"
                           []
-                          [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ]
+                          [ T; U ]
                           [
-                            Value.StructTuple
-                              "core::result::Result::Ok"
-                              []
-                              [ T; U ]
-                              [ M.read (| t |) ]
+                            M.call_closure (|
+                              U,
+                              M.get_trait_method (|
+                                "core::ops::function::FnOnce",
+                                F,
+                                [],
+                                [ Ty.tuple [ E ] ],
+                                "call_once",
+                                [],
+                                []
+                              |),
+                              [ M.read (| f |); Value.Tuple [ M.read (| e |) ] ]
+                            |)
                           ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::task::poll::Poll::Ready",
-                          0
-                        |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ0_0,
-                          "core::result::Result::Err",
-                          0
-                        |) in
-                      let e := M.copy (| E, γ1_0 |) in
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::task::poll::Poll")
-                          []
-                          [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ],
-                        Value.StructTuple
-                          "core::task::poll::Poll::Ready"
-                          []
-                          [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ]
-                          [
-                            Value.StructTuple
-                              "core::result::Result::Err"
-                              []
-                              [ T; U ]
-                              [
-                                M.call_closure (|
-                                  U,
-                                  M.get_trait_method (|
-                                    "core::ops::function::FnOnce",
-                                    F,
-                                    [],
-                                    [ Ty.tuple [ E ] ],
-                                    "call_once",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.read (| f |); Value.Tuple [ M.read (| e |) ] ]
-                                |)
-                              ]
-                          ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let _ := M.is_struct_tuple (| γ, "core::task::poll::Poll::Pending" |) in
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::task::poll::Poll")
-                          []
-                          [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ],
-                        Value.StructTuple
-                          "core::task::poll::Poll::Pending"
-                          []
-                          [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ]
-                          []
-                      |)))
-                ]
-              |)
+                      ]));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::task::poll::Poll::Pending" |) in
+                    Value.StructTuple
+                      "core::task::poll::Poll::Pending"
+                      []
+                      [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ]
+                      []))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1288,203 +1180,157 @@ Module task.
                 self
               |) in
             let f := M.alloc (| F, f |) in
-            M.read (|
-              M.match_operator (|
-                Ty.apply
-                  (Ty.path "core::task::poll::Poll")
-                  []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
-                  ],
-                self,
+            M.match_operator (|
+              Ty.apply
+                (Ty.path "core::task::poll::Poll")
+                []
                 [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::task::poll::Poll::Ready",
-                          0
-                        |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ0_0,
-                          "core::option::Option::Some",
-                          0
-                        |) in
-                      let γ2_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ1_0,
-                          "core::result::Result::Ok",
-                          0
-                        |) in
-                      let t := M.copy (| T, γ2_0 |) in
-                      M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
+                ],
+              self,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::task::poll::Poll::Ready",
+                        0
+                      |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ0_0,
+                        "core::option::Option::Some",
+                        0
+                      |) in
+                    let γ2_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ1_0,
+                        "core::result::Result::Ok",
+                        0
+                      |) in
+                    let t := M.copy (| T, γ2_0 |) in
+                    Value.StructTuple
+                      "core::task::poll::Poll::Ready"
+                      []
+                      [
                         Ty.apply
-                          (Ty.path "core::task::poll::Poll")
+                          (Ty.path "core::option::Option")
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
-                          ],
+                          [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
+                      ]
+                      [
                         Value.StructTuple
-                          "core::task::poll::Poll::Ready"
+                          "core::option::Option::Some"
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
-                          ]
+                          [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
                           [
                             Value.StructTuple
-                              "core::option::Option::Some"
+                              "core::result::Result::Ok"
                               []
-                              [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
+                              [ U; E ]
                               [
-                                Value.StructTuple
-                                  "core::result::Result::Ok"
-                                  []
-                                  [ U; E ]
-                                  [
-                                    M.call_closure (|
-                                      U,
-                                      M.get_trait_method (|
-                                        "core::ops::function::FnOnce",
-                                        F,
-                                        [],
-                                        [ Ty.tuple [ T ] ],
-                                        "call_once",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| f |); Value.Tuple [ M.read (| t |) ] ]
-                                    |)
-                                  ]
+                                M.call_closure (|
+                                  U,
+                                  M.get_trait_method (|
+                                    "core::ops::function::FnOnce",
+                                    F,
+                                    [],
+                                    [ Ty.tuple [ T ] ],
+                                    "call_once",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.read (| f |); Value.Tuple [ M.read (| t |) ] ]
+                                |)
                               ]
                           ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::task::poll::Poll::Ready",
-                          0
-                        |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ0_0,
-                          "core::option::Option::Some",
-                          0
-                        |) in
-                      let γ2_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ1_0,
-                          "core::result::Result::Err",
-                          0
-                        |) in
-                      let e := M.copy (| E, γ2_0 |) in
-                      M.alloc (|
+                      ]));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::task::poll::Poll::Ready",
+                        0
+                      |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ0_0,
+                        "core::option::Option::Some",
+                        0
+                      |) in
+                    let γ2_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ1_0,
+                        "core::result::Result::Err",
+                        0
+                      |) in
+                    let e := M.copy (| E, γ2_0 |) in
+                    Value.StructTuple
+                      "core::task::poll::Poll::Ready"
+                      []
+                      [
                         Ty.apply
-                          (Ty.path "core::task::poll::Poll")
+                          (Ty.path "core::option::Option")
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
-                          ],
+                          [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
+                      ]
+                      [
                         Value.StructTuple
-                          "core::task::poll::Poll::Ready"
+                          "core::option::Option::Some"
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
-                          ]
+                          [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
                           [
                             Value.StructTuple
-                              "core::option::Option::Some"
+                              "core::result::Result::Err"
                               []
-                              [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
-                              [
-                                Value.StructTuple
-                                  "core::result::Result::Err"
-                                  []
-                                  [ U; E ]
-                                  [ M.read (| e |) ]
-                              ]
+                              [ U; E ]
+                              [ M.read (| e |) ]
                           ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::task::poll::Poll::Ready",
-                          0
-                        |) in
-                      let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
-                      M.alloc (|
+                      ]));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::task::poll::Poll::Ready",
+                        0
+                      |) in
+                    let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
+                    Value.StructTuple
+                      "core::task::poll::Poll::Ready"
+                      []
+                      [
                         Ty.apply
-                          (Ty.path "core::task::poll::Poll")
+                          (Ty.path "core::option::Option")
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
-                          ],
+                          [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
+                      ]
+                      [
                         Value.StructTuple
-                          "core::task::poll::Poll::Ready"
+                          "core::option::Option::None"
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
-                          ]
-                          [
-                            Value.StructTuple
-                              "core::option::Option::None"
-                              []
-                              [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
-                              []
-                          ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let _ := M.is_struct_tuple (| γ, "core::task::poll::Poll::Pending" |) in
-                      M.alloc (|
+                          [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
+                          []
+                      ]));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::task::poll::Poll::Pending" |) in
+                    Value.StructTuple
+                      "core::task::poll::Poll::Pending"
+                      []
+                      [
                         Ty.apply
-                          (Ty.path "core::task::poll::Poll")
+                          (Ty.path "core::option::Option")
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
-                          ],
-                        Value.StructTuple
-                          "core::task::poll::Poll::Pending"
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
-                          ]
-                          []
-                      |)))
-                ]
-              |)
+                          [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
+                      ]
+                      []))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1527,203 +1373,157 @@ Module task.
                 self
               |) in
             let f := M.alloc (| F, f |) in
-            M.read (|
-              M.match_operator (|
-                Ty.apply
-                  (Ty.path "core::task::poll::Poll")
-                  []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ]
-                  ],
-                self,
+            M.match_operator (|
+              Ty.apply
+                (Ty.path "core::task::poll::Poll")
+                []
                 [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::task::poll::Poll::Ready",
-                          0
-                        |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ0_0,
-                          "core::option::Option::Some",
-                          0
-                        |) in
-                      let γ2_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ1_0,
-                          "core::result::Result::Ok",
-                          0
-                        |) in
-                      let t := M.copy (| T, γ2_0 |) in
-                      M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ]
+                ],
+              self,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::task::poll::Poll::Ready",
+                        0
+                      |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ0_0,
+                        "core::option::Option::Some",
+                        0
+                      |) in
+                    let γ2_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ1_0,
+                        "core::result::Result::Ok",
+                        0
+                      |) in
+                    let t := M.copy (| T, γ2_0 |) in
+                    Value.StructTuple
+                      "core::task::poll::Poll::Ready"
+                      []
+                      [
                         Ty.apply
-                          (Ty.path "core::task::poll::Poll")
+                          (Ty.path "core::option::Option")
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ]
-                          ],
+                          [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ]
+                      ]
+                      [
                         Value.StructTuple
-                          "core::task::poll::Poll::Ready"
+                          "core::option::Option::Some"
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ]
-                          ]
+                          [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ]
                           [
                             Value.StructTuple
-                              "core::option::Option::Some"
+                              "core::result::Result::Ok"
                               []
-                              [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ]
+                              [ T; U ]
+                              [ M.read (| t |) ]
+                          ]
+                      ]));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::task::poll::Poll::Ready",
+                        0
+                      |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ0_0,
+                        "core::option::Option::Some",
+                        0
+                      |) in
+                    let γ2_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ1_0,
+                        "core::result::Result::Err",
+                        0
+                      |) in
+                    let e := M.copy (| E, γ2_0 |) in
+                    Value.StructTuple
+                      "core::task::poll::Poll::Ready"
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ]
+                      ]
+                      [
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          []
+                          [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ]
+                          [
+                            Value.StructTuple
+                              "core::result::Result::Err"
+                              []
+                              [ T; U ]
                               [
-                                Value.StructTuple
-                                  "core::result::Result::Ok"
-                                  []
-                                  [ T; U ]
-                                  [ M.read (| t |) ]
+                                M.call_closure (|
+                                  U,
+                                  M.get_trait_method (|
+                                    "core::ops::function::FnOnce",
+                                    F,
+                                    [],
+                                    [ Ty.tuple [ E ] ],
+                                    "call_once",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.read (| f |); Value.Tuple [ M.read (| e |) ] ]
+                                |)
                               ]
                           ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::task::poll::Poll::Ready",
-                          0
-                        |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ0_0,
-                          "core::option::Option::Some",
-                          0
-                        |) in
-                      let γ2_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ1_0,
-                          "core::result::Result::Err",
-                          0
-                        |) in
-                      let e := M.copy (| E, γ2_0 |) in
-                      M.alloc (|
+                      ]));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::task::poll::Poll::Ready",
+                        0
+                      |) in
+                    let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
+                    Value.StructTuple
+                      "core::task::poll::Poll::Ready"
+                      []
+                      [
                         Ty.apply
-                          (Ty.path "core::task::poll::Poll")
+                          (Ty.path "core::option::Option")
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ]
-                          ],
+                          [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ]
+                      ]
+                      [
                         Value.StructTuple
-                          "core::task::poll::Poll::Ready"
+                          "core::option::Option::None"
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ]
-                          ]
-                          [
-                            Value.StructTuple
-                              "core::option::Option::Some"
-                              []
-                              [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ]
-                              [
-                                Value.StructTuple
-                                  "core::result::Result::Err"
-                                  []
-                                  [ T; U ]
-                                  [
-                                    M.call_closure (|
-                                      U,
-                                      M.get_trait_method (|
-                                        "core::ops::function::FnOnce",
-                                        F,
-                                        [],
-                                        [ Ty.tuple [ E ] ],
-                                        "call_once",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| f |); Value.Tuple [ M.read (| e |) ] ]
-                                    |)
-                                  ]
-                              ]
-                          ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::task::poll::Poll::Ready",
-                          0
-                        |) in
-                      let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
-                      M.alloc (|
+                          [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ]
+                          []
+                      ]));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::task::poll::Poll::Pending" |) in
+                    Value.StructTuple
+                      "core::task::poll::Poll::Pending"
+                      []
+                      [
                         Ty.apply
-                          (Ty.path "core::task::poll::Poll")
+                          (Ty.path "core::option::Option")
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ]
-                          ],
-                        Value.StructTuple
-                          "core::task::poll::Poll::Ready"
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ]
-                          ]
-                          [
-                            Value.StructTuple
-                              "core::option::Option::None"
-                              []
-                              [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ]
-                              []
-                          ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let _ := M.is_struct_tuple (| γ, "core::task::poll::Poll::Pending" |) in
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::task::poll::Poll")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ]
-                          ],
-                        Value.StructTuple
-                          "core::task::poll::Poll::Pending"
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ]
-                          ]
-                          []
-                      |)))
-                ]
-              |)
+                          [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ]
+                      ]
+                      []))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1847,136 +1647,98 @@ Module task.
                   [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ],
                 self
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.apply
-                  (Ty.path "core::ops::control_flow::ControlFlow")
-                  []
-                  [
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.path "core::convert::Infallible"; E ];
-                    Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ]
-                  ],
-                self,
+            M.match_operator (|
+              Ty.apply
+                (Ty.path "core::ops::control_flow::ControlFlow")
+                []
                 [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::task::poll::Poll::Ready",
-                          0
-                        |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ0_0,
-                          "core::result::Result::Ok",
-                          0
-                        |) in
-                      let x := M.copy (| T, γ1_0 |) in
-                      M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "core::convert::Infallible"; E ];
+                  Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ]
+                ],
+              self,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::task::poll::Poll::Ready",
+                        0
+                      |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ0_0,
+                        "core::result::Result::Ok",
+                        0
+                      |) in
+                    let x := M.copy (| T, γ1_0 |) in
+                    Value.StructTuple
+                      "core::ops::control_flow::ControlFlow::Continue"
+                      []
+                      [
                         Ty.apply
-                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          (Ty.path "core::result::Result")
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.path "core::convert::Infallible"; E ];
-                            Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ]
-                          ],
+                          [ Ty.path "core::convert::Infallible"; E ];
+                        Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ]
+                      ]
+                      [
                         Value.StructTuple
-                          "core::ops::control_flow::ControlFlow::Continue"
+                          "core::task::poll::Poll::Ready"
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.path "core::convert::Infallible"; E ];
-                            Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ]
-                          ]
-                          [
-                            Value.StructTuple
-                              "core::task::poll::Poll::Ready"
-                              []
-                              [ T ]
-                              [ M.read (| x |) ]
-                          ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::task::poll::Poll::Ready",
-                          0
-                        |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ0_0,
-                          "core::result::Result::Err",
-                          0
-                        |) in
-                      let e := M.copy (| E, γ1_0 |) in
-                      M.alloc (|
+                          [ T ]
+                          [ M.read (| x |) ]
+                      ]));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::task::poll::Poll::Ready",
+                        0
+                      |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ0_0,
+                        "core::result::Result::Err",
+                        0
+                      |) in
+                    let e := M.copy (| E, γ1_0 |) in
+                    Value.StructTuple
+                      "core::ops::control_flow::ControlFlow::Break"
+                      []
+                      [
                         Ty.apply
-                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          (Ty.path "core::result::Result")
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.path "core::convert::Infallible"; E ];
-                            Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ]
-                          ],
+                          [ Ty.path "core::convert::Infallible"; E ];
+                        Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ]
+                      ]
+                      [
                         Value.StructTuple
-                          "core::ops::control_flow::ControlFlow::Break"
+                          "core::result::Result::Err"
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.path "core::convert::Infallible"; E ];
-                            Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ]
-                          ]
-                          [
-                            Value.StructTuple
-                              "core::result::Result::Err"
-                              []
-                              [ Ty.path "core::convert::Infallible"; E ]
-                              [ M.read (| e |) ]
-                          ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let _ := M.is_struct_tuple (| γ, "core::task::poll::Poll::Pending" |) in
-                      M.alloc (|
+                          [ Ty.path "core::convert::Infallible"; E ]
+                          [ M.read (| e |) ]
+                      ]));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::task::poll::Poll::Pending" |) in
+                    Value.StructTuple
+                      "core::ops::control_flow::ControlFlow::Continue"
+                      []
+                      [
                         Ty.apply
-                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          (Ty.path "core::result::Result")
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.path "core::convert::Infallible"; E ];
-                            Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ]
-                          ],
-                        Value.StructTuple
-                          "core::ops::control_flow::ControlFlow::Continue"
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.path "core::convert::Infallible"; E ];
-                            Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ]
-                          ]
-                          [ Value.StructTuple "core::task::poll::Poll::Pending" [] [ T ] [] ]
-                      |)))
-                ]
-              |)
+                          [ Ty.path "core::convert::Infallible"; E ];
+                        Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ]
+                      ]
+                      [ Value.StructTuple "core::task::poll::Poll::Pending" [] [ T ] [] ]))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2029,56 +1791,44 @@ Module task.
                   [ Ty.path "core::convert::Infallible"; E ],
                 x
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.apply
-                  (Ty.path "core::task::poll::Poll")
-                  []
-                  [ Ty.apply (Ty.path "core::result::Result") [] [ T; F ] ],
-                x,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::result::Result::Err",
-                          0
-                        |) in
-                      let e := M.copy (| E, γ0_0 |) in
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::task::poll::Poll")
-                          []
-                          [ Ty.apply (Ty.path "core::result::Result") [] [ T; F ] ],
+            M.match_operator (|
+              Ty.apply
+                (Ty.path "core::task::poll::Poll")
+                []
+                [ Ty.apply (Ty.path "core::result::Result") [] [ T; F ] ],
+              x,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
+                    let e := M.copy (| E, γ0_0 |) in
+                    Value.StructTuple
+                      "core::task::poll::Poll::Ready"
+                      []
+                      [ Ty.apply (Ty.path "core::result::Result") [] [ T; F ] ]
+                      [
                         Value.StructTuple
-                          "core::task::poll::Poll::Ready"
+                          "core::result::Result::Err"
                           []
-                          [ Ty.apply (Ty.path "core::result::Result") [] [ T; F ] ]
+                          [ T; F ]
                           [
-                            Value.StructTuple
-                              "core::result::Result::Err"
-                              []
-                              [ T; F ]
-                              [
-                                M.call_closure (|
-                                  F,
-                                  M.get_trait_method (|
-                                    "core::convert::From",
-                                    F,
-                                    [],
-                                    [ E ],
-                                    "from",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.read (| e |) ]
-                                |)
-                              ]
+                            M.call_closure (|
+                              F,
+                              M.get_trait_method (|
+                                "core::convert::From",
+                                F,
+                                [],
+                                [ E ],
+                                "from",
+                                [],
+                                []
+                              |),
+                              [ M.read (| e |) ]
+                            |)
                           ]
-                      |)))
-                ]
-              |)
+                      ]))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2266,225 +2016,163 @@ Module task.
                   ],
                 self
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.apply
-                  (Ty.path "core::ops::control_flow::ControlFlow")
-                  []
-                  [
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.path "core::convert::Infallible"; E ];
-                    Ty.apply
-                      (Ty.path "core::task::poll::Poll")
-                      []
-                      [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
-                  ],
-                self,
+            M.match_operator (|
+              Ty.apply
+                (Ty.path "core::ops::control_flow::ControlFlow")
+                []
                 [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::task::poll::Poll::Ready",
-                          0
-                        |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ0_0,
-                          "core::option::Option::Some",
-                          0
-                        |) in
-                      let γ2_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ1_0,
-                          "core::result::Result::Ok",
-                          0
-                        |) in
-                      let x := M.copy (| T, γ2_0 |) in
-                      M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "core::convert::Infallible"; E ];
+                  Ty.apply
+                    (Ty.path "core::task::poll::Poll")
+                    []
+                    [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
+                ],
+              self,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::task::poll::Poll::Ready",
+                        0
+                      |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ0_0,
+                        "core::option::Option::Some",
+                        0
+                      |) in
+                    let γ2_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ1_0,
+                        "core::result::Result::Ok",
+                        0
+                      |) in
+                    let x := M.copy (| T, γ2_0 |) in
+                    Value.StructTuple
+                      "core::ops::control_flow::ControlFlow::Continue"
+                      []
+                      [
                         Ty.apply
-                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          (Ty.path "core::result::Result")
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.path "core::convert::Infallible"; E ];
-                            Ty.apply
-                              (Ty.path "core::task::poll::Poll")
-                              []
-                              [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
-                          ],
+                          [ Ty.path "core::convert::Infallible"; E ];
+                        Ty.apply
+                          (Ty.path "core::task::poll::Poll")
+                          []
+                          [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
+                      ]
+                      [
                         Value.StructTuple
-                          "core::ops::control_flow::ControlFlow::Continue"
+                          "core::task::poll::Poll::Ready"
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.path "core::convert::Infallible"; E ];
-                            Ty.apply
-                              (Ty.path "core::task::poll::Poll")
-                              []
-                              [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
-                          ]
+                          [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
                           [
                             Value.StructTuple
-                              "core::task::poll::Poll::Ready"
+                              "core::option::Option::Some"
                               []
-                              [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
-                              [
-                                Value.StructTuple
-                                  "core::option::Option::Some"
-                                  []
-                                  [ T ]
-                                  [ M.read (| x |) ]
-                              ]
+                              [ T ]
+                              [ M.read (| x |) ]
                           ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::task::poll::Poll::Ready",
-                          0
-                        |) in
-                      let γ1_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ0_0,
-                          "core::option::Option::Some",
-                          0
-                        |) in
-                      let γ2_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ1_0,
-                          "core::result::Result::Err",
-                          0
-                        |) in
-                      let e := M.copy (| E, γ2_0 |) in
-                      M.alloc (|
+                      ]));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::task::poll::Poll::Ready",
+                        0
+                      |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ0_0,
+                        "core::option::Option::Some",
+                        0
+                      |) in
+                    let γ2_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ1_0,
+                        "core::result::Result::Err",
+                        0
+                      |) in
+                    let e := M.copy (| E, γ2_0 |) in
+                    Value.StructTuple
+                      "core::ops::control_flow::ControlFlow::Break"
+                      []
+                      [
                         Ty.apply
-                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          (Ty.path "core::result::Result")
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.path "core::convert::Infallible"; E ];
-                            Ty.apply
-                              (Ty.path "core::task::poll::Poll")
-                              []
-                              [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
-                          ],
-                        Value.StructTuple
-                          "core::ops::control_flow::ControlFlow::Break"
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.path "core::convert::Infallible"; E ];
-                            Ty.apply
-                              (Ty.path "core::task::poll::Poll")
-                              []
-                              [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
-                          ]
-                          [
-                            Value.StructTuple
-                              "core::result::Result::Err"
-                              []
-                              [ Ty.path "core::convert::Infallible"; E ]
-                              [ M.read (| e |) ]
-                          ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::task::poll::Poll::Ready",
-                          0
-                        |) in
-                      let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
-                      M.alloc (|
+                          [ Ty.path "core::convert::Infallible"; E ];
                         Ty.apply
-                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          (Ty.path "core::task::poll::Poll")
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.path "core::convert::Infallible"; E ];
-                            Ty.apply
-                              (Ty.path "core::task::poll::Poll")
-                              []
-                              [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
-                          ],
+                          [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
+                      ]
+                      [
                         Value.StructTuple
-                          "core::ops::control_flow::ControlFlow::Continue"
+                          "core::result::Result::Err"
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.path "core::convert::Infallible"; E ];
-                            Ty.apply
-                              (Ty.path "core::task::poll::Poll")
-                              []
-                              [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
-                          ]
-                          [
-                            Value.StructTuple
-                              "core::task::poll::Poll::Ready"
-                              []
-                              [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
-                              [ Value.StructTuple "core::option::Option::None" [] [ T ] [] ]
-                          ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let _ := M.is_struct_tuple (| γ, "core::task::poll::Poll::Pending" |) in
-                      M.alloc (|
+                          [ Ty.path "core::convert::Infallible"; E ]
+                          [ M.read (| e |) ]
+                      ]));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::task::poll::Poll::Ready",
+                        0
+                      |) in
+                    let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
+                    Value.StructTuple
+                      "core::ops::control_flow::ControlFlow::Continue"
+                      []
+                      [
                         Ty.apply
-                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          (Ty.path "core::result::Result")
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.path "core::convert::Infallible"; E ];
-                            Ty.apply
-                              (Ty.path "core::task::poll::Poll")
-                              []
-                              [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
-                          ],
+                          [ Ty.path "core::convert::Infallible"; E ];
+                        Ty.apply
+                          (Ty.path "core::task::poll::Poll")
+                          []
+                          [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
+                      ]
+                      [
                         Value.StructTuple
-                          "core::ops::control_flow::ControlFlow::Continue"
+                          "core::task::poll::Poll::Ready"
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.path "core::convert::Infallible"; E ];
-                            Ty.apply
-                              (Ty.path "core::task::poll::Poll")
-                              []
-                              [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
-                          ]
-                          [
-                            Value.StructTuple
-                              "core::task::poll::Poll::Pending"
-                              []
-                              [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
-                              []
-                          ]
-                      |)))
-                ]
-              |)
+                          [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
+                          [ Value.StructTuple "core::option::Option::None" [] [ T ] [] ]
+                      ]));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::task::poll::Poll::Pending" |) in
+                    Value.StructTuple
+                      "core::ops::control_flow::ControlFlow::Continue"
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "core::convert::Infallible"; E ];
+                        Ty.apply
+                          (Ty.path "core::task::poll::Poll")
+                          []
+                          [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
+                      ]
+                      [
+                        Value.StructTuple
+                          "core::task::poll::Poll::Pending"
+                          []
+                          [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
+                          []
+                      ]))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2542,77 +2230,60 @@ Module task.
                   [ Ty.path "core::convert::Infallible"; E ],
                 x
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.apply
-                  (Ty.path "core::task::poll::Poll")
-                  []
-                  [
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::result::Result") [] [ T; F ] ]
-                  ],
-                x,
+            M.match_operator (|
+              Ty.apply
+                (Ty.path "core::task::poll::Poll")
+                []
                 [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::result::Result::Err",
-                          0
-                        |) in
-                      let e := M.copy (| E, γ0_0 |) in
-                      M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::result::Result") [] [ T; F ] ]
+                ],
+              x,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
+                    let e := M.copy (| E, γ0_0 |) in
+                    Value.StructTuple
+                      "core::task::poll::Poll::Ready"
+                      []
+                      [
                         Ty.apply
-                          (Ty.path "core::task::poll::Poll")
+                          (Ty.path "core::option::Option")
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [ Ty.apply (Ty.path "core::result::Result") [] [ T; F ] ]
-                          ],
+                          [ Ty.apply (Ty.path "core::result::Result") [] [ T; F ] ]
+                      ]
+                      [
                         Value.StructTuple
-                          "core::task::poll::Poll::Ready"
+                          "core::option::Option::Some"
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [ Ty.apply (Ty.path "core::result::Result") [] [ T; F ] ]
-                          ]
+                          [ Ty.apply (Ty.path "core::result::Result") [] [ T; F ] ]
                           [
                             Value.StructTuple
-                              "core::option::Option::Some"
+                              "core::result::Result::Err"
                               []
-                              [ Ty.apply (Ty.path "core::result::Result") [] [ T; F ] ]
+                              [ T; F ]
                               [
-                                Value.StructTuple
-                                  "core::result::Result::Err"
-                                  []
-                                  [ T; F ]
-                                  [
-                                    M.call_closure (|
-                                      F,
-                                      M.get_trait_method (|
-                                        "core::convert::From",
-                                        F,
-                                        [],
-                                        [ E ],
-                                        "from",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| e |) ]
-                                    |)
-                                  ]
+                                M.call_closure (|
+                                  F,
+                                  M.get_trait_method (|
+                                    "core::convert::From",
+                                    F,
+                                    [],
+                                    [ E ],
+                                    "from",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.read (| e |) ]
+                                |)
                               ]
                           ]
-                      |)))
-                ]
-              |)
+                      ]))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

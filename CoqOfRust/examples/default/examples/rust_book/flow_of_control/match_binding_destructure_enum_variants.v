@@ -40,28 +40,28 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   match ε, τ, α with
   | [], [], [] =>
     ltac:(M.monadic
-      (M.read (|
-        M.match_operator (|
-          Ty.tuple [],
-          M.alloc (|
+      (M.match_operator (|
+        Ty.tuple [],
+        M.alloc (|
+          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
+          M.call_closure (|
             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
-            M.call_closure (|
-              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
-              M.get_function (| "match_binding_destructure_enum_variants::some_number", [], [] |),
-              []
-            |)
-          |),
-          [
-            fun γ =>
-              ltac:(M.monadic
-                (let γ0_0 :=
-                  M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
-                let n := M.copy (| Ty.path "u32", γ0_0 |) in
-                let _ :=
-                  is_constant_or_break_match (|
-                    M.read (| γ0_0 |),
-                    Value.Integer IntegerKind.U32 42
-                  |) in
+            M.get_function (| "match_binding_destructure_enum_variants::some_number", [], [] |),
+            []
+          |)
+        |),
+        [
+          fun γ =>
+            ltac:(M.monadic
+              (let γ0_0 :=
+                M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+              let n := M.copy (| Ty.path "u32", γ0_0 |) in
+              let _ :=
+                is_constant_or_break_match (|
+                  M.read (| γ0_0 |),
+                  Value.Integer IntegerKind.U32 42
+                |) in
+              M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.call_closure (|
                     Ty.tuple [],
@@ -128,12 +128,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       |)
                     ]
                   |) in
-                M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-            fun γ =>
-              ltac:(M.monadic
-                (let γ0_0 :=
-                  M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
-                let n := M.copy (| Ty.path "u32", γ0_0 |) in
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)
+              |)));
+          fun γ =>
+            ltac:(M.monadic
+              (let γ0_0 :=
+                M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+              let n := M.copy (| Ty.path "u32", γ0_0 |) in
+              M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.call_closure (|
                     Ty.tuple [],
@@ -201,10 +203,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       |)
                     ]
                   |) in
-                M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-          ]
-        |)
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)
+              |)));
+          fun γ => ltac:(M.monadic (Value.Tuple []))
+        ]
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

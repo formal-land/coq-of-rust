@@ -36,12 +36,10 @@ Module ptr.
                 Ty.apply (Ty.path "&") [] [ Ty.path "core::ptr::alignment::Alignment" ],
                 self
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.path "core::ptr::alignment::Alignment",
-                Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
-              |)
+            M.match_operator (|
+              Ty.path "core::ptr::alignment::Alignment",
+              Value.DeclaredButUndefined,
+              [ fun γ => ltac:(M.monadic (M.read (| M.deref (| M.read (| self |) |) |))) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -144,12 +142,10 @@ Module ptr.
                 Ty.apply (Ty.path "&") [] [ Ty.path "core::ptr::alignment::Alignment" ],
                 self
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.tuple [],
-                Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
-              |)
+            M.match_operator (|
+              Ty.tuple [],
+              Value.DeclaredButUndefined,
+              [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -178,28 +174,26 @@ Module ptr.
       | [], [], [ a ] =>
         ltac:(M.monadic
           (let a := M.alloc (| Ty.path "core::ptr::alignment::Alignment", a |) in
-          M.read (|
-            M.match_operator (|
-              Ty.path "bool",
-              a,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::ptr::alignment::Alignment",
-                        0
-                      |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ0_0,
-                        "core::ptr::alignment::AlignmentEnum::_Align1Shl0"
-                      |) in
-                    M.alloc (| Ty.path "bool", Value.Bool true |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
-              ]
-            |)
+          M.match_operator (|
+            Ty.path "bool",
+            a,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ,
+                      "core::ptr::alignment::Alignment",
+                      0
+                    |) in
+                  let _ :=
+                    M.is_struct_tuple (|
+                      γ0_0,
+                      "core::ptr::alignment::AlignmentEnum::_Align1Shl0"
+                    |) in
+                  Value.Bool true));
+              fun γ => ltac:(M.monadic (Value.Bool false))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -279,69 +273,55 @@ Module ptr.
         | [], [], [ align ] =>
           ltac:(M.monadic
             (let align := M.alloc (| Ty.path "usize", align |) in
-            M.read (|
-              M.match_operator (|
-                Ty.apply
-                  (Ty.path "core::option::Option")
-                  []
-                  [ Ty.path "core::ptr::alignment::Alignment" ],
-                M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ :=
-                        M.use
-                          (M.alloc (|
+            M.match_operator (|
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.path "core::ptr::alignment::Alignment" ],
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          Ty.path "bool",
+                          M.call_closure (|
                             Ty.path "bool",
-                            M.call_closure (|
-                              Ty.path "bool",
-                              M.get_associated_function (|
-                                Ty.path "usize",
-                                "is_power_of_two",
-                                [],
-                                []
-                              |),
-                              [ M.read (| align |) ]
-                            |)
-                          |)) in
-                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::option::Option")
-                          []
-                          [ Ty.path "core::ptr::alignment::Alignment" ],
-                        Value.StructTuple
-                          "core::option::Option::Some"
-                          []
-                          [ Ty.path "core::ptr::alignment::Alignment" ]
-                          [
-                            M.call_closure (|
-                              Ty.path "core::ptr::alignment::Alignment",
-                              M.get_associated_function (|
-                                Ty.path "core::ptr::alignment::Alignment",
-                                "new_unchecked",
-                                [],
-                                []
-                              |),
-                              [ M.read (| align |) ]
-                            |)
-                          ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::option::Option")
-                          []
-                          [ Ty.path "core::ptr::alignment::Alignment" ],
-                        Value.StructTuple
-                          "core::option::Option::None"
-                          []
-                          [ Ty.path "core::ptr::alignment::Alignment" ]
-                          []
-                      |)))
-                ]
-              |)
+                            M.get_associated_function (|
+                              Ty.path "usize",
+                              "is_power_of_two",
+                              [],
+                              []
+                            |),
+                            [ M.read (| align |) ]
+                          |)
+                        |)) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    Value.StructTuple
+                      "core::option::Option::Some"
+                      []
+                      [ Ty.path "core::ptr::alignment::Alignment" ]
+                      [
+                        M.call_closure (|
+                          Ty.path "core::ptr::alignment::Alignment",
+                          M.get_associated_function (|
+                            Ty.path "core::ptr::alignment::Alignment",
+                            "new_unchecked",
+                            [],
+                            []
+                          |),
+                          [ M.read (| align |) ]
+                        |)
+                      ]));
+                fun γ =>
+                  ltac:(M.monadic
+                    (Value.StructTuple
+                      "core::option::Option::None"
+                      []
+                      [ Ty.path "core::ptr::alignment::Alignment" ]
+                      []))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -370,25 +350,24 @@ Module ptr.
             (let align := M.alloc (| Ty.path "usize", align |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.read (|
-                  M.match_operator (|
-                    Ty.tuple [],
-                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
+                M.match_operator (|
+                  Ty.tuple [],
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              Ty.path "bool",
+                              M.call_closure (|
                                 Ty.path "bool",
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
-                                  []
-                                |)
-                              |)) in
-                          let _ :=
-                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                                M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
+                                []
+                              |)
+                            |)) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.read (|
                           let~ _ : Ty.tuple [] :=
                             M.call_closure (|
                               Ty.tuple [],
@@ -400,10 +379,10 @@ Module ptr.
                               |),
                               [ M.read (| align |) ]
                             |) in
-                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                    ]
-                  |)
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                        |)));
+                    fun γ => ltac:(M.monadic (Value.Tuple []))
+                  ]
                 |) in
               M.alloc (|
                 Ty.path "core::ptr::alignment::Alignment",
@@ -575,49 +554,47 @@ Module ptr.
           ltac:(M.monadic
             (let a := M.alloc (| Ty.path "core::ptr::alignment::Alignment", a |) in
             let b := M.alloc (| Ty.path "core::ptr::alignment::Alignment", b |) in
-            M.read (|
-              M.match_operator (|
-                Ty.path "core::ptr::alignment::Alignment",
-                M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ :=
-                        M.use
-                          (M.alloc (|
+            M.match_operator (|
+              Ty.path "core::ptr::alignment::Alignment",
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          Ty.path "bool",
+                          M.call_closure (|
                             Ty.path "bool",
-                            M.call_closure (|
-                              Ty.path "bool",
-                              BinOp.gt,
-                              [
-                                M.call_closure (|
-                                  Ty.path "usize",
-                                  M.get_associated_function (|
-                                    Ty.path "core::ptr::alignment::Alignment",
-                                    "as_usize",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.read (| a |) ]
-                                |);
-                                M.call_closure (|
-                                  Ty.path "usize",
-                                  M.get_associated_function (|
-                                    Ty.path "core::ptr::alignment::Alignment",
-                                    "as_usize",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.read (| b |) ]
-                                |)
-                              ]
-                            |)
-                          |)) in
-                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      a));
-                  fun γ => ltac:(M.monadic b)
-                ]
-              |)
+                            BinOp.gt,
+                            [
+                              M.call_closure (|
+                                Ty.path "usize",
+                                M.get_associated_function (|
+                                  Ty.path "core::ptr::alignment::Alignment",
+                                  "as_usize",
+                                  [],
+                                  []
+                                |),
+                                [ M.read (| a |) ]
+                              |);
+                              M.call_closure (|
+                                Ty.path "usize",
+                                M.get_associated_function (|
+                                  Ty.path "core::ptr::alignment::Alignment",
+                                  "as_usize",
+                                  [],
+                                  []
+                                |),
+                                [ M.read (| b |) ]
+                              |)
+                            ]
+                          |)
+                        |)) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.read (| a |)));
+                fun γ => ltac:(M.monadic (M.read (| b |)))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

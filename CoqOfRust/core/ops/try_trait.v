@@ -313,7 +313,7 @@ Module ops.
           ltac:(M.monadic
             (let never :=
               M.alloc (| Ty.path "core::ops::try_trait::NeverShortCircuitResidual", never |) in
-            M.never_to_any (| M.read (| M.match_operator (| Ty.path "never", never, [] |) |) |)))
+            M.never_to_any (| M.match_operator (| Ty.path "never", never, [] |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       

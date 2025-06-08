@@ -38,84 +38,67 @@ Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
             self
           |) in
         let f := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
-        M.read (|
-          M.match_operator (|
-            Ty.apply
-              (Ty.path "core::result::Result")
-              []
-              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-            self,
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
-                  let _ := M.is_struct_tuple (| γ, "wrapping_errors::DoubleError::EmptyVec" |) in
+        M.match_operator (|
+          Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+          self,
+          [
+            fun γ =>
+              ltac:(M.monadic
+                (let γ := M.read (| γ |) in
+                let _ := M.is_struct_tuple (| γ, "wrapping_errors::DoubleError::EmptyVec" |) in
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Formatter",
+                    "write_str",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "EmptyVec" |) |) |)
+                  ]
+                |)));
+            fun γ =>
+              ltac:(M.monadic
+                (let γ := M.read (| γ |) in
+                let γ1_0 :=
+                  M.SubPointer.get_struct_tuple_field (|
+                    γ,
+                    "wrapping_errors::DoubleError::Parse",
+                    0
+                  |) in
+                let __self_0 :=
                   M.alloc (|
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                    M.call_closure (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.get_associated_function (|
-                        Ty.path "core::fmt::Formatter",
-                        "write_str",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "EmptyVec" |) |) |)
-                      ]
-                    |)
-                  |)));
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ := M.read (| γ |) in
-                  let γ1_0 :=
-                    M.SubPointer.get_struct_tuple_field (|
-                      γ,
-                      "wrapping_errors::DoubleError::Parse",
-                      0
-                    |) in
-                  let __self_0 :=
-                    M.alloc (|
-                      Ty.apply (Ty.path "&") [] [ Ty.path "core::num::error::ParseIntError" ],
-                      γ1_0
-                    |) in
-                  M.alloc (|
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                    M.call_closure (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.get_associated_function (|
-                        Ty.path "core::fmt::Formatter",
-                        "debug_tuple_field1_finish",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Parse" |) |) |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                          |))
-                      ]
-                    |)
-                  |)))
-            ]
-          |)
+                    Ty.apply (Ty.path "&") [] [ Ty.path "core::num::error::ParseIntError" ],
+                    γ1_0
+                  |) in
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Formatter",
+                    "debug_tuple_field1_finish",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Parse" |) |) |);
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                      |))
+                  ]
+                |)))
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -157,123 +140,101 @@ Module Impl_core_fmt_Display_for_wrapping_errors_DoubleError.
             self
           |) in
         let f := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
-        M.read (|
-          M.match_operator (|
-            Ty.apply
-              (Ty.path "core::result::Result")
-              []
-              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-            M.deref (| M.read (| self |) |),
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let _ := M.is_struct_tuple (| γ, "wrapping_errors::DoubleError::EmptyVec" |) in
-                  M.alloc (|
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+        M.match_operator (|
+          Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+          M.deref (| M.read (| self |) |),
+          [
+            fun γ =>
+              ltac:(M.monadic
+                (let _ := M.is_struct_tuple (| γ, "wrapping_errors::DoubleError::EmptyVec" |) in
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Formatter",
+                    "write_fmt",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                     M.call_closure (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                      Ty.path "core::fmt::Arguments",
                       M.get_associated_function (|
-                        Ty.path "core::fmt::Formatter",
-                        "write_fmt",
-                        [],
+                        Ty.path "core::fmt::Arguments",
+                        "new_const",
+                        [ Value.Integer IntegerKind.Usize 1 ],
                         []
                       |),
                       [
-                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                        M.call_closure (|
-                          Ty.path "core::fmt::Arguments",
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::Arguments",
-                            "new_const",
-                            [ Value.Integer IntegerKind.Usize 1 ],
-                            []
-                          |),
-                          [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.alloc (|
-                                    Ty.apply
-                                      (Ty.path "array")
-                                      [ Value.Integer IntegerKind.Usize 1 ]
-                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                    Value.Array
-                                      [ mk_str (| "please use a vector with at least one element" |)
-                                      ]
-                                  |)
-                                |)
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                Value.Array
+                                  [ mk_str (| "please use a vector with at least one element" |) ]
                               |)
                             |)
-                          ]
+                          |)
                         |)
                       ]
                     |)
-                  |)));
-              fun γ =>
-                ltac:(M.monadic
-                  (let _ := M.is_struct_tuple (| γ, "wrapping_errors::DoubleError::Parse" |) in
-                  M.alloc (|
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                  ]
+                |)));
+            fun γ =>
+              ltac:(M.monadic
+                (let _ := M.is_struct_tuple (| γ, "wrapping_errors::DoubleError::Parse" |) in
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Formatter",
+                    "write_fmt",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                     M.call_closure (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                      Ty.path "core::fmt::Arguments",
                       M.get_associated_function (|
-                        Ty.path "core::fmt::Formatter",
-                        "write_fmt",
-                        [],
+                        Ty.path "core::fmt::Arguments",
+                        "new_const",
+                        [ Value.Integer IntegerKind.Usize 1 ],
                         []
                       |),
                       [
-                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                        M.call_closure (|
-                          Ty.path "core::fmt::Arguments",
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::Arguments",
-                            "new_const",
-                            [ Value.Integer IntegerKind.Usize 1 ],
-                            []
-                          |),
-                          [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.alloc (|
-                                    Ty.apply
-                                      (Ty.path "array")
-                                      [ Value.Integer IntegerKind.Usize 1 ]
-                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                    Value.Array
-                                      [
-                                        mk_str (|
-                                          "the provided string could not be parsed as int"
-                                        |)
-                                      ]
-                                  |)
-                                |)
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                Value.Array
+                                  [ mk_str (| "the provided string could not be parsed as int" |) ]
                               |)
                             |)
-                          ]
+                          |)
                         |)
                       ]
                     |)
-                  |)))
-            ]
-          |)
+                  ]
+                |)))
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -310,60 +271,44 @@ Module Impl_core_error_Error_for_wrapping_errors_DoubleError.
             Ty.apply (Ty.path "&") [] [ Ty.path "wrapping_errors::DoubleError" ],
             self
           |) in
-        M.read (|
-          M.match_operator (|
-            Ty.apply
-              (Ty.path "core::option::Option")
-              []
-              [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ] ],
-            M.deref (| M.read (| self |) |),
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let _ := M.is_struct_tuple (| γ, "wrapping_errors::DoubleError::EmptyVec" |) in
+        M.match_operator (|
+          Ty.apply
+            (Ty.path "core::option::Option")
+            []
+            [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ] ],
+          M.deref (| M.read (| self |) |),
+          [
+            fun γ =>
+              ltac:(M.monadic
+                (let _ := M.is_struct_tuple (| γ, "wrapping_errors::DoubleError::EmptyVec" |) in
+                Value.StructTuple
+                  "core::option::Option::None"
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ] ]
+                  []));
+            fun γ =>
+              ltac:(M.monadic
+                (let γ0_0 :=
+                  M.SubPointer.get_struct_tuple_field (|
+                    γ,
+                    "wrapping_errors::DoubleError::Parse",
+                    0
+                  |) in
+                let e :=
                   M.alloc (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
-                      ],
-                    Value.StructTuple
-                      "core::option::Option::None"
-                      []
-                      [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ] ]
-                      []
-                  |)));
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ0_0 :=
-                    M.SubPointer.get_struct_tuple_field (|
-                      γ,
-                      "wrapping_errors::DoubleError::Parse",
-                      0
-                    |) in
-                  let e :=
-                    M.alloc (|
-                      Ty.apply (Ty.path "&") [] [ Ty.path "core::num::error::ParseIntError" ],
-                      γ0_0
-                    |) in
-                  M.alloc (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
-                      ],
-                    Value.StructTuple
-                      "core::option::Option::Some"
-                      []
-                      [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ] ]
-                      [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| e |) |) |))
-                      ]
-                  |)))
-            ]
-          |)
+                    Ty.apply (Ty.path "&") [] [ Ty.path "core::num::error::ParseIntError" ],
+                    γ0_0
+                  |) in
+                Value.StructTuple
+                  "core::option::Option::Some"
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ] ]
+                  [
+                    (* Unsize *)
+                    M.pointer_coercion
+                      (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| e |) |) |))
+                  ]))
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -425,397 +370,364 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
             [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ],
           vec
         |) in
-      M.read (|
-        M.catch_return
-          (Ty.apply
-            (Ty.path "core::result::Result")
-            []
-            [ Ty.path "i32"; Ty.path "wrapping_errors::DoubleError" ]) (|
-          ltac:(M.monadic
-            (M.alloc (|
-              Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [ Ty.path "i32"; Ty.path "wrapping_errors::DoubleError" ],
-              M.read (|
-                let~ first :
-                    Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
-                  M.read (|
-                    M.match_operator (|
-                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                      M.alloc (|
+      M.catch_return
+        (Ty.apply
+          (Ty.path "core::result::Result")
+          []
+          [ Ty.path "i32"; Ty.path "wrapping_errors::DoubleError" ]) (|
+        ltac:(M.monadic
+          (M.read (|
+            let~ first :
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
+              M.match_operator (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::ops::control_flow::ControlFlow")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "core::convert::Infallible";
+                          Ty.path "wrapping_errors::DoubleError"
+                        ];
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                    ],
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::ops::control_flow::ControlFlow")
+                      []
+                      [
                         Ty.apply
-                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.path "core::convert::Infallible";
+                            Ty.path "wrapping_errors::DoubleError"
+                          ];
+                        Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ],
+                    M.get_trait_method (|
+                      "core::ops::try_trait::Try",
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
+                          Ty.path "wrapping_errors::DoubleError"
+                        ],
+                      [],
+                      [],
+                      "branch",
+                      [],
+                      []
+                    |),
+                    [
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
                           []
                           [
                             Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [
-                                Ty.path "core::convert::Infallible";
-                                Ty.path "wrapping_errors::DoubleError"
-                              ];
-                            Ty.apply
                               (Ty.path "&")
                               []
-                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
+                            Ty.path "wrapping_errors::DoubleError"
                           ],
-                        M.call_closure (|
+                        M.get_associated_function (|
                           Ty.apply
-                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            (Ty.path "core::option::Option")
                             []
                             [
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [
-                                  Ty.path "core::convert::Infallible";
-                                  Ty.path "wrapping_errors::DoubleError"
-                                ];
                               Ty.apply
                                 (Ty.path "&")
                                 []
                                 [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                             ],
-                          M.get_trait_method (|
-                            "core::ops::try_trait::Try",
+                          "ok_or",
+                          [],
+                          [ Ty.path "wrapping_errors::DoubleError" ]
+                        |),
+                        [
+                          M.call_closure (|
                             Ty.apply
-                              (Ty.path "core::result::Result")
+                              (Ty.path "core::option::Option")
                               []
                               [
                                 Ty.apply
                                   (Ty.path "&")
                                   []
-                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
-                                Ty.path "wrapping_errors::DoubleError"
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                               ],
-                            [],
-                            [],
-                            "branch",
-                            [],
-                            []
-                          |),
-                          [
-                            M.call_closure (|
+                            M.get_associated_function (|
                               Ty.apply
-                                (Ty.path "core::result::Result")
+                                (Ty.path "slice")
                                 []
-                                [
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
-                                  Ty.path "wrapping_errors::DoubleError"
-                                ],
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "core::option::Option")
-                                  []
-                                  [
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                              "first",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.call_closure (|
                                     Ty.apply
                                       (Ty.path "&")
                                       []
-                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                  ],
-                                "ok_or",
-                                [],
-                                [ Ty.path "wrapping_errors::DoubleError" ]
-                              |),
-                              [
-                                M.call_closure (|
-                                  Ty.apply
-                                    (Ty.path "core::option::Option")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                    ],
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "slice")
-                                      []
-                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                    "first",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (|
-                                        M.call_closure (|
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "slice")
-                                                []
-                                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                            ],
-                                          M.get_trait_method (|
-                                            "core::ops::deref::Deref",
-                                            Ty.apply
-                                              (Ty.path "alloc::vec::Vec")
-                                              []
-                                              [
-                                                Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
-                                                Ty.path "alloc::alloc::Global"
-                                              ],
-                                            [],
-                                            [],
-                                            "deref",
-                                            [],
-                                            []
-                                          |),
-                                          [ M.borrow (| Pointer.Kind.Ref, vec |) ]
-                                        |)
-                                      |)
-                                    |)
-                                  ]
-                                |);
-                                Value.StructTuple "wrapping_errors::DoubleError::EmptyVec" [] [] []
-                              ]
-                            |)
-                          ]
-                        |)
-                      |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::ops::control_flow::ControlFlow::Break",
-                                0
-                              |) in
-                            let residual :=
-                              M.copy (|
-                                Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  []
-                                  [
-                                    Ty.path "core::convert::Infallible";
-                                    Ty.path "wrapping_errors::DoubleError"
-                                  ],
-                                γ0_0
-                              |) in
-                            M.alloc (|
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    M.call_closure (|
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [ Ty.path "i32"; Ty.path "wrapping_errors::DoubleError" ],
-                                      M.get_trait_method (|
-                                        "core::ops::try_trait::FromResidual",
+                                      [
                                         Ty.apply
-                                          (Ty.path "core::result::Result")
+                                          (Ty.path "slice")
                                           []
-                                          [ Ty.path "i32"; Ty.path "wrapping_errors::DoubleError" ],
-                                        [],
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            []
-                                            [
-                                              Ty.path "core::convert::Infallible";
-                                              Ty.path "wrapping_errors::DoubleError"
-                                            ]
-                                        ],
-                                        "from_residual",
-                                        [],
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                      ],
+                                    M.get_trait_method (|
+                                      "core::ops::deref::Deref",
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
                                         []
-                                      |),
-                                      [ M.read (| residual |) ]
-                                    |)
+                                        [
+                                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                                          Ty.path "alloc::alloc::Global"
+                                        ],
+                                      [],
+                                      [],
+                                      "deref",
+                                      [],
+                                      []
+                                    |),
+                                    [ M.borrow (| Pointer.Kind.Ref, vec |) ]
                                   |)
                                 |)
                               |)
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::ops::control_flow::ControlFlow::Continue",
-                                0
-                              |) in
-                            let val :=
-                              M.copy (|
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                γ0_0
-                              |) in
-                            val))
-                      ]
-                    |)
-                  |) in
-                let~ parsed : Ty.path "i32" :=
-                  M.read (|
-                    M.match_operator (|
-                      Ty.path "i32",
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::ops::control_flow::ControlFlow")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [
-                                Ty.path "core::convert::Infallible";
-                                Ty.path "core::num::error::ParseIntError"
-                              ];
-                            Ty.path "i32"
-                          ],
-                        M.call_closure (|
+                            ]
+                          |);
+                          Value.StructTuple "wrapping_errors::DoubleError::EmptyVec" [] [] []
+                        ]
+                      |)
+                    ]
+                  |)
+                |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 :=
+                        M.SubPointer.get_struct_tuple_field (|
+                          γ,
+                          "core::ops::control_flow::ControlFlow::Break",
+                          0
+                        |) in
+                      let residual :=
+                        M.copy (|
                           Ty.apply
-                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            (Ty.path "core::result::Result")
                             []
                             [
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [
-                                  Ty.path "core::convert::Infallible";
-                                  Ty.path "core::num::error::ParseIntError"
-                                ];
-                              Ty.path "i32"
+                              Ty.path "core::convert::Infallible";
+                              Ty.path "wrapping_errors::DoubleError"
                             ],
-                          M.get_trait_method (|
-                            "core::ops::try_trait::Try",
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
-                            [],
-                            [],
-                            "branch",
-                            [],
-                            []
-                          |),
-                          [
+                          γ0_0
+                        |) in
+                      M.never_to_any (|
+                        M.read (|
+                          M.return_ (|
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
-                              M.get_associated_function (|
-                                Ty.path "str",
-                                "parse",
-                                [],
-                                [ Ty.path "i32" ]
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (| M.read (| M.deref (| M.read (| first |) |) |) |)
-                                |)
-                              ]
-                            |)
-                          ]
-                        |)
-                      |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::ops::control_flow::ControlFlow::Break",
-                                0
-                              |) in
-                            let residual :=
-                              M.copy (|
+                                [ Ty.path "i32"; Ty.path "wrapping_errors::DoubleError" ],
+                              M.get_trait_method (|
+                                "core::ops::try_trait::FromResidual",
                                 Ty.apply
                                   (Ty.path "core::result::Result")
                                   []
-                                  [
-                                    Ty.path "core::convert::Infallible";
-                                    Ty.path "core::num::error::ParseIntError"
-                                  ],
-                                γ0_0
-                              |) in
-                            M.alloc (|
-                              Ty.path "i32",
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    M.call_closure (|
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [ Ty.path "i32"; Ty.path "wrapping_errors::DoubleError" ],
-                                      M.get_trait_method (|
-                                        "core::ops::try_trait::FromResidual",
-                                        Ty.apply
-                                          (Ty.path "core::result::Result")
-                                          []
-                                          [ Ty.path "i32"; Ty.path "wrapping_errors::DoubleError" ],
-                                        [],
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            []
-                                            [
-                                              Ty.path "core::convert::Infallible";
-                                              Ty.path "core::num::error::ParseIntError"
-                                            ]
-                                        ],
-                                        "from_residual",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| residual |) ]
-                                    |)
-                                  |)
-                                |)
-                              |)
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::ops::control_flow::ControlFlow::Continue",
-                                0
-                              |) in
-                            let val := M.copy (| Ty.path "i32", γ0_0 |) in
-                            val))
-                      ]
-                    |)
-                  |) in
+                                  [ Ty.path "i32"; Ty.path "wrapping_errors::DoubleError" ],
+                                [],
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "wrapping_errors::DoubleError"
+                                    ]
+                                ],
+                                "from_residual",
+                                [],
+                                []
+                              |),
+                              [ M.read (| residual |) ]
+                            |)
+                          |)
+                        |)
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 :=
+                        M.SubPointer.get_struct_tuple_field (|
+                          γ,
+                          "core::ops::control_flow::ControlFlow::Continue",
+                          0
+                        |) in
+                      let val :=
+                        M.copy (|
+                          Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                          γ0_0
+                        |) in
+                      M.read (| val |)))
+                ]
+              |) in
+            let~ parsed : Ty.path "i32" :=
+              M.match_operator (|
+                Ty.path "i32",
                 M.alloc (|
                   Ty.apply
-                    (Ty.path "core::result::Result")
+                    (Ty.path "core::ops::control_flow::ControlFlow")
                     []
-                    [ Ty.path "i32"; Ty.path "wrapping_errors::DoubleError" ],
-                  Value.StructTuple
-                    "core::result::Result::Ok"
-                    []
-                    [ Ty.path "i32"; Ty.path "wrapping_errors::DoubleError" ]
+                    [
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "core::convert::Infallible";
+                          Ty.path "core::num::error::ParseIntError"
+                        ];
+                      Ty.path "i32"
+                    ],
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::ops::control_flow::ControlFlow")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.path "core::convert::Infallible";
+                            Ty.path "core::num::error::ParseIntError"
+                          ];
+                        Ty.path "i32"
+                      ],
+                    M.get_trait_method (|
+                      "core::ops::try_trait::Try",
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
+                      [],
+                      [],
+                      "branch",
+                      [],
+                      []
+                    |),
                     [
                       M.call_closure (|
-                        Ty.path "i32",
-                        BinOp.Wrap.mul,
-                        [ Value.Integer IntegerKind.I32 2; M.read (| parsed |) ]
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
+                        M.get_associated_function (|
+                          Ty.path "str",
+                          "parse",
+                          [],
+                          [ Ty.path "i32" ]
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| M.deref (| M.read (| first |) |) |) |)
+                          |)
+                        ]
                       |)
                     ]
-                |)
-              |)
-            |)))
-        |)
+                  |)
+                |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 :=
+                        M.SubPointer.get_struct_tuple_field (|
+                          γ,
+                          "core::ops::control_flow::ControlFlow::Break",
+                          0
+                        |) in
+                      let residual :=
+                        M.copy (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.path "core::convert::Infallible";
+                              Ty.path "core::num::error::ParseIntError"
+                            ],
+                          γ0_0
+                        |) in
+                      M.never_to_any (|
+                        M.read (|
+                          M.return_ (|
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.path "i32"; Ty.path "wrapping_errors::DoubleError" ],
+                              M.get_trait_method (|
+                                "core::ops::try_trait::FromResidual",
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.path "i32"; Ty.path "wrapping_errors::DoubleError" ],
+                                [],
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "core::num::error::ParseIntError"
+                                    ]
+                                ],
+                                "from_residual",
+                                [],
+                                []
+                              |),
+                              [ M.read (| residual |) ]
+                            |)
+                          |)
+                        |)
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 :=
+                        M.SubPointer.get_struct_tuple_field (|
+                          γ,
+                          "core::ops::control_flow::ControlFlow::Continue",
+                          0
+                        |) in
+                      let val := M.copy (| Ty.path "i32", γ0_0 |) in
+                      M.read (| val |)))
+                ]
+              |) in
+            M.alloc (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.path "i32"; Ty.path "wrapping_errors::DoubleError" ],
+              Value.StructTuple
+                "core::result::Result::Ok"
+                []
+                [ Ty.path "i32"; Ty.path "wrapping_errors::DoubleError" ]
+                [
+                  M.call_closure (|
+                    Ty.path "i32",
+                    BinOp.Wrap.mul,
+                    [ Value.Integer IntegerKind.I32 2; M.read (| parsed |) ]
+                  |)
+                ]
+            |)
+          |)))
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
@@ -850,16 +762,16 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             [ Ty.path "i32"; Ty.path "wrapping_errors::DoubleError" ],
           result
         |) in
-      M.read (|
-        M.match_operator (|
-          Ty.tuple [],
-          result,
-          [
-            fun γ =>
-              ltac:(M.monadic
-                (let γ0_0 :=
-                  M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                let n := M.copy (| Ty.path "i32", γ0_0 |) in
+      M.match_operator (|
+        Ty.tuple [],
+        result,
+        [
+          fun γ =>
+            ltac:(M.monadic
+              (let γ0_0 :=
+                M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
+              let n := M.copy (| Ty.path "i32", γ0_0 |) in
+              M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.call_closure (|
                     Ty.tuple [],
@@ -927,12 +839,14 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       |)
                     ]
                   |) in
-                M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-            fun γ =>
-              ltac:(M.monadic
-                (let γ0_0 :=
-                  M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                let e := M.copy (| Ty.path "wrapping_errors::DoubleError", γ0_0 |) in
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)
+              |)));
+          fun γ =>
+            ltac:(M.monadic
+              (let γ0_0 :=
+                M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
+              let e := M.copy (| Ty.path "wrapping_errors::DoubleError", γ0_0 |) in
+              M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.read (|
                     let~ _ : Ty.tuple [] :=
@@ -1004,24 +918,16 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       |) in
                     M.alloc (| Ty.tuple [], Value.Tuple [] |)
                   |) in
-                M.match_operator (|
+                M.alloc (|
                   Ty.tuple [],
-                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ :=
-                          M.alloc (|
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
-                              ],
-                            M.call_closure (|
+                  M.match_operator (|
+                    Ty.tuple [],
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ :=
+                            M.alloc (|
                               Ty.apply
                                 (Ty.path "core::option::Option")
                                 []
@@ -1031,122 +937,142 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     []
                                     [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
                                 ],
-                              M.get_trait_method (|
-                                "core::error::Error",
-                                Ty.path "wrapping_errors::DoubleError",
-                                [],
-                                [],
-                                "source",
-                                [],
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
+                                  ],
+                                M.get_trait_method (|
+                                  "core::error::Error",
+                                  Ty.path "wrapping_errors::DoubleError",
+                                  [],
+                                  [],
+                                  "source",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, e |) ]
+                              |)
+                            |) in
+                          let γ0_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ,
+                              "core::option::Option::Some",
+                              0
+                            |) in
+                          let source :=
+                            M.copy (|
+                              Ty.apply
+                                (Ty.path "&")
                                 []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, e |) ]
-                            |)
-                          |) in
-                        let γ0_0 :=
-                          M.SubPointer.get_struct_tuple_field (|
-                            γ,
-                            "core::option::Option::Some",
-                            0
-                          |) in
-                        let source :=
-                          M.copy (|
-                            Ty.apply
-                              (Ty.path "&")
-                              []
-                              [ Ty.dyn [ ("core::error::Error::Trait", []) ] ],
-                            γ0_0
-                          |) in
-                        let~ _ : Ty.tuple [] :=
+                                [ Ty.dyn [ ("core::error::Error::Trait", []) ] ],
+                              γ0_0
+                            |) in
                           M.read (|
                             let~ _ : Ty.tuple [] :=
-                              M.call_closure (|
-                                Ty.tuple [],
-                                M.get_function (| "std::io::stdio::_print", [], [] |),
-                                [
+                              M.read (|
+                                let~ _ : Ty.tuple [] :=
                                   M.call_closure (|
-                                    Ty.path "core::fmt::Arguments",
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::Arguments",
-                                      "new_v1",
-                                      [
-                                        Value.Integer IntegerKind.Usize 2;
-                                        Value.Integer IntegerKind.Usize 1
-                                      ],
-                                      []
-                                    |),
+                                    Ty.tuple [],
+                                    M.get_function (| "std::io::stdio::_print", [], [] |),
                                     [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (|
+                                      M.call_closure (|
+                                        Ty.path "core::fmt::Arguments",
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::Arguments",
+                                          "new_v1",
+                                          [
+                                            Value.Integer IntegerKind.Usize 2;
+                                            Value.Integer IntegerKind.Usize 1
+                                          ],
+                                          []
+                                        |),
+                                        [
                                           M.borrow (|
                                             Pointer.Kind.Ref,
-                                            M.alloc (|
-                                              Ty.apply
-                                                (Ty.path "array")
-                                                [ Value.Integer IntegerKind.Usize 2 ]
-                                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                              Value.Array
-                                                [ mk_str (| "  Caused by: " |); mk_str (| "
-" |) ]
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.alloc (|
+                                                  Ty.apply
+                                                    (Ty.path "array")
+                                                    [ Value.Integer IntegerKind.Usize 2 ]
+                                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                                  Value.Array
+                                                    [ mk_str (| "  Caused by: " |); mk_str (| "
+" |)
+                                                    ]
+                                                |)
+                                              |)
                                             |)
-                                          |)
-                                        |)
-                                      |);
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (|
+                                          |);
                                           M.borrow (|
                                             Pointer.Kind.Ref,
-                                            M.alloc (|
-                                              Ty.apply
-                                                (Ty.path "array")
-                                                [ Value.Integer IntegerKind.Usize 1 ]
-                                                [ Ty.path "core::fmt::rt::Argument" ],
-                                              Value.Array
-                                                [
-                                                  M.call_closure (|
-                                                    Ty.path "core::fmt::rt::Argument",
-                                                    M.get_associated_function (|
-                                                      Ty.path "core::fmt::rt::Argument",
-                                                      "new_display",
-                                                      [],
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "&")
-                                                          []
-                                                          [
-                                                            Ty.dyn
-                                                              [ ("core::error::Error::Trait", []) ]
-                                                          ]
-                                                      ]
-                                                    |),
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.alloc (|
+                                                  Ty.apply
+                                                    (Ty.path "array")
+                                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                                    [ Ty.path "core::fmt::rt::Argument" ],
+                                                  Value.Array
                                                     [
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.deref (|
-                                                          M.borrow (| Pointer.Kind.Ref, source |)
-                                                        |)
+                                                      M.call_closure (|
+                                                        Ty.path "core::fmt::rt::Argument",
+                                                        M.get_associated_function (|
+                                                          Ty.path "core::fmt::rt::Argument",
+                                                          "new_display",
+                                                          [],
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.dyn
+                                                                  [
+                                                                    ("core::error::Error::Trait",
+                                                                      [])
+                                                                  ]
+                                                              ]
+                                                          ]
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                source
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        ]
                                                       |)
                                                     ]
-                                                  |)
-                                                ]
+                                                |)
+                                              |)
                                             |)
                                           |)
-                                        |)
+                                        ]
                                       |)
                                     ]
-                                  |)
-                                ]
+                                  |) in
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |)
                               |) in
                             M.alloc (| Ty.tuple [], Value.Tuple [] |)
-                          |) in
-                        M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                  ]
-                |)))
-          ]
-        |)
+                          |)));
+                      fun γ => ltac:(M.monadic (Value.Tuple []))
+                    ]
+                  |)
+                |)
+              |)))
+        ]
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

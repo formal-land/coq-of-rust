@@ -297,45 +297,42 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         M.deref (|
                                           M.borrow (|
                                             Pointer.Kind.Ref,
-                                            M.match_operator (|
+                                            M.alloc (|
                                               Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                                              M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let γ :=
-                                                      M.use
-                                                        (M.alloc (|
-                                                          Ty.path "bool",
-                                                          M.call_closure (|
+                                              M.match_operator (|
+                                                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                                                M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let γ :=
+                                                        M.use
+                                                          (M.alloc (|
                                                             Ty.path "bool",
-                                                            M.get_function (|
-                                                              "constants::is_big",
-                                                              [],
-                                                              []
-                                                            |),
-                                                            [ M.read (| n |) ]
-                                                          |)
-                                                        |)) in
-                                                    let _ :=
-                                                      is_constant_or_break_match (|
-                                                        M.read (| γ |),
-                                                        Value.Bool true
-                                                      |) in
-                                                    M.alloc (|
-                                                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                                                      mk_str (| "big" |)
-                                                    |)));
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (M.alloc (|
-                                                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                                                      M.borrow (|
+                                                            M.call_closure (|
+                                                              Ty.path "bool",
+                                                              M.get_function (|
+                                                                "constants::is_big",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [ M.read (| n |) ]
+                                                            |)
+                                                          |)) in
+                                                      let _ :=
+                                                        is_constant_or_break_match (|
+                                                          M.read (| γ |),
+                                                          Value.Bool true
+                                                        |) in
+                                                      mk_str (| "big" |)));
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (M.borrow (|
                                                         Pointer.Kind.Ref,
                                                         M.deref (| mk_str (| "small" |) |)
-                                                      |)
-                                                    |)))
-                                              ]
+                                                      |)))
+                                                ]
+                                              |)
                                             |)
                                           |)
                                         |)

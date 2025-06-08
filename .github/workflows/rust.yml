@@ -44,9 +44,6 @@ jobs:
           startGroup "Lint"
             cargo clippy --all-targets --all-features -- -D warnings
           endGroup
-          startGroup "Translate Rust examples"
-            python run_tests.py
-          endGroup
           startGroup "Pre-process the smart contracts"
             cd contracts
             python source_to_generated.py
@@ -68,6 +65,9 @@ jobs:
           endGroup
           startGroup "Save space"
             cargo clean
+          endGroup
+          startGroup "Translate Rust examples"
+            python run_tests.py
           endGroup
           startGroup "Translate the alloc library"
             cd third-party/rust/library/alloc

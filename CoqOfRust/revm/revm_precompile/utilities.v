@@ -180,18 +180,23 @@ Module utilities.
             Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
             data
           |) in
-        M.read (|
-          M.match_operator (|
-            Ty.apply
-              (Ty.path "alloc::borrow::Cow")
-              []
-              [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ],
-            M.alloc (| Ty.tuple [], Value.Tuple [] |),
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ :=
-                    M.alloc (|
+        M.match_operator (|
+          Ty.apply
+            (Ty.path "alloc::borrow::Cow")
+            []
+            [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ],
+          M.alloc (| Ty.tuple [], Value.Tuple [] |),
+          [
+            fun γ =>
+              ltac:(M.monadic
+                (let γ :=
+                  M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                      ],
+                    M.call_closure (|
                       Ty.apply
                         (Ty.path "core::option::Option")
                         []
@@ -201,107 +206,92 @@ Module utilities.
                             []
                             [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                         ],
-                      M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                        "get",
+                        [],
+                        [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ]
+                      |),
+                      [
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |);
+                        Value.mkStructRecord
+                          "core::ops::range::RangeTo"
+                          []
+                          [ Ty.path "usize" ]
+                          [ ("end_", LEN) ]
+                      ]
+                    |)
+                  |) in
+                let γ0_0 :=
+                  M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+                let data :=
+                  M.copy (|
+                    Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                    γ0_0
+                  |) in
+                Value.StructTuple
+                  "alloc::borrow::Cow::Borrowed"
+                  []
+                  [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ]
+                  [
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ],
+                      M.get_associated_function (|
                         Ty.apply
-                          (Ty.path "core::option::Option")
+                          (Ty.path "core::result::Result")
                           []
                           [
                             Ty.apply
                               (Ty.path "&")
                               []
-                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                              [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ];
+                            Ty.path "core::array::TryFromSliceError"
                           ],
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                          "get",
-                          [],
-                          [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ]
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |);
-                          Value.mkStructRecord
-                            "core::ops::range::RangeTo"
-                            []
-                            [ Ty.path "usize" ]
-                            [ ("end_", LEN) ]
-                        ]
-                      |)
-                    |) in
-                  let γ0_0 :=
-                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
-                  let data :=
-                    M.copy (|
-                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                      γ0_0
-                    |) in
-                  M.alloc (|
-                    Ty.apply
-                      (Ty.path "alloc::borrow::Cow")
-                      []
-                      [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ],
-                    Value.StructTuple
-                      "alloc::borrow::Cow::Borrowed"
-                      []
-                      [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ]
+                        "unwrap",
+                        [],
+                        []
+                      |),
                       [
                         M.call_closure (|
                           Ty.apply
-                            (Ty.path "&")
+                            (Ty.path "core::result::Result")
                             []
-                            [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ],
-                          M.get_associated_function (|
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ];
+                              Ty.path "core::array::TryFromSliceError"
+                            ],
+                          M.get_trait_method (|
+                            "core::convert::TryInto",
                             Ty.apply
-                              (Ty.path "core::result::Result")
+                              (Ty.path "&")
                               []
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ];
-                                Ty.path "core::array::TryFromSliceError"
-                              ],
-                            "unwrap",
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                            [],
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ]
+                            ],
+                            "try_into",
                             [],
                             []
                           |),
-                          [
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ];
-                                  Ty.path "core::array::TryFromSliceError"
-                                ],
-                              M.get_trait_method (|
-                                "core::convert::TryInto",
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                                [],
-                                [
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ]
-                                ],
-                                "try_into",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
-                            |)
-                          ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                         |)
                       ]
-                  |)));
-              fun γ =>
-                ltac:(M.monadic
-                  (let~ padded : Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] :=
+                    |)
+                  ]));
+            fun γ =>
+              ltac:(M.monadic
+                (M.read (|
+                  let~ padded : Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] :=
                     lib.repeat (| Value.Integer IntegerKind.U8 0, LEN |) in
                   let~ _ : Ty.tuple [] :=
                     M.call_closure (|
@@ -376,9 +366,9 @@ Module utilities.
                       []
                       [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ]
                       [ M.read (| padded |) ]
-                  |)))
-            ]
-          |)
+                  |)
+                |)))
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -409,18 +399,23 @@ Module utilities.
             data
           |) in
         let len := M.alloc (| Ty.path "usize", len |) in
-        M.read (|
-          M.match_operator (|
-            Ty.apply
-              (Ty.path "alloc::borrow::Cow")
-              []
-              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-            M.alloc (| Ty.tuple [], Value.Tuple [] |),
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ :=
-                    M.alloc (|
+        M.match_operator (|
+          Ty.apply
+            (Ty.path "alloc::borrow::Cow")
+            []
+            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+          M.alloc (| Ty.tuple [], Value.Tuple [] |),
+          [
+            fun γ =>
+              ltac:(M.monadic
+                (let γ :=
+                  M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                      ],
+                    M.call_closure (|
                       Ty.apply
                         (Ty.path "core::option::Option")
                         []
@@ -430,53 +425,38 @@ Module utilities.
                             []
                             [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                         ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::option::Option")
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                        "get",
+                        [],
+                        [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ]
+                      |),
+                      [
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |);
+                        Value.mkStructRecord
+                          "core::ops::range::RangeTo"
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "&")
-                              []
-                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                          ],
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                          "get",
-                          [],
-                          [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ]
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |);
-                          Value.mkStructRecord
-                            "core::ops::range::RangeTo"
-                            []
-                            [ Ty.path "usize" ]
-                            [ ("end_", M.read (| len |)) ]
-                        ]
-                      |)
-                    |) in
-                  let γ0_0 :=
-                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
-                  let data :=
-                    M.copy (|
-                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                      γ0_0
-                    |) in
-                  M.alloc (|
-                    Ty.apply
-                      (Ty.path "alloc::borrow::Cow")
-                      []
-                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                    Value.StructTuple
-                      "alloc::borrow::Cow::Borrowed"
-                      []
-                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
-                  |)));
-              fun γ =>
-                ltac:(M.monadic
-                  (let~ padded :
+                          [ Ty.path "usize" ]
+                          [ ("end_", M.read (| len |)) ]
+                      ]
+                    |)
+                  |) in
+                let γ0_0 :=
+                  M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+                let data :=
+                  M.copy (|
+                    Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                    γ0_0
+                  |) in
+                Value.StructTuple
+                  "alloc::borrow::Cow::Borrowed"
+                  []
+                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]));
+            fun γ =>
+              ltac:(M.monadic
+                (M.read (|
+                  let~ padded :
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
                         []
@@ -565,9 +545,9 @@ Module utilities.
                       []
                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                       [ M.read (| padded |) ]
-                  |)))
-            ]
-          |)
+                  |)
+                |)))
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -597,18 +577,23 @@ Module utilities.
             Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
             data
           |) in
-        M.read (|
-          M.match_operator (|
-            Ty.apply
-              (Ty.path "alloc::borrow::Cow")
-              []
-              [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ],
-            M.alloc (| Ty.tuple [], Value.Tuple [] |),
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ :=
-                    M.alloc (|
+        M.match_operator (|
+          Ty.apply
+            (Ty.path "alloc::borrow::Cow")
+            []
+            [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ],
+          M.alloc (| Ty.tuple [], Value.Tuple [] |),
+          [
+            fun γ =>
+              ltac:(M.monadic
+                (let γ :=
+                  M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                      ],
+                    M.call_closure (|
                       Ty.apply
                         (Ty.path "core::option::Option")
                         []
@@ -618,107 +603,92 @@ Module utilities.
                             []
                             [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                         ],
-                      M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                        "get",
+                        [],
+                        [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ]
+                      |),
+                      [
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |);
+                        Value.mkStructRecord
+                          "core::ops::range::RangeTo"
+                          []
+                          [ Ty.path "usize" ]
+                          [ ("end_", LEN) ]
+                      ]
+                    |)
+                  |) in
+                let γ0_0 :=
+                  M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+                let data :=
+                  M.copy (|
+                    Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                    γ0_0
+                  |) in
+                Value.StructTuple
+                  "alloc::borrow::Cow::Borrowed"
+                  []
+                  [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ]
+                  [
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ],
+                      M.get_associated_function (|
                         Ty.apply
-                          (Ty.path "core::option::Option")
+                          (Ty.path "core::result::Result")
                           []
                           [
                             Ty.apply
                               (Ty.path "&")
                               []
-                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                              [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ];
+                            Ty.path "core::array::TryFromSliceError"
                           ],
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                          "get",
-                          [],
-                          [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ]
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |);
-                          Value.mkStructRecord
-                            "core::ops::range::RangeTo"
-                            []
-                            [ Ty.path "usize" ]
-                            [ ("end_", LEN) ]
-                        ]
-                      |)
-                    |) in
-                  let γ0_0 :=
-                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
-                  let data :=
-                    M.copy (|
-                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                      γ0_0
-                    |) in
-                  M.alloc (|
-                    Ty.apply
-                      (Ty.path "alloc::borrow::Cow")
-                      []
-                      [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ],
-                    Value.StructTuple
-                      "alloc::borrow::Cow::Borrowed"
-                      []
-                      [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ]
+                        "unwrap",
+                        [],
+                        []
+                      |),
                       [
                         M.call_closure (|
                           Ty.apply
-                            (Ty.path "&")
+                            (Ty.path "core::result::Result")
                             []
-                            [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ],
-                          M.get_associated_function (|
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ];
+                              Ty.path "core::array::TryFromSliceError"
+                            ],
+                          M.get_trait_method (|
+                            "core::convert::TryInto",
                             Ty.apply
-                              (Ty.path "core::result::Result")
+                              (Ty.path "&")
                               []
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ];
-                                Ty.path "core::array::TryFromSliceError"
-                              ],
-                            "unwrap",
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                            [],
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ]
+                            ],
+                            "try_into",
                             [],
                             []
                           |),
-                          [
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ];
-                                  Ty.path "core::array::TryFromSliceError"
-                                ],
-                              M.get_trait_method (|
-                                "core::convert::TryInto",
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                                [],
-                                [
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ]
-                                ],
-                                "try_into",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
-                            |)
-                          ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
                         |)
                       ]
-                  |)));
-              fun γ =>
-                ltac:(M.monadic
-                  (let~ padded : Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] :=
+                    |)
+                  ]));
+            fun γ =>
+              ltac:(M.monadic
+                (M.read (|
+                  let~ padded : Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] :=
                     lib.repeat (| Value.Integer IntegerKind.U8 0, LEN |) in
                   let~ _ : Ty.tuple [] :=
                     M.call_closure (|
@@ -800,9 +770,9 @@ Module utilities.
                       []
                       [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ]
                       [ M.read (| padded |) ]
-                  |)))
-            ]
-          |)
+                  |)
+                |)))
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -833,18 +803,23 @@ Module utilities.
             data
           |) in
         let len := M.alloc (| Ty.path "usize", len |) in
-        M.read (|
-          M.match_operator (|
-            Ty.apply
-              (Ty.path "alloc::borrow::Cow")
-              []
-              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-            M.alloc (| Ty.tuple [], Value.Tuple [] |),
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ :=
-                    M.alloc (|
+        M.match_operator (|
+          Ty.apply
+            (Ty.path "alloc::borrow::Cow")
+            []
+            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+          M.alloc (| Ty.tuple [], Value.Tuple [] |),
+          [
+            fun γ =>
+              ltac:(M.monadic
+                (let γ :=
+                  M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                      ],
+                    M.call_closure (|
                       Ty.apply
                         (Ty.path "core::option::Option")
                         []
@@ -854,53 +829,38 @@ Module utilities.
                             []
                             [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                         ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::option::Option")
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                        "get",
+                        [],
+                        [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ]
+                      |),
+                      [
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |);
+                        Value.mkStructRecord
+                          "core::ops::range::RangeTo"
                           []
-                          [
-                            Ty.apply
-                              (Ty.path "&")
-                              []
-                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                          ],
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                          "get",
-                          [],
-                          [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ]
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |);
-                          Value.mkStructRecord
-                            "core::ops::range::RangeTo"
-                            []
-                            [ Ty.path "usize" ]
-                            [ ("end_", M.read (| len |)) ]
-                        ]
-                      |)
-                    |) in
-                  let γ0_0 :=
-                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
-                  let data :=
-                    M.copy (|
-                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                      γ0_0
-                    |) in
-                  M.alloc (|
-                    Ty.apply
-                      (Ty.path "alloc::borrow::Cow")
-                      []
-                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                    Value.StructTuple
-                      "alloc::borrow::Cow::Borrowed"
-                      []
-                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
-                  |)));
-              fun γ =>
-                ltac:(M.monadic
-                  (let~ padded :
+                          [ Ty.path "usize" ]
+                          [ ("end_", M.read (| len |)) ]
+                      ]
+                    |)
+                  |) in
+                let γ0_0 :=
+                  M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+                let data :=
+                  M.copy (|
+                    Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                    γ0_0
+                  |) in
+                Value.StructTuple
+                  "alloc::borrow::Cow::Borrowed"
+                  []
+                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]));
+            fun γ =>
+              ltac:(M.monadic
+                (M.read (|
+                  let~ padded :
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
                         []
@@ -996,9 +956,9 @@ Module utilities.
                       []
                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                       [ M.read (| padded |) ]
-                  |)))
-            ]
-          |)
+                  |)
+                |)))
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -1082,23 +1042,23 @@ Module utilities.
     | [], [], [ value ] =>
       ltac:(M.monadic
         (let value := M.alloc (| Ty.path "bool", value |) in
-        M.read (|
-          M.match_operator (|
-            Ty.apply
-              (Ty.path "&")
-              []
-              [
-                Ty.apply
-                  (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                  [ Value.Integer IntegerKind.Usize 32 ]
-                  []
-              ],
-            M.alloc (| Ty.tuple [], Value.Tuple [] |),
+        M.match_operator (|
+          Ty.apply
+            (Ty.path "&")
+            []
             [
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ := M.use value in
-                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+              Ty.apply
+                (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                [ Value.Integer IntegerKind.Usize 32 ]
+                []
+            ],
+          M.alloc (| Ty.tuple [], Value.Tuple [] |),
+          [
+            fun γ =>
+              ltac:(M.monadic
+                (let γ := M.use value in
+                let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                M.read (|
                   get_constant (|
                     "revm_precompile::utilities::bool_to_b256::TRUE",
                     Ty.apply
@@ -1110,10 +1070,12 @@ Module utilities.
                           [ Value.Integer IntegerKind.Usize 32 ]
                           []
                       ]
-                  |)));
-              fun γ =>
-                ltac:(M.monadic
-                  (get_constant (|
+                  |)
+                |)));
+            fun γ =>
+              ltac:(M.monadic
+                (M.read (|
+                  get_constant (|
                     "revm_precompile::utilities::bool_to_b256::FALSE",
                     Ty.apply
                       (Ty.path "&")
@@ -1124,9 +1086,9 @@ Module utilities.
                           [ Value.Integer IntegerKind.Usize 32 ]
                           []
                       ]
-                  |)))
-            ]
-          |)
+                  |)
+                |)))
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

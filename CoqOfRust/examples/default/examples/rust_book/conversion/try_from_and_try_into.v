@@ -151,66 +151,52 @@ Module Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
     | [], [], [ value ] =>
       ltac:(M.monadic
         (let value := M.alloc (| Ty.path "i32", value |) in
-        M.read (|
-          M.match_operator (|
-            Ty.apply
-              (Ty.path "core::result::Result")
-              []
-              [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ],
-            M.alloc (| Ty.tuple [], Value.Tuple [] |),
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ :=
-                    M.use
-                      (M.alloc (|
+        M.match_operator (|
+          Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ],
+          M.alloc (| Ty.tuple [], Value.Tuple [] |),
+          [
+            fun γ =>
+              ltac:(M.monadic
+                (let γ :=
+                  M.use
+                    (M.alloc (|
+                      Ty.path "bool",
+                      M.call_closure (|
                         Ty.path "bool",
-                        M.call_closure (|
-                          Ty.path "bool",
-                          BinOp.eq,
-                          [
-                            M.call_closure (|
-                              Ty.path "i32",
-                              BinOp.Wrap.rem,
-                              [ M.read (| value |); Value.Integer IntegerKind.I32 2 ]
-                            |);
-                            Value.Integer IntegerKind.I32 0
-                          ]
-                        |)
-                      |)) in
-                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  M.alloc (|
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ],
+                        BinOp.eq,
+                        [
+                          M.call_closure (|
+                            Ty.path "i32",
+                            BinOp.Wrap.rem,
+                            [ M.read (| value |); Value.Integer IntegerKind.I32 2 ]
+                          |);
+                          Value.Integer IntegerKind.I32 0
+                        ]
+                      |)
+                    |)) in
+                let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                Value.StructTuple
+                  "core::result::Result::Ok"
+                  []
+                  [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                  [
                     Value.StructTuple
-                      "core::result::Result::Ok"
+                      "try_from_and_try_into::EvenNumber"
                       []
-                      [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
-                      [
-                        Value.StructTuple
-                          "try_from_and_try_into::EvenNumber"
-                          []
-                          []
-                          [ M.read (| value |) ]
-                      ]
-                  |)));
-              fun γ =>
-                ltac:(M.monadic
-                  (M.alloc (|
-                    Ty.apply
-                      (Ty.path "core::result::Result")
                       []
-                      [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ],
-                    Value.StructTuple
-                      "core::result::Result::Err"
-                      []
-                      [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
-                      [ Value.Tuple [] ]
-                  |)))
-            ]
-          |)
+                      [ M.read (| value |) ]
+                  ]));
+            fun γ =>
+              ltac:(M.monadic
+                (Value.StructTuple
+                  "core::result::Result::Err"
+                  []
+                  [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                  [ Value.Tuple [] ]))
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -246,442 +232,418 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ _ : Ty.tuple [] :=
-          M.read (|
-            M.match_operator (|
-              Ty.tuple [],
-              M.alloc (|
-                Ty.tuple
-                  [
-                    Ty.apply
-                      (Ty.path "&")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
-                      ];
-                    Ty.apply
-                      (Ty.path "&")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
-                      ]
-                  ],
-                Value.Tuple
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
+          M.match_operator (|
+            Ty.tuple [],
+            M.alloc (|
+              Ty.tuple
+                [
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                    ];
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                    ]
+                ],
+              Value.Tuple
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ],
+                      M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
                           []
                           [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ],
-                        M.call_closure (|
+                        M.get_trait_method (|
+                          "core::convert::TryFrom",
+                          Ty.path "try_from_and_try_into::EvenNumber",
+                          [],
+                          [ Ty.path "i32" ],
+                          "try_from",
+                          [],
+                          []
+                        |),
+                        [ Value.Integer IntegerKind.I32 8 ]
+                      |)
+                    |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ],
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        []
+                        [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                        [
+                          Value.StructTuple
+                            "try_from_and_try_into::EvenNumber"
+                            []
+                            []
+                            [ Value.Integer IntegerKind.I32 8 ]
+                        ]
+                    |)
+                  |)
+                ]
+            |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                  let left_val :=
+                    M.copy (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ],
-                          M.get_trait_method (|
-                            "core::convert::TryFrom",
-                            Ty.path "try_from_and_try_into::EvenNumber",
-                            [],
-                            [ Ty.path "i32" ],
-                            "try_from",
-                            [],
+                            [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                        ],
+                      γ0_0
+                    |) in
+                  let right_val :=
+                    M.copy (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
                             []
-                          |),
-                          [ Value.Integer IntegerKind.I32 8 ]
-                        |)
-                      |)
-                    |);
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ],
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          []
-                          [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
-                          [
-                            Value.StructTuple
-                              "try_from_and_try_into::EvenNumber"
-                              []
-                              []
-                              [ Value.Integer IntegerKind.I32 8 ]
-                          ]
-                      |)
-                    |)
-                  ]
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let left_val :=
-                      M.copy (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
-                          ],
-                        γ0_0
-                      |) in
-                    let right_val :=
-                      M.copy (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
-                          ],
-                        γ0_1
-                      |) in
-                    M.match_operator (|
-                      Ty.tuple [],
-                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  Ty.path "bool",
-                                  UnOp.not (|
-                                    M.call_closure (|
-                                      Ty.path "bool",
-                                      M.get_trait_method (|
-                                        "core::cmp::PartialEq",
+                            [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                        ],
+                      γ0_1
+                    |) in
+                  M.match_operator (|
+                    Ty.tuple [],
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ :=
+                            M.use
+                              (M.alloc (|
+                                Ty.path "bool",
+                                UnOp.not (|
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    M.get_trait_method (|
+                                      "core::cmp::PartialEq",
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
+                                        ],
+                                      [],
+                                      [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
                                           []
                                           [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
-                                          ],
-                                        [],
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            []
-                                            [
-                                              Ty.path "try_from_and_try_into::EvenNumber";
-                                              Ty.tuple []
-                                            ]
-                                        ],
-                                        "eq",
-                                        [],
+                                          ]
+                                      ],
+                                      "eq",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| left_val |) |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| right_val |) |)
+                                      |)
+                                    ]
+                                  |)
+                                |)
+                              |)) in
+                          let _ :=
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          M.never_to_any (|
+                            M.read (|
+                              let~ kind : Ty.path "core::panicking::AssertKind" :=
+                                Value.StructTuple "core::panicking::AssertKind::Eq" [] [] [] in
+                              M.alloc (|
+                                Ty.path "never",
+                                M.call_closure (|
+                                  Ty.path "never",
+                                  M.get_function (|
+                                    "core::panicking::assert_failed",
+                                    [],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
                                         []
-                                      |),
-                                      [
+                                        [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
+                                        ];
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                                    ]
+                                  |),
+                                  [
+                                    M.read (| kind |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
                                         M.borrow (|
                                           Pointer.Kind.Ref,
                                           M.deref (| M.read (| left_val |) |)
-                                        |);
+                                        |)
+                                      |)
+                                    |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
                                         M.borrow (|
                                           Pointer.Kind.Ref,
                                           M.deref (| M.read (| right_val |) |)
                                         |)
-                                      ]
-                                    |)
-                                  |)
-                                |)) in
-                            let _ :=
-                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              Ty.tuple [],
-                              M.never_to_any (|
-                                M.read (|
-                                  let~ kind : Ty.path "core::panicking::AssertKind" :=
-                                    Value.StructTuple "core::panicking::AssertKind::Eq" [] [] [] in
-                                  M.alloc (|
-                                    Ty.path "never",
-                                    M.call_closure (|
-                                      Ty.path "never",
-                                      M.get_function (|
-                                        "core::panicking::assert_failed",
-                                        [],
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            []
-                                            [
-                                              Ty.path "try_from_and_try_into::EvenNumber";
-                                              Ty.tuple []
-                                            ];
-                                          Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            []
-                                            [
-                                              Ty.path "try_from_and_try_into::EvenNumber";
-                                              Ty.tuple []
-                                            ]
-                                        ]
-                                      |),
-                                      [
-                                        M.read (| kind |);
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (|
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (| M.read (| left_val |) |)
-                                            |)
-                                          |)
-                                        |);
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (|
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (| M.read (| right_val |) |)
-                                            |)
-                                          |)
-                                        |);
-                                        Value.StructTuple
-                                          "core::option::Option::None"
-                                          []
-                                          [ Ty.path "core::fmt::Arguments" ]
-                                          []
-                                      ]
-                                    |)
-                                  |)
+                                      |)
+                                    |);
+                                    Value.StructTuple
+                                      "core::option::Option::None"
+                                      []
+                                      [ Ty.path "core::fmt::Arguments" ]
+                                      []
+                                  ]
                                 |)
                               |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                      ]
-                    |)))
-              ]
-            |)
+                            |)
+                          |)));
+                      fun γ => ltac:(M.monadic (Value.Tuple []))
+                    ]
+                  |)))
+            ]
           |) in
         let~ _ : Ty.tuple [] :=
-          M.read (|
-            M.match_operator (|
-              Ty.tuple [],
-              M.alloc (|
-                Ty.tuple
-                  [
-                    Ty.apply
-                      (Ty.path "&")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
-                      ];
-                    Ty.apply
-                      (Ty.path "&")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
-                      ]
-                  ],
-                Value.Tuple
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
+          M.match_operator (|
+            Ty.tuple [],
+            M.alloc (|
+              Ty.tuple
+                [
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                    ];
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                    ]
+                ],
+              Value.Tuple
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ],
+                      M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
                           []
                           [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ],
-                        M.call_closure (|
+                        M.get_trait_method (|
+                          "core::convert::TryFrom",
+                          Ty.path "try_from_and_try_into::EvenNumber",
+                          [],
+                          [ Ty.path "i32" ],
+                          "try_from",
+                          [],
+                          []
+                        |),
+                        [ Value.Integer IntegerKind.I32 5 ]
+                      |)
+                    |)
+                  |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ],
+                      Value.StructTuple
+                        "core::result::Result::Err"
+                        []
+                        [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                        [ Value.Tuple [] ]
+                    |)
+                  |)
+                ]
+            |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                  let left_val :=
+                    M.copy (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ],
-                          M.get_trait_method (|
-                            "core::convert::TryFrom",
-                            Ty.path "try_from_and_try_into::EvenNumber",
-                            [],
-                            [ Ty.path "i32" ],
-                            "try_from",
-                            [],
+                            [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                        ],
+                      γ0_0
+                    |) in
+                  let right_val :=
+                    M.copy (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
                             []
-                          |),
-                          [ Value.Integer IntegerKind.I32 5 ]
-                        |)
-                      |)
-                    |);
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ],
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          []
-                          [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
-                          [ Value.Tuple [] ]
-                      |)
-                    |)
-                  ]
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let left_val :=
-                      M.copy (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
-                          ],
-                        γ0_0
-                      |) in
-                    let right_val :=
-                      M.copy (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
-                          ],
-                        γ0_1
-                      |) in
-                    M.match_operator (|
-                      Ty.tuple [],
-                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  Ty.path "bool",
-                                  UnOp.not (|
-                                    M.call_closure (|
-                                      Ty.path "bool",
-                                      M.get_trait_method (|
-                                        "core::cmp::PartialEq",
+                            [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                        ],
+                      γ0_1
+                    |) in
+                  M.match_operator (|
+                    Ty.tuple [],
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ :=
+                            M.use
+                              (M.alloc (|
+                                Ty.path "bool",
+                                UnOp.not (|
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    M.get_trait_method (|
+                                      "core::cmp::PartialEq",
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
+                                        ],
+                                      [],
+                                      [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
                                           []
                                           [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
-                                          ],
-                                        [],
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            []
-                                            [
-                                              Ty.path "try_from_and_try_into::EvenNumber";
-                                              Ty.tuple []
-                                            ]
-                                        ],
-                                        "eq",
-                                        [],
+                                          ]
+                                      ],
+                                      "eq",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| left_val |) |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| right_val |) |)
+                                      |)
+                                    ]
+                                  |)
+                                |)
+                              |)) in
+                          let _ :=
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          M.never_to_any (|
+                            M.read (|
+                              let~ kind : Ty.path "core::panicking::AssertKind" :=
+                                Value.StructTuple "core::panicking::AssertKind::Eq" [] [] [] in
+                              M.alloc (|
+                                Ty.path "never",
+                                M.call_closure (|
+                                  Ty.path "never",
+                                  M.get_function (|
+                                    "core::panicking::assert_failed",
+                                    [],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
                                         []
-                                      |),
-                                      [
+                                        [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
+                                        ];
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                                    ]
+                                  |),
+                                  [
+                                    M.read (| kind |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
                                         M.borrow (|
                                           Pointer.Kind.Ref,
                                           M.deref (| M.read (| left_val |) |)
-                                        |);
+                                        |)
+                                      |)
+                                    |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
                                         M.borrow (|
                                           Pointer.Kind.Ref,
                                           M.deref (| M.read (| right_val |) |)
                                         |)
-                                      ]
-                                    |)
-                                  |)
-                                |)) in
-                            let _ :=
-                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              Ty.tuple [],
-                              M.never_to_any (|
-                                M.read (|
-                                  let~ kind : Ty.path "core::panicking::AssertKind" :=
-                                    Value.StructTuple "core::panicking::AssertKind::Eq" [] [] [] in
-                                  M.alloc (|
-                                    Ty.path "never",
-                                    M.call_closure (|
-                                      Ty.path "never",
-                                      M.get_function (|
-                                        "core::panicking::assert_failed",
-                                        [],
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            []
-                                            [
-                                              Ty.path "try_from_and_try_into::EvenNumber";
-                                              Ty.tuple []
-                                            ];
-                                          Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            []
-                                            [
-                                              Ty.path "try_from_and_try_into::EvenNumber";
-                                              Ty.tuple []
-                                            ]
-                                        ]
-                                      |),
-                                      [
-                                        M.read (| kind |);
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (|
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (| M.read (| left_val |) |)
-                                            |)
-                                          |)
-                                        |);
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (|
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (| M.read (| right_val |) |)
-                                            |)
-                                          |)
-                                        |);
-                                        Value.StructTuple
-                                          "core::option::Option::None"
-                                          []
-                                          [ Ty.path "core::fmt::Arguments" ]
-                                          []
-                                      ]
-                                    |)
-                                  |)
+                                      |)
+                                    |);
+                                    Value.StructTuple
+                                      "core::option::Option::None"
+                                      []
+                                      [ Ty.path "core::fmt::Arguments" ]
+                                      []
+                                  ]
                                 |)
                               |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                      ]
-                    |)))
-              ]
-            |)
+                            |)
+                          |)));
+                      fun γ => ltac:(M.monadic (Value.Tuple []))
+                    ]
+                  |)))
+            ]
           |) in
         let~ result :
             Ty.apply
@@ -705,202 +667,190 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             [ Value.Integer IntegerKind.I32 8 ]
           |) in
         let~ _ : Ty.tuple [] :=
-          M.read (|
-            M.match_operator (|
-              Ty.tuple [],
-              M.alloc (|
-                Ty.tuple
-                  [
-                    Ty.apply
-                      (Ty.path "&")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
-                      ];
-                    Ty.apply
-                      (Ty.path "&")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
-                      ]
-                  ],
-                Value.Tuple
-                  [
-                    M.borrow (| Pointer.Kind.Ref, result |);
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ],
-                        Value.StructTuple
-                          "core::result::Result::Ok"
-                          []
-                          [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
-                          [
-                            Value.StructTuple
-                              "try_from_and_try_into::EvenNumber"
-                              []
-                              []
-                              [ Value.Integer IntegerKind.I32 8 ]
-                          ]
-                      |)
+          M.match_operator (|
+            Ty.tuple [],
+            M.alloc (|
+              Ty.tuple
+                [
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                    ];
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                    ]
+                ],
+              Value.Tuple
+                [
+                  M.borrow (| Pointer.Kind.Ref, result |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ],
+                      Value.StructTuple
+                        "core::result::Result::Ok"
+                        []
+                        [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                        [
+                          Value.StructTuple
+                            "try_from_and_try_into::EvenNumber"
+                            []
+                            []
+                            [ Value.Integer IntegerKind.I32 8 ]
+                        ]
                     |)
-                  ]
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let left_val :=
-                      M.copy (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
-                          ],
-                        γ0_0
-                      |) in
-                    let right_val :=
-                      M.copy (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
-                          ],
-                        γ0_1
-                      |) in
-                    M.match_operator (|
-                      Ty.tuple [],
-                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  Ty.path "bool",
-                                  UnOp.not (|
-                                    M.call_closure (|
-                                      Ty.path "bool",
-                                      M.get_trait_method (|
-                                        "core::cmp::PartialEq",
+                  |)
+                ]
+            |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                  let left_val :=
+                    M.copy (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                        ],
+                      γ0_0
+                    |) in
+                  let right_val :=
+                    M.copy (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                        ],
+                      γ0_1
+                    |) in
+                  M.match_operator (|
+                    Ty.tuple [],
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ :=
+                            M.use
+                              (M.alloc (|
+                                Ty.path "bool",
+                                UnOp.not (|
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    M.get_trait_method (|
+                                      "core::cmp::PartialEq",
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
+                                        ],
+                                      [],
+                                      [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
                                           []
                                           [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
-                                          ],
-                                        [],
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            []
-                                            [
-                                              Ty.path "try_from_and_try_into::EvenNumber";
-                                              Ty.tuple []
-                                            ]
-                                        ],
-                                        "eq",
-                                        [],
+                                          ]
+                                      ],
+                                      "eq",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| left_val |) |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| right_val |) |)
+                                      |)
+                                    ]
+                                  |)
+                                |)
+                              |)) in
+                          let _ :=
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          M.never_to_any (|
+                            M.read (|
+                              let~ kind : Ty.path "core::panicking::AssertKind" :=
+                                Value.StructTuple "core::panicking::AssertKind::Eq" [] [] [] in
+                              M.alloc (|
+                                Ty.path "never",
+                                M.call_closure (|
+                                  Ty.path "never",
+                                  M.get_function (|
+                                    "core::panicking::assert_failed",
+                                    [],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
                                         []
-                                      |),
-                                      [
+                                        [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
+                                        ];
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                                    ]
+                                  |),
+                                  [
+                                    M.read (| kind |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
                                         M.borrow (|
                                           Pointer.Kind.Ref,
                                           M.deref (| M.read (| left_val |) |)
-                                        |);
+                                        |)
+                                      |)
+                                    |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
                                         M.borrow (|
                                           Pointer.Kind.Ref,
                                           M.deref (| M.read (| right_val |) |)
                                         |)
-                                      ]
-                                    |)
-                                  |)
-                                |)) in
-                            let _ :=
-                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              Ty.tuple [],
-                              M.never_to_any (|
-                                M.read (|
-                                  let~ kind : Ty.path "core::panicking::AssertKind" :=
-                                    Value.StructTuple "core::panicking::AssertKind::Eq" [] [] [] in
-                                  M.alloc (|
-                                    Ty.path "never",
-                                    M.call_closure (|
-                                      Ty.path "never",
-                                      M.get_function (|
-                                        "core::panicking::assert_failed",
-                                        [],
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            []
-                                            [
-                                              Ty.path "try_from_and_try_into::EvenNumber";
-                                              Ty.tuple []
-                                            ];
-                                          Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            []
-                                            [
-                                              Ty.path "try_from_and_try_into::EvenNumber";
-                                              Ty.tuple []
-                                            ]
-                                        ]
-                                      |),
-                                      [
-                                        M.read (| kind |);
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (|
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (| M.read (| left_val |) |)
-                                            |)
-                                          |)
-                                        |);
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (|
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (| M.read (| right_val |) |)
-                                            |)
-                                          |)
-                                        |);
-                                        Value.StructTuple
-                                          "core::option::Option::None"
-                                          []
-                                          [ Ty.path "core::fmt::Arguments" ]
-                                          []
-                                      ]
-                                    |)
-                                  |)
+                                      |)
+                                    |);
+                                    Value.StructTuple
+                                      "core::option::Option::None"
+                                      []
+                                      [ Ty.path "core::fmt::Arguments" ]
+                                      []
+                                  ]
                                 |)
                               |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                      ]
-                    |)))
-              ]
-            |)
+                            |)
+                          |)));
+                      fun γ => ltac:(M.monadic (Value.Tuple []))
+                    ]
+                  |)))
+            ]
           |) in
         let~ result :
             Ty.apply
@@ -924,196 +874,184 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             [ Value.Integer IntegerKind.I32 5 ]
           |) in
         let~ _ : Ty.tuple [] :=
-          M.read (|
-            M.match_operator (|
-              Ty.tuple [],
-              M.alloc (|
-                Ty.tuple
-                  [
-                    Ty.apply
-                      (Ty.path "&")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
-                      ];
-                    Ty.apply
-                      (Ty.path "&")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
-                      ]
-                  ],
-                Value.Tuple
-                  [
-                    M.borrow (| Pointer.Kind.Ref, result |);
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ],
-                        Value.StructTuple
-                          "core::result::Result::Err"
-                          []
-                          [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
-                          [ Value.Tuple [] ]
-                      |)
+          M.match_operator (|
+            Ty.tuple [],
+            M.alloc (|
+              Ty.tuple
+                [
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                    ];
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                    ]
+                ],
+              Value.Tuple
+                [
+                  M.borrow (| Pointer.Kind.Ref, result |);
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ],
+                      Value.StructTuple
+                        "core::result::Result::Err"
+                        []
+                        [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                        [ Value.Tuple [] ]
                     |)
-                  ]
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let left_val :=
-                      M.copy (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
-                          ],
-                        γ0_0
-                      |) in
-                    let right_val :=
-                      M.copy (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
-                          ],
-                        γ0_1
-                      |) in
-                    M.match_operator (|
-                      Ty.tuple [],
-                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  Ty.path "bool",
-                                  UnOp.not (|
-                                    M.call_closure (|
-                                      Ty.path "bool",
-                                      M.get_trait_method (|
-                                        "core::cmp::PartialEq",
+                  |)
+                ]
+            |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                  let left_val :=
+                    M.copy (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                        ],
+                      γ0_0
+                    |) in
+                  let right_val :=
+                    M.copy (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                        ],
+                      γ0_1
+                    |) in
+                  M.match_operator (|
+                    Ty.tuple [],
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ :=
+                            M.use
+                              (M.alloc (|
+                                Ty.path "bool",
+                                UnOp.not (|
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    M.get_trait_method (|
+                                      "core::cmp::PartialEq",
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
+                                        ],
+                                      [],
+                                      [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
                                           []
                                           [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
-                                          ],
-                                        [],
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            []
-                                            [
-                                              Ty.path "try_from_and_try_into::EvenNumber";
-                                              Ty.tuple []
-                                            ]
-                                        ],
-                                        "eq",
-                                        [],
+                                          ]
+                                      ],
+                                      "eq",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| left_val |) |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| right_val |) |)
+                                      |)
+                                    ]
+                                  |)
+                                |)
+                              |)) in
+                          let _ :=
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          M.never_to_any (|
+                            M.read (|
+                              let~ kind : Ty.path "core::panicking::AssertKind" :=
+                                Value.StructTuple "core::panicking::AssertKind::Eq" [] [] [] in
+                              M.alloc (|
+                                Ty.path "never",
+                                M.call_closure (|
+                                  Ty.path "never",
+                                  M.get_function (|
+                                    "core::panicking::assert_failed",
+                                    [],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
                                         []
-                                      |),
-                                      [
+                                        [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple []
+                                        ];
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.path "try_from_and_try_into::EvenNumber"; Ty.tuple [] ]
+                                    ]
+                                  |),
+                                  [
+                                    M.read (| kind |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
                                         M.borrow (|
                                           Pointer.Kind.Ref,
                                           M.deref (| M.read (| left_val |) |)
-                                        |);
+                                        |)
+                                      |)
+                                    |);
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
                                         M.borrow (|
                                           Pointer.Kind.Ref,
                                           M.deref (| M.read (| right_val |) |)
                                         |)
-                                      ]
-                                    |)
-                                  |)
-                                |)) in
-                            let _ :=
-                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              Ty.tuple [],
-                              M.never_to_any (|
-                                M.read (|
-                                  let~ kind : Ty.path "core::panicking::AssertKind" :=
-                                    Value.StructTuple "core::panicking::AssertKind::Eq" [] [] [] in
-                                  M.alloc (|
-                                    Ty.path "never",
-                                    M.call_closure (|
-                                      Ty.path "never",
-                                      M.get_function (|
-                                        "core::panicking::assert_failed",
-                                        [],
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            []
-                                            [
-                                              Ty.path "try_from_and_try_into::EvenNumber";
-                                              Ty.tuple []
-                                            ];
-                                          Ty.apply
-                                            (Ty.path "core::result::Result")
-                                            []
-                                            [
-                                              Ty.path "try_from_and_try_into::EvenNumber";
-                                              Ty.tuple []
-                                            ]
-                                        ]
-                                      |),
-                                      [
-                                        M.read (| kind |);
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (|
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (| M.read (| left_val |) |)
-                                            |)
-                                          |)
-                                        |);
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (|
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (| M.read (| right_val |) |)
-                                            |)
-                                          |)
-                                        |);
-                                        Value.StructTuple
-                                          "core::option::Option::None"
-                                          []
-                                          [ Ty.path "core::fmt::Arguments" ]
-                                          []
-                                      ]
-                                    |)
-                                  |)
+                                      |)
+                                    |);
+                                    Value.StructTuple
+                                      "core::option::Option::None"
+                                      []
+                                      [ Ty.path "core::fmt::Arguments" ]
+                                      []
+                                  ]
                                 |)
                               |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                      ]
-                    |)))
-              ]
-            |)
+                            |)
+                          |)));
+                      fun γ => ltac:(M.monadic (Value.Tuple []))
+                    ]
+                  |)))
+            ]
           |) in
         M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))

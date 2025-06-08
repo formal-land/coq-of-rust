@@ -1634,23 +1634,38 @@ Module host.
                   [],
                 index
               |) in
-            M.read (|
-              M.match_operator (|
+            M.match_operator (|
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "revm_context_interface::journaled_state::StateLoad")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "ruint::Uint")
+                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                        []
+                    ]
+                ],
+              M.alloc (|
                 Ty.apply
-                  (Ty.path "core::option::Option")
+                  (Ty.path "hashbrown::map::Entry")
                   []
                   [
                     Ty.apply
-                      (Ty.path "revm_context_interface::journaled_state::StateLoad")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "ruint::Uint")
-                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
-                          []
-                      ]
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      [];
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      [];
+                    Ty.path "foldhash::seed::fast::RandomState";
+                    Ty.path "hashbrown::raw::alloc::inner::Global"
                   ],
-                M.alloc (|
+                M.call_closure (|
                   Ty.apply
                     (Ty.path "hashbrown::map::Entry")
                     []
@@ -1666,9 +1681,9 @@ Module host.
                       Ty.path "foldhash::seed::fast::RandomState";
                       Ty.path "hashbrown::raw::alloc::inner::Global"
                     ],
-                  M.call_closure (|
+                  M.get_associated_function (|
                     Ty.apply
-                      (Ty.path "hashbrown::map::Entry")
+                      (Ty.path "hashbrown::map::HashMap")
                       []
                       [
                         Ty.apply
@@ -1682,204 +1697,78 @@ Module host.
                         Ty.path "foldhash::seed::fast::RandomState";
                         Ty.path "hashbrown::raw::alloc::inner::Global"
                       ],
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "hashbrown::map::HashMap")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "ruint::Uint")
-                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
-                            ]
-                            [];
-                          Ty.apply
-                            (Ty.path "ruint::Uint")
-                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
-                            ]
-                            [];
-                          Ty.path "foldhash::seed::fast::RandomState";
-                          Ty.path "hashbrown::raw::alloc::inner::Global"
-                        ],
-                      "entry",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "revm_context_interface::host::dummy::DummyHost",
-                          "storage"
-                        |)
-                      |);
-                      M.read (| index |)
-                    ]
-                  |)
-                |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "hashbrown::map::Entry::Occupied",
-                          0
-                        |) in
-                      let entry :=
-                        M.copy (|
-                          Ty.apply
-                            (Ty.path "hashbrown::map::OccupiedEntry")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "ruint::Uint")
-                                [
-                                  Value.Integer IntegerKind.Usize 256;
-                                  Value.Integer IntegerKind.Usize 4
-                                ]
-                                [];
-                              Ty.apply
-                                (Ty.path "ruint::Uint")
-                                [
-                                  Value.Integer IntegerKind.Usize 256;
-                                  Value.Integer IntegerKind.Usize 4
-                                ]
-                                [];
-                              Ty.path "foldhash::seed::fast::RandomState";
-                              Ty.path "hashbrown::raw::alloc::inner::Global"
-                            ],
-                          γ0_0
-                        |) in
-                      M.alloc (|
+                    "entry",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm_context_interface::host::dummy::DummyHost",
+                        "storage"
+                      |)
+                    |);
+                    M.read (| index |)
+                  ]
+                |)
+              |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "hashbrown::map::Entry::Occupied",
+                        0
+                      |) in
+                    let entry :=
+                      M.copy (|
                         Ty.apply
-                          (Ty.path "core::option::Option")
+                          (Ty.path "hashbrown::map::OccupiedEntry")
                           []
                           [
                             Ty.apply
-                              (Ty.path "revm_context_interface::journaled_state::StateLoad")
-                              []
+                              (Ty.path "ruint::Uint")
                               [
-                                Ty.apply
-                                  (Ty.path "ruint::Uint")
-                                  [
-                                    Value.Integer IntegerKind.Usize 256;
-                                    Value.Integer IntegerKind.Usize 4
-                                  ]
-                                  []
+                                Value.Integer IntegerKind.Usize 256;
+                                Value.Integer IntegerKind.Usize 4
                               ]
+                              [];
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [
+                                Value.Integer IntegerKind.Usize 256;
+                                Value.Integer IntegerKind.Usize 4
+                              ]
+                              [];
+                            Ty.path "foldhash::seed::fast::RandomState";
+                            Ty.path "hashbrown::raw::alloc::inner::Global"
                           ],
-                        Value.StructTuple
-                          "core::option::Option::Some"
+                        γ0_0
+                      |) in
+                    Value.StructTuple
+                      "core::option::Option::Some"
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "revm_context_interface::journaled_state::StateLoad")
                           []
                           [
                             Ty.apply
-                              (Ty.path "revm_context_interface::journaled_state::StateLoad")
+                              (Ty.path "ruint::Uint")
+                              [
+                                Value.Integer IntegerKind.Usize 256;
+                                Value.Integer IntegerKind.Usize 4
+                              ]
                               []
-                              [
-                                Ty.apply
-                                  (Ty.path "ruint::Uint")
-                                  [
-                                    Value.Integer IntegerKind.Usize 256;
-                                    Value.Integer IntegerKind.Usize 4
-                                  ]
-                                  []
-                              ]
                           ]
-                          [
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "revm_context_interface::journaled_state::StateLoad")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "ruint::Uint")
-                                    [
-                                      Value.Integer IntegerKind.Usize 256;
-                                      Value.Integer IntegerKind.Usize 4
-                                    ]
-                                    []
-                                ],
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "revm_context_interface::journaled_state::StateLoad")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "ruint::Uint")
-                                      [
-                                        Value.Integer IntegerKind.Usize 256;
-                                        Value.Integer IntegerKind.Usize 4
-                                      ]
-                                      []
-                                  ],
-                                "new",
-                                [],
-                                []
-                              |),
-                              [
-                                M.read (|
-                                  M.deref (|
-                                    M.call_closure (|
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "ruint::Uint")
-                                            [
-                                              Value.Integer IntegerKind.Usize 256;
-                                              Value.Integer IntegerKind.Usize 4
-                                            ]
-                                            []
-                                        ],
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "hashbrown::map::OccupiedEntry")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "ruint::Uint")
-                                              [
-                                                Value.Integer IntegerKind.Usize 256;
-                                                Value.Integer IntegerKind.Usize 4
-                                              ]
-                                              [];
-                                            Ty.apply
-                                              (Ty.path "ruint::Uint")
-                                              [
-                                                Value.Integer IntegerKind.Usize 256;
-                                                Value.Integer IntegerKind.Usize 4
-                                              ]
-                                              [];
-                                            Ty.path "foldhash::seed::fast::RandomState";
-                                            Ty.path "hashbrown::raw::alloc::inner::Global"
-                                          ],
-                                        "get",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.borrow (| Pointer.Kind.Ref, entry |) ]
-                                    |)
-                                  |)
-                                |);
-                                Value.Bool false
-                              ]
-                            |)
-                          ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "hashbrown::map::Entry::Vacant",
-                          0
-                        |) in
-                      let entry :=
-                        M.copy (|
+                      ]
+                      [
+                        M.call_closure (|
                           Ty.apply
-                            (Ty.path "hashbrown::map::VacantEntry")
+                            (Ty.path "revm_context_interface::journaled_state::StateLoad")
                             []
                             [
                               Ty.apply
@@ -1888,19 +1777,109 @@ Module host.
                                   Value.Integer IntegerKind.Usize 256;
                                   Value.Integer IntegerKind.Usize 4
                                 ]
-                                [];
-                              Ty.apply
-                                (Ty.path "ruint::Uint")
-                                [
-                                  Value.Integer IntegerKind.Usize 256;
-                                  Value.Integer IntegerKind.Usize 4
-                                ]
-                                [];
-                              Ty.path "foldhash::seed::fast::RandomState";
-                              Ty.path "hashbrown::raw::alloc::inner::Global"
+                                []
                             ],
-                          γ0_0
-                        |) in
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "revm_context_interface::journaled_state::StateLoad")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
+                                  []
+                              ],
+                            "new",
+                            [],
+                            []
+                          |),
+                          [
+                            M.read (|
+                              M.deref (|
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [
+                                          Value.Integer IntegerKind.Usize 256;
+                                          Value.Integer IntegerKind.Usize 4
+                                        ]
+                                        []
+                                    ],
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "hashbrown::map::OccupiedEntry")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ]
+                                          [];
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ]
+                                          [];
+                                        Ty.path "foldhash::seed::fast::RandomState";
+                                        Ty.path "hashbrown::raw::alloc::inner::Global"
+                                      ],
+                                    "get",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, entry |) ]
+                                |)
+                              |)
+                            |);
+                            Value.Bool false
+                          ]
+                        |)
+                      ]));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "hashbrown::map::Entry::Vacant",
+                        0
+                      |) in
+                    let entry :=
+                      M.copy (|
+                        Ty.apply
+                          (Ty.path "hashbrown::map::VacantEntry")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [
+                                Value.Integer IntegerKind.Usize 256;
+                                Value.Integer IntegerKind.Usize 4
+                              ]
+                              [];
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [
+                                Value.Integer IntegerKind.Usize 256;
+                                Value.Integer IntegerKind.Usize 4
+                              ]
+                              [];
+                            Ty.path "foldhash::seed::fast::RandomState";
+                            Ty.path "hashbrown::raw::alloc::inner::Global"
+                          ],
+                        γ0_0
+                      |) in
+                    M.read (|
                       let~ _ :
                           Ty.apply
                             (Ty.path "&mut")
@@ -2066,9 +2045,9 @@ Module host.
                               ]
                             |)
                           ]
-                      |)))
-                ]
-              |)
+                      |)
+                    |)))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

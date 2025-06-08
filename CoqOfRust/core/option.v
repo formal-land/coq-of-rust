@@ -56,12 +56,10 @@ Module option.
               Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
               self
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.tuple [],
-              Value.DeclaredButUndefined,
-              [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
-            |)
+          M.match_operator (|
+            Ty.tuple [],
+            Value.DeclaredButUndefined,
+            [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -93,80 +91,62 @@ Module option.
             |) in
           let f :=
             M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_str",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "None" |) |) |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ1_0 |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_tuple_field1_finish",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Some" |) |) |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                            |))
-                        ]
-                      |)
-                    |)))
-              ]
-            |)
+          M.match_operator (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "write_str",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "None" |) |) |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+                  let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ1_0 |) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::Formatter",
+                      "debug_tuple_field1_finish",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Some" |) |) |);
+                      (* Unsize *)
+                      M.pointer_coercion
+                        (M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                        |))
+                    ]
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -227,22 +207,22 @@ Module option.
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                 ]
               |) in
-            M.match_operator (|
+            M.alloc (|
               Ty.tuple [],
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ1_0 |) in
-                    M.alloc (|
-                      Ty.tuple [],
+              M.match_operator (|
+                Ty.tuple [],
+                self,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let γ1_0 :=
+                        M.SubPointer.get_struct_tuple_field (|
+                          γ,
+                          "core::option::Option::Some",
+                          0
+                        |) in
+                      let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ1_0 |) in
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_trait_method (| "core::hash::Hash", T, [], [], "hash", [], [ __H ] |),
@@ -250,10 +230,10 @@ Module option.
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                         ]
-                      |)
-                    |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-              ]
+                      |)));
+                  fun γ => ltac:(M.monadic (Value.Tuple []))
+                ]
+              |)
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -287,23 +267,17 @@ Module option.
               Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
               self
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.path "bool",
-              M.deref (| M.read (| self |) |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    M.alloc (| Ty.path "bool", Value.Bool true |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
-              ]
-            |)
+          M.match_operator (|
+            Ty.path "bool",
+            M.deref (| M.read (| self |) |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+                  Value.Bool true));
+              fun γ => ltac:(M.monadic (Value.Bool false))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -329,42 +303,33 @@ Module option.
         ltac:(M.monadic
           (let self := M.alloc (| Ty.apply (Ty.path "core::option::Option") [] [ T ], self |) in
           let f := M.alloc (| impl_FnOnce_T__arrow_bool, f |) in
-          M.read (|
-            M.match_operator (|
-              Ty.path "bool",
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (| Ty.path "bool", Value.Bool false |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let x := M.copy (| T, γ0_0 |) in
-                    M.alloc (|
-                      Ty.path "bool",
-                      M.call_closure (|
-                        Ty.path "bool",
-                        M.get_trait_method (|
-                          "core::ops::function::FnOnce",
-                          impl_FnOnce_T__arrow_bool,
-                          [],
-                          [ Ty.tuple [ T ] ],
-                          "call_once",
-                          [],
-                          []
-                        |),
-                        [ M.read (| f |); Value.Tuple [ M.read (| x |) ] ]
-                      |)
-                    |)))
-              ]
-            |)
+          M.match_operator (|
+            Ty.path "bool",
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                  Value.Bool false));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+                  let x := M.copy (| T, γ0_0 |) in
+                  M.call_closure (|
+                    Ty.path "bool",
+                    M.get_trait_method (|
+                      "core::ops::function::FnOnce",
+                      impl_FnOnce_T__arrow_bool,
+                      [],
+                      [ Ty.tuple [ T ] ],
+                      "call_once",
+                      [],
+                      []
+                    |),
+                    [ M.read (| f |); Value.Tuple [ M.read (| x |) ] ]
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -426,42 +391,33 @@ Module option.
         ltac:(M.monadic
           (let self := M.alloc (| Ty.apply (Ty.path "core::option::Option") [] [ T ], self |) in
           let f := M.alloc (| impl_FnOnce_T__arrow_bool, f |) in
-          M.read (|
-            M.match_operator (|
-              Ty.path "bool",
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (| Ty.path "bool", Value.Bool true |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let x := M.copy (| T, γ0_0 |) in
-                    M.alloc (|
-                      Ty.path "bool",
-                      M.call_closure (|
-                        Ty.path "bool",
-                        M.get_trait_method (|
-                          "core::ops::function::FnOnce",
-                          impl_FnOnce_T__arrow_bool,
-                          [],
-                          [ Ty.tuple [ T ] ],
-                          "call_once",
-                          [],
-                          []
-                        |),
-                        [ M.read (| f |); Value.Tuple [ M.read (| x |) ] ]
-                      |)
-                    |)))
-              ]
-            |)
+          M.match_operator (|
+            Ty.path "bool",
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                  Value.Bool true));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+                  let x := M.copy (| T, γ0_0 |) in
+                  M.call_closure (|
+                    Ty.path "bool",
+                    M.get_trait_method (|
+                      "core::ops::function::FnOnce",
+                      impl_FnOnce_T__arrow_bool,
+                      [],
+                      [ Ty.tuple [ T ] ],
+                      "call_once",
+                      [],
+                      []
+                    |),
+                    [ M.read (| f |); Value.Tuple [ M.read (| x |) ] ]
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -490,47 +446,29 @@ Module option.
               Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
               self
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
-              M.deref (| M.read (| self |) |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let x := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ0_0 |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        []
-                        [ Ty.apply (Ty.path "&") [] [ T ] ],
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        []
-                        [ Ty.apply (Ty.path "&") [] [ T ] ]
-                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |) ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        []
-                        [ Ty.apply (Ty.path "&") [] [ T ] ],
-                      Value.StructTuple
-                        "core::option::Option::None"
-                        []
-                        [ Ty.apply (Ty.path "&") [] [ T ] ]
-                        []
-                    |)))
-              ]
-            |)
+          M.match_operator (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
+            M.deref (| M.read (| self |) |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+                  let x := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ0_0 |) in
+                  Value.StructTuple
+                    "core::option::Option::Some"
+                    []
+                    [ Ty.apply (Ty.path "&") [] [ T ] ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |) ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                  Value.StructTuple
+                    "core::option::Option::None"
+                    []
+                    [ Ty.apply (Ty.path "&") [] [ T ] ]
+                    []))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -559,47 +497,29 @@ Module option.
               Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
               self
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
-              M.deref (| M.read (| self |) |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let x := M.alloc (| Ty.apply (Ty.path "&mut") [] [ T ], γ0_0 |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        []
-                        [ Ty.apply (Ty.path "&mut") [] [ T ] ],
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        []
-                        [ Ty.apply (Ty.path "&mut") [] [ T ] ]
-                        [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| x |) |) |) ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        []
-                        [ Ty.apply (Ty.path "&mut") [] [ T ] ],
-                      Value.StructTuple
-                        "core::option::Option::None"
-                        []
-                        [ Ty.apply (Ty.path "&mut") [] [ T ] ]
-                        []
-                    |)))
-              ]
-            |)
+          M.match_operator (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+            M.deref (| M.read (| self |) |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+                  let x := M.alloc (| Ty.apply (Ty.path "&mut") [] [ T ], γ0_0 |) in
+                  Value.StructTuple
+                    "core::option::Option::Some"
+                    []
+                    [ Ty.apply (Ty.path "&mut") [] [ T ] ]
+                    [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| x |) |) |) ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                  Value.StructTuple
+                    "core::option::Option::None"
+                    []
+                    [ Ty.apply (Ty.path "&mut") [] [ T ] ]
+                    []))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -635,110 +555,85 @@ Module option.
                 ],
               self
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply
-                (Ty.path "core::option::Option")
-                []
-                [ Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&") [] [ T ] ] ],
-              M.alloc (|
+          M.match_operator (|
+            Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [ Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&") [] [ T ] ] ],
+            M.alloc (|
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
+              M.call_closure (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
-                M.call_closure (|
-                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                    "as_ref",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ T ],
+                  "as_ref",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
+                        M.get_associated_function (|
                           Ty.apply
-                            (Ty.path "&")
+                            (Ty.path "core::pin::Pin")
                             []
-                            [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "core::pin::Pin")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
-                              ],
-                            "get_ref",
-                            [],
-                            []
-                          |),
-                          [ M.read (| self |) ]
-                        |)
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
+                            ],
+                          "get_ref",
+                          [],
+                          []
+                        |),
+                        [ M.read (| self |) ]
                       |)
                     |)
-                  ]
-                |)
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let x := M.copy (| Ty.apply (Ty.path "&") [] [ T ], γ0_0 |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        []
-                        [ Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&") [] [ T ] ]
-                        ],
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        []
-                        [ Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&") [] [ T ] ]
-                        ]
-                        [
-                          M.call_closure (|
-                            Ty.apply
-                              (Ty.path "core::pin::Pin")
-                              []
-                              [ Ty.apply (Ty.path "&") [] [ T ] ],
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "core::pin::Pin")
-                                []
-                                [ Ty.apply (Ty.path "&") [] [ T ] ],
-                              "new_unchecked",
-                              [],
-                              []
-                            |),
-                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |) ]
-                          |)
-                        ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        []
-                        [ Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&") [] [ T ] ]
-                        ],
-                      Value.StructTuple
-                        "core::option::Option::None"
-                        []
-                        [ Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&") [] [ T ] ]
-                        ]
-                        []
-                    |)))
-              ]
-            |)
+                  |)
+                ]
+              |)
+            |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+                  let x := M.copy (| Ty.apply (Ty.path "&") [] [ T ], γ0_0 |) in
+                  Value.StructTuple
+                    "core::option::Option::Some"
+                    []
+                    [ Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&") [] [ T ] ] ]
+                    [
+                      M.call_closure (|
+                        Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "core::pin::Pin")
+                            []
+                            [ Ty.apply (Ty.path "&") [] [ T ] ],
+                          "new_unchecked",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |) ]
+                      |)
+                    ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                  Value.StructTuple
+                    "core::option::Option::None"
+                    []
+                    [ Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&") [] [ T ] ] ]
+                    []))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -780,129 +675,90 @@ Module option.
                 ],
               self
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply
-                (Ty.path "core::option::Option")
-                []
-                [ Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ] ],
-              M.alloc (|
+          M.match_operator (|
+            Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [ Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ] ],
+            M.alloc (|
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+              M.call_closure (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
-                M.call_closure (|
-                  Ty.apply
-                    (Ty.path "core::option::Option")
-                    []
-                    [ Ty.apply (Ty.path "&mut") [] [ T ] ],
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                    "as_mut",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.deref (|
-                        M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ T ],
+                  "as_mut",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
+                        M.get_associated_function (|
                           Ty.apply
-                            (Ty.path "&mut")
+                            (Ty.path "core::pin::Pin")
                             []
-                            [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "core::pin::Pin")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "&mut")
-                                  []
-                                  [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
-                              ],
-                            "get_unchecked_mut",
-                            [],
-                            []
-                          |),
-                          [ M.read (| self |) ]
-                        |)
+                            [
+                              Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
+                            ],
+                          "get_unchecked_mut",
+                          [],
+                          []
+                        |),
+                        [ M.read (| self |) ]
                       |)
                     |)
-                  ]
-                |)
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let x := M.copy (| Ty.apply (Ty.path "&mut") [] [ T ], γ0_0 |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        []
-                        [
+                  |)
+                ]
+              |)
+            |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+                  let x := M.copy (| Ty.apply (Ty.path "&mut") [] [ T ], γ0_0 |) in
+                  Value.StructTuple
+                    "core::option::Option::Some"
+                    []
+                    [ Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ]
+                    ]
+                    [
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::pin::Pin")
+                          []
+                          [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                        M.get_associated_function (|
                           Ty.apply
                             (Ty.path "core::pin::Pin")
                             []
-                            [ Ty.apply (Ty.path "&mut") [] [ T ] ]
-                        ],
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "core::pin::Pin")
-                            []
-                            [ Ty.apply (Ty.path "&mut") [] [ T ] ]
-                        ]
-                        [
-                          M.call_closure (|
-                            Ty.apply
-                              (Ty.path "core::pin::Pin")
-                              []
-                              [ Ty.apply (Ty.path "&mut") [] [ T ] ],
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "core::pin::Pin")
-                                []
-                                [ Ty.apply (Ty.path "&mut") [] [ T ] ],
-                              "new_unchecked",
-                              [],
-                              []
-                            |),
-                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| x |) |) |) ]
-                          |)
-                        ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "core::pin::Pin")
-                            []
-                            [ Ty.apply (Ty.path "&mut") [] [ T ] ]
-                        ],
-                      Value.StructTuple
-                        "core::option::Option::None"
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "core::pin::Pin")
-                            []
-                            [ Ty.apply (Ty.path "&mut") [] [ T ] ]
-                        ]
-                        []
-                    |)))
-              ]
-            |)
+                            [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                          "new_unchecked",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| x |) |) |) ]
+                      |)
+                    ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                  Value.StructTuple
+                    "core::option::Option::None"
+                    []
+                    [ Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ]
+                    ]
+                    []))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1195,36 +1051,27 @@ Module option.
         ltac:(M.monadic
           (let self := M.alloc (| Ty.apply (Ty.path "core::option::Option") [] [ T ], self |) in
           let msg := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], msg |) in
-          M.read (|
-            M.match_operator (|
-              T,
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let val := M.copy (| T, γ0_0 |) in
-                    val));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (|
-                      T,
-                      M.never_to_any (|
-                        M.call_closure (|
-                          Ty.path "never",
-                          M.get_function (| "core::option::expect_failed", [], [] |),
-                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| msg |) |) |) ]
-                        |)
-                      |)
-                    |)))
-              ]
-            |)
+          M.match_operator (|
+            T,
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+                  let val := M.copy (| T, γ0_0 |) in
+                  M.read (| val |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                  M.never_to_any (|
+                    M.call_closure (|
+                      Ty.path "never",
+                      M.get_function (| "core::option::expect_failed", [], [] |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| msg |) |) |) ]
+                    |)
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1249,36 +1096,27 @@ Module option.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| Ty.apply (Ty.path "core::option::Option") [] [ T ], self |) in
-          M.read (|
-            M.match_operator (|
-              T,
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let val := M.copy (| T, γ0_0 |) in
-                    val));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (|
-                      T,
-                      M.never_to_any (|
-                        M.call_closure (|
-                          Ty.path "never",
-                          M.get_function (| "core::option::unwrap_failed", [], [] |),
-                          []
-                        |)
-                      |)
-                    |)))
-              ]
-            |)
+          M.match_operator (|
+            T,
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+                  let val := M.copy (| T, γ0_0 |) in
+                  M.read (| val |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                  M.never_to_any (|
+                    M.call_closure (|
+                      Ty.path "never",
+                      M.get_function (| "core::option::unwrap_failed", [], [] |),
+                      []
+                    |)
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1304,27 +1142,21 @@ Module option.
         ltac:(M.monadic
           (let self := M.alloc (| Ty.apply (Ty.path "core::option::Option") [] [ T ], self |) in
           let default := M.alloc (| T, default |) in
-          M.read (|
-            M.match_operator (|
-              T,
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let x := M.copy (| T, γ0_0 |) in
-                    x));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    default))
-              ]
-            |)
+          M.match_operator (|
+            T,
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+                  let x := M.copy (| T, γ0_0 |) in
+                  M.read (| x |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                  M.read (| default |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1358,42 +1190,33 @@ Module option.
         ltac:(M.monadic
           (let self := M.alloc (| Ty.apply (Ty.path "core::option::Option") [] [ T ], self |) in
           let f := M.alloc (| F, f |) in
-          M.read (|
-            M.match_operator (|
-              T,
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let x := M.copy (| T, γ0_0 |) in
-                    x));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (|
-                      T,
-                      M.call_closure (|
-                        T,
-                        M.get_trait_method (|
-                          "core::ops::function::FnOnce",
-                          F,
-                          [],
-                          [ Ty.tuple [] ],
-                          "call_once",
-                          [],
-                          []
-                        |),
-                        [ M.read (| f |); Value.Tuple [] ]
-                      |)
-                    |)))
-              ]
-            |)
+          M.match_operator (|
+            T,
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+                  let x := M.copy (| T, γ0_0 |) in
+                  M.read (| x |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                  M.call_closure (|
+                    T,
+                    M.get_trait_method (|
+                      "core::ops::function::FnOnce",
+                      F,
+                      [],
+                      [ Ty.tuple [] ],
+                      "call_once",
+                      [],
+                      []
+                    |),
+                    [ M.read (| f |); Value.Tuple [] ]
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1426,42 +1249,25 @@ Module option.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| Ty.apply (Ty.path "core::option::Option") [] [ T ], self |) in
-          M.read (|
-            M.match_operator (|
-              T,
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let x := M.copy (| T, γ0_0 |) in
-                    x));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (|
-                      T,
-                      M.call_closure (|
-                        T,
-                        M.get_trait_method (|
-                          "core::default::Default",
-                          T,
-                          [],
-                          [],
-                          "default",
-                          [],
-                          []
-                        |),
-                        []
-                      |)
-                    |)))
-              ]
-            |)
+          M.match_operator (|
+            T,
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+                  let x := M.copy (| T, γ0_0 |) in
+                  M.read (| x |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                  M.call_closure (|
+                    T,
+                    M.get_trait_method (| "core::default::Default", T, [], [], "default", [], [] |),
+                    []
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1492,36 +1298,27 @@ Module option.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| Ty.apply (Ty.path "core::option::Option") [] [ T ], self |) in
-          M.read (|
-            M.match_operator (|
-              T,
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let val := M.copy (| T, γ0_0 |) in
-                    val));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (|
-                      T,
-                      M.never_to_any (|
-                        M.call_closure (|
-                          Ty.path "never",
-                          M.get_function (| "core::hint::unreachable_unchecked", [], [] |),
-                          []
-                        |)
-                      |)
-                    |)))
-              ]
-            |)
+          M.match_operator (|
+            T,
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+                  let val := M.copy (| T, γ0_0 |) in
+                  M.read (| val |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                  M.never_to_any (|
+                    M.call_closure (|
+                      Ty.path "never",
+                      M.get_function (| "core::hint::unreachable_unchecked", [], [] |),
+                      []
+                    |)
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1550,51 +1347,39 @@ Module option.
         ltac:(M.monadic
           (let self := M.alloc (| Ty.apply (Ty.path "core::option::Option") [] [ T ], self |) in
           let f := M.alloc (| F, f |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply (Ty.path "core::option::Option") [] [ U ],
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let x := M.copy (| T, γ0_0 |) in
-                    M.alloc (|
-                      Ty.apply (Ty.path "core::option::Option") [] [ U ],
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        []
-                        [ U ]
-                        [
-                          M.call_closure (|
-                            U,
-                            M.get_trait_method (|
-                              "core::ops::function::FnOnce",
-                              F,
-                              [],
-                              [ Ty.tuple [ T ] ],
-                              "call_once",
-                              [],
-                              []
-                            |),
-                            [ M.read (| f |); Value.Tuple [ M.read (| x |) ] ]
-                          |)
-                        ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (|
-                      Ty.apply (Ty.path "core::option::Option") [] [ U ],
-                      Value.StructTuple "core::option::Option::None" [] [ U ] []
-                    |)))
-              ]
-            |)
+          M.match_operator (|
+            Ty.apply (Ty.path "core::option::Option") [] [ U ],
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+                  let x := M.copy (| T, γ0_0 |) in
+                  Value.StructTuple
+                    "core::option::Option::Some"
+                    []
+                    [ U ]
+                    [
+                      M.call_closure (|
+                        U,
+                        M.get_trait_method (|
+                          "core::ops::function::FnOnce",
+                          F,
+                          [],
+                          [ Ty.tuple [ T ] ],
+                          "call_once",
+                          [],
+                          []
+                        |),
+                        [ M.read (| f |); Value.Tuple [ M.read (| x |) ] ]
+                      |)
+                    ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                  Value.StructTuple "core::option::Option::None" [] [ U ] []))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1623,21 +1408,21 @@ Module option.
           let f := M.alloc (| F, f |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
-              M.read (|
-                M.match_operator (|
-                  Ty.tuple [],
-                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ := self in
-                        let γ0_0 :=
-                          M.SubPointer.get_struct_tuple_field (|
-                            γ,
-                            "core::option::Option::Some",
-                            0
-                          |) in
-                        let x := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ0_0 |) in
+              M.match_operator (|
+                Ty.tuple [],
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := self in
+                      let γ0_0 :=
+                        M.SubPointer.get_struct_tuple_field (|
+                          γ,
+                          "core::option::Option::Some",
+                          0
+                        |) in
+                      let x := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ0_0 |) in
+                      M.read (|
                         let~ _ : Ty.tuple [] :=
                           M.call_closure (|
                             Ty.tuple [],
@@ -1656,10 +1441,10 @@ Module option.
                                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |) ]
                             ]
                           |) in
-                        M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                  ]
-                |)
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                      |)));
+                  fun γ => ltac:(M.monadic (Value.Tuple []))
+                ]
               |) in
             self
           |)))
@@ -1691,42 +1476,33 @@ Module option.
           (let self := M.alloc (| Ty.apply (Ty.path "core::option::Option") [] [ T ], self |) in
           let default := M.alloc (| U, default |) in
           let f := M.alloc (| F, f |) in
-          M.read (|
-            M.match_operator (|
-              U,
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let t := M.copy (| T, γ0_0 |) in
-                    M.alloc (|
-                      U,
-                      M.call_closure (|
-                        U,
-                        M.get_trait_method (|
-                          "core::ops::function::FnOnce",
-                          F,
-                          [],
-                          [ Ty.tuple [ T ] ],
-                          "call_once",
-                          [],
-                          []
-                        |),
-                        [ M.read (| f |); Value.Tuple [ M.read (| t |) ] ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    default))
-              ]
-            |)
+          M.match_operator (|
+            U,
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+                  let t := M.copy (| T, γ0_0 |) in
+                  M.call_closure (|
+                    U,
+                    M.get_trait_method (|
+                      "core::ops::function::FnOnce",
+                      F,
+                      [],
+                      [ Ty.tuple [ T ] ],
+                      "call_once",
+                      [],
+                      []
+                    |),
+                    [ M.read (| f |); Value.Tuple [ M.read (| t |) ] ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                  M.read (| default |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1757,57 +1533,45 @@ Module option.
           (let self := M.alloc (| Ty.apply (Ty.path "core::option::Option") [] [ T ], self |) in
           let default := M.alloc (| D, default |) in
           let f := M.alloc (| F, f |) in
-          M.read (|
-            M.match_operator (|
-              U,
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let t := M.copy (| T, γ0_0 |) in
-                    M.alloc (|
-                      U,
-                      M.call_closure (|
-                        U,
-                        M.get_trait_method (|
-                          "core::ops::function::FnOnce",
-                          F,
-                          [],
-                          [ Ty.tuple [ T ] ],
-                          "call_once",
-                          [],
-                          []
-                        |),
-                        [ M.read (| f |); Value.Tuple [ M.read (| t |) ] ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (|
-                      U,
-                      M.call_closure (|
-                        U,
-                        M.get_trait_method (|
-                          "core::ops::function::FnOnce",
-                          D,
-                          [],
-                          [ Ty.tuple [] ],
-                          "call_once",
-                          [],
-                          []
-                        |),
-                        [ M.read (| default |); Value.Tuple [] ]
-                      |)
-                    |)))
-              ]
-            |)
+          M.match_operator (|
+            U,
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+                  let t := M.copy (| T, γ0_0 |) in
+                  M.call_closure (|
+                    U,
+                    M.get_trait_method (|
+                      "core::ops::function::FnOnce",
+                      F,
+                      [],
+                      [ Ty.tuple [ T ] ],
+                      "call_once",
+                      [],
+                      []
+                    |),
+                    [ M.read (| f |); Value.Tuple [ M.read (| t |) ] ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                  M.call_closure (|
+                    U,
+                    M.get_trait_method (|
+                      "core::ops::function::FnOnce",
+                      D,
+                      [],
+                      [ Ty.tuple [] ],
+                      "call_once",
+                      [],
+                      []
+                    |),
+                    [ M.read (| default |); Value.Tuple [] ]
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1833,33 +1597,21 @@ Module option.
         ltac:(M.monadic
           (let self := M.alloc (| Ty.apply (Ty.path "core::option::Option") [] [ T ], self |) in
           let err := M.alloc (| E, err |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let v := M.copy (| T, γ0_0 |) in
-                    M.alloc (|
-                      Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
-                      Value.StructTuple "core::result::Result::Ok" [] [ T; E ] [ M.read (| v |) ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (|
-                      Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
-                      Value.StructTuple "core::result::Result::Err" [] [ T; E ] [ M.read (| err |) ]
-                    |)))
-              ]
-            |)
+          M.match_operator (|
+            Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+                  let v := M.copy (| T, γ0_0 |) in
+                  Value.StructTuple "core::result::Result::Ok" [] [ T; E ] [ M.read (| v |) ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                  Value.StructTuple "core::result::Result::Err" [] [ T; E ] [ M.read (| err |) ]))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1888,51 +1640,39 @@ Module option.
         ltac:(M.monadic
           (let self := M.alloc (| Ty.apply (Ty.path "core::option::Option") [] [ T ], self |) in
           let err := M.alloc (| F, err |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let v := M.copy (| T, γ0_0 |) in
-                    M.alloc (|
-                      Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
-                      Value.StructTuple "core::result::Result::Ok" [] [ T; E ] [ M.read (| v |) ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (|
-                      Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
-                      Value.StructTuple
-                        "core::result::Result::Err"
-                        []
-                        [ T; E ]
-                        [
-                          M.call_closure (|
-                            E,
-                            M.get_trait_method (|
-                              "core::ops::function::FnOnce",
-                              F,
-                              [],
-                              [ Ty.tuple [] ],
-                              "call_once",
-                              [],
-                              []
-                            |),
-                            [ M.read (| err |); Value.Tuple [] ]
-                          |)
-                        ]
-                    |)))
-              ]
-            |)
+          M.match_operator (|
+            Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+                  let v := M.copy (| T, γ0_0 |) in
+                  Value.StructTuple "core::result::Result::Ok" [] [ T; E ] [ M.read (| v |) ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                  Value.StructTuple
+                    "core::result::Result::Err"
+                    []
+                    [ T; E ]
+                    [
+                      M.call_closure (|
+                        E,
+                        M.get_trait_method (|
+                          "core::ops::function::FnOnce",
+                          F,
+                          [],
+                          [ Ty.tuple [] ],
+                          "call_once",
+                          [],
+                          []
+                        |),
+                        [ M.read (| err |); Value.Tuple [] ]
+                      |)
+                    ]))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2287,29 +2027,20 @@ Module option.
         ltac:(M.monadic
           (let self := M.alloc (| Ty.apply (Ty.path "core::option::Option") [] [ T ], self |) in
           let optb := M.alloc (| Ty.apply (Ty.path "core::option::Option") [] [ U ], optb |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply (Ty.path "core::option::Option") [] [ U ],
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    optb));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (|
-                      Ty.apply (Ty.path "core::option::Option") [] [ U ],
-                      Value.StructTuple "core::option::Option::None" [] [ U ] []
-                    |)))
-              ]
-            |)
+          M.match_operator (|
+            Ty.apply (Ty.path "core::option::Option") [] [ U ],
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+                  M.read (| optb |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                  Value.StructTuple "core::option::Option::None" [] [ U ] []))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2338,45 +2069,33 @@ Module option.
         ltac:(M.monadic
           (let self := M.alloc (| Ty.apply (Ty.path "core::option::Option") [] [ T ], self |) in
           let f := M.alloc (| F, f |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply (Ty.path "core::option::Option") [] [ U ],
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let x := M.copy (| T, γ0_0 |) in
-                    M.alloc (|
-                      Ty.apply (Ty.path "core::option::Option") [] [ U ],
-                      M.call_closure (|
-                        Ty.apply (Ty.path "core::option::Option") [] [ U ],
-                        M.get_trait_method (|
-                          "core::ops::function::FnOnce",
-                          F,
-                          [],
-                          [ Ty.tuple [ T ] ],
-                          "call_once",
-                          [],
-                          []
-                        |),
-                        [ M.read (| f |); Value.Tuple [ M.read (| x |) ] ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (|
-                      Ty.apply (Ty.path "core::option::Option") [] [ U ],
-                      Value.StructTuple "core::option::Option::None" [] [ U ] []
-                    |)))
-              ]
-            |)
+          M.match_operator (|
+            Ty.apply (Ty.path "core::option::Option") [] [ U ],
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+                  let x := M.copy (| T, γ0_0 |) in
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::option::Option") [] [ U ],
+                    M.get_trait_method (|
+                      "core::ops::function::FnOnce",
+                      F,
+                      [],
+                      [ Ty.tuple [ T ] ],
+                      "call_once",
+                      [],
+                      []
+                    |),
+                    [ M.read (| f |); Value.Tuple [ M.read (| x |) ] ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                  Value.StructTuple "core::option::Option::None" [] [ U ] []))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2407,97 +2126,84 @@ Module option.
         ltac:(M.monadic
           (let self := M.alloc (| Ty.apply (Ty.path "core::option::Option") [] [ T ], self |) in
           let predicate := M.alloc (| P, predicate |) in
-          M.read (|
-            M.catch_return (Ty.apply (Ty.path "core::option::Option") [] [ T ]) (|
-              ltac:(M.monadic
-                (M.alloc (|
+          M.catch_return (Ty.apply (Ty.path "core::option::Option") [] [ T ]) (|
+            ltac:(M.monadic
+              (M.read (|
+                let~ _ : Ty.tuple [] :=
+                  M.match_operator (|
+                    Ty.tuple [],
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ := self in
+                          let γ0_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ,
+                              "core::option::Option::Some",
+                              0
+                            |) in
+                          let x := M.copy (| T, γ0_0 |) in
+                          M.match_operator (|
+                            Ty.tuple [],
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
+                                        Ty.path "bool",
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          M.get_trait_method (|
+                                            "core::ops::function::FnOnce",
+                                            P,
+                                            [],
+                                            [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
+                                            "call_once",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.read (| predicate |);
+                                            Value.Tuple
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.borrow (| Pointer.Kind.Ref, x |) |)
+                                                |)
+                                              ]
+                                          ]
+                                        |)
+                                      |)) in
+                                  let _ :=
+                                    is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  M.never_to_any (|
+                                    M.read (|
+                                      M.return_ (|
+                                        Value.StructTuple
+                                          "core::option::Option::Some"
+                                          []
+                                          [ T ]
+                                          [ M.read (| x |) ]
+                                      |)
+                                    |)
+                                  |)));
+                              fun γ => ltac:(M.monadic (Value.Tuple []))
+                            ]
+                          |)));
+                      fun γ => ltac:(M.monadic (Value.Tuple []))
+                    ]
+                  |) in
+                M.alloc (|
                   Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                  M.read (|
-                    let~ _ : Ty.tuple [] :=
-                      M.read (|
-                        M.match_operator (|
-                          Ty.tuple [],
-                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ := self in
-                                let γ0_0 :=
-                                  M.SubPointer.get_struct_tuple_field (|
-                                    γ,
-                                    "core::option::Option::Some",
-                                    0
-                                  |) in
-                                let x := M.copy (| T, γ0_0 |) in
-                                M.match_operator (|
-                                  Ty.tuple [],
-                                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let γ :=
-                                          M.use
-                                            (M.alloc (|
-                                              Ty.path "bool",
-                                              M.call_closure (|
-                                                Ty.path "bool",
-                                                M.get_trait_method (|
-                                                  "core::ops::function::FnOnce",
-                                                  P,
-                                                  [],
-                                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
-                                                  "call_once",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
-                                                  M.read (| predicate |);
-                                                  Value.Tuple
-                                                    [
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.deref (|
-                                                          M.borrow (| Pointer.Kind.Ref, x |)
-                                                        |)
-                                                      |)
-                                                    ]
-                                                ]
-                                              |)
-                                            |)) in
-                                        let _ :=
-                                          is_constant_or_break_match (|
-                                            M.read (| γ |),
-                                            Value.Bool true
-                                          |) in
-                                        M.alloc (|
-                                          Ty.tuple [],
-                                          M.never_to_any (|
-                                            M.read (|
-                                              M.return_ (|
-                                                Value.StructTuple
-                                                  "core::option::Option::Some"
-                                                  []
-                                                  [ T ]
-                                                  [ M.read (| x |) ]
-                                              |)
-                                            |)
-                                          |)
-                                        |)));
-                                    fun γ =>
-                                      ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                                  ]
-                                |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                          ]
-                        |)
-                      |) in
-                    M.alloc (|
-                      Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                      Value.StructTuple "core::option::Option::None" [] [ T ] []
-                    |)
-                  |)
-                |)))
-            |)
+                  Value.StructTuple "core::option::Option::None" [] [ T ] []
+                |)
+              |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2523,27 +2229,21 @@ Module option.
         ltac:(M.monadic
           (let self := M.alloc (| Ty.apply (Ty.path "core::option::Option") [] [ T ], self |) in
           let optb := M.alloc (| Ty.apply (Ty.path "core::option::Option") [] [ T ], optb |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply (Ty.path "core::option::Option") [] [ T ],
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let x := M.copy (| Ty.apply (Ty.path "core::option::Option") [] [ T ], γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    x));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    optb))
-              ]
-            |)
+          M.match_operator (|
+            Ty.apply (Ty.path "core::option::Option") [] [ T ],
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let x := M.copy (| Ty.apply (Ty.path "core::option::Option") [] [ T ], γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+                  M.read (| x |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                  M.read (| optb |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2572,42 +2272,33 @@ Module option.
         ltac:(M.monadic
           (let self := M.alloc (| Ty.apply (Ty.path "core::option::Option") [] [ T ], self |) in
           let f := M.alloc (| F, f |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply (Ty.path "core::option::Option") [] [ T ],
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let x := M.copy (| Ty.apply (Ty.path "core::option::Option") [] [ T ], γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    x));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (|
-                      Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                      M.call_closure (|
-                        Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                        M.get_trait_method (|
-                          "core::ops::function::FnOnce",
-                          F,
-                          [],
-                          [ Ty.tuple [] ],
-                          "call_once",
-                          [],
-                          []
-                        |),
-                        [ M.read (| f |); Value.Tuple [] ]
-                      |)
-                    |)))
-              ]
-            |)
+          M.match_operator (|
+            Ty.apply (Ty.path "core::option::Option") [] [ T ],
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let x := M.copy (| Ty.apply (Ty.path "core::option::Option") [] [ T ], γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+                  M.read (| x |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::option::Option") [] [ T ],
+                    M.get_trait_method (|
+                      "core::ops::function::FnOnce",
+                      F,
+                      [],
+                      [ Ty.tuple [] ],
+                      "call_once",
+                      [],
+                      []
+                    |),
+                    [ M.read (| f |); Value.Tuple [] ]
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2634,54 +2325,45 @@ Module option.
         ltac:(M.monadic
           (let self := M.alloc (| Ty.apply (Ty.path "core::option::Option") [] [ T ], self |) in
           let optb := M.alloc (| Ty.apply (Ty.path "core::option::Option") [] [ T ], optb |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply (Ty.path "core::option::Option") [] [ T ],
-              M.alloc (|
-                Ty.tuple
-                  [
-                    Ty.apply (Ty.path "core::option::Option") [] [ T ];
-                    Ty.apply (Ty.path "core::option::Option") [] [ T ]
-                  ],
-                Value.Tuple [ M.read (| self |); M.read (| optb |) ]
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let a :=
-                      M.copy (| Ty.apply (Ty.path "core::option::Option") [] [ T ], γ0_0 |) in
-                    let γ2_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ0_0,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let _ := M.is_struct_tuple (| γ0_1, "core::option::Option::None" |) in
-                    a));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
-                    let b :=
-                      M.copy (| Ty.apply (Ty.path "core::option::Option") [] [ T ], γ0_1 |) in
-                    let γ2_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ0_1,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    b));
-                fun γ =>
-                  ltac:(M.monadic
-                    (M.alloc (|
-                      Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                      Value.StructTuple "core::option::Option::None" [] [ T ] []
-                    |)))
-              ]
-            |)
+          M.match_operator (|
+            Ty.apply (Ty.path "core::option::Option") [] [ T ],
+            M.alloc (|
+              Ty.tuple
+                [
+                  Ty.apply (Ty.path "core::option::Option") [] [ T ];
+                  Ty.apply (Ty.path "core::option::Option") [] [ T ]
+                ],
+              Value.Tuple [ M.read (| self |); M.read (| optb |) ]
+            |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                  let a := M.copy (| Ty.apply (Ty.path "core::option::Option") [] [ T ], γ0_0 |) in
+                  let γ2_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ0_0,
+                      "core::option::Option::Some",
+                      0
+                    |) in
+                  let _ := M.is_struct_tuple (| γ0_1, "core::option::Option::None" |) in
+                  M.read (| a |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                  let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
+                  let b := M.copy (| Ty.apply (Ty.path "core::option::Option") [] [ T ], γ0_1 |) in
+                  let γ2_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ0_1,
+                      "core::option::Option::Some",
+                      0
+                    |) in
+                  M.read (| b |)));
+              fun γ => ltac:(M.monadic (Value.StructTuple "core::option::Option::None" [] [ T ] []))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2935,16 +2617,16 @@ Module option.
             M.deref (|
               M.read (|
                 let~ _ : Ty.tuple [] :=
-                  M.read (|
-                    M.match_operator (|
-                      Ty.tuple [],
-                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ := self in
-                            let γ := M.read (| γ |) in
-                            let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                  M.match_operator (|
+                    Ty.tuple [],
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ := self in
+                          let γ := M.read (| γ |) in
+                          let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                          M.read (|
                             let~ _ : Ty.tuple [] :=
                               M.write (|
                                 M.deref (| M.read (| self |) |),
@@ -2968,10 +2650,10 @@ Module option.
                                     |)
                                   ]
                               |) in
-                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                      ]
-                    |)
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                          |)));
+                      fun γ => ltac:(M.monadic (Value.Tuple []))
+                    ]
                   |) in
                 M.alloc (|
                   Ty.apply (Ty.path "&mut") [] [ T ],
@@ -3086,74 +2768,60 @@ Module option.
               self
             |) in
           let predicate := M.alloc (| P, predicate |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply (Ty.path "core::option::Option") [] [ T ],
-              M.alloc (| Ty.tuple [], Value.Tuple [] |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ :=
-                      M.use
-                        (M.alloc (|
+          M.match_operator (|
+            Ty.apply (Ty.path "core::option::Option") [] [ T ],
+            M.alloc (| Ty.tuple [], Value.Tuple [] |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ :=
+                    M.use
+                      (M.alloc (|
+                        Ty.path "bool",
+                        M.call_closure (|
                           Ty.path "bool",
-                          M.call_closure (|
-                            Ty.path "bool",
-                            M.get_associated_function (|
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                            "map_or",
+                            [],
+                            [ Ty.path "bool"; P ]
+                          |),
+                          [
+                            M.call_closure (|
                               Ty.apply
                                 (Ty.path "core::option::Option")
                                 []
                                 [ Ty.apply (Ty.path "&mut") [] [ T ] ],
-                              "map_or",
-                              [],
-                              [ Ty.path "bool"; P ]
-                            |),
-                            [
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "core::option::Option")
-                                  []
-                                  [ Ty.apply (Ty.path "&mut") [] [ T ] ],
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                                  "as_mut",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.MutRef,
-                                    M.deref (| M.read (| self |) |)
-                                  |)
-                                ]
-                              |);
-                              Value.Bool false;
-                              M.read (| predicate |)
-                            ]
-                          |)
-                        |)) in
-                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.alloc (|
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "core::option::Option") [] [ T ],
+                                "as_mut",
+                                [],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |)
+                              ]
+                            |);
+                            Value.Bool false;
+                            M.read (| predicate |)
+                          ]
+                        |)
+                      |)) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::option::Option") [] [ T ],
+                    M.get_associated_function (|
                       Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                      M.call_closure (|
-                        Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                          "take",
-                          [],
-                          []
-                        |),
-                        [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (M.alloc (|
-                      Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                      Value.StructTuple "core::option::Option::None" [] [ T ] []
-                    |)))
-              ]
-            |)
+                      "take",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
+                  |)));
+              fun γ => ltac:(M.monadic (Value.StructTuple "core::option::Option::None" [] [ T ] []))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3216,52 +2884,44 @@ Module option.
         ltac:(M.monadic
           (let self := M.alloc (| Ty.apply (Ty.path "core::option::Option") [] [ T ], self |) in
           let other := M.alloc (| Ty.apply (Ty.path "core::option::Option") [] [ U ], other |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply (Ty.path "core::option::Option") [] [ Ty.tuple [ T; U ] ],
-              M.alloc (|
-                Ty.tuple
-                  [
-                    Ty.apply (Ty.path "core::option::Option") [] [ T ];
-                    Ty.apply (Ty.path "core::option::Option") [] [ U ]
-                  ],
-                Value.Tuple [ M.read (| self |); M.read (| other |) ]
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ0_0,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let a := M.copy (| T, γ1_0 |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ0_1,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let b := M.copy (| U, γ1_0 |) in
-                    M.alloc (|
-                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.tuple [ T; U ] ],
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        []
-                        [ Ty.tuple [ T; U ] ]
-                        [ Value.Tuple [ M.read (| a |); M.read (| b |) ] ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (M.alloc (|
-                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.tuple [ T; U ] ],
-                      Value.StructTuple "core::option::Option::None" [] [ Ty.tuple [ T; U ] ] []
-                    |)))
-              ]
-            |)
+          M.match_operator (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.tuple [ T; U ] ],
+            M.alloc (|
+              Ty.tuple
+                [
+                  Ty.apply (Ty.path "core::option::Option") [] [ T ];
+                  Ty.apply (Ty.path "core::option::Option") [] [ U ]
+                ],
+              Value.Tuple [ M.read (| self |); M.read (| other |) ]
+            |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ0_0,
+                      "core::option::Option::Some",
+                      0
+                    |) in
+                  let a := M.copy (| T, γ1_0 |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ0_1,
+                      "core::option::Option::Some",
+                      0
+                    |) in
+                  let b := M.copy (| U, γ1_0 |) in
+                  Value.StructTuple
+                    "core::option::Option::Some"
+                    []
+                    [ Ty.tuple [ T; U ] ]
+                    [ Value.Tuple [ M.read (| a |); M.read (| b |) ] ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (Value.StructTuple "core::option::Option::None" [] [ Ty.tuple [ T; U ] ] []))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3291,66 +2951,56 @@ Module option.
           (let self := M.alloc (| Ty.apply (Ty.path "core::option::Option") [] [ T ], self |) in
           let other := M.alloc (| Ty.apply (Ty.path "core::option::Option") [] [ U ], other |) in
           let f := M.alloc (| F, f |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply (Ty.path "core::option::Option") [] [ R ],
-              M.alloc (|
-                Ty.tuple
-                  [
-                    Ty.apply (Ty.path "core::option::Option") [] [ T ];
-                    Ty.apply (Ty.path "core::option::Option") [] [ U ]
-                  ],
-                Value.Tuple [ M.read (| self |); M.read (| other |) ]
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ0_0,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let a := M.copy (| T, γ1_0 |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ0_1,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let b := M.copy (| U, γ1_0 |) in
-                    M.alloc (|
-                      Ty.apply (Ty.path "core::option::Option") [] [ R ],
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        []
-                        [ R ]
-                        [
-                          M.call_closure (|
-                            R,
-                            M.get_trait_method (|
-                              "core::ops::function::FnOnce",
-                              F,
-                              [],
-                              [ Ty.tuple [ T; U ] ],
-                              "call_once",
-                              [],
-                              []
-                            |),
-                            [ M.read (| f |); Value.Tuple [ M.read (| a |); M.read (| b |) ] ]
-                          |)
-                        ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (M.alloc (|
-                      Ty.apply (Ty.path "core::option::Option") [] [ R ],
-                      Value.StructTuple "core::option::Option::None" [] [ R ] []
-                    |)))
-              ]
-            |)
+          M.match_operator (|
+            Ty.apply (Ty.path "core::option::Option") [] [ R ],
+            M.alloc (|
+              Ty.tuple
+                [
+                  Ty.apply (Ty.path "core::option::Option") [] [ T ];
+                  Ty.apply (Ty.path "core::option::Option") [] [ U ]
+                ],
+              Value.Tuple [ M.read (| self |); M.read (| other |) ]
+            |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ0_0,
+                      "core::option::Option::Some",
+                      0
+                    |) in
+                  let a := M.copy (| T, γ1_0 |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ0_1,
+                      "core::option::Option::Some",
+                      0
+                    |) in
+                  let b := M.copy (| U, γ1_0 |) in
+                  Value.StructTuple
+                    "core::option::Option::Some"
+                    []
+                    [ R ]
+                    [
+                      M.call_closure (|
+                        R,
+                        M.get_trait_method (|
+                          "core::ops::function::FnOnce",
+                          F,
+                          [],
+                          [ Ty.tuple [ T; U ] ],
+                          "call_once",
+                          [],
+                          []
+                        |),
+                        [ M.read (| f |); Value.Tuple [ M.read (| a |); M.read (| b |) ] ]
+                      |)
+                    ]));
+              fun γ => ltac:(M.monadic (Value.StructTuple "core::option::Option::None" [] [ R ] []))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3384,60 +3034,36 @@ Module option.
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.tuple [ T; U ] ],
               self
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.tuple
-                [
-                  Ty.apply (Ty.path "core::option::Option") [] [ T ];
-                  Ty.apply (Ty.path "core::option::Option") [] [ U ]
-                ],
-              self,
+          M.match_operator (|
+            Ty.tuple
               [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
-                    let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                    let a := M.copy (| T, γ1_0 |) in
-                    let b := M.copy (| U, γ1_1 |) in
-                    M.alloc (|
-                      Ty.tuple
-                        [
-                          Ty.apply (Ty.path "core::option::Option") [] [ T ];
-                          Ty.apply (Ty.path "core::option::Option") [] [ U ]
-                        ],
-                      Value.Tuple
-                        [
-                          Value.StructTuple
-                            "core::option::Option::Some"
-                            []
-                            [ T ]
-                            [ M.read (| a |) ];
-                          Value.StructTuple "core::option::Option::Some" [] [ U ] [ M.read (| b |) ]
-                        ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (|
-                      Ty.tuple
-                        [
-                          Ty.apply (Ty.path "core::option::Option") [] [ T ];
-                          Ty.apply (Ty.path "core::option::Option") [] [ U ]
-                        ],
-                      Value.Tuple
-                        [
-                          Value.StructTuple "core::option::Option::None" [] [ T ] [];
-                          Value.StructTuple "core::option::Option::None" [] [ U ] []
-                        ]
-                    |)))
-              ]
-            |)
+                Ty.apply (Ty.path "core::option::Option") [] [ T ];
+                Ty.apply (Ty.path "core::option::Option") [] [ U ]
+              ],
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+                  let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                  let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
+                  let a := M.copy (| T, γ1_0 |) in
+                  let b := M.copy (| U, γ1_1 |) in
+                  Value.Tuple
+                    [
+                      Value.StructTuple "core::option::Option::Some" [] [ T ] [ M.read (| a |) ];
+                      Value.StructTuple "core::option::Option::Some" [] [ U ] [ M.read (| b |) ]
+                    ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                  Value.Tuple
+                    [
+                      Value.StructTuple "core::option::Option::None" [] [ T ] [];
+                      Value.StructTuple "core::option::Option::None" [] [ U ] []
+                    ]))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3476,34 +3102,22 @@ Module option.
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
               self
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply (Ty.path "core::option::Option") [] [ T ],
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let γ0_0 := M.read (| γ0_0 |) in
-                    let v := M.copy (| T, γ0_0 |) in
-                    M.alloc (|
-                      Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                      Value.StructTuple "core::option::Option::Some" [] [ T ] [ M.read (| v |) ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (|
-                      Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                      Value.StructTuple "core::option::Option::None" [] [ T ] []
-                    |)))
-              ]
-            |)
+          M.match_operator (|
+            Ty.apply (Ty.path "core::option::Option") [] [ T ],
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+                  let γ0_0 := M.read (| γ0_0 |) in
+                  let v := M.copy (| T, γ0_0 |) in
+                  Value.StructTuple "core::option::Option::Some" [] [ T ] [ M.read (| v |) ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                  Value.StructTuple "core::option::Option::None" [] [ T ] []))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3535,51 +3149,31 @@ Module option.
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
               self
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply (Ty.path "core::option::Option") [] [ T ],
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let t := M.copy (| Ty.apply (Ty.path "&") [] [ T ], γ0_0 |) in
-                    M.alloc (|
-                      Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        []
-                        [ T ]
-                        [
-                          M.call_closure (|
-                            T,
-                            M.get_trait_method (|
-                              "core::clone::Clone",
-                              T,
-                              [],
-                              [],
-                              "clone",
-                              [],
-                              []
-                            |),
-                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| t |) |) |) ]
-                          |)
-                        ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (|
-                      Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                      Value.StructTuple "core::option::Option::None" [] [ T ] []
-                    |)))
-              ]
-            |)
+          M.match_operator (|
+            Ty.apply (Ty.path "core::option::Option") [] [ T ],
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+                  let t := M.copy (| Ty.apply (Ty.path "&") [] [ T ], γ0_0 |) in
+                  Value.StructTuple
+                    "core::option::Option::Some"
+                    []
+                    [ T ]
+                    [
+                      M.call_closure (|
+                        T,
+                        M.get_trait_method (| "core::clone::Clone", T, [], [], "clone", [], [] |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| t |) |) |) ]
+                      |)
+                    ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                  Value.StructTuple "core::option::Option::None" [] [ T ] []))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3616,34 +3210,22 @@ Module option.
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
               self
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply (Ty.path "core::option::Option") [] [ T ],
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let γ0_0 := M.read (| γ0_0 |) in
-                    let t := M.copy (| T, γ0_0 |) in
-                    M.alloc (|
-                      Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                      Value.StructTuple "core::option::Option::Some" [] [ T ] [ M.read (| t |) ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (|
-                      Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                      Value.StructTuple "core::option::Option::None" [] [ T ] []
-                    |)))
-              ]
-            |)
+          M.match_operator (|
+            Ty.apply (Ty.path "core::option::Option") [] [ T ],
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+                  let γ0_0 := M.read (| γ0_0 |) in
+                  let t := M.copy (| T, γ0_0 |) in
+                  Value.StructTuple "core::option::Option::Some" [] [ T ] [ M.read (| t |) ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                  Value.StructTuple "core::option::Option::None" [] [ T ] []))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3675,51 +3257,31 @@ Module option.
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
               self
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply (Ty.path "core::option::Option") [] [ T ],
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let t := M.copy (| Ty.apply (Ty.path "&mut") [] [ T ], γ0_0 |) in
-                    M.alloc (|
-                      Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        []
-                        [ T ]
-                        [
-                          M.call_closure (|
-                            T,
-                            M.get_trait_method (|
-                              "core::clone::Clone",
-                              T,
-                              [],
-                              [],
-                              "clone",
-                              [],
-                              []
-                            |),
-                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| t |) |) |) ]
-                          |)
-                        ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (|
-                      Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                      Value.StructTuple "core::option::Option::None" [] [ T ] []
-                    |)))
-              ]
-            |)
+          M.match_operator (|
+            Ty.apply (Ty.path "core::option::Option") [] [ T ],
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+                  let t := M.copy (| Ty.apply (Ty.path "&mut") [] [ T ], γ0_0 |) in
+                  Value.StructTuple
+                    "core::option::Option::Some"
+                    []
+                    [ T ]
+                    [
+                      M.call_closure (|
+                        T,
+                        M.get_trait_method (| "core::clone::Clone", T, [], [], "clone", [], [] |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| t |) |) |) ]
+                      |)
+                    ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                  Value.StructTuple "core::option::Option::None" [] [ T ] []))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3760,83 +3322,51 @@ Module option.
                 [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ],
               self
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [ Ty.apply (Ty.path "core::option::Option") [] [ T ]; E ],
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ0_0,
-                        "core::result::Result::Ok",
-                        0
-                      |) in
-                    let x := M.copy (| T, γ1_0 |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.apply (Ty.path "core::option::Option") [] [ T ]; E ],
-                      Value.StructTuple
-                        "core::result::Result::Ok"
-                        []
-                        [ Ty.apply (Ty.path "core::option::Option") [] [ T ]; E ]
-                        [ Value.StructTuple "core::option::Option::Some" [] [ T ] [ M.read (| x |) ]
-                        ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ0_0,
-                        "core::result::Result::Err",
-                        0
-                      |) in
-                    let e := M.copy (| E, γ1_0 |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.apply (Ty.path "core::option::Option") [] [ T ]; E ],
-                      Value.StructTuple
-                        "core::result::Result::Err"
-                        []
-                        [ Ty.apply (Ty.path "core::option::Option") [] [ T ]; E ]
-                        [ M.read (| e |) ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.apply (Ty.path "core::option::Option") [] [ T ]; E ],
-                      Value.StructTuple
-                        "core::result::Result::Ok"
-                        []
-                        [ Ty.apply (Ty.path "core::option::Option") [] [ T ]; E ]
-                        [ Value.StructTuple "core::option::Option::None" [] [ T ] [] ]
-                    |)))
-              ]
-            |)
+          M.match_operator (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.apply (Ty.path "core::option::Option") [] [ T ]; E ],
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (| γ0_0, "core::result::Result::Ok", 0 |) in
+                  let x := M.copy (| T, γ1_0 |) in
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.apply (Ty.path "core::option::Option") [] [ T ]; E ]
+                    [ Value.StructTuple "core::option::Option::Some" [] [ T ] [ M.read (| x |) ]
+                    ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ0_0,
+                      "core::result::Result::Err",
+                      0
+                    |) in
+                  let e := M.copy (| E, γ1_0 |) in
+                  Value.StructTuple
+                    "core::result::Result::Err"
+                    []
+                    [ Ty.apply (Ty.path "core::option::Option") [] [ T ]; E ]
+                    [ M.read (| e |) ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                  Value.StructTuple
+                    "core::result::Result::Ok"
+                    []
+                    [ Ty.apply (Ty.path "core::option::Option") [] [ T ]; E ]
+                    [ Value.StructTuple "core::option::Option::None" [] [ T ] [] ]))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3918,53 +3448,33 @@ Module option.
               Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
               self
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply (Ty.path "core::option::Option") [] [ T ],
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let x := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ1_0 |) in
-                    M.alloc (|
-                      Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        []
-                        [ T ]
-                        [
-                          M.call_closure (|
-                            T,
-                            M.get_trait_method (|
-                              "core::clone::Clone",
-                              T,
-                              [],
-                              [],
-                              "clone",
-                              [],
-                              []
-                            |),
-                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |) ]
-                          |)
-                        ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (|
-                      Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                      Value.StructTuple "core::option::Option::None" [] [ T ] []
-                    |)))
-              ]
-            |)
+          M.match_operator (|
+            Ty.apply (Ty.path "core::option::Option") [] [ T ],
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let γ1_0 :=
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+                  let x := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ1_0 |) in
+                  Value.StructTuple
+                    "core::option::Option::Some"
+                    []
+                    [ T ]
+                    [
+                      M.call_closure (|
+                        T,
+                        M.get_trait_method (| "core::clone::Clone", T, [], [], "clone", [], [] |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |) ]
+                      |)
+                    ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ := M.read (| γ |) in
+                  let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                  Value.StructTuple "core::option::Option::None" [] [ T ] []))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3992,101 +3502,85 @@ Module option.
               Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
               source
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.tuple [],
-              M.alloc (|
-                Ty.tuple
-                  [
-                    Ty.apply
-                      (Ty.path "&mut")
-                      []
-                      [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ];
-                    Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
-                  ],
-                Value.Tuple [ M.read (| self |); M.read (| source |) ]
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let γ0_0 := M.read (| γ0_0 |) in
-                    let γ2_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ0_0,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let to := M.alloc (| Ty.apply (Ty.path "&mut") [] [ T ], γ2_0 |) in
-                    let γ0_1 := M.read (| γ0_1 |) in
-                    let γ2_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ0_1,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let from := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
-                    M.alloc (|
-                      Ty.tuple [],
-                      M.call_closure (|
-                        Ty.tuple [],
-                        M.get_trait_method (|
-                          "core::clone::Clone",
-                          T,
-                          [],
-                          [],
-                          "clone_from",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| to |) |) |);
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| from |) |) |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let to :=
-                      M.copy (|
-                        Ty.apply
-                          (Ty.path "&mut")
-                          []
-                          [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
-                        γ0_0
-                      |) in
-                    let from :=
-                      M.copy (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
-                        γ0_1
-                      |) in
-                    M.alloc (|
-                      Ty.tuple [],
-                      M.write (|
-                        M.deref (| M.read (| to |) |),
-                        M.call_closure (|
-                          Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                          M.get_trait_method (|
-                            "core::clone::Clone",
-                            Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                            [],
-                            [],
-                            "clone",
-                            [],
-                            []
-                          |),
-                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| from |) |) |) ]
-                        |)
-                      |)
-                    |)))
-              ]
-            |)
+          M.match_operator (|
+            Ty.tuple [],
+            M.alloc (|
+              Ty.tuple
+                [
+                  Ty.apply
+                    (Ty.path "&mut")
+                    []
+                    [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ];
+                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
+                ],
+              Value.Tuple [ M.read (| self |); M.read (| source |) ]
+            |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                  let γ0_0 := M.read (| γ0_0 |) in
+                  let γ2_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ0_0,
+                      "core::option::Option::Some",
+                      0
+                    |) in
+                  let to := M.alloc (| Ty.apply (Ty.path "&mut") [] [ T ], γ2_0 |) in
+                  let γ0_1 := M.read (| γ0_1 |) in
+                  let γ2_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ0_1,
+                      "core::option::Option::Some",
+                      0
+                    |) in
+                  let from := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
+                  M.call_closure (|
+                    Ty.tuple [],
+                    M.get_trait_method (| "core::clone::Clone", T, [], [], "clone_from", [], [] |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| to |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| from |) |) |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                  let to :=
+                    M.copy (|
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
+                      γ0_0
+                    |) in
+                  let from :=
+                    M.copy (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
+                      γ0_1
+                    |) in
+                  M.write (|
+                    M.deref (| M.read (| to |) |),
+                    M.call_closure (|
+                      Ty.apply (Ty.path "core::option::Option") [] [ T ],
+                      M.get_trait_method (|
+                        "core::clone::Clone",
+                        Ty.apply (Ty.path "core::option::Option") [] [ T ],
+                        [],
+                        [],
+                        "clone",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| from |) |) |) ]
+                    |)
+                  |)))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4439,91 +3933,83 @@ Module option.
               Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
               other
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.path "bool",
-              M.alloc (|
-                Ty.tuple
-                  [
-                    Ty.apply
-                      (Ty.path "&")
-                      []
-                      [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ];
-                    Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
-                  ],
-                Value.Tuple [ M.read (| self |); M.read (| other |) ]
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let γ0_0 := M.read (| γ0_0 |) in
-                    let γ2_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ0_0,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let l := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
-                    let γ0_1 := M.read (| γ0_1 |) in
-                    let γ2_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ0_1,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let r := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
-                    M.alloc (|
-                      Ty.path "bool",
-                      M.call_closure (|
-                        Ty.path "bool",
-                        M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
-                        [
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| l |) |) |);
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| r |) |) |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let γ0_0 := M.read (| γ0_0 |) in
-                    let γ2_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ0_0,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let γ0_1 := M.read (| γ0_1 |) in
-                    let _ := M.is_struct_tuple (| γ0_1, "core::option::Option::None" |) in
-                    M.alloc (| Ty.path "bool", Value.Bool false |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let γ0_0 := M.read (| γ0_0 |) in
-                    let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
-                    let γ0_1 := M.read (| γ0_1 |) in
-                    let γ2_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ0_1,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    M.alloc (| Ty.path "bool", Value.Bool false |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let γ0_0 := M.read (| γ0_0 |) in
-                    let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
-                    let γ0_1 := M.read (| γ0_1 |) in
-                    let _ := M.is_struct_tuple (| γ0_1, "core::option::Option::None" |) in
-                    M.alloc (| Ty.path "bool", Value.Bool true |)))
-              ]
-            |)
+          M.match_operator (|
+            Ty.path "bool",
+            M.alloc (|
+              Ty.tuple
+                [
+                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ];
+                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
+                ],
+              Value.Tuple [ M.read (| self |); M.read (| other |) ]
+            |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                  let γ0_0 := M.read (| γ0_0 |) in
+                  let γ2_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ0_0,
+                      "core::option::Option::Some",
+                      0
+                    |) in
+                  let l := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
+                  let γ0_1 := M.read (| γ0_1 |) in
+                  let γ2_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ0_1,
+                      "core::option::Option::Some",
+                      0
+                    |) in
+                  let r := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
+                  M.call_closure (|
+                    Ty.path "bool",
+                    M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
+                    [
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| l |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| r |) |) |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                  let γ0_0 := M.read (| γ0_0 |) in
+                  let γ2_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ0_0,
+                      "core::option::Option::Some",
+                      0
+                    |) in
+                  let γ0_1 := M.read (| γ0_1 |) in
+                  let _ := M.is_struct_tuple (| γ0_1, "core::option::Option::None" |) in
+                  Value.Bool false));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                  let γ0_0 := M.read (| γ0_0 |) in
+                  let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
+                  let γ0_1 := M.read (| γ0_1 |) in
+                  let γ2_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ0_1,
+                      "core::option::Option::Some",
+                      0
+                    |) in
+                  Value.Bool false));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                  let γ0_0 := M.read (| γ0_0 |) in
+                  let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
+                  let γ0_1 := M.read (| γ0_1 |) in
+                  let _ := M.is_struct_tuple (| γ0_1, "core::option::Option::None" |) in
+                  Value.Bool true))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4566,135 +4052,103 @@ Module option.
               Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
               other
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
-              M.alloc (|
-                Ty.tuple
-                  [
-                    Ty.apply
-                      (Ty.path "&")
+          M.match_operator (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
+            M.alloc (|
+              Ty.tuple
+                [
+                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ];
+                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
+                ],
+              Value.Tuple [ M.read (| self |); M.read (| other |) ]
+            |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                  let γ0_0 := M.read (| γ0_0 |) in
+                  let γ2_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ0_0,
+                      "core::option::Option::Some",
+                      0
+                    |) in
+                  let l := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
+                  let γ0_1 := M.read (| γ0_1 |) in
+                  let γ2_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ0_1,
+                      "core::option::Option::Some",
+                      0
+                    |) in
+                  let r := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
+                    M.get_trait_method (|
+                      "core::cmp::PartialOrd",
+                      T,
+                      [],
+                      [ T ],
+                      "partial_cmp",
+                      [],
                       []
-                      [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ];
-                    Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
-                  ],
-                Value.Tuple [ M.read (| self |); M.read (| other |) ]
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let γ0_0 := M.read (| γ0_0 |) in
-                    let γ2_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ0_0,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let l := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
-                    let γ0_1 := M.read (| γ0_1 |) in
-                    let γ2_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ0_1,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let r := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        []
-                        [ Ty.path "core::cmp::Ordering" ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::option::Option")
-                          []
-                          [ Ty.path "core::cmp::Ordering" ],
-                        M.get_trait_method (|
-                          "core::cmp::PartialOrd",
-                          T,
-                          [],
-                          [ T ],
-                          "partial_cmp",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| l |) |) |);
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| r |) |) |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let γ0_0 := M.read (| γ0_0 |) in
-                    let γ2_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ0_0,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let γ0_1 := M.read (| γ0_1 |) in
-                    let _ := M.is_struct_tuple (| γ0_1, "core::option::Option::None" |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        []
-                        [ Ty.path "core::cmp::Ordering" ],
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        []
-                        [ Ty.path "core::cmp::Ordering" ]
-                        [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] [] ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let γ0_0 := M.read (| γ0_0 |) in
-                    let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
-                    let γ0_1 := M.read (| γ0_1 |) in
-                    let γ2_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ0_1,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        []
-                        [ Ty.path "core::cmp::Ordering" ],
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        []
-                        [ Ty.path "core::cmp::Ordering" ]
-                        [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let γ0_0 := M.read (| γ0_0 |) in
-                    let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
-                    let γ0_1 := M.read (| γ0_1 |) in
-                    let _ := M.is_struct_tuple (| γ0_1, "core::option::Option::None" |) in
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        []
-                        [ Ty.path "core::cmp::Ordering" ],
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        []
-                        [ Ty.path "core::cmp::Ordering" ]
-                        [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]
-                    |)))
-              ]
-            |)
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| l |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| r |) |) |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                  let γ0_0 := M.read (| γ0_0 |) in
+                  let γ2_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ0_0,
+                      "core::option::Option::Some",
+                      0
+                    |) in
+                  let γ0_1 := M.read (| γ0_1 |) in
+                  let _ := M.is_struct_tuple (| γ0_1, "core::option::Option::None" |) in
+                  Value.StructTuple
+                    "core::option::Option::Some"
+                    []
+                    [ Ty.path "core::cmp::Ordering" ]
+                    [ Value.StructTuple "core::cmp::Ordering::Greater" [] [] [] ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                  let γ0_0 := M.read (| γ0_0 |) in
+                  let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
+                  let γ0_1 := M.read (| γ0_1 |) in
+                  let γ2_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ0_1,
+                      "core::option::Option::Some",
+                      0
+                    |) in
+                  Value.StructTuple
+                    "core::option::Option::Some"
+                    []
+                    [ Ty.path "core::cmp::Ordering" ]
+                    [ Value.StructTuple "core::cmp::Ordering::Less" [] [] [] ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                  let γ0_0 := M.read (| γ0_0 |) in
+                  let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
+                  let γ0_1 := M.read (| γ0_1 |) in
+                  let _ := M.is_struct_tuple (| γ0_1, "core::option::Option::None" |) in
+                  Value.StructTuple
+                    "core::option::Option::Some"
+                    []
+                    [ Ty.path "core::cmp::Ordering" ]
+                    [ Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] ]))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4737,100 +4191,83 @@ Module option.
               Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
               other
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.path "core::cmp::Ordering",
-              M.alloc (|
-                Ty.tuple
-                  [
-                    Ty.apply
-                      (Ty.path "&")
-                      []
-                      [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ];
-                    Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
-                  ],
-                Value.Tuple [ M.read (| self |); M.read (| other |) ]
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let γ0_0 := M.read (| γ0_0 |) in
-                    let γ2_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ0_0,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let l := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
-                    let γ0_1 := M.read (| γ0_1 |) in
-                    let γ2_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ0_1,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let r := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
-                    M.alloc (|
-                      Ty.path "core::cmp::Ordering",
-                      M.call_closure (|
-                        Ty.path "core::cmp::Ordering",
-                        M.get_trait_method (| "core::cmp::Ord", T, [], [], "cmp", [], [] |),
-                        [
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| l |) |) |);
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| r |) |) |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let γ0_0 := M.read (| γ0_0 |) in
-                    let γ2_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ0_0,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let γ0_1 := M.read (| γ0_1 |) in
-                    let _ := M.is_struct_tuple (| γ0_1, "core::option::Option::None" |) in
-                    M.alloc (|
-                      Ty.path "core::cmp::Ordering",
-                      Value.StructTuple "core::cmp::Ordering::Greater" [] [] []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let γ0_0 := M.read (| γ0_0 |) in
-                    let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
-                    let γ0_1 := M.read (| γ0_1 |) in
-                    let γ2_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ0_1,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    M.alloc (|
-                      Ty.path "core::cmp::Ordering",
-                      Value.StructTuple "core::cmp::Ordering::Less" [] [] []
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let γ0_0 := M.read (| γ0_0 |) in
-                    let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
-                    let γ0_1 := M.read (| γ0_1 |) in
-                    let _ := M.is_struct_tuple (| γ0_1, "core::option::Option::None" |) in
-                    M.alloc (|
-                      Ty.path "core::cmp::Ordering",
-                      Value.StructTuple "core::cmp::Ordering::Equal" [] [] []
-                    |)))
-              ]
-            |)
+          M.match_operator (|
+            Ty.path "core::cmp::Ordering",
+            M.alloc (|
+              Ty.tuple
+                [
+                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ];
+                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
+                ],
+              Value.Tuple [ M.read (| self |); M.read (| other |) ]
+            |),
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                  let γ0_0 := M.read (| γ0_0 |) in
+                  let γ2_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ0_0,
+                      "core::option::Option::Some",
+                      0
+                    |) in
+                  let l := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
+                  let γ0_1 := M.read (| γ0_1 |) in
+                  let γ2_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ0_1,
+                      "core::option::Option::Some",
+                      0
+                    |) in
+                  let r := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
+                  M.call_closure (|
+                    Ty.path "core::cmp::Ordering",
+                    M.get_trait_method (| "core::cmp::Ord", T, [], [], "cmp", [], [] |),
+                    [
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| l |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| r |) |) |)
+                    ]
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                  let γ0_0 := M.read (| γ0_0 |) in
+                  let γ2_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ0_0,
+                      "core::option::Option::Some",
+                      0
+                    |) in
+                  let γ0_1 := M.read (| γ0_1 |) in
+                  let _ := M.is_struct_tuple (| γ0_1, "core::option::Option::None" |) in
+                  Value.StructTuple "core::cmp::Ordering::Greater" [] [] []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                  let γ0_0 := M.read (| γ0_0 |) in
+                  let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
+                  let γ0_1 := M.read (| γ0_1 |) in
+                  let γ2_0 :=
+                    M.SubPointer.get_struct_tuple_field (|
+                      γ0_1,
+                      "core::option::Option::Some",
+                      0
+                    |) in
+                  Value.StructTuple "core::cmp::Ordering::Less" [] [] []));
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                  let γ0_0 := M.read (| γ0_0 |) in
+                  let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
+                  let γ0_1 := M.read (| γ0_1 |) in
+                  let _ := M.is_struct_tuple (| γ0_1, "core::option::Option::None" |) in
+                  Value.StructTuple "core::cmp::Ordering::Equal" [] [] []))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -6411,86 +5848,56 @@ Module option.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| Ty.apply (Ty.path "core::option::Option") [] [ T ], self |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply
-                (Ty.path "core::ops::control_flow::ControlFlow")
-                []
-                [
-                  Ty.apply
-                    (Ty.path "core::option::Option")
-                    []
-                    [ Ty.path "core::convert::Infallible" ];
-                  T
-                ],
-              self,
+          M.match_operator (|
+            Ty.apply
+              (Ty.path "core::ops::control_flow::ControlFlow")
+              []
               [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let v := M.copy (| T, γ0_0 |) in
-                    M.alloc (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.path "core::convert::Infallible" ];
+                T
+              ],
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+                  let v := M.copy (| T, γ0_0 |) in
+                  Value.StructTuple
+                    "core::ops::control_flow::ControlFlow::Continue"
+                    []
+                    [
                       Ty.apply
-                        (Ty.path "core::ops::control_flow::ControlFlow")
+                        (Ty.path "core::option::Option")
                         []
-                        [
-                          Ty.apply
-                            (Ty.path "core::option::Option")
-                            []
-                            [ Ty.path "core::convert::Infallible" ];
-                          T
-                        ],
-                      Value.StructTuple
-                        "core::ops::control_flow::ControlFlow::Continue"
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "core::option::Option")
-                            []
-                            [ Ty.path "core::convert::Infallible" ];
-                          T
-                        ]
-                        [ M.read (| v |) ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (|
+                        [ Ty.path "core::convert::Infallible" ];
+                      T
+                    ]
+                    [ M.read (| v |) ]));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                  Value.StructTuple
+                    "core::ops::control_flow::ControlFlow::Break"
+                    []
+                    [
                       Ty.apply
-                        (Ty.path "core::ops::control_flow::ControlFlow")
+                        (Ty.path "core::option::Option")
                         []
-                        [
-                          Ty.apply
-                            (Ty.path "core::option::Option")
-                            []
-                            [ Ty.path "core::convert::Infallible" ];
-                          T
-                        ],
+                        [ Ty.path "core::convert::Infallible" ];
+                      T
+                    ]
+                    [
                       Value.StructTuple
-                        "core::ops::control_flow::ControlFlow::Break"
+                        "core::option::Option::None"
                         []
-                        [
-                          Ty.apply
-                            (Ty.path "core::option::Option")
-                            []
-                            [ Ty.path "core::convert::Infallible" ];
-                          T
-                        ]
-                        [
-                          Value.StructTuple
-                            "core::option::Option::None"
-                            []
-                            [ Ty.path "core::convert::Infallible" ]
-                            []
-                        ]
-                    |)))
-              ]
-            |)
+                        [ Ty.path "core::convert::Infallible" ]
+                        []
+                    ]))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -6531,20 +5938,15 @@ Module option.
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::convert::Infallible" ],
               residual
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply (Ty.path "core::option::Option") [] [ T ],
-              residual,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (|
-                      Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                      Value.StructTuple "core::option::Option::None" [] [ T ] []
-                    |)))
-              ]
-            |)
+          M.match_operator (|
+            Ty.apply (Ty.path "core::option::Option") [] [ T ],
+            residual,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                  Value.StructTuple "core::option::Option::None" [] [ T ] []))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -6646,31 +6048,22 @@ Module option.
                 [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
               self
             |) in
-          M.read (|
-            M.match_operator (|
-              Ty.apply (Ty.path "core::option::Option") [] [ T ],
-              self,
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let inner :=
-                      M.copy (| Ty.apply (Ty.path "core::option::Option") [] [ T ], γ0_0 |) in
-                    inner));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (|
-                      Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                      Value.StructTuple "core::option::Option::None" [] [ T ] []
-                    |)))
-              ]
-            |)
+          M.match_operator (|
+            Ty.apply (Ty.path "core::option::Option") [] [ T ],
+            self,
+            [
+              fun γ =>
+                ltac:(M.monadic
+                  (let γ0_0 :=
+                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+                  let inner :=
+                    M.copy (| Ty.apply (Ty.path "core::option::Option") [] [ T ], γ0_0 |) in
+                  M.read (| inner |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                  Value.StructTuple "core::option::Option::None" [] [ T ] []))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.

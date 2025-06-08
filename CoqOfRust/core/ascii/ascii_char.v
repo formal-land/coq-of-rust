@@ -1148,64 +1148,50 @@ Module ascii.
         | [], [], [ b ] =>
           ltac:(M.monadic
             (let b := M.alloc (| Ty.path "u8", b |) in
-            M.read (|
-              M.match_operator (|
-                Ty.apply
-                  (Ty.path "core::option::Option")
-                  []
-                  [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
-                M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ :=
-                        M.use
-                          (M.alloc (|
+            M.match_operator (|
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          Ty.path "bool",
+                          M.call_closure (|
                             Ty.path "bool",
-                            M.call_closure (|
-                              Ty.path "bool",
-                              BinOp.le,
-                              [ M.read (| b |); Value.Integer IntegerKind.U8 127 ]
-                            |)
-                          |)) in
-                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::option::Option")
-                          []
-                          [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
-                        Value.StructTuple
-                          "core::option::Option::Some"
-                          []
-                          [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
-                          [
-                            M.call_closure (|
-                              Ty.path "core::ascii::ascii_char::AsciiChar",
-                              M.get_associated_function (|
-                                Ty.path "core::ascii::ascii_char::AsciiChar",
-                                "from_u8_unchecked",
-                                [],
-                                []
-                              |),
-                              [ M.read (| b |) ]
-                            |)
-                          ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::option::Option")
-                          []
-                          [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
-                        Value.StructTuple
-                          "core::option::Option::None"
-                          []
-                          [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
-                          []
-                      |)))
-                ]
-              |)
+                            BinOp.le,
+                            [ M.read (| b |); Value.Integer IntegerKind.U8 127 ]
+                          |)
+                        |)) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    Value.StructTuple
+                      "core::option::Option::Some"
+                      []
+                      [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                      [
+                        M.call_closure (|
+                          Ty.path "core::ascii::ascii_char::AsciiChar",
+                          M.get_associated_function (|
+                            Ty.path "core::ascii::ascii_char::AsciiChar",
+                            "from_u8_unchecked",
+                            [],
+                            []
+                          |),
+                          [ M.read (| b |) ]
+                        |)
+                      ]));
+                fun γ =>
+                  ltac:(M.monadic
+                    (Value.StructTuple
+                      "core::option::Option::None"
+                      []
+                      [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                      []))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1257,64 +1243,50 @@ Module ascii.
         | [], [], [ d ] =>
           ltac:(M.monadic
             (let d := M.alloc (| Ty.path "u8", d |) in
-            M.read (|
-              M.match_operator (|
-                Ty.apply
-                  (Ty.path "core::option::Option")
-                  []
-                  [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
-                M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ :=
-                        M.use
-                          (M.alloc (|
+            M.match_operator (|
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          Ty.path "bool",
+                          M.call_closure (|
                             Ty.path "bool",
-                            M.call_closure (|
-                              Ty.path "bool",
-                              BinOp.lt,
-                              [ M.read (| d |); Value.Integer IntegerKind.U8 10 ]
-                            |)
-                          |)) in
-                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::option::Option")
-                          []
-                          [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
-                        Value.StructTuple
-                          "core::option::Option::Some"
-                          []
-                          [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
-                          [
-                            M.call_closure (|
-                              Ty.path "core::ascii::ascii_char::AsciiChar",
-                              M.get_associated_function (|
-                                Ty.path "core::ascii::ascii_char::AsciiChar",
-                                "digit_unchecked",
-                                [],
-                                []
-                              |),
-                              [ M.read (| d |) ]
-                            |)
-                          ]
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::option::Option")
-                          []
-                          [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
-                        Value.StructTuple
-                          "core::option::Option::None"
-                          []
-                          [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
-                          []
-                      |)))
-                ]
-              |)
+                            BinOp.lt,
+                            [ M.read (| d |); Value.Integer IntegerKind.U8 10 ]
+                          |)
+                        |)) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    Value.StructTuple
+                      "core::option::Option::Some"
+                      []
+                      [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                      [
+                        M.call_closure (|
+                          Ty.path "core::ascii::ascii_char::AsciiChar",
+                          M.get_associated_function (|
+                            Ty.path "core::ascii::ascii_char::AsciiChar",
+                            "digit_unchecked",
+                            [],
+                            []
+                          |),
+                          [ M.read (| d |) ]
+                        |)
+                      ]));
+                fun γ =>
+                  ltac:(M.monadic
+                    (Value.StructTuple
+                      "core::option::Option::None"
+                      []
+                      [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                      []))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1347,25 +1319,24 @@ Module ascii.
             (let d := M.alloc (| Ty.path "u8", d |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.read (|
-                  M.match_operator (|
-                    Ty.tuple [],
-                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
+                M.match_operator (|
+                  Ty.tuple [],
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              Ty.path "bool",
+                              M.call_closure (|
                                 Ty.path "bool",
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
-                                  []
-                                |)
-                              |)) in
-                          let _ :=
-                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                                M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
+                                []
+                              |)
+                            |)) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.read (|
                           let~ _ : Ty.tuple [] :=
                             M.call_closure (|
                               Ty.tuple [],
@@ -1377,10 +1348,10 @@ Module ascii.
                               |),
                               [ M.read (| d |) ]
                             |) in
-                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                    ]
-                  |)
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                        |)));
+                    fun γ => ltac:(M.monadic (Value.Tuple []))
+                  ]
                 |) in
               let~ byte : Ty.path "u8" :=
                 M.call_closure (|
@@ -1872,12 +1843,20 @@ Module ascii.
               |) in
             let f :=
               M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
-            M.read (|
-              M.match_operator (|
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+            M.match_operator (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+              M.alloc (|
+                Ty.tuple
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 6 ]
+                      [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
+                    Ty.path "usize"
+                  ],
                 M.match_operator (|
                   Ty.tuple
                     [
@@ -1894,7 +1873,7 @@ Module ascii.
                         (let γ := M.read (| γ |) in
                         let _ :=
                           M.is_struct_tuple (| γ, "core::ascii::ascii_char::AsciiChar::Null" |) in
-                        M.alloc (|
+                        M.call_closure (|
                           Ty.tuple
                             [
                               Ty.apply
@@ -1903,24 +1882,9 @@ Module ascii.
                                 [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
                               Ty.path "usize"
                             ],
-                          M.call_closure (|
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "array")
-                                  [ Value.Integer IntegerKind.Usize 6 ]
-                                  [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
-                                Ty.path "usize"
-                              ],
-                            M.get_associated_function (| Self, "backslash.fmt", [], [] |),
-                            [
-                              Value.StructTuple
-                                "core::ascii::ascii_char::AsciiChar::Digit0"
-                                []
-                                []
-                                []
-                            ]
-                          |)
+                          M.get_associated_function (| Self, "backslash.fmt", [], [] |),
+                          [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::Digit0" [] [] []
+                          ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -1930,7 +1894,7 @@ Module ascii.
                             γ,
                             "core::ascii::ascii_char::AsciiChar::CharacterTabulation"
                           |) in
-                        M.alloc (|
+                        M.call_closure (|
                           Ty.tuple
                             [
                               Ty.apply
@@ -1939,24 +1903,9 @@ Module ascii.
                                 [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
                               Ty.path "usize"
                             ],
-                          M.call_closure (|
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "array")
-                                  [ Value.Integer IntegerKind.Usize 6 ]
-                                  [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
-                                Ty.path "usize"
-                              ],
-                            M.get_associated_function (| Self, "backslash.fmt", [], [] |),
-                            [
-                              Value.StructTuple
-                                "core::ascii::ascii_char::AsciiChar::SmallT"
-                                []
-                                []
-                                []
-                            ]
-                          |)
+                          M.get_associated_function (| Self, "backslash.fmt", [], [] |),
+                          [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallT" [] [] []
+                          ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -1966,7 +1915,7 @@ Module ascii.
                             γ,
                             "core::ascii::ascii_char::AsciiChar::CarriageReturn"
                           |) in
-                        M.alloc (|
+                        M.call_closure (|
                           Ty.tuple
                             [
                               Ty.apply
@@ -1975,24 +1924,9 @@ Module ascii.
                                 [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
                               Ty.path "usize"
                             ],
-                          M.call_closure (|
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "array")
-                                  [ Value.Integer IntegerKind.Usize 6 ]
-                                  [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
-                                Ty.path "usize"
-                              ],
-                            M.get_associated_function (| Self, "backslash.fmt", [], [] |),
-                            [
-                              Value.StructTuple
-                                "core::ascii::ascii_char::AsciiChar::SmallR"
-                                []
-                                []
-                                []
-                            ]
-                          |)
+                          M.get_associated_function (| Self, "backslash.fmt", [], [] |),
+                          [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallR" [] [] []
+                          ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2002,7 +1936,7 @@ Module ascii.
                             γ,
                             "core::ascii::ascii_char::AsciiChar::LineFeed"
                           |) in
-                        M.alloc (|
+                        M.call_closure (|
                           Ty.tuple
                             [
                               Ty.apply
@@ -2011,24 +1945,9 @@ Module ascii.
                                 [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
                               Ty.path "usize"
                             ],
-                          M.call_closure (|
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "array")
-                                  [ Value.Integer IntegerKind.Usize 6 ]
-                                  [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
-                                Ty.path "usize"
-                              ],
-                            M.get_associated_function (| Self, "backslash.fmt", [], [] |),
-                            [
-                              Value.StructTuple
-                                "core::ascii::ascii_char::AsciiChar::SmallN"
-                                []
-                                []
-                                []
-                            ]
-                          |)
+                          M.get_associated_function (| Self, "backslash.fmt", [], [] |),
+                          [ Value.StructTuple "core::ascii::ascii_char::AsciiChar::SmallN" [] [] []
+                          ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2038,7 +1957,7 @@ Module ascii.
                             γ,
                             "core::ascii::ascii_char::AsciiChar::ReverseSolidus"
                           |) in
-                        M.alloc (|
+                        M.call_closure (|
                           Ty.tuple
                             [
                               Ty.apply
@@ -2047,24 +1966,14 @@ Module ascii.
                                 [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
                               Ty.path "usize"
                             ],
-                          M.call_closure (|
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "array")
-                                  [ Value.Integer IntegerKind.Usize 6 ]
-                                  [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
-                                Ty.path "usize"
-                              ],
-                            M.get_associated_function (| Self, "backslash.fmt", [], [] |),
-                            [
-                              Value.StructTuple
-                                "core::ascii::ascii_char::AsciiChar::ReverseSolidus"
-                                []
-                                []
-                                []
-                            ]
-                          |)
+                          M.get_associated_function (| Self, "backslash.fmt", [], [] |),
+                          [
+                            Value.StructTuple
+                              "core::ascii::ascii_char::AsciiChar::ReverseSolidus"
+                              []
+                              []
+                              []
+                          ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2074,7 +1983,7 @@ Module ascii.
                             γ,
                             "core::ascii::ascii_char::AsciiChar::Apostrophe"
                           |) in
-                        M.alloc (|
+                        M.call_closure (|
                           Ty.tuple
                             [
                               Ty.apply
@@ -2083,24 +1992,14 @@ Module ascii.
                                 [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
                               Ty.path "usize"
                             ],
-                          M.call_closure (|
-                            Ty.tuple
-                              [
-                                Ty.apply
-                                  (Ty.path "array")
-                                  [ Value.Integer IntegerKind.Usize 6 ]
-                                  [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
-                                Ty.path "usize"
-                              ],
-                            M.get_associated_function (| Self, "backslash.fmt", [], [] |),
-                            [
-                              Value.StructTuple
-                                "core::ascii::ascii_char::AsciiChar::Apostrophe"
-                                []
-                                []
-                                []
-                            ]
-                          |)
+                          M.get_associated_function (| Self, "backslash.fmt", [], [] |),
+                          [
+                            Value.StructTuple
+                              "core::ascii::ascii_char::AsciiChar::Apostrophe"
+                              []
+                              []
+                              []
+                          ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2136,262 +2035,248 @@ Module ascii.
                             |)
                           |) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ byte : Ty.path "u8" :=
-                          M.call_closure (|
-                            Ty.path "u8",
-                            M.get_associated_function (|
-                              Ty.path "core::ascii::ascii_char::AsciiChar",
-                              "to_u8",
-                              [],
-                              []
-                            |),
-                            [ M.read (| M.deref (| M.read (| self |) |) |) ]
-                          |) in
-                        let~ hi : Ty.path "core::ascii::ascii_char::AsciiChar" :=
-                          M.read (|
-                            M.SubPointer.get_array_field (|
-                              get_constant (|
-                                "core::ascii::ascii_char::fmt::HEX_DIGITS",
-                                Ty.apply
-                                  (Ty.path "array")
-                                  [ Value.Integer IntegerKind.Usize 16 ]
-                                  [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                        M.read (|
+                          let~ byte : Ty.path "u8" :=
+                            M.call_closure (|
+                              Ty.path "u8",
+                              M.get_associated_function (|
+                                Ty.path "core::ascii::ascii_char::AsciiChar",
+                                "to_u8",
+                                [],
+                                []
                               |),
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_trait_method (|
-                                  "core::convert::From",
-                                  Ty.path "usize",
-                                  [],
-                                  [ Ty.path "u8" ],
-                                  "from",
-                                  [],
-                                  []
+                              [ M.read (| M.deref (| M.read (| self |) |) |) ]
+                            |) in
+                          let~ hi : Ty.path "core::ascii::ascii_char::AsciiChar" :=
+                            M.read (|
+                              M.SubPointer.get_array_field (|
+                                get_constant (|
+                                  "core::ascii::ascii_char::fmt::HEX_DIGITS",
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 16 ]
+                                    [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
                                 |),
-                                [
-                                  M.call_closure (|
-                                    Ty.path "u8",
-                                    BinOp.Wrap.shr,
-                                    [ M.read (| byte |); Value.Integer IntegerKind.I32 4 ]
-                                  |)
-                                ]
-                              |)
-                            |)
-                          |) in
-                        let~ lo : Ty.path "core::ascii::ascii_char::AsciiChar" :=
-                          M.read (|
-                            M.SubPointer.get_array_field (|
-                              get_constant (|
-                                "core::ascii::ascii_char::fmt::HEX_DIGITS",
-                                Ty.apply
-                                  (Ty.path "array")
-                                  [ Value.Integer IntegerKind.Usize 16 ]
-                                  [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
-                              |),
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_trait_method (|
-                                  "core::convert::From",
-                                  Ty.path "usize",
-                                  [],
-                                  [ Ty.path "u8" ],
-                                  "from",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.call_closure (|
-                                    Ty.path "u8",
-                                    BinOp.Wrap.bit_and,
-                                    [ M.read (| byte |); Value.Integer IntegerKind.U8 15 ]
-                                  |)
-                                ]
-                              |)
-                            |)
-                          |) in
-                        M.alloc (|
-                          Ty.tuple
-                            [
-                              Ty.apply
-                                (Ty.path "array")
-                                [ Value.Integer IntegerKind.Usize 6 ]
-                                [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
-                              Ty.path "usize"
-                            ],
-                          Value.Tuple
-                            [
-                              Value.Array
-                                [
-                                  Value.StructTuple
-                                    "core::ascii::ascii_char::AsciiChar::Apostrophe"
-                                    []
-                                    []
-                                    [];
-                                  Value.StructTuple
-                                    "core::ascii::ascii_char::AsciiChar::ReverseSolidus"
-                                    []
-                                    []
-                                    [];
-                                  Value.StructTuple
-                                    "core::ascii::ascii_char::AsciiChar::SmallX"
-                                    []
-                                    []
-                                    [];
-                                  M.read (| hi |);
-                                  M.read (| lo |);
-                                  Value.StructTuple
-                                    "core::ascii::ascii_char::AsciiChar::Apostrophe"
-                                    []
-                                    []
-                                    []
-                                ];
-                              Value.Integer IntegerKind.Usize 6
-                            ]
-                        |)));
-                    fun γ =>
-                      ltac:(M.monadic
-                        (M.alloc (|
-                          Ty.tuple
-                            [
-                              Ty.apply
-                                (Ty.path "array")
-                                [ Value.Integer IntegerKind.Usize 6 ]
-                                [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
-                              Ty.path "usize"
-                            ],
-                          Value.Tuple
-                            [
-                              Value.Array
-                                [
-                                  Value.StructTuple
-                                    "core::ascii::ascii_char::AsciiChar::Apostrophe"
-                                    []
-                                    []
-                                    [];
-                                  M.read (| M.deref (| M.read (| self |) |) |);
-                                  Value.StructTuple
-                                    "core::ascii::ascii_char::AsciiChar::Apostrophe"
-                                    []
-                                    []
-                                    [];
-                                  Value.StructTuple
-                                    "core::ascii::ascii_char::AsciiChar::Null"
-                                    []
-                                    []
-                                    [];
-                                  Value.StructTuple
-                                    "core::ascii::ascii_char::AsciiChar::Null"
-                                    []
-                                    []
-                                    [];
-                                  Value.StructTuple
-                                    "core::ascii::ascii_char::AsciiChar::Null"
-                                    []
-                                    []
-                                    []
-                                ];
-                              Value.Integer IntegerKind.Usize 3
-                            ]
-                        |)))
-                  ]
-                |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                      let buf :=
-                        M.copy (|
-                          Ty.apply
-                            (Ty.path "array")
-                            [ Value.Integer IntegerKind.Usize 6 ]
-                            [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
-                          γ0_0
-                        |) in
-                      let len := M.copy (| Ty.path "usize", γ0_1 |) in
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::Formatter",
-                            "write_str",
-                            [],
-                            []
-                          |),
-                          [
-                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
                                 M.call_closure (|
-                                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "slice")
-                                      []
-                                      [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
-                                    "as_str",
+                                  Ty.path "usize",
+                                  M.get_trait_method (|
+                                    "core::convert::From",
+                                    Ty.path "usize",
+                                    [],
+                                    [ Ty.path "u8" ],
+                                    "from",
                                     [],
                                     []
                                   |),
                                   [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (|
-                                        M.call_closure (|
-                                          Ty.apply
-                                            (Ty.path "&")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "slice")
-                                                []
-                                                [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
-                                            ],
-                                          M.get_trait_method (|
-                                            "core::ops::index::Index",
-                                            Ty.apply
-                                              (Ty.path "array")
-                                              [ Value.Integer IntegerKind.Usize 6 ]
-                                              [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
-                                            [],
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::ops::range::RangeTo")
-                                                []
-                                                [ Ty.path "usize" ]
-                                            ],
-                                            "index",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (| Pointer.Kind.Ref, buf |);
-                                            Value.mkStructRecord
-                                              "core::ops::range::RangeTo"
-                                              []
-                                              [ Ty.path "usize" ]
-                                              [ ("end_", M.read (| len |)) ]
-                                          ]
-                                        |)
-                                      |)
+                                    M.call_closure (|
+                                      Ty.path "u8",
+                                      BinOp.Wrap.shr,
+                                      [ M.read (| byte |); Value.Integer IntegerKind.I32 4 ]
                                     |)
                                   ]
                                 |)
                               |)
+                            |) in
+                          let~ lo : Ty.path "core::ascii::ascii_char::AsciiChar" :=
+                            M.read (|
+                              M.SubPointer.get_array_field (|
+                                get_constant (|
+                                  "core::ascii::ascii_char::fmt::HEX_DIGITS",
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 16 ]
+                                    [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                                |),
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_trait_method (|
+                                    "core::convert::From",
+                                    Ty.path "usize",
+                                    [],
+                                    [ Ty.path "u8" ],
+                                    "from",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "u8",
+                                      BinOp.Wrap.bit_and,
+                                      [ M.read (| byte |); Value.Integer IntegerKind.U8 15 ]
+                                    |)
+                                  ]
+                                |)
+                              |)
+                            |) in
+                          M.alloc (|
+                            Ty.tuple
+                              [
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 6 ]
+                                  [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
+                                Ty.path "usize"
+                              ],
+                            Value.Tuple
+                              [
+                                Value.Array
+                                  [
+                                    Value.StructTuple
+                                      "core::ascii::ascii_char::AsciiChar::Apostrophe"
+                                      []
+                                      []
+                                      [];
+                                    Value.StructTuple
+                                      "core::ascii::ascii_char::AsciiChar::ReverseSolidus"
+                                      []
+                                      []
+                                      [];
+                                    Value.StructTuple
+                                      "core::ascii::ascii_char::AsciiChar::SmallX"
+                                      []
+                                      []
+                                      [];
+                                    M.read (| hi |);
+                                    M.read (| lo |);
+                                    Value.StructTuple
+                                      "core::ascii::ascii_char::AsciiChar::Apostrophe"
+                                      []
+                                      []
+                                      []
+                                  ];
+                                Value.Integer IntegerKind.Usize 6
+                              ]
+                          |)
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (Value.Tuple
+                          [
+                            Value.Array
+                              [
+                                Value.StructTuple
+                                  "core::ascii::ascii_char::AsciiChar::Apostrophe"
+                                  []
+                                  []
+                                  [];
+                                M.read (| M.deref (| M.read (| self |) |) |);
+                                Value.StructTuple
+                                  "core::ascii::ascii_char::AsciiChar::Apostrophe"
+                                  []
+                                  []
+                                  [];
+                                Value.StructTuple
+                                  "core::ascii::ascii_char::AsciiChar::Null"
+                                  []
+                                  []
+                                  [];
+                                Value.StructTuple
+                                  "core::ascii::ascii_char::AsciiChar::Null"
+                                  []
+                                  []
+                                  [];
+                                Value.StructTuple
+                                  "core::ascii::ascii_char::AsciiChar::Null"
+                                  []
+                                  []
+                                  []
+                              ];
+                            Value.Integer IntegerKind.Usize 3
+                          ]))
+                  ]
+                |)
+              |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let buf :=
+                      M.copy (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 6 ]
+                          [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+                        γ0_0
+                      |) in
+                    let len := M.copy (| Ty.path "usize", γ0_1 |) in
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Formatter",
+                        "write_str",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.call_closure (|
+                              Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+                                "as_str",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "slice")
+                                            []
+                                            [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                                        ],
+                                      M.get_trait_method (|
+                                        "core::ops::index::Index",
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 6 ]
+                                          [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+                                        [],
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::ops::range::RangeTo")
+                                            []
+                                            [ Ty.path "usize" ]
+                                        ],
+                                        "index",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (| Pointer.Kind.Ref, buf |);
+                                        Value.mkStructRecord
+                                          "core::ops::range::RangeTo"
+                                          []
+                                          [ Ty.path "usize" ]
+                                          [ ("end_", M.read (| len |)) ]
+                                      ]
+                                    |)
+                                  |)
+                                |)
+                              ]
                             |)
-                          ]
+                          |)
                         |)
-                      |)))
-                ]
-              |)
+                      ]
+                    |)))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

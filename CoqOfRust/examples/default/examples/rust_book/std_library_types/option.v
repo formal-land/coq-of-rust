@@ -18,46 +18,38 @@ Definition checked_division (ε : list Value.t) (τ : list Ty.t) (α : list Valu
     ltac:(M.monadic
       (let dividend := M.alloc (| Ty.path "i32", dividend |) in
       let divisor := M.alloc (| Ty.path "i32", divisor |) in
-      M.read (|
-        M.match_operator (|
-          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
-          M.alloc (| Ty.tuple [], Value.Tuple [] |),
-          [
-            fun γ =>
-              ltac:(M.monadic
-                (let γ :=
-                  M.use
-                    (M.alloc (|
+      M.match_operator (|
+        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
+        M.alloc (| Ty.tuple [], Value.Tuple [] |),
+        [
+          fun γ =>
+            ltac:(M.monadic
+              (let γ :=
+                M.use
+                  (M.alloc (|
+                    Ty.path "bool",
+                    M.call_closure (|
                       Ty.path "bool",
-                      M.call_closure (|
-                        Ty.path "bool",
-                        BinOp.eq,
-                        [ M.read (| divisor |); Value.Integer IntegerKind.I32 0 ]
-                      |)
-                    |)) in
-                let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                M.alloc (|
-                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
-                  Value.StructTuple "core::option::Option::None" [] [ Ty.path "i32" ] []
-                |)));
-            fun γ =>
-              ltac:(M.monadic
-                (M.alloc (|
-                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
-                  Value.StructTuple
-                    "core::option::Option::Some"
-                    []
-                    [ Ty.path "i32" ]
-                    [
-                      M.call_closure (|
-                        Ty.path "i32",
-                        BinOp.Wrap.div,
-                        [ M.read (| dividend |); M.read (| divisor |) ]
-                      |)
-                    ]
-                |)))
-          ]
-        |)
+                      BinOp.eq,
+                      [ M.read (| divisor |); Value.Integer IntegerKind.I32 0 ]
+                    |)
+                  |)) in
+              let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+              Value.StructTuple "core::option::Option::None" [] [ Ty.path "i32" ] []));
+          fun γ =>
+            ltac:(M.monadic
+              (Value.StructTuple
+                "core::option::Option::Some"
+                []
+                [ Ty.path "i32" ]
+                [
+                  M.call_closure (|
+                    Ty.path "i32",
+                    BinOp.Wrap.div,
+                    [ M.read (| dividend |); M.read (| divisor |) ]
+                  |)
+                ]))
+        ]
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
@@ -84,21 +76,21 @@ Definition try_division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
     ltac:(M.monadic
       (let dividend := M.alloc (| Ty.path "i32", dividend |) in
       let divisor := M.alloc (| Ty.path "i32", divisor |) in
-      M.read (|
-        M.match_operator (|
-          Ty.tuple [],
-          M.alloc (|
+      M.match_operator (|
+        Ty.tuple [],
+        M.alloc (|
+          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
+          M.call_closure (|
             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
-            M.call_closure (|
-              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
-              M.get_function (| "option::checked_division", [], [] |),
-              [ M.read (| dividend |); M.read (| divisor |) ]
-            |)
-          |),
-          [
-            fun γ =>
-              ltac:(M.monadic
-                (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+            M.get_function (| "option::checked_division", [], [] |),
+            [ M.read (| dividend |); M.read (| divisor |) ]
+          |)
+        |),
+        [
+          fun γ =>
+            ltac:(M.monadic
+              (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+              M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.call_closure (|
                     Ty.tuple [],
@@ -182,12 +174,14 @@ Definition try_division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                       |)
                     ]
                   |) in
-                M.alloc (| Ty.tuple [], Value.Tuple [] |)));
-            fun γ =>
-              ltac:(M.monadic
-                (let γ0_0 :=
-                  M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
-                let quotient := M.copy (| Ty.path "i32", γ0_0 |) in
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)
+              |)));
+          fun γ =>
+            ltac:(M.monadic
+              (let γ0_0 :=
+                M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+              let quotient := M.copy (| Ty.path "i32", γ0_0 |) in
+              M.read (|
                 let~ _ : Ty.tuple [] :=
                   M.call_closure (|
                     Ty.tuple [],
@@ -290,9 +284,9 @@ Definition try_division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                       |)
                     ]
                   |) in
-                M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-          ]
-        |)
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)
+              |)))
+        ]
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

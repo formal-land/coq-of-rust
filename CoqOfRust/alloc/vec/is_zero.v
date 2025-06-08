@@ -1319,123 +1319,41 @@ Module vec.
                 Ty.apply (Ty.path "&") [] [ Ty.tuple [ A; B; C; D; E; F; G; H ] ],
                 self
               |) in
-            M.read (|
-              M.match_operator (|
-                Ty.path "bool",
-                self,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                      let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                      let γ1_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
-                      let γ1_3 := M.SubPointer.get_tuple_field (| γ, 3 |) in
-                      let γ1_4 := M.SubPointer.get_tuple_field (| γ, 4 |) in
-                      let γ1_5 := M.SubPointer.get_tuple_field (| γ, 5 |) in
-                      let γ1_6 := M.SubPointer.get_tuple_field (| γ, 6 |) in
-                      let γ1_7 := M.SubPointer.get_tuple_field (| γ, 7 |) in
-                      let value_A := M.alloc (| Ty.apply (Ty.path "&") [] [ A ], γ1_0 |) in
-                      let value_B := M.alloc (| Ty.apply (Ty.path "&") [] [ B ], γ1_1 |) in
-                      let value_C := M.alloc (| Ty.apply (Ty.path "&") [] [ C ], γ1_2 |) in
-                      let value_D := M.alloc (| Ty.apply (Ty.path "&") [] [ D ], γ1_3 |) in
-                      let value_E := M.alloc (| Ty.apply (Ty.path "&") [] [ E ], γ1_4 |) in
-                      let value_F := M.alloc (| Ty.apply (Ty.path "&") [] [ F ], γ1_5 |) in
-                      let value_G := M.alloc (| Ty.apply (Ty.path "&") [] [ G ], γ1_6 |) in
-                      let value_H := M.alloc (| Ty.apply (Ty.path "&") [] [ H ], γ1_7 |) in
-                      M.alloc (|
-                        Ty.path "bool",
+            M.match_operator (|
+              Ty.path "bool",
+              self,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let γ1_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
+                    let γ1_3 := M.SubPointer.get_tuple_field (| γ, 3 |) in
+                    let γ1_4 := M.SubPointer.get_tuple_field (| γ, 4 |) in
+                    let γ1_5 := M.SubPointer.get_tuple_field (| γ, 5 |) in
+                    let γ1_6 := M.SubPointer.get_tuple_field (| γ, 6 |) in
+                    let γ1_7 := M.SubPointer.get_tuple_field (| γ, 7 |) in
+                    let value_A := M.alloc (| Ty.apply (Ty.path "&") [] [ A ], γ1_0 |) in
+                    let value_B := M.alloc (| Ty.apply (Ty.path "&") [] [ B ], γ1_1 |) in
+                    let value_C := M.alloc (| Ty.apply (Ty.path "&") [] [ C ], γ1_2 |) in
+                    let value_D := M.alloc (| Ty.apply (Ty.path "&") [] [ D ], γ1_3 |) in
+                    let value_E := M.alloc (| Ty.apply (Ty.path "&") [] [ E ], γ1_4 |) in
+                    let value_F := M.alloc (| Ty.apply (Ty.path "&") [] [ F ], γ1_5 |) in
+                    let value_G := M.alloc (| Ty.apply (Ty.path "&") [] [ G ], γ1_6 |) in
+                    let value_H := M.alloc (| Ty.apply (Ty.path "&") [] [ H ], γ1_7 |) in
+                    LogicalOp.and (|
+                      LogicalOp.and (|
                         LogicalOp.and (|
                           LogicalOp.and (|
                             LogicalOp.and (|
                               LogicalOp.and (|
                                 LogicalOp.and (|
-                                  LogicalOp.and (|
-                                    LogicalOp.and (|
-                                      M.call_closure (|
-                                        Ty.path "bool",
-                                        M.get_trait_method (|
-                                          "alloc::vec::is_zero::IsZero",
-                                          A,
-                                          [],
-                                          [],
-                                          "is_zero",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| value_A |) |)
-                                          |)
-                                        ]
-                                      |),
-                                      ltac:(M.monadic
-                                        (M.call_closure (|
-                                          Ty.path "bool",
-                                          M.get_trait_method (|
-                                            "alloc::vec::is_zero::IsZero",
-                                            B,
-                                            [],
-                                            [],
-                                            "is_zero",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (| M.read (| value_B |) |)
-                                            |)
-                                          ]
-                                        |)))
-                                    |),
-                                    ltac:(M.monadic
-                                      (M.call_closure (|
-                                        Ty.path "bool",
-                                        M.get_trait_method (|
-                                          "alloc::vec::is_zero::IsZero",
-                                          C,
-                                          [],
-                                          [],
-                                          "is_zero",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| value_C |) |)
-                                          |)
-                                        ]
-                                      |)))
-                                  |),
-                                  ltac:(M.monadic
-                                    (M.call_closure (|
-                                      Ty.path "bool",
-                                      M.get_trait_method (|
-                                        "alloc::vec::is_zero::IsZero",
-                                        D,
-                                        [],
-                                        [],
-                                        "is_zero",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (| M.read (| value_D |) |)
-                                        |)
-                                      ]
-                                    |)))
-                                |),
-                                ltac:(M.monadic
-                                  (M.call_closure (|
+                                  M.call_closure (|
                                     Ty.path "bool",
                                     M.get_trait_method (|
                                       "alloc::vec::is_zero::IsZero",
-                                      E,
+                                      A,
                                       [],
                                       [],
                                       "is_zero",
@@ -1445,7 +1363,46 @@ Module vec.
                                     [
                                       M.borrow (|
                                         Pointer.Kind.Ref,
-                                        M.deref (| M.read (| value_E |) |)
+                                        M.deref (| M.read (| value_A |) |)
+                                      |)
+                                    ]
+                                  |),
+                                  ltac:(M.monadic
+                                    (M.call_closure (|
+                                      Ty.path "bool",
+                                      M.get_trait_method (|
+                                        "alloc::vec::is_zero::IsZero",
+                                        B,
+                                        [],
+                                        [],
+                                        "is_zero",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| value_B |) |)
+                                        |)
+                                      ]
+                                    |)))
+                                |),
+                                ltac:(M.monadic
+                                  (M.call_closure (|
+                                    Ty.path "bool",
+                                    M.get_trait_method (|
+                                      "alloc::vec::is_zero::IsZero",
+                                      C,
+                                      [],
+                                      [],
+                                      "is_zero",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| value_C |) |)
                                       |)
                                     ]
                                   |)))
@@ -1455,7 +1412,7 @@ Module vec.
                                   Ty.path "bool",
                                   M.get_trait_method (|
                                     "alloc::vec::is_zero::IsZero",
-                                    F,
+                                    D,
                                     [],
                                     [],
                                     "is_zero",
@@ -1465,7 +1422,7 @@ Module vec.
                                   [
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.deref (| M.read (| value_F |) |)
+                                      M.deref (| M.read (| value_D |) |)
                                     |)
                                   ]
                                 |)))
@@ -1475,7 +1432,7 @@ Module vec.
                                 Ty.path "bool",
                                 M.get_trait_method (|
                                   "alloc::vec::is_zero::IsZero",
-                                  G,
+                                  E,
                                   [],
                                   [],
                                   "is_zero",
@@ -1485,7 +1442,7 @@ Module vec.
                                 [
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.deref (| M.read (| value_G |) |)
+                                    M.deref (| M.read (| value_E |) |)
                                   |)
                                 ]
                               |)))
@@ -1495,20 +1452,48 @@ Module vec.
                               Ty.path "bool",
                               M.get_trait_method (|
                                 "alloc::vec::is_zero::IsZero",
-                                H,
+                                F,
                                 [],
                                 [],
                                 "is_zero",
                                 [],
                                 []
                               |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_H |) |) |)
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_F |) |) |)
                               ]
                             |)))
-                        |)
-                      |)))
-                ]
-              |)
+                        |),
+                        ltac:(M.monadic
+                          (M.call_closure (|
+                            Ty.path "bool",
+                            M.get_trait_method (|
+                              "alloc::vec::is_zero::IsZero",
+                              G,
+                              [],
+                              [],
+                              "is_zero",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_G |) |) |) ]
+                          |)))
+                      |),
+                      ltac:(M.monadic
+                        (M.call_closure (|
+                          Ty.path "bool",
+                          M.get_trait_method (|
+                            "alloc::vec::is_zero::IsZero",
+                            H,
+                            [],
+                            [],
+                            "is_zero",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_H |) |) |) ]
+                        |)))
+                    |)))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1549,120 +1534,38 @@ Module vec.
           ltac:(M.monadic
             (let self :=
               M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.tuple [ B; C; D; E; F; G; H ] ], self |) in
-            M.read (|
-              M.match_operator (|
-                Ty.path "bool",
-                self,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                      let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                      let γ1_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
-                      let γ1_3 := M.SubPointer.get_tuple_field (| γ, 3 |) in
-                      let γ1_4 := M.SubPointer.get_tuple_field (| γ, 4 |) in
-                      let γ1_5 := M.SubPointer.get_tuple_field (| γ, 5 |) in
-                      let γ1_6 := M.SubPointer.get_tuple_field (| γ, 6 |) in
-                      let value_B := M.alloc (| Ty.apply (Ty.path "&") [] [ B ], γ1_0 |) in
-                      let value_C := M.alloc (| Ty.apply (Ty.path "&") [] [ C ], γ1_1 |) in
-                      let value_D := M.alloc (| Ty.apply (Ty.path "&") [] [ D ], γ1_2 |) in
-                      let value_E := M.alloc (| Ty.apply (Ty.path "&") [] [ E ], γ1_3 |) in
-                      let value_F := M.alloc (| Ty.apply (Ty.path "&") [] [ F ], γ1_4 |) in
-                      let value_G := M.alloc (| Ty.apply (Ty.path "&") [] [ G ], γ1_5 |) in
-                      let value_H := M.alloc (| Ty.apply (Ty.path "&") [] [ H ], γ1_6 |) in
-                      M.alloc (|
-                        Ty.path "bool",
+            M.match_operator (|
+              Ty.path "bool",
+              self,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let γ1_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
+                    let γ1_3 := M.SubPointer.get_tuple_field (| γ, 3 |) in
+                    let γ1_4 := M.SubPointer.get_tuple_field (| γ, 4 |) in
+                    let γ1_5 := M.SubPointer.get_tuple_field (| γ, 5 |) in
+                    let γ1_6 := M.SubPointer.get_tuple_field (| γ, 6 |) in
+                    let value_B := M.alloc (| Ty.apply (Ty.path "&") [] [ B ], γ1_0 |) in
+                    let value_C := M.alloc (| Ty.apply (Ty.path "&") [] [ C ], γ1_1 |) in
+                    let value_D := M.alloc (| Ty.apply (Ty.path "&") [] [ D ], γ1_2 |) in
+                    let value_E := M.alloc (| Ty.apply (Ty.path "&") [] [ E ], γ1_3 |) in
+                    let value_F := M.alloc (| Ty.apply (Ty.path "&") [] [ F ], γ1_4 |) in
+                    let value_G := M.alloc (| Ty.apply (Ty.path "&") [] [ G ], γ1_5 |) in
+                    let value_H := M.alloc (| Ty.apply (Ty.path "&") [] [ H ], γ1_6 |) in
+                    LogicalOp.and (|
+                      LogicalOp.and (|
                         LogicalOp.and (|
                           LogicalOp.and (|
                             LogicalOp.and (|
                               LogicalOp.and (|
-                                LogicalOp.and (|
-                                  LogicalOp.and (|
-                                    M.call_closure (|
-                                      Ty.path "bool",
-                                      M.get_trait_method (|
-                                        "alloc::vec::is_zero::IsZero",
-                                        B,
-                                        [],
-                                        [],
-                                        "is_zero",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (| M.read (| value_B |) |)
-                                        |)
-                                      ]
-                                    |),
-                                    ltac:(M.monadic
-                                      (M.call_closure (|
-                                        Ty.path "bool",
-                                        M.get_trait_method (|
-                                          "alloc::vec::is_zero::IsZero",
-                                          C,
-                                          [],
-                                          [],
-                                          "is_zero",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| value_C |) |)
-                                          |)
-                                        ]
-                                      |)))
-                                  |),
-                                  ltac:(M.monadic
-                                    (M.call_closure (|
-                                      Ty.path "bool",
-                                      M.get_trait_method (|
-                                        "alloc::vec::is_zero::IsZero",
-                                        D,
-                                        [],
-                                        [],
-                                        "is_zero",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (| M.read (| value_D |) |)
-                                        |)
-                                      ]
-                                    |)))
-                                |),
-                                ltac:(M.monadic
-                                  (M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_trait_method (|
-                                      "alloc::vec::is_zero::IsZero",
-                                      E,
-                                      [],
-                                      [],
-                                      "is_zero",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| value_E |) |)
-                                      |)
-                                    ]
-                                  |)))
-                              |),
-                              ltac:(M.monadic
-                                (M.call_closure (|
+                                M.call_closure (|
                                   Ty.path "bool",
                                   M.get_trait_method (|
                                     "alloc::vec::is_zero::IsZero",
-                                    F,
+                                    B,
                                     [],
                                     [],
                                     "is_zero",
@@ -1672,7 +1575,46 @@ Module vec.
                                   [
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.deref (| M.read (| value_F |) |)
+                                      M.deref (| M.read (| value_B |) |)
+                                    |)
+                                  ]
+                                |),
+                                ltac:(M.monadic
+                                  (M.call_closure (|
+                                    Ty.path "bool",
+                                    M.get_trait_method (|
+                                      "alloc::vec::is_zero::IsZero",
+                                      C,
+                                      [],
+                                      [],
+                                      "is_zero",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| value_C |) |)
+                                      |)
+                                    ]
+                                  |)))
+                              |),
+                              ltac:(M.monadic
+                                (M.call_closure (|
+                                  Ty.path "bool",
+                                  M.get_trait_method (|
+                                    "alloc::vec::is_zero::IsZero",
+                                    D,
+                                    [],
+                                    [],
+                                    "is_zero",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| value_D |) |)
                                     |)
                                   ]
                                 |)))
@@ -1682,7 +1624,7 @@ Module vec.
                                 Ty.path "bool",
                                 M.get_trait_method (|
                                   "alloc::vec::is_zero::IsZero",
-                                  G,
+                                  E,
                                   [],
                                   [],
                                   "is_zero",
@@ -1692,7 +1634,7 @@ Module vec.
                                 [
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.deref (| M.read (| value_G |) |)
+                                    M.deref (| M.read (| value_E |) |)
                                   |)
                                 ]
                               |)))
@@ -1702,20 +1644,48 @@ Module vec.
                               Ty.path "bool",
                               M.get_trait_method (|
                                 "alloc::vec::is_zero::IsZero",
-                                H,
+                                F,
                                 [],
                                 [],
                                 "is_zero",
                                 [],
                                 []
                               |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_H |) |) |)
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_F |) |) |)
                               ]
                             |)))
-                        |)
-                      |)))
-                ]
-              |)
+                        |),
+                        ltac:(M.monadic
+                          (M.call_closure (|
+                            Ty.path "bool",
+                            M.get_trait_method (|
+                              "alloc::vec::is_zero::IsZero",
+                              G,
+                              [],
+                              [],
+                              "is_zero",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_G |) |) |) ]
+                          |)))
+                      |),
+                      ltac:(M.monadic
+                        (M.call_closure (|
+                          Ty.path "bool",
+                          M.get_trait_method (|
+                            "alloc::vec::is_zero::IsZero",
+                            H,
+                            [],
+                            [],
+                            "is_zero",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_H |) |) |) ]
+                        |)))
+                    |)))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1756,117 +1726,35 @@ Module vec.
           ltac:(M.monadic
             (let self :=
               M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.tuple [ C; D; E; F; G; H ] ], self |) in
-            M.read (|
-              M.match_operator (|
-                Ty.path "bool",
-                self,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                      let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                      let γ1_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
-                      let γ1_3 := M.SubPointer.get_tuple_field (| γ, 3 |) in
-                      let γ1_4 := M.SubPointer.get_tuple_field (| γ, 4 |) in
-                      let γ1_5 := M.SubPointer.get_tuple_field (| γ, 5 |) in
-                      let value_C := M.alloc (| Ty.apply (Ty.path "&") [] [ C ], γ1_0 |) in
-                      let value_D := M.alloc (| Ty.apply (Ty.path "&") [] [ D ], γ1_1 |) in
-                      let value_E := M.alloc (| Ty.apply (Ty.path "&") [] [ E ], γ1_2 |) in
-                      let value_F := M.alloc (| Ty.apply (Ty.path "&") [] [ F ], γ1_3 |) in
-                      let value_G := M.alloc (| Ty.apply (Ty.path "&") [] [ G ], γ1_4 |) in
-                      let value_H := M.alloc (| Ty.apply (Ty.path "&") [] [ H ], γ1_5 |) in
-                      M.alloc (|
-                        Ty.path "bool",
+            M.match_operator (|
+              Ty.path "bool",
+              self,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let γ1_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
+                    let γ1_3 := M.SubPointer.get_tuple_field (| γ, 3 |) in
+                    let γ1_4 := M.SubPointer.get_tuple_field (| γ, 4 |) in
+                    let γ1_5 := M.SubPointer.get_tuple_field (| γ, 5 |) in
+                    let value_C := M.alloc (| Ty.apply (Ty.path "&") [] [ C ], γ1_0 |) in
+                    let value_D := M.alloc (| Ty.apply (Ty.path "&") [] [ D ], γ1_1 |) in
+                    let value_E := M.alloc (| Ty.apply (Ty.path "&") [] [ E ], γ1_2 |) in
+                    let value_F := M.alloc (| Ty.apply (Ty.path "&") [] [ F ], γ1_3 |) in
+                    let value_G := M.alloc (| Ty.apply (Ty.path "&") [] [ G ], γ1_4 |) in
+                    let value_H := M.alloc (| Ty.apply (Ty.path "&") [] [ H ], γ1_5 |) in
+                    LogicalOp.and (|
+                      LogicalOp.and (|
                         LogicalOp.and (|
                           LogicalOp.and (|
                             LogicalOp.and (|
-                              LogicalOp.and (|
-                                LogicalOp.and (|
-                                  M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_trait_method (|
-                                      "alloc::vec::is_zero::IsZero",
-                                      C,
-                                      [],
-                                      [],
-                                      "is_zero",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| value_C |) |)
-                                      |)
-                                    ]
-                                  |),
-                                  ltac:(M.monadic
-                                    (M.call_closure (|
-                                      Ty.path "bool",
-                                      M.get_trait_method (|
-                                        "alloc::vec::is_zero::IsZero",
-                                        D,
-                                        [],
-                                        [],
-                                        "is_zero",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (| M.read (| value_D |) |)
-                                        |)
-                                      ]
-                                    |)))
-                                |),
-                                ltac:(M.monadic
-                                  (M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_trait_method (|
-                                      "alloc::vec::is_zero::IsZero",
-                                      E,
-                                      [],
-                                      [],
-                                      "is_zero",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| value_E |) |)
-                                      |)
-                                    ]
-                                  |)))
-                              |),
-                              ltac:(M.monadic
-                                (M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_trait_method (|
-                                    "alloc::vec::is_zero::IsZero",
-                                    F,
-                                    [],
-                                    [],
-                                    "is_zero",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (| M.read (| value_F |) |)
-                                    |)
-                                  ]
-                                |)))
-                            |),
-                            ltac:(M.monadic
-                              (M.call_closure (|
+                              M.call_closure (|
                                 Ty.path "bool",
                                 M.get_trait_method (|
                                   "alloc::vec::is_zero::IsZero",
-                                  G,
+                                  C,
                                   [],
                                   [],
                                   "is_zero",
@@ -1876,7 +1764,46 @@ Module vec.
                                 [
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.deref (| M.read (| value_G |) |)
+                                    M.deref (| M.read (| value_C |) |)
+                                  |)
+                                ]
+                              |),
+                              ltac:(M.monadic
+                                (M.call_closure (|
+                                  Ty.path "bool",
+                                  M.get_trait_method (|
+                                    "alloc::vec::is_zero::IsZero",
+                                    D,
+                                    [],
+                                    [],
+                                    "is_zero",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (| M.read (| value_D |) |)
+                                    |)
+                                  ]
+                                |)))
+                            |),
+                            ltac:(M.monadic
+                              (M.call_closure (|
+                                Ty.path "bool",
+                                M.get_trait_method (|
+                                  "alloc::vec::is_zero::IsZero",
+                                  E,
+                                  [],
+                                  [],
+                                  "is_zero",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| value_E |) |)
                                   |)
                                 ]
                               |)))
@@ -1886,20 +1813,48 @@ Module vec.
                               Ty.path "bool",
                               M.get_trait_method (|
                                 "alloc::vec::is_zero::IsZero",
-                                H,
+                                F,
                                 [],
                                 [],
                                 "is_zero",
                                 [],
                                 []
                               |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_H |) |) |)
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_F |) |) |)
                               ]
                             |)))
-                        |)
-                      |)))
-                ]
-              |)
+                        |),
+                        ltac:(M.monadic
+                          (M.call_closure (|
+                            Ty.path "bool",
+                            M.get_trait_method (|
+                              "alloc::vec::is_zero::IsZero",
+                              G,
+                              [],
+                              [],
+                              "is_zero",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_G |) |) |) ]
+                          |)))
+                      |),
+                      ltac:(M.monadic
+                        (M.call_closure (|
+                          Ty.path "bool",
+                          M.get_trait_method (|
+                            "alloc::vec::is_zero::IsZero",
+                            H,
+                            [],
+                            [],
+                            "is_zero",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_H |) |) |) ]
+                        |)))
+                    |)))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1940,94 +1895,47 @@ Module vec.
           ltac:(M.monadic
             (let self :=
               M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.tuple [ D; E; F; G; H ] ], self |) in
-            M.read (|
-              M.match_operator (|
-                Ty.path "bool",
-                self,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                      let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                      let γ1_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
-                      let γ1_3 := M.SubPointer.get_tuple_field (| γ, 3 |) in
-                      let γ1_4 := M.SubPointer.get_tuple_field (| γ, 4 |) in
-                      let value_D := M.alloc (| Ty.apply (Ty.path "&") [] [ D ], γ1_0 |) in
-                      let value_E := M.alloc (| Ty.apply (Ty.path "&") [] [ E ], γ1_1 |) in
-                      let value_F := M.alloc (| Ty.apply (Ty.path "&") [] [ F ], γ1_2 |) in
-                      let value_G := M.alloc (| Ty.apply (Ty.path "&") [] [ G ], γ1_3 |) in
-                      let value_H := M.alloc (| Ty.apply (Ty.path "&") [] [ H ], γ1_4 |) in
-                      M.alloc (|
-                        Ty.path "bool",
+            M.match_operator (|
+              Ty.path "bool",
+              self,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let γ1_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
+                    let γ1_3 := M.SubPointer.get_tuple_field (| γ, 3 |) in
+                    let γ1_4 := M.SubPointer.get_tuple_field (| γ, 4 |) in
+                    let value_D := M.alloc (| Ty.apply (Ty.path "&") [] [ D ], γ1_0 |) in
+                    let value_E := M.alloc (| Ty.apply (Ty.path "&") [] [ E ], γ1_1 |) in
+                    let value_F := M.alloc (| Ty.apply (Ty.path "&") [] [ F ], γ1_2 |) in
+                    let value_G := M.alloc (| Ty.apply (Ty.path "&") [] [ G ], γ1_3 |) in
+                    let value_H := M.alloc (| Ty.apply (Ty.path "&") [] [ H ], γ1_4 |) in
+                    LogicalOp.and (|
+                      LogicalOp.and (|
                         LogicalOp.and (|
                           LogicalOp.and (|
-                            LogicalOp.and (|
-                              LogicalOp.and (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_trait_method (|
-                                    "alloc::vec::is_zero::IsZero",
-                                    D,
-                                    [],
-                                    [],
-                                    "is_zero",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (| M.read (| value_D |) |)
-                                    |)
-                                  ]
-                                |),
-                                ltac:(M.monadic
-                                  (M.call_closure (|
-                                    Ty.path "bool",
-                                    M.get_trait_method (|
-                                      "alloc::vec::is_zero::IsZero",
-                                      E,
-                                      [],
-                                      [],
-                                      "is_zero",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| value_E |) |)
-                                      |)
-                                    ]
-                                  |)))
+                            M.call_closure (|
+                              Ty.path "bool",
+                              M.get_trait_method (|
+                                "alloc::vec::is_zero::IsZero",
+                                D,
+                                [],
+                                [],
+                                "is_zero",
+                                [],
+                                []
                               |),
-                              ltac:(M.monadic
-                                (M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_trait_method (|
-                                    "alloc::vec::is_zero::IsZero",
-                                    F,
-                                    [],
-                                    [],
-                                    "is_zero",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (| M.read (| value_F |) |)
-                                    |)
-                                  ]
-                                |)))
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_D |) |) |)
+                              ]
                             |),
                             ltac:(M.monadic
                               (M.call_closure (|
                                 Ty.path "bool",
                                 M.get_trait_method (|
                                   "alloc::vec::is_zero::IsZero",
-                                  G,
+                                  E,
                                   [],
                                   [],
                                   "is_zero",
@@ -2037,7 +1945,7 @@ Module vec.
                                 [
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.deref (| M.read (| value_G |) |)
+                                    M.deref (| M.read (| value_E |) |)
                                   |)
                                 ]
                               |)))
@@ -2047,20 +1955,48 @@ Module vec.
                               Ty.path "bool",
                               M.get_trait_method (|
                                 "alloc::vec::is_zero::IsZero",
-                                H,
+                                F,
                                 [],
                                 [],
                                 "is_zero",
                                 [],
                                 []
                               |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_H |) |) |)
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_F |) |) |)
                               ]
                             |)))
-                        |)
-                      |)))
-                ]
-              |)
+                        |),
+                        ltac:(M.monadic
+                          (M.call_closure (|
+                            Ty.path "bool",
+                            M.get_trait_method (|
+                              "alloc::vec::is_zero::IsZero",
+                              G,
+                              [],
+                              [],
+                              "is_zero",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_G |) |) |) ]
+                          |)))
+                      |),
+                      ltac:(M.monadic
+                        (M.call_closure (|
+                          Ty.path "bool",
+                          M.get_trait_method (|
+                            "alloc::vec::is_zero::IsZero",
+                            H,
+                            [],
+                            [],
+                            "is_zero",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_H |) |) |) ]
+                        |)))
+                    |)))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2101,104 +2037,84 @@ Module vec.
           ltac:(M.monadic
             (let self :=
               M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.tuple [ E; F; G; H ] ], self |) in
-            M.read (|
-              M.match_operator (|
-                Ty.path "bool",
-                self,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                      let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                      let γ1_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
-                      let γ1_3 := M.SubPointer.get_tuple_field (| γ, 3 |) in
-                      let value_E := M.alloc (| Ty.apply (Ty.path "&") [] [ E ], γ1_0 |) in
-                      let value_F := M.alloc (| Ty.apply (Ty.path "&") [] [ F ], γ1_1 |) in
-                      let value_G := M.alloc (| Ty.apply (Ty.path "&") [] [ G ], γ1_2 |) in
-                      let value_H := M.alloc (| Ty.apply (Ty.path "&") [] [ H ], γ1_3 |) in
-                      M.alloc (|
-                        Ty.path "bool",
+            M.match_operator (|
+              Ty.path "bool",
+              self,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let γ1_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
+                    let γ1_3 := M.SubPointer.get_tuple_field (| γ, 3 |) in
+                    let value_E := M.alloc (| Ty.apply (Ty.path "&") [] [ E ], γ1_0 |) in
+                    let value_F := M.alloc (| Ty.apply (Ty.path "&") [] [ F ], γ1_1 |) in
+                    let value_G := M.alloc (| Ty.apply (Ty.path "&") [] [ G ], γ1_2 |) in
+                    let value_H := M.alloc (| Ty.apply (Ty.path "&") [] [ H ], γ1_3 |) in
+                    LogicalOp.and (|
+                      LogicalOp.and (|
                         LogicalOp.and (|
-                          LogicalOp.and (|
-                            LogicalOp.and (|
-                              M.call_closure (|
-                                Ty.path "bool",
-                                M.get_trait_method (|
-                                  "alloc::vec::is_zero::IsZero",
-                                  E,
-                                  [],
-                                  [],
-                                  "is_zero",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (| M.read (| value_E |) |)
-                                  |)
-                                ]
-                              |),
-                              ltac:(M.monadic
-                                (M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_trait_method (|
-                                    "alloc::vec::is_zero::IsZero",
-                                    F,
-                                    [],
-                                    [],
-                                    "is_zero",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (| M.read (| value_F |) |)
-                                    |)
-                                  ]
-                                |)))
+                          M.call_closure (|
+                            Ty.path "bool",
+                            M.get_trait_method (|
+                              "alloc::vec::is_zero::IsZero",
+                              E,
+                              [],
+                              [],
+                              "is_zero",
+                              [],
+                              []
                             |),
-                            ltac:(M.monadic
-                              (M.call_closure (|
-                                Ty.path "bool",
-                                M.get_trait_method (|
-                                  "alloc::vec::is_zero::IsZero",
-                                  G,
-                                  [],
-                                  [],
-                                  "is_zero",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (| M.read (| value_G |) |)
-                                  |)
-                                ]
-                              |)))
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_E |) |) |) ]
                           |),
                           ltac:(M.monadic
                             (M.call_closure (|
                               Ty.path "bool",
                               M.get_trait_method (|
                                 "alloc::vec::is_zero::IsZero",
-                                H,
+                                F,
                                 [],
                                 [],
                                 "is_zero",
                                 [],
                                 []
                               |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_H |) |) |)
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_F |) |) |)
                               ]
                             |)))
-                        |)
-                      |)))
-                ]
-              |)
+                        |),
+                        ltac:(M.monadic
+                          (M.call_closure (|
+                            Ty.path "bool",
+                            M.get_trait_method (|
+                              "alloc::vec::is_zero::IsZero",
+                              G,
+                              [],
+                              [],
+                              "is_zero",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_G |) |) |) ]
+                          |)))
+                      |),
+                      ltac:(M.monadic
+                        (M.call_closure (|
+                          Ty.path "bool",
+                          M.get_trait_method (|
+                            "alloc::vec::is_zero::IsZero",
+                            H,
+                            [],
+                            [],
+                            "is_zero",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_H |) |) |) ]
+                        |)))
+                    |)))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2233,77 +2149,65 @@ Module vec.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.tuple [ F; G; H ] ], self |) in
-            M.read (|
-              M.match_operator (|
-                Ty.path "bool",
-                self,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                      let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                      let γ1_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
-                      let value_F := M.alloc (| Ty.apply (Ty.path "&") [] [ F ], γ1_0 |) in
-                      let value_G := M.alloc (| Ty.apply (Ty.path "&") [] [ G ], γ1_1 |) in
-                      let value_H := M.alloc (| Ty.apply (Ty.path "&") [] [ H ], γ1_2 |) in
-                      M.alloc (|
-                        Ty.path "bool",
-                        LogicalOp.and (|
-                          LogicalOp.and (|
-                            M.call_closure (|
-                              Ty.path "bool",
-                              M.get_trait_method (|
-                                "alloc::vec::is_zero::IsZero",
-                                F,
-                                [],
-                                [],
-                                "is_zero",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_F |) |) |)
-                              ]
-                            |),
-                            ltac:(M.monadic
-                              (M.call_closure (|
-                                Ty.path "bool",
-                                M.get_trait_method (|
-                                  "alloc::vec::is_zero::IsZero",
-                                  G,
-                                  [],
-                                  [],
-                                  "is_zero",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (| M.read (| value_G |) |)
-                                  |)
-                                ]
-                              |)))
+            M.match_operator (|
+              Ty.path "bool",
+              self,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let γ1_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
+                    let value_F := M.alloc (| Ty.apply (Ty.path "&") [] [ F ], γ1_0 |) in
+                    let value_G := M.alloc (| Ty.apply (Ty.path "&") [] [ G ], γ1_1 |) in
+                    let value_H := M.alloc (| Ty.apply (Ty.path "&") [] [ H ], γ1_2 |) in
+                    LogicalOp.and (|
+                      LogicalOp.and (|
+                        M.call_closure (|
+                          Ty.path "bool",
+                          M.get_trait_method (|
+                            "alloc::vec::is_zero::IsZero",
+                            F,
+                            [],
+                            [],
+                            "is_zero",
+                            [],
+                            []
                           |),
-                          ltac:(M.monadic
-                            (M.call_closure (|
-                              Ty.path "bool",
-                              M.get_trait_method (|
-                                "alloc::vec::is_zero::IsZero",
-                                H,
-                                [],
-                                [],
-                                "is_zero",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_H |) |) |)
-                              ]
-                            |)))
-                        |)
-                      |)))
-                ]
-              |)
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_F |) |) |) ]
+                        |),
+                        ltac:(M.monadic
+                          (M.call_closure (|
+                            Ty.path "bool",
+                            M.get_trait_method (|
+                              "alloc::vec::is_zero::IsZero",
+                              G,
+                              [],
+                              [],
+                              "is_zero",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_G |) |) |) ]
+                          |)))
+                      |),
+                      ltac:(M.monadic
+                        (M.call_closure (|
+                          Ty.path "bool",
+                          M.get_trait_method (|
+                            "alloc::vec::is_zero::IsZero",
+                            H,
+                            [],
+                            [],
+                            "is_zero",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_H |) |) |) ]
+                        |)))
+                    |)))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2338,53 +2242,47 @@ Module vec.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.tuple [ G; H ] ], self |) in
-            M.read (|
-              M.match_operator (|
-                Ty.path "bool",
-                self,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                      let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                      let value_G := M.alloc (| Ty.apply (Ty.path "&") [] [ G ], γ1_0 |) in
-                      let value_H := M.alloc (| Ty.apply (Ty.path "&") [] [ H ], γ1_1 |) in
-                      M.alloc (|
+            M.match_operator (|
+              Ty.path "bool",
+              self,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let value_G := M.alloc (| Ty.apply (Ty.path "&") [] [ G ], γ1_0 |) in
+                    let value_H := M.alloc (| Ty.apply (Ty.path "&") [] [ H ], γ1_1 |) in
+                    LogicalOp.and (|
+                      M.call_closure (|
                         Ty.path "bool",
-                        LogicalOp.and (|
-                          M.call_closure (|
-                            Ty.path "bool",
-                            M.get_trait_method (|
-                              "alloc::vec::is_zero::IsZero",
-                              G,
-                              [],
-                              [],
-                              "is_zero",
-                              [],
-                              []
-                            |),
-                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_G |) |) |) ]
+                        M.get_trait_method (|
+                          "alloc::vec::is_zero::IsZero",
+                          G,
+                          [],
+                          [],
+                          "is_zero",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_G |) |) |) ]
+                      |),
+                      ltac:(M.monadic
+                        (M.call_closure (|
+                          Ty.path "bool",
+                          M.get_trait_method (|
+                            "alloc::vec::is_zero::IsZero",
+                            H,
+                            [],
+                            [],
+                            "is_zero",
+                            [],
+                            []
                           |),
-                          ltac:(M.monadic
-                            (M.call_closure (|
-                              Ty.path "bool",
-                              M.get_trait_method (|
-                                "alloc::vec::is_zero::IsZero",
-                                H,
-                                [],
-                                [],
-                                "is_zero",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_H |) |) |)
-                              ]
-                            |)))
-                        |)
-                      |)))
-                ]
-              |)
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_H |) |) |) ]
+                        |)))
+                    |)))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2419,34 +2317,29 @@ Module vec.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.tuple [ H ] ], self |) in
-            M.read (|
-              M.match_operator (|
-                Ty.path "bool",
-                self,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| γ |) in
-                      let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                      let value_H := M.alloc (| Ty.apply (Ty.path "&") [] [ H ], γ1_0 |) in
-                      M.alloc (|
-                        Ty.path "bool",
-                        M.call_closure (|
-                          Ty.path "bool",
-                          M.get_trait_method (|
-                            "alloc::vec::is_zero::IsZero",
-                            H,
-                            [],
-                            [],
-                            "is_zero",
-                            [],
-                            []
-                          |),
-                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_H |) |) |) ]
-                        |)
-                      |)))
-                ]
-              |)
+            M.match_operator (|
+              Ty.path "bool",
+              self,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let value_H := M.alloc (| Ty.apply (Ty.path "&") [] [ H ], γ1_0 |) in
+                    M.call_closure (|
+                      Ty.path "bool",
+                      M.get_trait_method (|
+                        "alloc::vec::is_zero::IsZero",
+                        H,
+                        [],
+                        [],
+                        "is_zero",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value_H |) |) |) ]
+                    |)))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

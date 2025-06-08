@@ -33,28 +33,23 @@ Module panicking.
         (let fmt := M.alloc (| Ty.path "core::fmt::Arguments", fmt |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
-            M.read (|
-              M.match_operator (|
-                Ty.tuple [],
-                M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.use (M.alloc (| Ty.path "bool", Value.Bool false |)) in
-                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (|
-                        Ty.tuple [],
-                        M.never_to_any (|
-                          M.call_closure (|
-                            Ty.path "never",
-                            M.get_function (| "core::intrinsics::abort", [], [] |),
-                            []
-                          |)
-                        |)
-                      |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                ]
-              |)
+            M.match_operator (|
+              Ty.tuple [],
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.use (M.alloc (| Ty.path "bool", Value.Bool false |)) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.never_to_any (|
+                      M.call_closure (|
+                        Ty.path "never",
+                        M.get_function (| "core::intrinsics::abort", [], [] |),
+                        []
+                      |)
+                    |)));
+                fun γ => ltac:(M.monadic (Value.Tuple []))
+              ]
             |) in
           let~ pi : Ty.path "core::panic::panic_info::PanicInfo" :=
             M.call_closure (|
@@ -1671,28 +1666,23 @@ Module panicking.
         let len := M.alloc (| Ty.path "usize", len |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
-            M.read (|
-              M.match_operator (|
-                Ty.tuple [],
-                M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.use (M.alloc (| Ty.path "bool", Value.Bool false |)) in
-                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (|
-                        Ty.tuple [],
-                        M.never_to_any (|
-                          M.call_closure (|
-                            Ty.path "never",
-                            M.get_function (| "core::intrinsics::abort", [], [] |),
-                            []
-                          |)
-                        |)
-                      |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                ]
-              |)
+            M.match_operator (|
+              Ty.tuple [],
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.use (M.alloc (| Ty.path "bool", Value.Bool false |)) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.never_to_any (|
+                      M.call_closure (|
+                        Ty.path "never",
+                        M.get_function (| "core::intrinsics::abort", [], [] |),
+                        []
+                      |)
+                    |)));
+                fun γ => ltac:(M.monadic (Value.Tuple []))
+              ]
             |) in
           M.alloc (|
             Ty.path "never",
@@ -1815,28 +1805,23 @@ Module panicking.
         let found := M.alloc (| Ty.path "usize", found |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
-            M.read (|
-              M.match_operator (|
-                Ty.tuple [],
-                M.alloc (| Ty.tuple [], Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.use (M.alloc (| Ty.path "bool", Value.Bool false |)) in
-                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (|
-                        Ty.tuple [],
-                        M.never_to_any (|
-                          M.call_closure (|
-                            Ty.path "never",
-                            M.get_function (| "core::intrinsics::abort", [], [] |),
-                            []
-                          |)
-                        |)
-                      |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-                ]
-              |)
+            M.match_operator (|
+              Ty.tuple [],
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.use (M.alloc (| Ty.path "bool", Value.Bool false |)) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.never_to_any (|
+                      M.call_closure (|
+                        Ty.path "never",
+                        M.get_function (| "core::intrinsics::abort", [], [] |),
+                        []
+                      |)
+                    |)));
+                fun γ => ltac:(M.monadic (Value.Tuple []))
+              ]
             |) in
           M.alloc (|
             Ty.path "never",
@@ -2077,56 +2062,53 @@ Module panicking.
     | [], [], [ fmt ] =>
       ltac:(M.monadic
         (let fmt := M.alloc (| Ty.path "core::fmt::Arguments", fmt |) in
-        M.read (|
-          M.match_operator (|
-            Ty.path "never",
-            M.alloc (| Ty.tuple [], Value.Tuple [] |),
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ :=
-                    M.alloc (|
+        M.match_operator (|
+          Ty.path "never",
+          M.alloc (| Ty.tuple [], Value.Tuple [] |),
+          [
+            fun γ =>
+              ltac:(M.monadic
+                (let γ :=
+                  M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                    M.call_closure (|
                       Ty.apply
                         (Ty.path "core::option::Option")
                         []
                         [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::option::Option")
-                          []
-                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Arguments",
-                          "as_str",
-                          [],
-                          []
-                        |),
-                        [ M.borrow (| Pointer.Kind.Ref, fmt |) ]
-                      |)
-                    |) in
-                  let γ0_0 :=
-                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
-                  let msg := M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], γ0_0 |) in
-                  M.alloc (|
-                    Ty.path "never",
-                    M.call_closure (|
-                      Ty.path "never",
-                      M.get_function (|
-                        "core::panicking::panic_display",
+                      M.get_associated_function (|
+                        Ty.path "core::fmt::Arguments",
+                        "as_str",
                         [],
-                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                        []
                       |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, msg |) |)
-                        |)
-                      ]
+                      [ M.borrow (| Pointer.Kind.Ref, fmt |) ]
                     |)
-                  |)));
-              fun γ =>
-                ltac:(M.monadic
-                  (let~ _ : Ty.tuple [] :=
+                  |) in
+                let γ0_0 :=
+                  M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
+                let msg := M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], γ0_0 |) in
+                M.call_closure (|
+                  Ty.path "never",
+                  M.get_function (|
+                    "core::panicking::panic_display",
+                    [],
+                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, msg |) |)
+                    |)
+                  ]
+                |)));
+            fun γ =>
+              ltac:(M.monadic
+                (M.read (|
+                  let~ _ : Ty.tuple [] :=
                     M.never_to_any (|
                       M.call_closure (|
                         Ty.path "never",
@@ -2134,9 +2116,9 @@ Module panicking.
                         []
                       |)
                     |) in
-                  M.alloc (| Ty.tuple [], Value.Tuple [] |)))
-            ]
-          |)
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                |)))
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -2196,37 +2178,26 @@ Module panicking.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.read (|
-                M.match_operator (|
-                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                  self,
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
-                        let _ := M.is_struct_tuple (| γ, "core::panicking::AssertKind::Eq" |) in
-                        M.alloc (|
-                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Eq" |) |) |)
-                        |)));
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
-                        let _ := M.is_struct_tuple (| γ, "core::panicking::AssertKind::Ne" |) in
-                        M.alloc (|
-                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Ne" |) |) |)
-                        |)));
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ := M.read (| γ |) in
-                        let _ := M.is_struct_tuple (| γ, "core::panicking::AssertKind::Match" |) in
-                        M.alloc (|
-                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Match" |) |) |)
-                        |)))
-                  ]
-                |)
+              M.match_operator (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                self,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let _ := M.is_struct_tuple (| γ, "core::panicking::AssertKind::Eq" |) in
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Eq" |) |) |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let _ := M.is_struct_tuple (| γ, "core::panicking::AssertKind::Ne" |) in
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Ne" |) |) |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let _ := M.is_struct_tuple (| γ, "core::panicking::AssertKind::Match" |) in
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Match" |) |) |)))
+                ]
               |)
             ]
           |)))
@@ -2478,46 +2449,39 @@ Module panicking.
           |) in
         M.read (|
           let~ op : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
-            M.read (|
-              M.match_operator (|
-                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                kind,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let _ := M.is_struct_tuple (| γ, "core::panicking::AssertKind::Eq" |) in
-                      M.alloc (|
-                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                        mk_str (| "==" |)
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let _ := M.is_struct_tuple (| γ, "core::panicking::AssertKind::Ne" |) in
-                      M.alloc (|
-                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "!=" |) |) |)
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let _ := M.is_struct_tuple (| γ, "core::panicking::AssertKind::Match" |) in
-                      M.alloc (|
-                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "matches" |) |) |)
-                      |)))
-                ]
-              |)
+            M.match_operator (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+              kind,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::panicking::AssertKind::Eq" |) in
+                    mk_str (| "==" |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::panicking::AssertKind::Ne" |) in
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "!=" |) |) |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::panicking::AssertKind::Match" |) in
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "matches" |) |) |)))
+              ]
             |) in
-          M.match_operator (|
+          M.alloc (|
             Ty.path "never",
-            args,
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ0_0 :=
-                    M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
-                  let args := M.copy (| Ty.path "core::fmt::Arguments", γ0_0 |) in
-                  M.alloc (|
-                    Ty.path "never",
+            M.match_operator (|
+              Ty.path "never",
+              args,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::option::Option::Some",
+                        0
+                      |) in
+                    let args := M.copy (| Ty.path "core::fmt::Arguments", γ0_0 |) in
                     M.call_closure (|
                       Ty.path "never",
                       M.get_function (| "core::panicking::panic_fmt", [], [] |),
@@ -2645,13 +2609,10 @@ Module panicking.
                           ]
                         |)
                       ]
-                    |)
-                  |)));
-              fun γ =>
-                ltac:(M.monadic
-                  (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                  M.alloc (|
-                    Ty.path "never",
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                     M.call_closure (|
                       Ty.path "never",
                       M.get_function (| "core::panicking::panic_fmt", [], [] |),
@@ -2763,9 +2724,9 @@ Module panicking.
                           ]
                         |)
                       ]
-                    |)
-                  |)))
-            ]
+                    |)))
+              ]
+            |)
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"

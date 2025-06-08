@@ -16,6 +16,7 @@ Require Import core.links.panicking.
 Require Import core.links.result.
 Require Import core.num.links.mod.
 Require Import core.ops.links.control_flow.
+Require Import core.ops.links.function.
 Require Import core.ops.links.range.
 Require Import core.slice.links.iter.
 Require Import core.slice.links.mod.
@@ -61,4 +62,20 @@ Proof.
   destruct (Impl_Iterator_for_Iter.run U8.t).
   destruct (Impl_Index_for_FixedBytes_N.run {| Integer.value := 32 |} (RangeTo.t Usize.t)).
   run_symbolic.
-Admitted.
+  match goal with
+  | |- context[M.closure ?closure] =>
+    set (any_callback := closure)
+  end.
+  assert (run_any_callback :
+    forall (i : Ref.t Pointer.Kind.Ref U8.t),
+    Run.Trait (fun _ _ => any_callback) [] [] [φ i] bool
+  ). {
+    intros.
+    constructor.
+    run_symbolic.
+  }
+  change (M.closure any_callback) with (φ (Function1.of_run run_any_callback)).
+  generalize any; clear; intros [? ? run_any]; cbn in *.
+  epose proof (run_any' := run_any _ _ _ (Function1.of_run run_any_callback) _ _ _).
+  typeclasses eauto.
+Defined.
