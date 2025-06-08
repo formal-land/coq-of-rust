@@ -792,21 +792,28 @@ Module alloc.
                           [ Ty.path "u8" ]
                         |),
                         [
-                          (* MutToConstPointer *)
-                          M.pointer_coercion
-                            (M.call_closure (|
-                              Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "core::ptr::non_null::NonNull")
+                          M.call_closure (|
+                            Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                            M.pointer_coercion
+                              M.PointerCoercion.MutToConstPointer
+                              (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ])
+                              (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ]),
+                            [
+                              M.call_closure (|
+                                Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "core::ptr::non_null::NonNull")
+                                    []
+                                    [ Ty.path "u8" ],
+                                  "as_ptr",
+                                  [],
                                   []
-                                  [ Ty.path "u8" ],
-                                "as_ptr",
-                                [],
-                                []
-                              |),
-                              [ M.read (| ptr |) ]
-                            |));
+                                |),
+                                [ M.read (| ptr |) ]
+                              |)
+                            ]
+                          |);
                           M.call_closure (|
                             Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                             M.get_associated_function (|
@@ -1203,21 +1210,28 @@ Module alloc.
                           [ Ty.path "u8" ]
                         |),
                         [
-                          (* MutToConstPointer *)
-                          M.pointer_coercion
-                            (M.call_closure (|
-                              Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "core::ptr::non_null::NonNull")
+                          M.call_closure (|
+                            Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                            M.pointer_coercion
+                              M.PointerCoercion.MutToConstPointer
+                              (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ])
+                              (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ]),
+                            [
+                              M.call_closure (|
+                                Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "core::ptr::non_null::NonNull")
+                                    []
+                                    [ Ty.path "u8" ],
+                                  "as_ptr",
+                                  [],
                                   []
-                                  [ Ty.path "u8" ],
-                                "as_ptr",
-                                [],
-                                []
-                              |),
-                              [ M.read (| ptr |) ]
-                            |));
+                                |),
+                                [ M.read (| ptr |) ]
+                              |)
+                            ]
+                          |);
                           M.call_closure (|
                             Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                             M.get_associated_function (|
@@ -1610,21 +1624,28 @@ Module alloc.
                           [ Ty.path "u8" ]
                         |),
                         [
-                          (* MutToConstPointer *)
-                          M.pointer_coercion
-                            (M.call_closure (|
-                              Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "core::ptr::non_null::NonNull")
+                          M.call_closure (|
+                            Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                            M.pointer_coercion
+                              M.PointerCoercion.MutToConstPointer
+                              (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ])
+                              (Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ]),
+                            [
+                              M.call_closure (|
+                                Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "core::ptr::non_null::NonNull")
+                                    []
+                                    [ Ty.path "u8" ],
+                                  "as_ptr",
+                                  [],
                                   []
-                                  [ Ty.path "u8" ],
-                                "as_ptr",
-                                [],
-                                []
-                              |),
-                              [ M.read (| ptr |) ]
-                            |));
+                                |),
+                                [ M.read (| ptr |) ]
+                              |)
+                            ]
+                          |);
                           M.call_closure (|
                             Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                             M.get_associated_function (|

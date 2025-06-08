@@ -1867,15 +1867,30 @@ Module boxed.
                       []
                     |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.cast
+                      M.call_closure (|
+                        Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
                           (Ty.apply
                             (Ty.path "*mut")
                             []
                             [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ T ]
                             ])
-                          (M.read (| raw |)));
+                          (Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]),
+                        [
+                          M.cast
+                            (Ty.apply
+                              (Ty.path "*mut")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                  [ T ]
+                              ])
+                            (M.read (| raw |))
+                        ]
+                      |);
                       M.read (| alloc |)
                     ]
                   |)))
@@ -5089,18 +5104,25 @@ Module boxed.
                   [ T ]
                 |),
                 [
-                  (* MutToConstPointer *)
-                  M.pointer_coercion
-                    (M.call_closure (|
-                      Ty.apply (Ty.path "*mut") [] [ T ],
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ],
-                        "as_ptr",
-                        [],
-                        []
-                      |),
-                      [ M.read (| ptr |) ]
-                    |))
+                  M.call_closure (|
+                    Ty.apply (Ty.path "*const") [] [ T ],
+                    M.pointer_coercion
+                      M.PointerCoercion.MutToConstPointer
+                      (Ty.apply (Ty.path "*mut") [] [ T ])
+                      (Ty.apply (Ty.path "*const") [] [ T ]),
+                    [
+                      M.call_closure (|
+                        Ty.apply (Ty.path "*mut") [] [ T ],
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ],
+                          "as_ptr",
+                          [],
+                          []
+                        |),
+                        [ M.read (| ptr |) ]
+                      |)
+                    ]
+                  |)
                 ]
               |) in
             M.alloc (|
@@ -5306,24 +5328,40 @@ Module boxed.
                   (Ty.path "core::ptr::unique::Unique")
                   []
                   [ Ty.apply (Ty.path "slice") [] [ T ] ] :=
-              (* Unsize *)
-              M.pointer_coercion
-                (M.call_closure (|
-                  Ty.apply
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::ptr::unique::Unique")
+                  []
+                  [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
                     (Ty.path "core::ptr::unique::Unique")
                     []
-                    [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 0 ] [ T ] ],
-                  M.get_associated_function (|
+                    [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 0 ] [ T ] ])
+                  (Ty.apply
+                    (Ty.path "core::ptr::unique::Unique")
+                    []
+                    [ Ty.apply (Ty.path "slice") [] [ T ] ]),
+                [
+                  M.call_closure (|
                     Ty.apply
                       (Ty.path "core::ptr::unique::Unique")
                       []
                       [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 0 ] [ T ] ],
-                    "dangling",
-                    [],
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "core::ptr::unique::Unique")
+                        []
+                        [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 0 ] [ T ] ],
+                      "dangling",
+                      [],
+                      []
+                    |),
                     []
-                  |),
-                  []
-                |)) in
+                  |)
+                ]
+              |) in
             M.alloc (|
               Ty.apply
                 (Ty.path "alloc::boxed::Box")
@@ -5375,10 +5413,14 @@ Module boxed.
                       (Ty.path "core::ptr::unique::Unique")
                       []
                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] :=
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.call_closure (|
-                      Ty.apply
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::ptr::unique::Unique")
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                    M.pointer_coercion
+                      M.PointerCoercion.Unsize
+                      (Ty.apply
                         (Ty.path "core::ptr::unique::Unique")
                         []
                         [
@@ -5386,8 +5428,13 @@ Module boxed.
                             (Ty.path "array")
                             [ Value.Integer IntegerKind.Usize 0 ]
                             [ Ty.path "u8" ]
-                        ],
-                      M.get_associated_function (|
+                        ])
+                      (Ty.apply
+                        (Ty.path "core::ptr::unique::Unique")
+                        []
+                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                    [
+                      M.call_closure (|
                         Ty.apply
                           (Ty.path "core::ptr::unique::Unique")
                           []
@@ -5397,12 +5444,24 @@ Module boxed.
                               [ Value.Integer IntegerKind.Usize 0 ]
                               [ Ty.path "u8" ]
                           ],
-                        "dangling",
-                        [],
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "core::ptr::unique::Unique")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 0 ]
+                                [ Ty.path "u8" ]
+                            ],
+                          "dangling",
+                          [],
+                          []
+                        |),
                         []
-                      |),
-                      []
-                    |)) in
+                      |)
+                    ]
+                  |) in
                 M.alloc (|
                   Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ Ty.path "str" ],
                   M.call_closure (|

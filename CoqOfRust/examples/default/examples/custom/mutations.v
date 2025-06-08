@@ -32,59 +32,80 @@ Module Impl_core_fmt_Debug_for_mutations_Numbers.
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
             M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Numbers" |) |) |);
             M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "a" |) |) |);
-            (* Unsize *)
-            M.pointer_coercion
-              (M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "mutations::Numbers",
-                      "a"
+            M.call_closure (|
+              Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+              M.pointer_coercion
+                M.PointerCoercion.Unsize
+                (Ty.apply (Ty.path "&") [] [ Ty.path "u64" ])
+                (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "mutations::Numbers",
+                        "a"
+                      |)
                     |)
                   |)
                 |)
-              |));
+              ]
+            |);
             M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "b" |) |) |);
-            (* Unsize *)
-            M.pointer_coercion
-              (M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "mutations::Numbers",
-                      "b"
+            M.call_closure (|
+              Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+              M.pointer_coercion
+                M.PointerCoercion.Unsize
+                (Ty.apply (Ty.path "&") [] [ Ty.path "u64" ])
+                (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "mutations::Numbers",
+                        "b"
+                      |)
                     |)
                   |)
                 |)
-              |));
+              ]
+            |);
             M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "c" |) |) |);
-            (* Unsize *)
-            M.pointer_coercion
-              (M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "mutations::Numbers",
-                          "c"
+            M.call_closure (|
+              Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+              M.pointer_coercion
+                M.PointerCoercion.Unsize
+                (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ])
+                (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "mutations::Numbers",
+                            "c"
+                          |)
                         |)
                       |)
                     |)
                   |)
                 |)
-              |))
+              ]
+            |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -320,98 +341,178 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       []
                     |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "array")
-                                  [ Value.Integer IntegerKind.Usize 2 ]
-                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                Value.Array [ mk_str (| "" |); mk_str (| "
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "slice")
+                              []
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                          ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "slice")
+                                []
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                            ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 2 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array [ mk_str (| "" |); mk_str (| "
 " |) ]
+                                |)
                               |)
                             |)
                           |)
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "array")
-                                  [ Value.Integer IntegerKind.Usize 1 ]
-                                  [ Ty.path "core::fmt::rt::Argument" ],
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      Ty.path "core::fmt::rt::Argument",
-                                      M.get_associated_function (|
+                        ]
+                      |);
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::fmt::rt::Argument" ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Argument" ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::fmt::rt::Argument" ]
+                            ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.path "core::fmt::rt::Argument" ],
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
                                         Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [],
-                                        [ Ty.path "mutations::Numbers" ]
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (| M.borrow (| Pointer.Kind.Ref, numbers |) |)
-                                        |)
-                                      ]
-                                    |)
-                                  ]
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_debug",
+                                          [],
+                                          [ Ty.path "mutations::Numbers" ]
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.borrow (| Pointer.Kind.Ref, numbers |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    ]
+                                |)
                               |)
                             |)
                           |)
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.alloc (|
-                                Ty.apply
-                                  (Ty.path "array")
-                                  [ Value.Integer IntegerKind.Usize 1 ]
-                                  [ Ty.path "core::fmt::rt::Placeholder" ],
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      Ty.path "core::fmt::rt::Placeholder",
-                                      M.get_associated_function (|
+                        ]
+                      |);
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::fmt::rt::Placeholder" ]
+                          ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Placeholder" ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::fmt::rt::Placeholder" ]
+                            ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.path "core::fmt::rt::Placeholder" ],
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
                                         Ty.path "core::fmt::rt::Placeholder",
-                                        "new",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        Value.Integer IntegerKind.Usize 0;
-                                        Value.UnicodeChar 32;
-                                        Value.StructTuple
-                                          "core::fmt::rt::Alignment::Unknown"
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Placeholder",
+                                          "new",
+                                          [],
                                           []
-                                          []
-                                          [];
-                                        Value.Integer IntegerKind.U32 4;
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" [] [] [];
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" [] [] []
-                                      ]
-                                    |)
-                                  ]
+                                        |),
+                                        [
+                                          Value.Integer IntegerKind.Usize 0;
+                                          Value.UnicodeChar 32;
+                                          Value.StructTuple
+                                            "core::fmt::rt::Alignment::Unknown"
+                                            []
+                                            []
+                                            [];
+                                          Value.Integer IntegerKind.U32 4;
+                                          Value.StructTuple
+                                            "core::fmt::rt::Count::Implied"
+                                            []
+                                            []
+                                            [];
+                                          Value.StructTuple "core::fmt::rt::Count::Implied" [] [] []
+                                        ]
+                                      |)
+                                    ]
+                                |)
                               |)
                             |)
                           |)
-                        |));
+                        ]
+                      |);
                       M.call_closure (|
                         Ty.path "core::fmt::rt::UnsafeArg",
                         M.get_associated_function (|

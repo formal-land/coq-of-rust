@@ -586,30 +586,40 @@ Module collections.
               T,
               M.get_function (| "core::ptr::read", [], [ T ] |),
               [
-                (* MutToConstPointer *)
-                M.pointer_coercion
-                  (M.call_closure (|
-                    Ty.apply (Ty.path "*mut") [] [ T ],
-                    M.get_associated_function (|
+                M.call_closure (|
+                  Ty.apply (Ty.path "*const") [] [ T ],
+                  M.pointer_coercion
+                    M.PointerCoercion.MutToConstPointer
+                    (Ty.apply (Ty.path "*mut") [] [ T ])
+                    (Ty.apply (Ty.path "*const") [] [ T ]),
+                  [
+                    M.call_closure (|
                       Ty.apply (Ty.path "*mut") [] [ T ],
-                      "add",
-                      [],
-                      []
-                    |),
-                    [
-                      M.call_closure (|
+                      M.get_associated_function (|
                         Ty.apply (Ty.path "*mut") [] [ T ],
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
-                          "ptr",
-                          [],
-                          []
-                        |),
-                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                      |);
-                      M.read (| off |)
-                    ]
-                  |))
+                        "add",
+                        [],
+                        []
+                      |),
+                      [
+                        M.call_closure (|
+                          Ty.apply (Ty.path "*mut") [] [ T ],
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "alloc::collections::vec_deque::VecDeque")
+                              []
+                              [ T; A ],
+                            "ptr",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                        |);
+                        M.read (| off |)
+                      ]
+                    |)
+                  ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1515,33 +1525,40 @@ Module collections.
                   Ty.tuple [],
                   M.get_function (| "core::intrinsics::copy", [], [ T ] |),
                   [
-                    (* MutToConstPointer *)
-                    M.pointer_coercion
-                      (M.call_closure (|
-                        Ty.apply (Ty.path "*mut") [] [ T ],
-                        M.get_associated_function (|
+                    M.call_closure (|
+                      Ty.apply (Ty.path "*const") [] [ T ],
+                      M.pointer_coercion
+                        M.PointerCoercion.MutToConstPointer
+                        (Ty.apply (Ty.path "*mut") [] [ T ])
+                        (Ty.apply (Ty.path "*const") [] [ T ]),
+                      [
+                        M.call_closure (|
                           Ty.apply (Ty.path "*mut") [] [ T ],
-                          "add",
-                          [],
-                          []
-                        |),
-                        [
-                          M.call_closure (|
+                          M.get_associated_function (|
                             Ty.apply (Ty.path "*mut") [] [ T ],
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "alloc::collections::vec_deque::VecDeque")
+                            "add",
+                            [],
+                            []
+                          |),
+                          [
+                            M.call_closure (|
+                              Ty.apply (Ty.path "*mut") [] [ T ],
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "alloc::collections::vec_deque::VecDeque")
+                                  []
+                                  [ T; A ],
+                                "ptr",
+                                [],
                                 []
-                                [ T; A ],
-                              "ptr",
-                              [],
-                              []
-                            |),
-                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                          |);
-                          M.read (| src |)
-                        ]
-                      |));
+                              |),
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                            |);
+                            M.read (| src |)
+                          ]
+                        |)
+                      ]
+                    |);
                     M.call_closure (|
                       Ty.apply (Ty.path "*mut") [] [ T ],
                       M.get_associated_function (|
@@ -2101,33 +2118,40 @@ Module collections.
                   Ty.tuple [],
                   M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                   [
-                    (* MutToConstPointer *)
-                    M.pointer_coercion
-                      (M.call_closure (|
-                        Ty.apply (Ty.path "*mut") [] [ T ],
-                        M.get_associated_function (|
+                    M.call_closure (|
+                      Ty.apply (Ty.path "*const") [] [ T ],
+                      M.pointer_coercion
+                        M.PointerCoercion.MutToConstPointer
+                        (Ty.apply (Ty.path "*mut") [] [ T ])
+                        (Ty.apply (Ty.path "*const") [] [ T ]),
+                      [
+                        M.call_closure (|
                           Ty.apply (Ty.path "*mut") [] [ T ],
-                          "add",
-                          [],
-                          []
-                        |),
-                        [
-                          M.call_closure (|
+                          M.get_associated_function (|
                             Ty.apply (Ty.path "*mut") [] [ T ],
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "alloc::collections::vec_deque::VecDeque")
+                            "add",
+                            [],
+                            []
+                          |),
+                          [
+                            M.call_closure (|
+                              Ty.apply (Ty.path "*mut") [] [ T ],
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "alloc::collections::vec_deque::VecDeque")
+                                  []
+                                  [ T; A ],
+                                "ptr",
+                                [],
                                 []
-                                [ T; A ],
-                              "ptr",
-                              [],
-                              []
-                            |),
-                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                          |);
-                          M.read (| src |)
-                        ]
-                      |));
+                              |),
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                            |);
+                            M.read (| src |)
+                          ]
+                        |)
+                      ]
+                    |);
                     M.call_closure (|
                       Ty.apply (Ty.path "*mut") [] [ T ],
                       M.get_associated_function (|
@@ -21731,36 +21755,29 @@ Module collections.
                               Ty.tuple [],
                               M.get_function (| "core::intrinsics::copy", [], [ T ] |),
                               [
-                                (* MutToConstPointer *)
-                                M.pointer_coercion
-                                  (M.call_closure (|
-                                    Ty.apply (Ty.path "*mut") [] [ T ],
-                                    M.get_associated_function (|
+                                M.call_closure (|
+                                  Ty.apply (Ty.path "*const") [] [ T ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.MutToConstPointer
+                                    (Ty.apply (Ty.path "*mut") [] [ T ])
+                                    (Ty.apply (Ty.path "*const") [] [ T ]),
+                                  [
+                                    M.call_closure (|
                                       Ty.apply (Ty.path "*mut") [] [ T ],
-                                      "add",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.read (| buf |);
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (|
-                                            M.call_closure (|
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path
-                                                      "alloc::collections::vec_deque::VecDeque")
-                                                    []
-                                                    [ T; A ]
-                                                ],
-                                              M.get_trait_method (|
-                                                "core::ops::deref::Deref",
+                                      M.get_associated_function (|
+                                        Ty.apply (Ty.path "*mut") [] [ T ],
+                                        "add",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.read (| buf |);
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (|
+                                              M.call_closure (|
                                                 Ty.apply
-                                                  (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                                  (Ty.path "&")
                                                   []
                                                   [
                                                     Ty.apply
@@ -21769,21 +21786,36 @@ Module collections.
                                                       []
                                                       [ T; A ]
                                                   ],
-                                                [],
-                                                [],
-                                                "deref",
-                                                [],
-                                                []
-                                              |),
-                                              [ M.borrow (| Pointer.Kind.Ref, other |) ]
-                                            |)
-                                          |),
-                                          "alloc::collections::vec_deque::VecDeque",
-                                          "head"
+                                                M.get_trait_method (|
+                                                  "core::ops::deref::Deref",
+                                                  Ty.apply
+                                                    (Ty.path
+                                                      "core::mem::manually_drop::ManuallyDrop")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "alloc::collections::vec_deque::VecDeque")
+                                                        []
+                                                        [ T; A ]
+                                                    ],
+                                                  [],
+                                                  [],
+                                                  "deref",
+                                                  [],
+                                                  []
+                                                |),
+                                                [ M.borrow (| Pointer.Kind.Ref, other |) ]
+                                              |)
+                                            |),
+                                            "alloc::collections::vec_deque::VecDeque",
+                                            "head"
+                                          |)
                                         |)
-                                      |)
-                                    ]
-                                  |));
+                                      ]
+                                    |)
+                                  ]
+                                |);
                                 M.read (| buf |);
                                 M.read (| len |)
                               ]
@@ -21938,32 +21970,48 @@ Module collections.
                                     []
                                   |),
                                   [
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (|
-                                          M.call_closure (|
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
-                                            M.get_trait_method (|
-                                              "core::ops::deref::Deref",
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                      M.pointer_coercion
+                                        M.PointerCoercion.Unsize
+                                        (Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.apply (Ty.path "array") [ N ] [ T ] ])
+                                        (Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ T ] ]),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.call_closure (|
                                               Ty.apply
-                                                (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                                (Ty.path "&")
                                                 []
                                                 [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
-                                              [],
-                                              [],
-                                              "deref",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.borrow (| Pointer.Kind.Ref, arr |) ]
+                                              M.get_trait_method (|
+                                                "core::ops::deref::Deref",
+                                                Ty.apply
+                                                  (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                                  []
+                                                  [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
+                                                [],
+                                                [],
+                                                "deref",
+                                                [],
+                                                []
+                                              |),
+                                              [ M.borrow (| Pointer.Kind.Ref, arr |) ]
+                                            |)
                                           |)
                                         |)
-                                      |))
+                                      ]
+                                    |)
                                   ]
                                 |);
                                 M.call_closure (|

@@ -390,21 +390,36 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ Ty.path "alloc::alloc::Global" ]
             |),
             [
-              (* Unsize *)
-              M.pointer_coercion
-                (M.read (|
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "alloc::boxed::Box")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "array")
-                          [ Value.Integer IntegerKind.Usize 3 ]
-                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
-                        Ty.path "alloc::alloc::Global"
-                      ],
-                    M.get_associated_function (|
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::boxed::Box")
+                  []
+                  [
+                    Ty.apply (Ty.path "slice") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
+                    Ty.path "alloc::alloc::Global"
+                  ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "alloc::boxed::Box")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 3 ]
+                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
+                      Ty.path "alloc::alloc::Global"
+                    ])
+                  (Ty.apply
+                    (Ty.path "alloc::boxed::Box")
+                    []
+                    [
+                      Ty.apply (Ty.path "slice") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
+                      Ty.path "alloc::alloc::Global"
+                    ]),
+                [
+                  M.read (|
+                    M.call_closure (|
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
                         []
@@ -415,26 +430,39 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
                           Ty.path "alloc::alloc::Global"
                         ],
-                      "new",
-                      [],
-                      []
-                    |),
-                    [
-                      M.alloc (|
+                      M.get_associated_function (|
                         Ty.apply
-                          (Ty.path "array")
-                          [ Value.Integer IntegerKind.Usize 3 ]
-                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                        Value.Array
+                          (Ty.path "alloc::boxed::Box")
+                          []
                           [
-                            mk_str (| "42" |);
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "93" |) |) |);
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "18" |) |) |)
-                          ]
-                      |)
-                    ]
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 3 ]
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
+                            Ty.path "alloc::alloc::Global"
+                          ],
+                        "new",
+                        [],
+                        []
+                      |),
+                      [
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 3 ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                          Value.Array
+                            [
+                              mk_str (| "42" |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "93" |) |) |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "18" |) |) |)
+                            ]
+                        |)
+                      ]
+                    |)
                   |)
-                |))
+                ]
+              |)
             ]
           |) in
         let~ empty :
@@ -475,21 +503,36 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ Ty.path "alloc::alloc::Global" ]
             |),
             [
-              (* Unsize *)
-              M.pointer_coercion
-                (M.read (|
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "alloc::boxed::Box")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "array")
-                          [ Value.Integer IntegerKind.Usize 3 ]
-                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
-                        Ty.path "alloc::alloc::Global"
-                      ],
-                    M.get_associated_function (|
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::boxed::Box")
+                  []
+                  [
+                    Ty.apply (Ty.path "slice") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
+                    Ty.path "alloc::alloc::Global"
+                  ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "alloc::boxed::Box")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 3 ]
+                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
+                      Ty.path "alloc::alloc::Global"
+                    ])
+                  (Ty.apply
+                    (Ty.path "alloc::boxed::Box")
+                    []
+                    [
+                      Ty.apply (Ty.path "slice") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
+                      Ty.path "alloc::alloc::Global"
+                    ]),
+                [
+                  M.read (|
+                    M.call_closure (|
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
                         []
@@ -500,26 +543,39 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
                           Ty.path "alloc::alloc::Global"
                         ],
-                      "new",
-                      [],
-                      []
-                    |),
-                    [
-                      M.alloc (|
+                      M.get_associated_function (|
                         Ty.apply
-                          (Ty.path "array")
-                          [ Value.Integer IntegerKind.Usize 3 ]
-                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                        Value.Array
+                          (Ty.path "alloc::boxed::Box")
+                          []
                           [
-                            mk_str (| "tofu" |);
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "93" |) |) |);
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "18" |) |) |)
-                          ]
-                      |)
-                    ]
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 3 ]
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
+                            Ty.path "alloc::alloc::Global"
+                          ],
+                        "new",
+                        [],
+                        []
+                      |),
+                      [
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 3 ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                          Value.Array
+                            [
+                              mk_str (| "tofu" |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "93" |) |) |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "18" |) |) |)
+                            ]
+                        |)
+                      ]
+                    |)
                   |)
-                |))
+                ]
+              |)
             ]
           |) in
         let~ _ : Ty.tuple [] :=

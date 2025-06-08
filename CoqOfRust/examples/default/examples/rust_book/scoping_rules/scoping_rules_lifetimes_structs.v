@@ -34,27 +34,37 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
             M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Borrowed" |) |) |);
-            (* Unsize *)
-            M.pointer_coercion
-              (M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ],
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_tuple_field (|
-                          M.deref (| M.read (| self |) |),
-                          "scoping_rules_lifetimes_structs::Borrowed",
-                          0
+            M.call_closure (|
+              Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+              M.pointer_coercion
+                M.PointerCoercion.Unsize
+                (Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ] ])
+                (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ],
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "scoping_rules_lifetimes_structs::Borrowed",
+                            0
+                          |)
                         |)
                       |)
                     |)
                   |)
                 |)
-              |))
+              ]
+            |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -107,43 +117,60 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
             M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "NamedBorrowed" |) |) |);
             M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "x" |) |) |);
-            (* Unsize *)
-            M.pointer_coercion
-              (M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "scoping_rules_lifetimes_structs::NamedBorrowed",
-                      "x"
+            M.call_closure (|
+              Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+              M.pointer_coercion
+                M.PointerCoercion.Unsize
+                (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ])
+                (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "scoping_rules_lifetimes_structs::NamedBorrowed",
+                        "x"
+                      |)
                     |)
                   |)
                 |)
-              |));
+              ]
+            |);
             M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "y" |) |) |);
-            (* Unsize *)
-            M.pointer_coercion
-              (M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ],
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "scoping_rules_lifetimes_structs::NamedBorrowed",
-                          "y"
+            M.call_closure (|
+              Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+              M.pointer_coercion
+                M.PointerCoercion.Unsize
+                (Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ] ])
+                (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ],
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "scoping_rules_lifetimes_structs::NamedBorrowed",
+                            "y"
+                          |)
                         |)
                       |)
                     |)
                   |)
                 |)
-              |))
+              ]
+            |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -222,12 +249,19 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                     M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Num" |) |) |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                      |))
+                    M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                      M.pointer_coercion
+                        M.PointerCoercion.Unsize
+                        (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ])
+                        (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                        |)
+                      ]
+                    |)
                   ]
                 |)));
             fun γ =>
@@ -258,12 +292,27 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                     M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Ref" |) |) |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                      |))
+                    M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                      M.pointer_coercion
+                        M.PointerCoercion.Unsize
+                        (Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
+                          ])
+                        (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                        |)
+                      ]
+                    |)
                   ]
                 |)))
           ]

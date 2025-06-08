@@ -1583,9 +1583,20 @@ Module cell.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, d |);
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |))
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                              M.pointer_coercion
+                                M.PointerCoercion.Unsize
+                                (Ty.apply (Ty.path "&") [] [ T ])
+                                (Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
+                            |)
                           ]
                         |)));
                     fun γ =>
@@ -1607,50 +1618,63 @@ Module cell.
                               |),
                               [
                                 M.borrow (| Pointer.Kind.MutRef, d |);
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (|
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.alloc (|
-                                          Ty.path "core::fmt::Arguments",
-                                          M.call_closure (|
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.Unsize
+                                    (Ty.apply (Ty.path "&") [] [ Ty.path "core::fmt::Arguments" ])
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
                                             Ty.path "core::fmt::Arguments",
-                                            M.get_associated_function (|
+                                            M.call_closure (|
                                               Ty.path "core::fmt::Arguments",
-                                              "new_const",
-                                              [ Value.Integer IntegerKind.Usize 1 ],
-                                              []
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (|
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.alloc (|
-                                                      Ty.apply
-                                                        (Ty.path "array")
-                                                        [ Value.Integer IntegerKind.Usize 1 ]
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "&")
-                                                            []
-                                                            [ Ty.path "str" ]
-                                                        ],
-                                                      Value.Array [ mk_str (| "<uninit>" |) ]
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::Arguments",
+                                                "new_const",
+                                                [ Value.Integer IntegerKind.Usize 1 ],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.alloc (|
+                                                        Ty.apply
+                                                          (Ty.path "array")
+                                                          [ Value.Integer IntegerKind.Usize 1 ]
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [ Ty.path "str" ]
+                                                          ],
+                                                        Value.Array [ mk_str (| "<uninit>" |) ]
+                                                      |)
                                                     |)
                                                   |)
                                                 |)
-                                              |)
-                                            ]
+                                              ]
+                                            |)
                                           |)
                                         |)
                                       |)
                                     |)
-                                  |))
+                                  ]
+                                |)
                               ]
                             |)
                           |)

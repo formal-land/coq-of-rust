@@ -1603,7 +1603,30 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         [],
                         []
                       |),
-                      [ (* Unsize *) M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, array |)) ]
+                      [
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ] ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 4 ]
+                                  [ Ty.path "u32" ]
+                              ])
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ] ]),
+                          [ M.borrow (| Pointer.Kind.Ref, array |) ]
+                        |)
+                      ]
                     |)
                   ]
                 |)

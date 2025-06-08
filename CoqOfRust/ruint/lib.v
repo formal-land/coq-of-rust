@@ -1255,8 +1255,23 @@ Module Impl_ruint_Uint_BITS_LIMBS.
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion (M.borrow (| Pointer.Kind.MutRef, limbs |));
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.Unsize
+                                    (Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ])
+                                    (Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ]),
+                                  [ M.borrow (| Pointer.Kind.MutRef, limbs |) ]
+                                |);
                                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| head |) |) |)
                               ]
                             |) in

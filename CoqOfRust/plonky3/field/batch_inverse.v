@@ -2,7 +2,23 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module batch_inverse.
-  (* #[instrument(level = "debug", skip_all)] *)
+  (*
+  pub fn batch_multiplicative_inverse<F: Field>(x: &[F]) -> Vec<F> {
+      // How many elements to invert in one thread.
+      const CHUNK_SIZE: usize = 1024;
+  
+      let n = x.len();
+      let mut result = F::zero_vec(n);
+  
+      x.par_chunks(CHUNK_SIZE)
+          .zip(result.par_chunks_mut(CHUNK_SIZE))
+          .for_each(|(x, result)| {
+              batch_multiplicative_inverse_helper(x, result);
+          });
+  
+      result
+  }
+  *)
   Definition batch_multiplicative_inverse
       (ε : list Value.t)
       (τ : list Ty.t)

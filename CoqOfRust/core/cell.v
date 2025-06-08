@@ -7365,7 +7365,24 @@ Module cell.
               (Ty.path "core::cell::UnsafeCell")
               []
               [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::marker::Send::AutoTrait", []) ] ] ],
-            (* Unsize *) M.pointer_coercion (M.read (| a |))
+            M.call_closure (|
+              Ty.apply
+                (Ty.path "core::cell::UnsafeCell")
+                []
+                [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::marker::Send::AutoTrait", []) ] ] ],
+              M.pointer_coercion
+                M.PointerCoercion.Unsize
+                (Ty.apply
+                  (Ty.path "core::cell::UnsafeCell")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ])
+                (Ty.apply
+                  (Ty.path "core::cell::UnsafeCell")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::marker::Send::AutoTrait", []) ] ]
+                  ]),
+              [ M.read (| a |) ]
+            |)
           |),
           [
             fun γ =>
@@ -7382,7 +7399,33 @@ Module cell.
                           []
                           [ Ty.dyn [ ("core::marker::Send::AutoTrait", []) ] ]
                       ],
-                    (* Unsize *) M.pointer_coercion (M.read (| b |))
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::cell::SyncUnsafeCell")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::marker::Send::AutoTrait", []) ] ]
+                        ],
+                      M.pointer_coercion
+                        M.PointerCoercion.Unsize
+                        (Ty.apply
+                          (Ty.path "core::cell::SyncUnsafeCell")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ])
+                        (Ty.apply
+                          (Ty.path "core::cell::SyncUnsafeCell")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::marker::Send::AutoTrait", []) ] ]
+                          ]),
+                      [ M.read (| b |) ]
+                    |)
                   |),
                   [
                     fun γ =>
@@ -7399,7 +7442,33 @@ Module cell.
                                   []
                                   [ Ty.dyn [ ("core::marker::Send::AutoTrait", []) ] ]
                               ],
-                            (* Unsize *) M.pointer_coercion (M.read (| c |))
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::cell::Cell")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::marker::Send::AutoTrait", []) ] ]
+                                ],
+                              M.pointer_coercion
+                                M.PointerCoercion.Unsize
+                                (Ty.apply
+                                  (Ty.path "core::cell::Cell")
+                                  []
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ])
+                                (Ty.apply
+                                  (Ty.path "core::cell::Cell")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.dyn [ ("core::marker::Send::AutoTrait", []) ] ]
+                                  ]),
+                              [ M.read (| c |) ]
+                            |)
                           |),
                           [
                             fun γ =>
@@ -7416,7 +7485,33 @@ Module cell.
                                           []
                                           [ Ty.dyn [ ("core::marker::Send::AutoTrait", []) ] ]
                                       ],
-                                    (* Unsize *) M.pointer_coercion (M.read (| d |))
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::cell::RefCell")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.dyn [ ("core::marker::Send::AutoTrait", []) ] ]
+                                        ],
+                                      M.pointer_coercion
+                                        M.PointerCoercion.Unsize
+                                        (Ty.apply
+                                          (Ty.path "core::cell::RefCell")
+                                          []
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ])
+                                        (Ty.apply
+                                          (Ty.path "core::cell::RefCell")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.dyn [ ("core::marker::Send::AutoTrait", []) ] ]
+                                          ]),
+                                      [ M.read (| d |) ]
+                                    |)
                                   |),
                                   [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
                                 |)))

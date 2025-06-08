@@ -183,12 +183,79 @@ Module array.
                     [ Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output"; R; F ]
                   |),
                   [
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.deref (| M.borrow (| Pointer.Kind.MutRef, array |) |)
-                      |));
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "slice")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                []
+                                [
+                                  Ty.associated_in_trait
+                                    "core::ops::try_trait::Try"
+                                    []
+                                    []
+                                    R
+                                    "Output"
+                                ]
+                            ]
+                        ],
+                      M.pointer_coercion
+                        M.PointerCoercion.Unsize
+                        (Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "array")
+                              [ N ]
+                              [
+                                Ty.apply
+                                  (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                  []
+                                  [
+                                    Ty.associated_in_trait
+                                      "core::ops::try_trait::Try"
+                                      []
+                                      []
+                                      R
+                                      "Output"
+                                  ]
+                              ]
+                          ])
+                        (Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "slice")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                  []
+                                  [
+                                    Ty.associated_in_trait
+                                      "core::ops::try_trait::Try"
+                                      []
+                                      []
+                                      R
+                                      "Output"
+                                  ]
+                              ]
+                          ]),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.deref (| M.borrow (| Pointer.Kind.MutRef, array |) |)
+                        |)
+                      ]
+                    |);
                     M.read (| cb |)
                   ]
                 |)
@@ -463,27 +530,34 @@ Module array.
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "TryFromSliceError" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Ty.apply (Ty.path "&") [] [ Ty.tuple [] ],
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_tuple_field (|
-                            M.deref (| M.read (| self |) |),
-                            "core::array::TryFromSliceError",
-                            0
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.tuple [] ],
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::array::TryFromSliceError",
+                              0
+                            |)
                           |)
                         |)
                       |)
                     |)
                   |)
-                |))
+                ]
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -814,8 +888,14 @@ Module array.
               Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
               self
             |) in
-          (* Unsize *)
-          M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |))))
+          M.call_closure (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+            M.pointer_coercion
+              M.PointerCoercion.Unsize
+              (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ])
+              (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]),
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -856,9 +936,14 @@ Module array.
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |))
+              M.call_closure (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ])
+                  (Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]),
+                [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
+              |)
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1383,8 +1468,14 @@ Module array.
             Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
             M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "iter", [], [] |),
             [
-              (* Unsize *)
-              M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |))
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1441,9 +1532,14 @@ Module array.
             Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
             M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "iter_mut", [], [] |),
             [
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |))
+              M.call_closure (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ])
+                  (Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]),
+                [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1530,9 +1626,17 @@ Module array.
                         M.use
                           (M.alloc (|
                             Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |))
+                            M.call_closure (|
+                              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                              M.pointer_coercion
+                                M.PointerCoercion.Unsize
+                                (Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "array") [ N ] [ T ] ])
+                                (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]),
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                            |)
                           |))
                       |)
                     |)
@@ -1622,12 +1726,28 @@ Module array.
                                   (Ty.path "&mut")
                                   []
                                   [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.borrow (|
-                                    Pointer.Kind.MutRef,
-                                    M.deref (| M.read (| self |) |)
-                                  |))
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.Unsize
+                                    (Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [ Ty.apply (Ty.path "array") [ N ] [ T ] ])
+                                    (Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ T ] ]),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| self |) |)
+                                    |)
+                                  ]
+                                |)
                               |))
                           |)
                         |)
@@ -2409,12 +2529,22 @@ Module array.
                   []
                 |),
                 [
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |));
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |))
+                  M.call_closure (|
+                    Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                    M.pointer_coercion
+                      M.PointerCoercion.Unsize
+                      (Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ])
+                      (Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]),
+                    [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
+                  |);
+                  M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                    M.pointer_coercion
+                      M.PointerCoercion.Unsize
+                      (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ])
+                      (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
+                  |)
                 ]
               |) in
             M.alloc (| Ty.tuple [], Value.Tuple [] |)
@@ -2495,9 +2625,14 @@ Module array.
                       []
                     |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| array |) |) |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ])
+                          (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| array |) |) |) ]
+                      |)
                     ]
                   |)
                 ]
@@ -6302,8 +6437,14 @@ Module array.
               Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
               self
             |) in
-          (* Unsize *)
-          M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |))))
+          M.call_closure (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+            M.pointer_coercion
+              M.PointerCoercion.Unsize
+              (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ])
+              (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]),
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -6337,9 +6478,14 @@ Module array.
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |))
+              M.call_closure (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ])
+                  (Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]),
+                [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
+              |)
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -8092,12 +8238,43 @@ Module array.
                 [ T; impl_Iterator_Item___T_ ]
               |),
               [
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.MutRef,
-                    M.deref (| M.borrow (| Pointer.Kind.MutRef, array |) |)
-                  |));
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path "&mut")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "slice")
+                        []
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
+                    ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "array")
+                          [ N ]
+                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
+                      ])
+                    (Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
+                      ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (| M.borrow (| Pointer.Kind.MutRef, array |) |)
+                    |)
+                  ]
+                |);
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| iter |) |) |)
               ]
             |) in

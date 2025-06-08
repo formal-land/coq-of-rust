@@ -100,26 +100,33 @@ Module slice.
                   Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                   M.get_function (| "core::slice::raw::from_raw_parts", [], [ T ] |),
                   [
-                    (* MutToConstPointer *)
-                    M.pointer_coercion
-                      (M.call_closure (|
-                        Ty.apply (Ty.path "*mut") [] [ T ],
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                          "as_ptr",
-                          [],
-                          []
-                        |),
-                        [
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::slice::iter::Iter",
-                              "ptr"
+                    M.call_closure (|
+                      Ty.apply (Ty.path "*const") [] [ T ],
+                      M.pointer_coercion
+                        M.PointerCoercion.MutToConstPointer
+                        (Ty.apply (Ty.path "*mut") [] [ T ])
+                        (Ty.apply (Ty.path "*const") [] [ T ]),
+                      [
+                        M.call_closure (|
+                          Ty.apply (Ty.path "*mut") [] [ T ],
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                            "as_ptr",
+                            [],
+                            []
+                          |),
+                          [
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::slice::iter::Iter",
+                                "ptr"
+                              |)
                             |)
-                          |)
-                        ]
-                      |));
+                          ]
+                        |)
+                      ]
+                    |);
                     M.match_operator (|
                       Ty.path "usize",
                       M.alloc (| Ty.tuple [], Value.Tuple [] |),
@@ -5059,26 +5066,33 @@ Module slice.
                   Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                   M.get_function (| "core::slice::raw::from_raw_parts", [], [ T ] |),
                   [
-                    (* MutToConstPointer *)
-                    M.pointer_coercion
-                      (M.call_closure (|
-                        Ty.apply (Ty.path "*mut") [] [ T ],
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                          "as_ptr",
-                          [],
-                          []
-                        |),
-                        [
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::slice::iter::IterMut",
-                              "ptr"
+                    M.call_closure (|
+                      Ty.apply (Ty.path "*const") [] [ T ],
+                      M.pointer_coercion
+                        M.PointerCoercion.MutToConstPointer
+                        (Ty.apply (Ty.path "*mut") [] [ T ])
+                        (Ty.apply (Ty.path "*const") [] [ T ]),
+                      [
+                        M.call_closure (|
+                          Ty.apply (Ty.path "*mut") [] [ T ],
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                            "as_ptr",
+                            [],
+                            []
+                          |),
+                          [
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::slice::iter::IterMut",
+                                "ptr"
+                              |)
                             |)
-                          |)
-                        ]
-                      |));
+                          ]
+                        |)
+                      ]
+                    |);
                     M.match_operator (|
                       Ty.path "usize",
                       M.alloc (| Ty.tuple [], Value.Tuple [] |),

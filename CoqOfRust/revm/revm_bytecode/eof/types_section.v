@@ -60,59 +60,80 @@ Module eof.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "TypesSection" |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inputs" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "revm_bytecode::eof::types_section::TypesSection",
-                          "inputs"
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply (Ty.path "&") [] [ Ty.path "u8" ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_bytecode::eof::types_section::TypesSection",
+                            "inputs"
+                          |)
                         |)
                       |)
                     |)
-                  |));
+                  ]
+                |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "outputs" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "revm_bytecode::eof::types_section::TypesSection",
-                          "outputs"
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply (Ty.path "&") [] [ Ty.path "u8" ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "revm_bytecode::eof::types_section::TypesSection",
+                            "outputs"
+                          |)
                         |)
                       |)
                     |)
-                  |));
+                  ]
+                |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "max_stack_size" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "revm_bytecode::eof::types_section::TypesSection",
-                              "max_stack_size"
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "revm_bytecode::eof::types_section::TypesSection",
+                                "max_stack_size"
+                              |)
                             |)
                           |)
                         |)
                       |)
                     |)
-                  |))
+                  ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1152,43 +1173,61 @@ Module eof.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| buffer |) |) |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.alloc (|
-                              Ty.apply
-                                (Ty.path "array")
-                                [ Value.Integer IntegerKind.Usize 2 ]
-                                [ Ty.path "u8" ],
-                              M.call_closure (|
+                    M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                      M.pointer_coercion
+                        M.PointerCoercion.Unsize
+                        (Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 2 ]
+                              [ Ty.path "u8" ]
+                          ])
+                        (Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
                                 Ty.apply
                                   (Ty.path "array")
                                   [ Value.Integer IntegerKind.Usize 2 ]
                                   [ Ty.path "u8" ],
-                                M.get_associated_function (|
-                                  Ty.path "u16",
-                                  "to_be_bytes",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "revm_bytecode::eof::types_section::TypesSection",
-                                      "max_stack_size"
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 2 ]
+                                    [ Ty.path "u8" ],
+                                  M.get_associated_function (|
+                                    Ty.path "u16",
+                                    "to_be_bytes",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "revm_bytecode::eof::types_section::TypesSection",
+                                        "max_stack_size"
+                                      |)
                                     |)
-                                  |)
-                                ]
+                                  ]
+                                |)
                               |)
                             |)
                           |)
                         |)
-                      |))
+                      ]
+                    |)
                   ]
                 |) in
               M.alloc (| Ty.tuple [], Value.Tuple [] |)

@@ -2251,43 +2251,60 @@ Module str.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CharIndices" |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "front_offset" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "core::str::iter::CharIndices",
-                          "front_offset"
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply (Ty.path "&") [] [ Ty.path "usize" ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::str::iter::CharIndices",
+                            "front_offset"
+                          |)
                         |)
                       |)
                     |)
-                  |));
+                  ]
+                |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "iter" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          Ty.apply (Ty.path "&") [] [ Ty.path "core::str::iter::Chars" ],
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::str::iter::CharIndices",
-                              "iter"
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ Ty.path "core::str::iter::Chars" ] ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            Ty.apply (Ty.path "&") [] [ Ty.path "core::str::iter::Chars" ],
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::str::iter::CharIndices",
+                                "iter"
+                              |)
                             |)
                           |)
                         |)
                       |)
                     |)
-                  |))
+                  ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2937,35 +2954,56 @@ Module str.
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Bytes" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          Ty.apply
-                            (Ty.path "&")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "core::iter::adapters::copied::Copied")
-                                []
-                                [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ]
-                            ],
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_tuple_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::str::iter::Bytes",
-                              0
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::iter::adapters::copied::Copied")
+                              []
+                              [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ] ]
+                          ]
+                      ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::iter::adapters::copied::Copied")
+                                  []
+                                  [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ]
+                                  ]
+                              ],
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::str::iter::Bytes",
+                                0
+                              |)
                             |)
                           |)
                         |)
                       |)
                     |)
-                  |))
+                  ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4023,21 +4061,44 @@ Module str.
                                                           Pointer.Kind.Ref,
                                                           M.deref (| mk_str (| "start" |) |)
                                                         |);
-                                                        (* Unsize *)
-                                                        M.pointer_coercion
-                                                          (M.borrow (|
-                                                            Pointer.Kind.Ref,
-                                                            M.deref (|
-                                                              M.borrow (|
-                                                                Pointer.Kind.Ref,
-                                                                M.SubPointer.get_struct_record_field (|
-                                                                  M.deref (| M.read (| self |) |),
-                                                                  "core::str::iter::SplitInternal",
-                                                                  "start"
+                                                        M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.dyn
+                                                                [ ("core::fmt::Debug::Trait", []) ]
+                                                            ],
+                                                          M.pointer_coercion
+                                                            M.PointerCoercion.Unsize
+                                                            (Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [ Ty.path "usize" ])
+                                                            (Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.dyn
+                                                                  [ ("core::fmt::Debug::Trait", [])
+                                                                  ]
+                                                              ]),
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.SubPointer.get_struct_record_field (|
+                                                                    M.deref (| M.read (| self |) |),
+                                                                    "core::str::iter::SplitInternal",
+                                                                    "start"
+                                                                  |)
                                                                 |)
                                                               |)
                                                             |)
-                                                          |))
+                                                          ]
+                                                        |)
                                                       ]
                                                     |)
                                                   |)
@@ -4046,21 +4107,35 @@ Module str.
                                                   Pointer.Kind.Ref,
                                                   M.deref (| mk_str (| "end" |) |)
                                                 |);
-                                                (* Unsize *)
-                                                M.pointer_coercion
-                                                  (M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (|
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.SubPointer.get_struct_record_field (|
-                                                          M.deref (| M.read (| self |) |),
-                                                          "core::str::iter::SplitInternal",
-                                                          "end"
+                                                M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                                  M.pointer_coercion
+                                                    M.PointerCoercion.Unsize
+                                                    (Ty.apply (Ty.path "&") [] [ Ty.path "usize" ])
+                                                    (Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ]
+                                                      ]),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.deref (| M.read (| self |) |),
+                                                            "core::str::iter::SplitInternal",
+                                                            "end"
+                                                          |)
                                                         |)
                                                       |)
                                                     |)
-                                                  |))
+                                                  ]
+                                                |)
                                               ]
                                             |)
                                           |)
@@ -4069,21 +4144,44 @@ Module str.
                                           Pointer.Kind.Ref,
                                           M.deref (| mk_str (| "matcher" |) |)
                                         |);
-                                        (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (|
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.deref (| M.read (| self |) |),
-                                                  "core::str::iter::SplitInternal",
-                                                  "matcher"
+                                        M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                          M.pointer_coercion
+                                            M.PointerCoercion.Unsize
+                                            (Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.associated_in_trait
+                                                  "core::str::pattern::Pattern"
+                                                  []
+                                                  []
+                                                  P
+                                                  "Searcher"
+                                              ])
+                                            (Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "core::str::iter::SplitInternal",
+                                                    "matcher"
+                                                  |)
                                                 |)
                                               |)
                                             |)
-                                          |))
+                                          ]
+                                        |)
                                       ]
                                     |)
                                   |)
@@ -4092,41 +4190,64 @@ Module str.
                                   Pointer.Kind.Ref,
                                   M.deref (| mk_str (| "allow_trailing_empty" |) |)
                                 |);
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (|
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| self |) |),
-                                          "core::str::iter::SplitInternal",
-                                          "allow_trailing_empty"
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.Unsize
+                                    (Ty.apply (Ty.path "&") [] [ Ty.path "bool" ])
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::str::iter::SplitInternal",
+                                            "allow_trailing_empty"
+                                          |)
                                         |)
                                       |)
                                     |)
-                                  |))
+                                  ]
+                                |)
                               ]
                             |)
                           |)
                         |);
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "finished" |) |) |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "core::str::iter::SplitInternal",
-                                  "finished"
+                        M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply (Ty.path "&") [] [ Ty.path "bool" ])
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::str::iter::SplitInternal",
+                                    "finished"
+                                  |)
                                 |)
                               |)
                             |)
-                          |))
+                          ]
+                        |)
                       ]
                     |)
                   |)
@@ -6062,21 +6183,34 @@ Module str.
                             |)
                           |)
                         |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.SubPointer.get_struct_tuple_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "core::str::iter::Split",
-                                  0
+                        M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ] ])
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::str::iter::Split",
+                                    0
+                                  |)
                                 |)
                               |)
                             |)
-                          |))
+                          ]
+                        |)
                       ]
                     |)
                   |)
@@ -6288,21 +6422,34 @@ Module str.
                             |)
                           |)
                         |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.SubPointer.get_struct_tuple_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "core::str::iter::RSplit",
-                                  0
+                        M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ] ])
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::str::iter::RSplit",
+                                    0
+                                  |)
                                 |)
                               |)
                             |)
-                          |))
+                          ]
+                        |)
                       ]
                     |)
                   |)
@@ -6759,21 +6906,34 @@ Module str.
                             |)
                           |)
                         |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.SubPointer.get_struct_tuple_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "core::str::iter::SplitTerminator",
-                                  0
+                        M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ] ])
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::str::iter::SplitTerminator",
+                                    0
+                                  |)
                                 |)
                               |)
                             |)
-                          |))
+                          ]
+                        |)
                       ]
                     |)
                   |)
@@ -6997,21 +7157,34 @@ Module str.
                             |)
                           |)
                         |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.SubPointer.get_struct_tuple_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "core::str::iter::RSplitTerminator",
-                                  0
+                        M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ] ])
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::str::iter::RSplitTerminator",
+                                    0
+                                  |)
                                 |)
                               |)
                             |)
-                          |))
+                          ]
+                        |)
                       ]
                     |)
                   |)
@@ -7583,41 +7756,68 @@ Module str.
                                   |)
                                 |);
                                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "iter" |) |) |);
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (|
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| self |) |),
-                                          "core::str::iter::SplitNInternal",
-                                          "iter"
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.Unsize
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ]
+                                      ])
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::str::iter::SplitNInternal",
+                                            "iter"
+                                          |)
                                         |)
                                       |)
                                     |)
-                                  |))
+                                  ]
+                                |)
                               ]
                             |)
                           |)
                         |);
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "count" |) |) |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "core::str::iter::SplitNInternal",
-                                  "count"
+                        M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply (Ty.path "&") [] [ Ty.path "usize" ])
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::str::iter::SplitNInternal",
+                                    "count"
+                                  |)
                                 |)
                               |)
                             |)
-                          |))
+                          ]
+                        |)
                       ]
                     |)
                   |)
@@ -8077,21 +8277,34 @@ Module str.
                             |)
                           |)
                         |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.SubPointer.get_struct_tuple_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "core::str::iter::SplitN",
-                                  0
+                        M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "core::str::iter::SplitNInternal") [] [ P ] ])
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::str::iter::SplitN",
+                                    0
+                                  |)
                                 |)
                               |)
                             |)
-                          |))
+                          ]
+                        |)
                       ]
                     |)
                   |)
@@ -8309,21 +8522,34 @@ Module str.
                             |)
                           |)
                         |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.SubPointer.get_struct_tuple_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "core::str::iter::RSplitN",
-                                  0
+                        M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "core::str::iter::SplitNInternal") [] [ P ] ])
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::str::iter::RSplitN",
+                                    0
+                                  |)
                                 |)
                               |)
                             |)
-                          |))
+                          ]
+                        |)
                       ]
                     |)
                   |)
@@ -8747,21 +8973,41 @@ Module str.
                             |)
                           |)
                         |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.SubPointer.get_struct_tuple_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "core::str::iter::MatchIndicesInternal",
-                                  0
+                        M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.associated_in_trait
+                                  "core::str::pattern::Pattern"
+                                  []
+                                  []
+                                  P
+                                  "Searcher"
+                              ])
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::str::iter::MatchIndicesInternal",
+                                    0
+                                  |)
                                 |)
                               |)
                             |)
-                          |))
+                          ]
+                        |)
                       ]
                     |)
                   |)
@@ -9185,21 +9431,35 @@ Module str.
                             |)
                           |)
                         |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.SubPointer.get_struct_tuple_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "core::str::iter::MatchIndices",
-                                  0
+                        M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "core::str::iter::MatchIndicesInternal") [] [ P ]
+                              ])
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::str::iter::MatchIndices",
+                                    0
+                                  |)
                                 |)
                               |)
                             |)
-                          |))
+                          ]
+                        |)
                       ]
                     |)
                   |)
@@ -9424,21 +9684,35 @@ Module str.
                             |)
                           |)
                         |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.SubPointer.get_struct_tuple_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "core::str::iter::RMatchIndices",
-                                  0
+                        M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "core::str::iter::MatchIndicesInternal") [] [ P ]
+                              ])
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::str::iter::RMatchIndices",
+                                    0
+                                  |)
                                 |)
                               |)
                             |)
-                          |))
+                          ]
+                        |)
                       ]
                     |)
                   |)
@@ -9878,21 +10152,41 @@ Module str.
                             |)
                           |)
                         |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.SubPointer.get_struct_tuple_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "core::str::iter::MatchesInternal",
-                                  0
+                        M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.associated_in_trait
+                                  "core::str::pattern::Pattern"
+                                  []
+                                  []
+                                  P
+                                  "Searcher"
+                              ])
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::str::iter::MatchesInternal",
+                                    0
+                                  |)
                                 |)
                               |)
                             |)
-                          |))
+                          ]
+                        |)
                       ]
                     |)
                   |)
@@ -10301,21 +10595,34 @@ Module str.
                             |)
                           |)
                         |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.SubPointer.get_struct_tuple_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "core::str::iter::Matches",
-                                  0
+                        M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "core::str::iter::MatchesInternal") [] [ P ] ])
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::str::iter::Matches",
+                                    0
+                                  |)
                                 |)
                               |)
                             |)
-                          |))
+                          ]
+                        |)
                       ]
                     |)
                   |)
@@ -10536,21 +10843,34 @@ Module str.
                             |)
                           |)
                         |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.SubPointer.get_struct_tuple_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "core::str::iter::RMatches",
-                                  0
+                        M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "core::str::iter::MatchesInternal") [] [ P ] ])
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::str::iter::RMatches",
+                                    0
+                                  |)
                                 |)
                               |)
                             |)
-                          |))
+                          ]
+                        |)
                       ]
                     |)
                   |)
@@ -10940,41 +11260,67 @@ Module str.
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Lines" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          Ty.apply
-                            (Ty.path "&")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "core::iter::adapters::map::Map")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::str::iter::SplitInclusive")
-                                    []
-                                    [ Ty.path "char" ];
-                                  Ty.path "core::str::LinesMap"
-                                ]
-                            ],
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_tuple_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::str::iter::Lines",
-                              0
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::iter::adapters::map::Map")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::str::iter::SplitInclusive")
+                                  []
+                                  [ Ty.path "char" ];
+                                Ty.path "core::str::LinesMap"
+                              ]
+                          ]
+                      ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::iter::adapters::map::Map")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::str::iter::SplitInclusive")
+                                      []
+                                      [ Ty.path "char" ];
+                                    Ty.path "core::str::LinesMap"
+                                  ]
+                              ],
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::str::iter::Lines",
+                                0
+                              |)
                             |)
                           |)
                         |)
                       |)
                     |)
-                  |))
+                  ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -11347,27 +11693,37 @@ Module str.
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LinesAny" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          Ty.apply (Ty.path "&") [] [ Ty.path "core::str::iter::Lines" ],
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_tuple_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::str::iter::LinesAny",
-                              0
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ Ty.path "core::str::iter::Lines" ] ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            Ty.apply (Ty.path "&") [] [ Ty.path "core::str::iter::Lines" ],
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::str::iter::LinesAny",
+                                0
+                              |)
                             |)
                           |)
                         |)
                       |)
                     |)
-                  |))
+                  ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -11679,41 +12035,67 @@ Module str.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SplitWhitespace" |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inner" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          Ty.apply
-                            (Ty.path "&")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "core::iter::adapters::filter::Filter")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::str::iter::Split")
-                                    []
-                                    [ Ty.path "core::str::IsWhitespace" ];
-                                  Ty.path "core::str::IsNotEmpty"
-                                ]
-                            ],
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::str::iter::SplitWhitespace",
-                              "inner"
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::iter::adapters::filter::Filter")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::str::iter::Split")
+                                  []
+                                  [ Ty.path "core::str::IsWhitespace" ];
+                                Ty.path "core::str::IsNotEmpty"
+                              ]
+                          ]
+                      ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::iter::adapters::filter::Filter")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::str::iter::Split")
+                                      []
+                                      [ Ty.path "core::str::IsWhitespace" ];
+                                    Ty.path "core::str::IsNotEmpty"
+                                  ]
+                              ],
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::str::iter::SplitWhitespace",
+                                "inner"
+                              |)
                             |)
                           |)
                         |)
                       |)
                     |)
-                  |))
+                  ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -11874,47 +12256,79 @@ Module str.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SplitAsciiWhitespace" |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inner" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          Ty.apply
-                            (Ty.path "&")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "core::iter::adapters::map::Map")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::iter::adapters::filter::Filter")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::slice::iter::Split")
-                                        []
-                                        [ Ty.path "u8"; Ty.path "core::str::IsAsciiWhitespace" ];
-                                      Ty.path "core::str::BytesIsNotEmpty"
-                                    ];
-                                  Ty.path "core::str::UnsafeBytesToStr"
-                                ]
-                            ],
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::str::iter::SplitAsciiWhitespace",
-                              "inner"
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::iter::adapters::map::Map")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::iter::adapters::filter::Filter")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::slice::iter::Split")
+                                      []
+                                      [ Ty.path "u8"; Ty.path "core::str::IsAsciiWhitespace" ];
+                                    Ty.path "core::str::BytesIsNotEmpty"
+                                  ];
+                                Ty.path "core::str::UnsafeBytesToStr"
+                              ]
+                          ]
+                      ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::iter::adapters::map::Map")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::iter::adapters::filter::Filter")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::slice::iter::Split")
+                                          []
+                                          [ Ty.path "u8"; Ty.path "core::str::IsAsciiWhitespace" ];
+                                        Ty.path "core::str::BytesIsNotEmpty"
+                                      ];
+                                    Ty.path "core::str::UnsafeBytesToStr"
+                                  ]
+                              ],
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::str::iter::SplitAsciiWhitespace",
+                                "inner"
+                              |)
                             |)
                           |)
                         |)
                       |)
                     |)
-                  |))
+                  ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -12732,21 +13146,34 @@ Module str.
                           |)
                         |);
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "0" |) |) |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.SubPointer.get_struct_tuple_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "core::str::iter::SplitInclusive",
-                                  0
+                        M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "core::str::iter::SplitInternal") [] [ P ] ])
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_tuple_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::str::iter::SplitInclusive",
+                                    0
+                                  |)
                                 |)
                               |)
                             |)
-                          |))
+                          ]
+                        |)
                       ]
                     |)
                   |)
@@ -13295,17 +13722,52 @@ Module str.
                                                         |),
                                                         [
                                                           M.read (| ch |);
-                                                          (* Unsize *)
-                                                          M.pointer_coercion
-                                                            (M.borrow (|
-                                                              Pointer.Kind.MutRef,
-                                                              M.deref (|
-                                                                M.borrow (|
-                                                                  Pointer.Kind.MutRef,
-                                                                  buf
+                                                          M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "&mut")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "slice")
+                                                                  []
+                                                                  [ Ty.path "u16" ]
+                                                              ],
+                                                            M.pointer_coercion
+                                                              M.PointerCoercion.Unsize
+                                                              (Ty.apply
+                                                                (Ty.path "&mut")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "array")
+                                                                    [
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        2
+                                                                    ]
+                                                                    [ Ty.path "u16" ]
+                                                                ])
+                                                              (Ty.apply
+                                                                (Ty.path "&mut")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "slice")
+                                                                    []
+                                                                    [ Ty.path "u16" ]
+                                                                ]),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.MutRef,
+                                                                M.deref (|
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    buf
+                                                                  |)
                                                                 |)
                                                               |)
-                                                            |))
+                                                            ]
+                                                          |)
                                                         ]
                                                       |)
                                                     |)
@@ -13719,53 +14181,91 @@ Module str.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "EscapeDebug" |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inner" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          Ty.apply
-                            (Ty.path "&")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "core::iter::adapters::chain::Chain")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "core::iter::adapters::flatten::Flatten")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "core::option::IntoIter")
-                                        []
-                                        [ Ty.path "core::char::EscapeDebug" ]
-                                    ];
-                                  Ty.apply
-                                    (Ty.path "core::iter::adapters::flatten::FlatMap")
-                                    []
-                                    [
-                                      Ty.path "core::str::iter::Chars";
-                                      Ty.path "core::char::EscapeDebug";
-                                      Ty.path "core::str::CharEscapeDebugContinue"
-                                    ]
-                                ]
-                            ],
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::str::iter::EscapeDebug",
-                              "inner"
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::iter::adapters::chain::Chain")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::iter::adapters::flatten::Flatten")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::option::IntoIter")
+                                      []
+                                      [ Ty.path "core::char::EscapeDebug" ]
+                                  ];
+                                Ty.apply
+                                  (Ty.path "core::iter::adapters::flatten::FlatMap")
+                                  []
+                                  [
+                                    Ty.path "core::str::iter::Chars";
+                                    Ty.path "core::char::EscapeDebug";
+                                    Ty.path "core::str::CharEscapeDebugContinue"
+                                  ]
+                              ]
+                          ]
+                      ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::iter::adapters::chain::Chain")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::iter::adapters::flatten::Flatten")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::option::IntoIter")
+                                          []
+                                          [ Ty.path "core::char::EscapeDebug" ]
+                                      ];
+                                    Ty.apply
+                                      (Ty.path "core::iter::adapters::flatten::FlatMap")
+                                      []
+                                      [
+                                        Ty.path "core::str::iter::Chars";
+                                        Ty.path "core::char::EscapeDebug";
+                                        Ty.path "core::str::CharEscapeDebugContinue"
+                                      ]
+                                  ]
+                              ],
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::str::iter::EscapeDebug",
+                                "inner"
+                              |)
                             |)
                           |)
                         |)
                       |)
                     |)
-                  |))
+                  ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -13902,39 +14402,63 @@ Module str.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "EscapeDefault" |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inner" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          Ty.apply
-                            (Ty.path "&")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "core::iter::adapters::flatten::FlatMap")
-                                []
-                                [
-                                  Ty.path "core::str::iter::Chars";
-                                  Ty.path "core::char::EscapeDefault";
-                                  Ty.path "core::str::CharEscapeDefault"
-                                ]
-                            ],
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::str::iter::EscapeDefault",
-                              "inner"
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::iter::adapters::flatten::FlatMap")
+                              []
+                              [
+                                Ty.path "core::str::iter::Chars";
+                                Ty.path "core::char::EscapeDefault";
+                                Ty.path "core::str::CharEscapeDefault"
+                              ]
+                          ]
+                      ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::iter::adapters::flatten::FlatMap")
+                                  []
+                                  [
+                                    Ty.path "core::str::iter::Chars";
+                                    Ty.path "core::char::EscapeDefault";
+                                    Ty.path "core::str::CharEscapeDefault"
+                                  ]
+                              ],
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::str::iter::EscapeDefault",
+                                "inner"
+                              |)
                             |)
                           |)
                         |)
                       |)
                     |)
-                  |))
+                  ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -14071,39 +14595,63 @@ Module str.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "EscapeUnicode" |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inner" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          Ty.apply
-                            (Ty.path "&")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "core::iter::adapters::flatten::FlatMap")
-                                []
-                                [
-                                  Ty.path "core::str::iter::Chars";
-                                  Ty.path "core::char::EscapeUnicode";
-                                  Ty.path "core::str::CharEscapeUnicode"
-                                ]
-                            ],
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::str::iter::EscapeUnicode",
-                              "inner"
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::iter::adapters::flatten::FlatMap")
+                              []
+                              [
+                                Ty.path "core::str::iter::Chars";
+                                Ty.path "core::char::EscapeUnicode";
+                                Ty.path "core::str::CharEscapeUnicode"
+                              ]
+                          ]
+                      ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::iter::adapters::flatten::FlatMap")
+                                  []
+                                  [
+                                    Ty.path "core::str::iter::Chars";
+                                    Ty.path "core::char::EscapeUnicode";
+                                    Ty.path "core::str::CharEscapeUnicode"
+                                  ]
+                              ],
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::str::iter::EscapeUnicode",
+                                "inner"
+                              |)
                             |)
                           |)
                         |)
                       |)
                     |)
-                  |))
+                  ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"

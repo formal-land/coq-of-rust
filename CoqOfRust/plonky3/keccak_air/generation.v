@@ -2,7 +2,38 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module generation.
-  (* #[instrument(name = "generate Keccak trace", skip_all)] *)
+  (*
+  pub fn generate_trace_rows<F: PrimeField64>(
+      inputs: Vec<[u64; 25]>,
+      extra_capacity_bits: usize,
+  ) -> RowMajorMatrix<F> {
+      let num_rows = (inputs.len() * NUM_ROUNDS).next_power_of_two();
+      let trace_length = num_rows * NUM_KECCAK_COLS;
+  
+      // We allocate extra_capacity_bits now as this will be needed by the dft.
+      let mut long_trace = F::zero_vec(trace_length << extra_capacity_bits);
+      long_trace.truncate(trace_length);
+  
+      let mut trace = RowMajorMatrix::new(long_trace, NUM_KECCAK_COLS);
+      let (prefix, rows, suffix) = unsafe { trace.values.align_to_mut::<KeccakCols<F>>() };
+      assert!(prefix.is_empty(), "Alignment should match");
+      assert!(suffix.is_empty(), "Alignment should match");
+      assert_eq!(rows.len(), num_rows);
+  
+      let num_padding_inputs = num_rows.div_ceil(NUM_ROUNDS) - inputs.len();
+      let padded_inputs = inputs
+          .into_par_iter()
+          .chain(repeat_n([0; 25], num_padding_inputs));
+  
+      rows.par_chunks_mut(NUM_ROUNDS)
+          .zip(padded_inputs)
+          .for_each(|(row, input)| {
+              generate_trace_rows_for_perm(row, input);
+          });
+  
+      trace
+  }
+  *)
   Definition generate_trace_rows (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
     | [], [ F ], [ inputs; extra_capacity_bits ] =>
@@ -2923,8 +2954,29 @@ Module generation.
                                           []
                                         |),
                                         [
-                                          (* Unsize *)
-                                          M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, row |))
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ],
+                                            M.pointer_coercion
+                                              M.PointerCoercion.Unsize
+                                              (Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "array")
+                                                    [ Value.Integer IntegerKind.Usize 5 ]
+                                                    [ Ty.path "u64" ]
+                                                ])
+                                              (Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ]
+                                                ]),
+                                            [ M.borrow (| Pointer.Kind.Ref, row |) ]
+                                          |)
                                         ]
                                       |);
                                       Value.Integer IntegerKind.U64 0;
@@ -3048,8 +3100,28 @@ Module generation.
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, state_c |))
+                                  M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ],
+                                    M.pointer_coercion
+                                      M.PointerCoercion.Unsize
+                                      (Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 5 ]
+                                            [ Ty.path "u64" ]
+                                        ])
+                                      (Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ]),
+                                    [ M.borrow (| Pointer.Kind.Ref, state_c |) ]
+                                  |)
                                 ]
                               |)
                             ]
@@ -3336,9 +3408,28 @@ Module generation.
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.borrow (| Pointer.Kind.Ref, state_c_prime |))
+                                  M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ],
+                                    M.pointer_coercion
+                                      M.PointerCoercion.Unsize
+                                      (Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 5 ]
+                                            [ Ty.path "u64" ]
+                                        ])
+                                      (Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ]),
+                                    [ M.borrow (| Pointer.Kind.Ref, state_c_prime |) ]
+                                  |)
                                 ]
                               |)
                             ]
@@ -3712,12 +3803,58 @@ Module generation.
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (| M.read (| current_state |) |)
-                                    |))
+                                  M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 5 ]
+                                              [ Ty.path "u64" ]
+                                          ]
+                                      ],
+                                    M.pointer_coercion
+                                      M.PointerCoercion.Unsize
+                                      (Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 5 ]
+                                            [
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 5 ]
+                                                [ Ty.path "u64" ]
+                                            ]
+                                        ])
+                                      (Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "slice")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 5 ]
+                                                [ Ty.path "u64" ]
+                                            ]
+                                        ]),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| current_state |) |)
+                                      |)
+                                    ]
+                                  |)
                                 ]
                               |)
                             ]
@@ -3940,12 +4077,49 @@ Module generation.
                                                                 []
                                                               |),
                                                               [
-                                                                (* Unsize *)
-                                                                M.pointer_coercion
-                                                                  (M.borrow (|
-                                                                    Pointer.Kind.Ref,
-                                                                    M.deref (| M.read (| x_row |) |)
-                                                                  |))
+                                                                M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "slice")
+                                                                        []
+                                                                        [ Ty.path "u64" ]
+                                                                    ],
+                                                                  M.pointer_coercion
+                                                                    M.PointerCoercion.Unsize
+                                                                    (Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "array")
+                                                                          [
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              5
+                                                                          ]
+                                                                          [ Ty.path "u64" ]
+                                                                      ])
+                                                                    (Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "slice")
+                                                                          []
+                                                                          [ Ty.path "u64" ]
+                                                                      ]),
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.read (| x_row |)
+                                                                      |)
+                                                                    |)
+                                                                  ]
+                                                                |)
                                                               ]
                                                             |)
                                                           ]
@@ -4612,12 +4786,58 @@ Module generation.
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (| M.read (| current_state |) |)
-                                    |))
+                                  M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 5 ]
+                                              [ Ty.path "u64" ]
+                                          ]
+                                      ],
+                                    M.pointer_coercion
+                                      M.PointerCoercion.Unsize
+                                      (Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 5 ]
+                                            [
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 5 ]
+                                                [ Ty.path "u64" ]
+                                            ]
+                                        ])
+                                      (Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "slice")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 5 ]
+                                                [ Ty.path "u64" ]
+                                            ]
+                                        ]),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| current_state |) |)
+                                      |)
+                                    ]
+                                  |)
                                 ]
                               |)
                             ]
@@ -4840,12 +5060,49 @@ Module generation.
                                                                 []
                                                               |),
                                                               [
-                                                                (* Unsize *)
-                                                                M.pointer_coercion
-                                                                  (M.borrow (|
-                                                                    Pointer.Kind.Ref,
-                                                                    M.deref (| M.read (| x_row |) |)
-                                                                  |))
+                                                                M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "slice")
+                                                                        []
+                                                                        [ Ty.path "u64" ]
+                                                                    ],
+                                                                  M.pointer_coercion
+                                                                    M.PointerCoercion.Unsize
+                                                                    (Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "array")
+                                                                          [
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              5
+                                                                          ]
+                                                                          [ Ty.path "u64" ]
+                                                                      ])
+                                                                    (Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "slice")
+                                                                          []
+                                                                          [ Ty.path "u64" ]
+                                                                      ]),
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.read (| x_row |)
+                                                                      |)
+                                                                    |)
+                                                                  ]
+                                                                |)
                                                               ]
                                                             |)
                                                           ]

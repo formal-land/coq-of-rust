@@ -642,35 +642,48 @@ Module interpreter.
                                   Pointer.Kind.Ref,
                                   M.deref (| mk_str (| "current_len" |) |)
                                 |);
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (|
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.alloc (|
-                                          Ty.path "usize",
-                                          M.call_closure (|
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.Unsize
+                                    (Ty.apply (Ty.path "&") [] [ Ty.path "usize" ])
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
                                             Ty.path "usize",
-                                            M.get_associated_function (|
-                                              Ty.path
-                                                "revm_interpreter::interpreter::shared_memory::SharedMemory",
-                                              "len",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| M.read (| self |) |)
-                                              |)
-                                            ]
+                                            M.call_closure (|
+                                              Ty.path "usize",
+                                              M.get_associated_function (|
+                                                Ty.path
+                                                  "revm_interpreter::interpreter::shared_memory::SharedMemory",
+                                                "len",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| self |) |)
+                                                |)
+                                              ]
+                                            |)
                                           |)
                                         |)
                                       |)
                                     |)
-                                  |))
+                                  ]
+                                |)
                               ]
                             |)
                           |)
@@ -679,53 +692,63 @@ Module interpreter.
                           Pointer.Kind.Ref,
                           M.deref (| mk_str (| "context_memory" |) |)
                         |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.alloc (|
-                                  Ty.path "alloc::string::String",
-                                  M.call_closure (|
+                        M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ])
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
                                     Ty.path "alloc::string::String",
-                                    M.get_function (|
-                                      "const_hex::encode",
-                                      [],
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
-                                    |),
-                                    [
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                                        M.get_associated_function (|
-                                          Ty.path
-                                            "revm_interpreter::interpreter::shared_memory::SharedMemory",
-                                          "context_memory",
-                                          [],
-                                          []
-                                        |),
+                                    M.call_closure (|
+                                      Ty.path "alloc::string::String",
+                                      M.get_function (|
+                                        "const_hex::encode",
+                                        [],
                                         [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| self |) |)
-                                          |)
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                         ]
-                                      |)
-                                    ]
+                                      |),
+                                      [
+                                        M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                          M.get_associated_function (|
+                                            Ty.path
+                                              "revm_interpreter::interpreter::shared_memory::SharedMemory",
+                                            "context_memory",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| self |) |)
+                                            |)
+                                          ]
+                                        |)
+                                      ]
+                                    |)
                                   |)
                                 |)
                               |)
                             |)
-                          |))
+                          ]
+                        |)
                       ]
                     |)
                   |)
@@ -3294,23 +3317,41 @@ Module interpreter.
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                     M.read (| offset |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.alloc (|
-                              Ty.apply
-                                (Ty.path "array")
-                                [ Value.Integer IntegerKind.Usize 1 ]
-                                [ Ty.path "u8" ],
-                              Value.Array [ M.read (| byte |) ]
+                    M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                      M.pointer_coercion
+                        M.PointerCoercion.Unsize
+                        (Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 1 ]
+                              [ Ty.path "u8" ]
+                          ])
+                        (Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                  [ Ty.path "u8" ],
+                                Value.Array [ M.read (| byte |) ]
+                              |)
                             |)
                           |)
                         |)
-                      |))
+                      ]
+                    |)
                   ]
                 |) in
               M.alloc (| Ty.tuple [], Value.Tuple [] |)
@@ -3450,41 +3491,59 @@ Module interpreter.
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                     M.read (| offset |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.alloc (|
-                              Ty.apply
-                                (Ty.path "array")
-                                [ Value.Integer IntegerKind.Usize 32 ]
-                                [ Ty.path "u8" ],
-                              M.call_closure (|
+                    M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                      M.pointer_coercion
+                        M.PointerCoercion.Unsize
+                        (Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 32 ]
+                              [ Ty.path "u8" ]
+                          ])
+                        (Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
                                 Ty.apply
                                   (Ty.path "array")
                                   [ Value.Integer IntegerKind.Usize 32 ]
                                   [ Ty.path "u8" ],
-                                M.get_associated_function (|
+                                M.call_closure (|
                                   Ty.apply
-                                    (Ty.path "ruint::Uint")
-                                    [
-                                      Value.Integer IntegerKind.Usize 256;
-                                      Value.Integer IntegerKind.Usize 4
-                                    ]
-                                    [],
-                                  "to_be_bytes",
-                                  [ Value.Integer IntegerKind.Usize 32 ],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, value |) ]
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 32 ]
+                                    [ Ty.path "u8" ],
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [
+                                        Value.Integer IntegerKind.Usize 256;
+                                        Value.Integer IntegerKind.Usize 4
+                                      ]
+                                      [],
+                                    "to_be_bytes",
+                                    [ Value.Integer IntegerKind.Usize 32 ],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, value |) ]
+                                |)
                               |)
                             |)
                           |)
                         |)
-                      |))
+                      ]
+                    |)
                   ]
                 |) in
               M.alloc (| Ty.tuple [], Value.Tuple [] |)

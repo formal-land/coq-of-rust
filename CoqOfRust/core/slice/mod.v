@@ -10601,23 +10601,44 @@ Module slice.
                                       Pointer.Kind.MutRef,
                                       M.deref (| M.read (| self |) |)
                                     |);
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.borrow (|
-                                        Pointer.Kind.MutRef,
-                                        M.deref (|
-                                          M.borrow (|
-                                            Pointer.Kind.MutRef,
-                                            M.alloc (|
-                                              Ty.apply
-                                                (Ty.path "array")
-                                                [ Value.Integer IntegerKind.Usize 0 ]
-                                                [ T ],
-                                              Value.Array []
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "&mut")
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                      M.pointer_coercion
+                                        M.PointerCoercion.Unsize
+                                        (Ty.apply
+                                          (Ty.path "&mut")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 0 ]
+                                              [ T ]
+                                          ])
+                                        (Ty.apply
+                                          (Ty.path "&mut")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ T ] ]),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "array")
+                                                  [ Value.Integer IntegerKind.Usize 0 ]
+                                                  [ T ],
+                                                Value.Array []
+                                              |)
                                             |)
                                           |)
                                         |)
-                                      |))
+                                      ]
+                                    |)
                                   ]
                               |)
                             |)
@@ -11976,7 +11997,14 @@ Module slice.
                         Ty.tuple [],
                         M.get_function (| "core::intrinsics::copy", [], [ T ] |),
                         [
-                          (* MutToConstPointer *) M.pointer_coercion (M.read (| src_ptr |));
+                          M.call_closure (|
+                            Ty.apply (Ty.path "*const") [] [ T ],
+                            M.pointer_coercion
+                              M.PointerCoercion.MutToConstPointer
+                              (Ty.apply (Ty.path "*mut") [] [ T ])
+                              (Ty.apply (Ty.path "*const") [] [ T ]),
+                            [ M.read (| src_ptr |) ]
+                          |);
                           M.read (| dest_ptr |);
                           M.read (| count |)
                         ]
@@ -12391,40 +12419,82 @@ Module slice.
                                 Value.Tuple
                                   [
                                     M.read (| self |);
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (|
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.alloc (|
-                                              Ty.apply
-                                                (Ty.path "array")
-                                                [ Value.Integer IntegerKind.Usize 0 ]
-                                                [ U ],
-                                              Value.Array []
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ U ] ],
+                                      M.pointer_coercion
+                                        M.PointerCoercion.Unsize
+                                        (Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 0 ]
+                                              [ U ]
+                                          ])
+                                        (Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ U ] ]),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "array")
+                                                  [ Value.Integer IntegerKind.Usize 0 ]
+                                                  [ U ],
+                                                Value.Array []
+                                              |)
                                             |)
                                           |)
                                         |)
-                                      |));
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (|
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.alloc (|
-                                              Ty.apply
-                                                (Ty.path "array")
-                                                [ Value.Integer IntegerKind.Usize 0 ]
-                                                [ T ],
-                                              Value.Array []
+                                      ]
+                                    |);
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                      M.pointer_coercion
+                                        M.PointerCoercion.Unsize
+                                        (Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 0 ]
+                                              [ T ]
+                                          ])
+                                        (Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ T ] ]),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "array")
+                                                  [ Value.Integer IntegerKind.Usize 0 ]
+                                                  [ T ],
+                                                Value.Array []
+                                              |)
                                             |)
                                           |)
                                         |)
-                                      |))
+                                      ]
+                                    |)
                                   ]
                               |)
                             |)
@@ -12506,40 +12576,76 @@ Module slice.
                           Value.Tuple
                             [
                               M.read (| self |);
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.alloc (|
-                                        Ty.apply
-                                          (Ty.path "array")
-                                          [ Value.Integer IntegerKind.Usize 0 ]
-                                          [ U ],
-                                        Value.Array []
+                              M.call_closure (|
+                                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 0 ]
+                                        [ U ]
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ U ] ]),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 0 ]
+                                            [ U ],
+                                          Value.Array []
+                                        |)
                                       |)
                                     |)
                                   |)
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.alloc (|
-                                        Ty.apply
-                                          (Ty.path "array")
-                                          [ Value.Integer IntegerKind.Usize 0 ]
-                                          [ T ],
-                                        Value.Array []
+                                ]
+                              |);
+                              M.call_closure (|
+                                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 0 ]
+                                        [ T ]
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ T ] ]),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 0 ]
+                                            [ T ],
+                                          Value.Array []
+                                        |)
                                       |)
                                     |)
                                   |)
-                                |))
+                                ]
+                              |)
                             ]));
                       fun γ =>
                         ltac:(M.monadic
@@ -12874,40 +12980,82 @@ Module slice.
                                       Pointer.Kind.MutRef,
                                       M.deref (| M.read (| self |) |)
                                     |);
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.borrow (|
-                                        Pointer.Kind.MutRef,
-                                        M.deref (|
-                                          M.borrow (|
-                                            Pointer.Kind.MutRef,
-                                            M.alloc (|
-                                              Ty.apply
-                                                (Ty.path "array")
-                                                [ Value.Integer IntegerKind.Usize 0 ]
-                                                [ U ],
-                                              Value.Array []
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "&mut")
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ U ] ],
+                                      M.pointer_coercion
+                                        M.PointerCoercion.Unsize
+                                        (Ty.apply
+                                          (Ty.path "&mut")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 0 ]
+                                              [ U ]
+                                          ])
+                                        (Ty.apply
+                                          (Ty.path "&mut")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ U ] ]),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "array")
+                                                  [ Value.Integer IntegerKind.Usize 0 ]
+                                                  [ U ],
+                                                Value.Array []
+                                              |)
                                             |)
                                           |)
                                         |)
-                                      |));
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.borrow (|
-                                        Pointer.Kind.MutRef,
-                                        M.deref (|
-                                          M.borrow (|
-                                            Pointer.Kind.MutRef,
-                                            M.alloc (|
-                                              Ty.apply
-                                                (Ty.path "array")
-                                                [ Value.Integer IntegerKind.Usize 0 ]
-                                                [ T ],
-                                              Value.Array []
+                                      ]
+                                    |);
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "&mut")
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                      M.pointer_coercion
+                                        M.PointerCoercion.Unsize
+                                        (Ty.apply
+                                          (Ty.path "&mut")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 0 ]
+                                              [ T ]
+                                          ])
+                                        (Ty.apply
+                                          (Ty.path "&mut")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ T ] ]),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.MutRef,
+                                          M.deref (|
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "array")
+                                                  [ Value.Integer IntegerKind.Usize 0 ]
+                                                  [ T ],
+                                                Value.Array []
+                                              |)
                                             |)
                                           |)
                                         |)
-                                      |))
+                                      ]
+                                    |)
                                   ]
                               |)
                             |)
@@ -12989,40 +13137,82 @@ Module slice.
                           Value.Tuple
                             [
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.borrow (|
-                                  Pointer.Kind.MutRef,
-                                  M.deref (|
-                                    M.borrow (|
-                                      Pointer.Kind.MutRef,
-                                      M.alloc (|
-                                        Ty.apply
-                                          (Ty.path "array")
-                                          [ Value.Integer IntegerKind.Usize 0 ]
-                                          [ U ],
-                                        Value.Array []
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ U ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 0 ]
+                                        [ U ]
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ U ] ]),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 0 ]
+                                            [ U ],
+                                          Value.Array []
+                                        |)
                                       |)
                                     |)
                                   |)
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.borrow (|
-                                  Pointer.Kind.MutRef,
-                                  M.deref (|
-                                    M.borrow (|
-                                      Pointer.Kind.MutRef,
-                                      M.alloc (|
-                                        Ty.apply
-                                          (Ty.path "array")
-                                          [ Value.Integer IntegerKind.Usize 0 ]
-                                          [ T ],
-                                        Value.Array []
+                                ]
+                              |);
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 0 ]
+                                        [ T ]
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ T ] ]),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 0 ]
+                                            [ T ],
+                                          Value.Array []
+                                        |)
                                       |)
                                     |)
                                   |)
-                                |))
+                                ]
+                              |)
                             ]));
                       fun γ =>
                         ltac:(M.monadic
@@ -16819,12 +17009,43 @@ Module slice.
                                                             [ Ty.path "usize" ]
                                                           |),
                                                           [
-                                                            (* Unsize *)
-                                                            M.pointer_coercion
-                                                              (M.borrow (|
-                                                                Pointer.Kind.Ref,
-                                                                indices
-                                                              |));
+                                                            M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "slice")
+                                                                    []
+                                                                    [ I ]
+                                                                ],
+                                                              M.pointer_coercion
+                                                                M.PointerCoercion.Unsize
+                                                                (Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path "array")
+                                                                      [ N ]
+                                                                      [ I ]
+                                                                  ])
+                                                                (Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path "slice")
+                                                                      []
+                                                                      [ I ]
+                                                                  ]),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  indices
+                                                                |)
+                                                              ]
+                                                            |);
                                                             M.read (| i |)
                                                           ]
                                                         |)
@@ -18749,20 +18970,30 @@ Module slice.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (* Unsize *)
-          (M.pointer_coercion
-            (M.borrow (|
-              Pointer.Kind.Ref,
-              M.deref (|
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.alloc (|
-                    Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 0 ] [ T ],
-                    Value.Array []
+          (M.call_closure (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+            M.pointer_coercion
+              M.PointerCoercion.Unsize
+              (Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 0 ] [ T ] ])
+              (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]),
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.alloc (|
+                      Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 0 ] [ T ],
+                      Value.Array []
+                    |)
                   |)
                 |)
               |)
-            |))))
+            ]
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -18793,20 +19024,30 @@ Module slice.
           (M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.MutRef,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.alloc (|
-                        Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 0 ] [ T ],
-                        Value.Array []
+              M.call_closure (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&mut")
+                    []
+                    [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 0 ] [ T ] ])
+                  (Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.alloc (|
+                          Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 0 ] [ T ],
+                          Value.Array []
+                        |)
                       |)
                     |)
                   |)
-                |))
+                ]
+              |)
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -18885,8 +19126,14 @@ Module slice.
               Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
               self
             |) in
-          (* Unsize *)
-          M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |))))
+          M.call_closure (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+            M.pointer_coercion
+              M.PointerCoercion.Unsize
+              (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ])
+              (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]),
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -18982,12 +19229,28 @@ Module slice.
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (| M.read (| indices |) |)
-                                    |))
+                                  M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ I ] ],
+                                    M.pointer_coercion
+                                      M.PointerCoercion.Unsize
+                                      (Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.apply (Ty.path "array") [ N ] [ I ] ])
+                                      (Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ I ] ]),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| indices |) |)
+                                      |)
+                                    ]
+                                  |)
                                 ]
                               |)
                             ]

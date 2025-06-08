@@ -6320,23 +6320,44 @@ Module str.
                         Ty.apply (Ty.path "&mut") [] [ Ty.path "str" ],
                         M.get_function (| "core::str::converts::from_utf8_unchecked_mut", [], [] |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.MutRef,
-                                  M.alloc (|
-                                    Ty.apply
-                                      (Ty.path "array")
-                                      [ Value.Integer IntegerKind.Usize 0 ]
-                                      [ Ty.path "u8" ],
-                                    Value.Array []
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                            M.pointer_coercion
+                              M.PointerCoercion.Unsize
+                              (Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 0 ]
+                                    [ Ty.path "u8" ]
+                                ])
+                              (Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 0 ]
+                                        [ Ty.path "u8" ],
+                                      Value.Array []
+                                    |)
                                   |)
                                 |)
                               |)
-                            |))
+                            ]
+                          |)
                         ]
                       |)
                     |)

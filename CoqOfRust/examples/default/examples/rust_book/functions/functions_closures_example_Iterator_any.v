@@ -50,21 +50,34 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ Ty.path "alloc::alloc::Global" ]
             |),
             [
-              (* Unsize *)
-              M.pointer_coercion
-                (M.read (|
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "alloc::boxed::Box")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "array")
-                          [ Value.Integer IntegerKind.Usize 3 ]
-                          [ Ty.path "i32" ];
-                        Ty.path "alloc::alloc::Global"
-                      ],
-                    M.get_associated_function (|
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::boxed::Box")
+                  []
+                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ]; Ty.path "alloc::alloc::Global"
+                  ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "alloc::boxed::Box")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 3 ]
+                        [ Ty.path "i32" ];
+                      Ty.path "alloc::alloc::Global"
+                    ])
+                  (Ty.apply
+                    (Ty.path "alloc::boxed::Box")
+                    []
+                    [
+                      Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ];
+                      Ty.path "alloc::alloc::Global"
+                    ]),
+                [
+                  M.read (|
+                    M.call_closure (|
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
                         []
@@ -75,26 +88,39 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             [ Ty.path "i32" ];
                           Ty.path "alloc::alloc::Global"
                         ],
-                      "new",
-                      [],
-                      []
-                    |),
-                    [
-                      M.alloc (|
+                      M.get_associated_function (|
                         Ty.apply
-                          (Ty.path "array")
-                          [ Value.Integer IntegerKind.Usize 3 ]
-                          [ Ty.path "i32" ],
-                        Value.Array
+                          (Ty.path "alloc::boxed::Box")
+                          []
                           [
-                            Value.Integer IntegerKind.I32 1;
-                            Value.Integer IntegerKind.I32 2;
-                            Value.Integer IntegerKind.I32 3
-                          ]
-                      |)
-                    ]
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 3 ]
+                              [ Ty.path "i32" ];
+                            Ty.path "alloc::alloc::Global"
+                          ],
+                        "new",
+                        [],
+                        []
+                      |),
+                      [
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 3 ]
+                            [ Ty.path "i32" ],
+                          Value.Array
+                            [
+                              Value.Integer IntegerKind.I32 1;
+                              Value.Integer IntegerKind.I32 2;
+                              Value.Integer IntegerKind.I32 3
+                            ]
+                        |)
+                      ]
+                    |)
                   |)
-                |))
+                ]
+              |)
             ]
           |) in
         let~ vec2 :
@@ -114,21 +140,34 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ Ty.path "alloc::alloc::Global" ]
             |),
             [
-              (* Unsize *)
-              M.pointer_coercion
-                (M.read (|
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "alloc::boxed::Box")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "array")
-                          [ Value.Integer IntegerKind.Usize 3 ]
-                          [ Ty.path "i32" ];
-                        Ty.path "alloc::alloc::Global"
-                      ],
-                    M.get_associated_function (|
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::boxed::Box")
+                  []
+                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ]; Ty.path "alloc::alloc::Global"
+                  ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "alloc::boxed::Box")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 3 ]
+                        [ Ty.path "i32" ];
+                      Ty.path "alloc::alloc::Global"
+                    ])
+                  (Ty.apply
+                    (Ty.path "alloc::boxed::Box")
+                    []
+                    [
+                      Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ];
+                      Ty.path "alloc::alloc::Global"
+                    ]),
+                [
+                  M.read (|
+                    M.call_closure (|
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
                         []
@@ -139,26 +178,39 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             [ Ty.path "i32" ];
                           Ty.path "alloc::alloc::Global"
                         ],
-                      "new",
-                      [],
-                      []
-                    |),
-                    [
-                      M.alloc (|
+                      M.get_associated_function (|
                         Ty.apply
-                          (Ty.path "array")
-                          [ Value.Integer IntegerKind.Usize 3 ]
-                          [ Ty.path "i32" ],
-                        Value.Array
+                          (Ty.path "alloc::boxed::Box")
+                          []
                           [
-                            Value.Integer IntegerKind.I32 4;
-                            Value.Integer IntegerKind.I32 5;
-                            Value.Integer IntegerKind.I32 6
-                          ]
-                      |)
-                    ]
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 3 ]
+                              [ Ty.path "i32" ];
+                            Ty.path "alloc::alloc::Global"
+                          ],
+                        "new",
+                        [],
+                        []
+                      |),
+                      [
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 3 ]
+                            [ Ty.path "i32" ],
+                          Value.Array
+                            [
+                              Value.Integer IntegerKind.I32 4;
+                              Value.Integer IntegerKind.I32 5;
+                              Value.Integer IntegerKind.I32 6
+                            ]
+                        |)
+                      ]
+                    |)
                   |)
-                |))
+                ]
+              |)
             ]
           |) in
         let~ _ : Ty.tuple [] :=
@@ -833,12 +885,47 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                           []
                                                         |),
                                                         [
-                                                          (* Unsize *)
-                                                          M.pointer_coercion
-                                                            (M.borrow (|
-                                                              Pointer.Kind.Ref,
-                                                              array1
-                                                            |))
+                                                          M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "slice")
+                                                                  []
+                                                                  [ Ty.path "i32" ]
+                                                              ],
+                                                            M.pointer_coercion
+                                                              M.PointerCoercion.Unsize
+                                                              (Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "array")
+                                                                    [
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        3
+                                                                    ]
+                                                                    [ Ty.path "i32" ]
+                                                                ])
+                                                              (Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "slice")
+                                                                    []
+                                                                    [ Ty.path "i32" ]
+                                                                ]),
+                                                            [
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                array1
+                                                              |)
+                                                            ]
+                                                          |)
                                                         ]
                                                       |)
                                                     |)

@@ -2,7 +2,39 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module generation.
-  (* #[instrument(name = "generate Blake3 trace", skip_all)] *)
+  (*
+  pub fn generate_trace_rows<F: PrimeField64>(
+      inputs: Vec<[u32; 24]>,
+      extra_capacity_bits: usize,
+  ) -> RowMajorMatrix<F> {
+      let num_rows = inputs.len();
+      assert!(
+          num_rows.is_power_of_two(),
+          "Callers expected to pad inputs to VECTOR_LEN times a power of two"
+      );
+  
+      let trace_length = num_rows * NUM_BLAKE3_COLS;
+  
+      // We allocate extra_capacity_bits now as this will be needed by the dft.
+      let mut long_trace = F::zero_vec(trace_length << extra_capacity_bits);
+      long_trace.truncate(trace_length);
+  
+      let mut trace = RowMajorMatrix::new(long_trace, NUM_BLAKE3_COLS);
+      let (prefix, rows, suffix) = unsafe { trace.values.align_to_mut::<Blake3Cols<F>>() };
+      assert!(prefix.is_empty(), "Alignment should match");
+      assert!(suffix.is_empty(), "Alignment should match");
+      assert_eq!(rows.len(), num_rows);
+  
+      rows.par_iter_mut()
+          .zip(inputs)
+          .enumerate()
+          .for_each(|(counter, (row, input))| {
+              generate_trace_rows_for_perm(row, input, counter, num_rows);
+          });
+  
+      trace
+  }
+  *)
   Definition generate_trace_rows (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
     | [], [ F ], [ inputs; extra_capacity_bits ] =>

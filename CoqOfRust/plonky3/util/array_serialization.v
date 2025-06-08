@@ -1134,17 +1134,51 @@ Module array_serialization.
                                                                     |),
                                                                     [
                                                                       N;
-                                                                      (* Unsize *)
-                                                                      M.pointer_coercion
-                                                                        (M.borrow (|
-                                                                          Pointer.Kind.Ref,
-                                                                          M.deref (|
-                                                                            M.borrow (|
-                                                                              Pointer.Kind.Ref,
-                                                                              self
+                                                                      M.call_closure (|
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
+                                                                          []
+                                                                          [
+                                                                            Ty.dyn
+                                                                              [
+                                                                                ("serde::de::Expected::Trait",
+                                                                                  [])
+                                                                              ]
+                                                                          ],
+                                                                        M.pointer_coercion
+                                                                          M.PointerCoercion.Unsize
+                                                                          (Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "p3_util::array_serialization::ArrayVisitor")
+                                                                                [ N ]
+                                                                                [ T ]
+                                                                            ])
+                                                                          (Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [
+                                                                              Ty.dyn
+                                                                                [
+                                                                                  ("serde::de::Expected::Trait",
+                                                                                    [])
+                                                                                ]
+                                                                            ]),
+                                                                        [
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.deref (|
+                                                                              M.borrow (|
+                                                                                Pointer.Kind.Ref,
+                                                                                self
+                                                                              |)
                                                                             |)
                                                                           |)
-                                                                        |))
+                                                                        ]
+                                                                      |)
                                                                     ]
                                                                   |)
                                                                 ]

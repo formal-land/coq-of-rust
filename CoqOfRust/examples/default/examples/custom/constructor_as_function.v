@@ -81,27 +81,34 @@ Module Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
             M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Constructor" |) |) |);
-            (* Unsize *)
-            M.pointer_coercion
-              (M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      Ty.apply (Ty.path "&") [] [ Ty.path "i32" ],
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_tuple_field (|
-                          M.deref (| M.read (| self |) |),
-                          "constructor_as_function::Constructor",
-                          0
+            M.call_closure (|
+              Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+              M.pointer_coercion
+                M.PointerCoercion.Unsize
+                (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ])
+                (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "i32" ],
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "constructor_as_function::Constructor",
+                            0
+                          |)
                         |)
                       |)
                     |)
                   |)
                 |)
-              |))
+              ]
+            |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -219,21 +226,36 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           [ Ty.path "alloc::alloc::Global" ]
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.read (|
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "alloc::boxed::Box")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "array")
-                                      [ Value.Integer IntegerKind.Usize 3 ]
-                                      [ Ty.path "i32" ];
-                                    Ty.path "alloc::alloc::Global"
-                                  ],
-                                M.get_associated_function (|
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
+                                Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ];
+                                Ty.path "alloc::alloc::Global"
+                              ],
+                            M.pointer_coercion
+                              M.PointerCoercion.Unsize
+                              (Ty.apply
+                                (Ty.path "alloc::boxed::Box")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 3 ]
+                                    [ Ty.path "i32" ];
+                                  Ty.path "alloc::alloc::Global"
+                                ])
+                              (Ty.apply
+                                (Ty.path "alloc::boxed::Box")
+                                []
+                                [
+                                  Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ];
+                                  Ty.path "alloc::alloc::Global"
+                                ]),
+                            [
+                              M.read (|
+                                M.call_closure (|
                                   Ty.apply
                                     (Ty.path "alloc::boxed::Box")
                                     []
@@ -244,26 +266,39 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         [ Ty.path "i32" ];
                                       Ty.path "alloc::alloc::Global"
                                     ],
-                                  "new",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.alloc (|
+                                  M.get_associated_function (|
                                     Ty.apply
-                                      (Ty.path "array")
-                                      [ Value.Integer IntegerKind.Usize 3 ]
-                                      [ Ty.path "i32" ],
-                                    Value.Array
+                                      (Ty.path "alloc::boxed::Box")
+                                      []
                                       [
-                                        Value.Integer IntegerKind.I32 1;
-                                        Value.Integer IntegerKind.I32 2;
-                                        Value.Integer IntegerKind.I32 3
-                                      ]
-                                  |)
-                                ]
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 3 ]
+                                          [ Ty.path "i32" ];
+                                        Ty.path "alloc::alloc::Global"
+                                      ],
+                                    "new",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 3 ]
+                                        [ Ty.path "i32" ],
+                                      Value.Array
+                                        [
+                                          Value.Integer IntegerKind.I32 1;
+                                          Value.Integer IntegerKind.I32 2;
+                                          Value.Integer IntegerKind.I32 3
+                                        ]
+                                    |)
+                                  ]
+                                |)
                               |)
-                            |))
+                            ]
+                          |)
                         ]
                       |)
                     ]

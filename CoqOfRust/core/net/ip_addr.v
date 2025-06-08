@@ -8514,12 +8514,47 @@ Module net.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  (* Unsize *)
-                                                                  M.pointer_coercion
-                                                                    (M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      segments
-                                                                    |))
+                                                                  M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "slice")
+                                                                          []
+                                                                          [ Ty.path "u16" ]
+                                                                      ],
+                                                                    M.pointer_coercion
+                                                                      M.PointerCoercion.Unsize
+                                                                      (Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "array")
+                                                                            [
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                8
+                                                                            ]
+                                                                            [ Ty.path "u16" ]
+                                                                        ])
+                                                                      (Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "slice")
+                                                                            []
+                                                                            [ Ty.path "u16" ]
+                                                                        ]),
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        segments
+                                                                      |)
+                                                                    ]
+                                                                  |)
                                                                 ]
                                                               |)
                                                             ]
@@ -9444,14 +9479,48 @@ Module net.
                                                       Pointer.Kind.MutRef,
                                                       M.deref (| M.read (| f |) |)
                                                     |);
-                                                    (* Unsize *)
-                                                    M.pointer_coercion
-                                                      (M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.deref (|
-                                                          M.borrow (| Pointer.Kind.Ref, segments |)
+                                                    M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "slice")
+                                                            []
+                                                            [ Ty.path "u16" ]
+                                                        ],
+                                                      M.pointer_coercion
+                                                        M.PointerCoercion.Unsize
+                                                        (Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "array")
+                                                              [ Value.Integer IntegerKind.Usize 8 ]
+                                                              [ Ty.path "u16" ]
+                                                          ])
+                                                        (Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "slice")
+                                                              []
+                                                              [ Ty.path "u16" ]
+                                                          ]),
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              segments
+                                                            |)
+                                                          |)
                                                         |)
-                                                      |))
+                                                      ]
+                                                    |)
                                                   ]
                                                 |)))
                                           ]

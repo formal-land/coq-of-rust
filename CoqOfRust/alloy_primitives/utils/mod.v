@@ -2132,9 +2132,28 @@ Module utils.
                         0
                       |)
                     |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| output |) |) |))
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                      M.pointer_coercion
+                        M.PointerCoercion.Unsize
+                        (Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 32 ]
+                              [ Ty.path "u8" ]
+                          ])
+                        (Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| output |) |) |) ]
+                    |)
                   ]
                 |) in
               M.alloc (| Ty.tuple [], Value.Tuple [] |)

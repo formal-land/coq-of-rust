@@ -309,126 +309,256 @@ Module eof.
                         []
                         [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ] ]
                     ] :=
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          Ty.apply
-                            (Ty.path "array")
-                            [ Value.Integer IntegerKind.Usize 6 ]
-                            [
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
-                            ],
-                          Value.Array
-                            [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "slice")
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ] ]
+                    ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 6 ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
+                          ]
+                      ])
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
+                          ]
+                      ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 6 ]
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
+                              ],
+                            Value.Array
+                              [
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.Unsize
+                                    (Ty.apply (Ty.path "&") [] [ Ty.path "u16" ])
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                  [
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "revm_bytecode::eof::header::EofHeader",
-                                        "types_size"
-                                      |)
-                                    |)
-                                  |)
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "revm_bytecode::eof::header::EofHeader",
-                                        "code_sizes"
-                                      |)
-                                    |)
-                                  |)
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "revm_bytecode::eof::header::EofHeader",
-                                        "container_sizes"
-                                      |)
-                                    |)
-                                  |)
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "revm_bytecode::eof::header::EofHeader",
-                                        "data_size"
-                                      |)
-                                    |)
-                                  |)
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "revm_bytecode::eof::header::EofHeader",
-                                        "sum_code_sizes"
-                                      |)
-                                    |)
-                                  |)
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.alloc (|
-                                        Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
+                                      M.deref (|
                                         M.borrow (|
                                           Pointer.Kind.Ref,
                                           M.SubPointer.get_struct_record_field (|
                                             M.deref (| M.read (| self |) |),
                                             "revm_bytecode::eof::header::EofHeader",
-                                            "sum_container_sizes"
+                                            "types_size"
                                           |)
                                         |)
                                       |)
                                     |)
-                                  |)
-                                |))
-                            ]
+                                  ]
+                                |);
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.Unsize
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "alloc::vec::Vec")
+                                          []
+                                          [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
+                                      ])
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "revm_bytecode::eof::header::EofHeader",
+                                            "code_sizes"
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  ]
+                                |);
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.Unsize
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "alloc::vec::Vec")
+                                          []
+                                          [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
+                                      ])
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "revm_bytecode::eof::header::EofHeader",
+                                            "container_sizes"
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  ]
+                                |);
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.Unsize
+                                    (Ty.apply (Ty.path "&") [] [ Ty.path "u16" ])
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "revm_bytecode::eof::header::EofHeader",
+                                            "data_size"
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  ]
+                                |);
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.Unsize
+                                    (Ty.apply (Ty.path "&") [] [ Ty.path "usize" ])
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "revm_bytecode::eof::header::EofHeader",
+                                            "sum_code_sizes"
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  ]
+                                |);
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.Unsize
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ])
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
+                                            Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "revm_bytecode::eof::header::EofHeader",
+                                                "sum_container_sizes"
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  ]
+                                |)
+                              ]
+                          |)
                         |)
                       |)
                     |)
-                  |)) in
+                  ]
+                |) in
               M.alloc (|
                 Ty.apply
                   (Ty.path "core::result::Result")
@@ -448,9 +578,38 @@ Module eof.
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                     M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "EofHeader" |) |) |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |));
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "slice")
+                            []
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                        ],
+                      M.pointer_coercion
+                        M.PointerCoercion.Unsize
+                        (Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 6 ]
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                          ])
+                        (Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "slice")
+                              []
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                          ]),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |) ]
+                    |);
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| values |) |) |)
                   ]
                 |)
@@ -3273,35 +3432,53 @@ Module eof.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| buffer |) |) |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.alloc (|
-                              Ty.apply
-                                (Ty.path "array")
-                                [ Value.Integer IntegerKind.Usize 2 ]
-                                [ Ty.path "u8" ],
-                              M.call_closure (|
+                    M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                      M.pointer_coercion
+                        M.PointerCoercion.Unsize
+                        (Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 2 ]
+                              [ Ty.path "u8" ]
+                          ])
+                        (Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
                                 Ty.apply
                                   (Ty.path "array")
                                   [ Value.Integer IntegerKind.Usize 2 ]
                                   [ Ty.path "u8" ],
-                                M.get_associated_function (|
-                                  Ty.path "u16",
-                                  "to_be_bytes",
-                                  [],
-                                  []
-                                |),
-                                [ Value.Integer IntegerKind.U16 61184 ]
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 2 ]
+                                    [ Ty.path "u8" ],
+                                  M.get_associated_function (|
+                                    Ty.path "u16",
+                                    "to_be_bytes",
+                                    [],
+                                    []
+                                  |),
+                                  [ Value.Integer IntegerKind.U16 61184 ]
+                                |)
                               |)
                             |)
                           |)
                         |)
-                      |))
+                      ]
+                    |)
                   ]
                 |) in
               let~ _ : Ty.tuple [] :=
@@ -3354,43 +3531,61 @@ Module eof.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| buffer |) |) |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.alloc (|
-                              Ty.apply
-                                (Ty.path "array")
-                                [ Value.Integer IntegerKind.Usize 2 ]
-                                [ Ty.path "u8" ],
-                              M.call_closure (|
+                    M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                      M.pointer_coercion
+                        M.PointerCoercion.Unsize
+                        (Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 2 ]
+                              [ Ty.path "u8" ]
+                          ])
+                        (Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
                                 Ty.apply
                                   (Ty.path "array")
                                   [ Value.Integer IntegerKind.Usize 2 ]
                                   [ Ty.path "u8" ],
-                                M.get_associated_function (|
-                                  Ty.path "u16",
-                                  "to_be_bytes",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "revm_bytecode::eof::header::EofHeader",
-                                      "types_size"
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 2 ]
+                                    [ Ty.path "u8" ],
+                                  M.get_associated_function (|
+                                    Ty.path "u16",
+                                    "to_be_bytes",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "revm_bytecode::eof::header::EofHeader",
+                                        "types_size"
+                                      |)
                                     |)
-                                  |)
-                                ]
+                                  ]
+                                |)
                               |)
                             |)
                           |)
                         |)
-                      |))
+                      ]
+                    |)
                   ]
                 |) in
               let~ _ : Ty.tuple [] :=
@@ -3426,60 +3621,78 @@ Module eof.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| buffer |) |) |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.alloc (|
-                              Ty.apply
-                                (Ty.path "array")
-                                [ Value.Integer IntegerKind.Usize 2 ]
-                                [ Ty.path "u8" ],
-                              M.call_closure (|
+                    M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                      M.pointer_coercion
+                        M.PointerCoercion.Unsize
+                        (Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 2 ]
+                              [ Ty.path "u8" ]
+                          ])
+                        (Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
                                 Ty.apply
                                   (Ty.path "array")
                                   [ Value.Integer IntegerKind.Usize 2 ]
                                   [ Ty.path "u8" ],
-                                M.get_associated_function (|
-                                  Ty.path "u16",
-                                  "to_be_bytes",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.cast
-                                    (Ty.path "u16")
-                                    (M.call_closure (|
-                                      Ty.path "usize",
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 2 ]
+                                    [ Ty.path "u8" ],
+                                  M.get_associated_function (|
+                                    Ty.path "u16",
+                                    "to_be_bytes",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.cast
+                                      (Ty.path "u16")
+                                      (M.call_closure (|
+                                        Ty.path "usize",
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
+                                          "len",
+                                          [],
                                           []
-                                          [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
-                                        "len",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "revm_bytecode::eof::header::EofHeader",
-                                            "code_sizes"
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "revm_bytecode::eof::header::EofHeader",
+                                              "code_sizes"
+                                            |)
                                           |)
-                                        |)
-                                      ]
-                                    |))
-                                ]
+                                        ]
+                                      |))
+                                  ]
+                                |)
                               |)
                             |)
                           |)
                         |)
-                      |))
+                      ]
+                    |)
                   ]
                 |) in
               let~ _ : Ty.tuple [] :=
@@ -3612,23 +3825,44 @@ Module eof.
                                                         Pointer.Kind.MutRef,
                                                         M.deref (| M.read (| buffer |) |)
                                                       |);
-                                                      (* Unsize *)
-                                                      M.pointer_coercion
-                                                        (M.borrow (|
-                                                          Pointer.Kind.Ref,
-                                                          M.deref (|
-                                                            M.borrow (|
-                                                              Pointer.Kind.Ref,
-                                                              M.alloc (|
-                                                                Ty.apply
-                                                                  (Ty.path "array")
-                                                                  [
-                                                                    Value.Integer
-                                                                      IntegerKind.Usize
-                                                                      2
-                                                                  ]
-                                                                  [ Ty.path "u8" ],
-                                                                M.call_closure (|
+                                                      M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "slice")
+                                                              []
+                                                              [ Ty.path "u8" ]
+                                                          ],
+                                                        M.pointer_coercion
+                                                          M.PointerCoercion.Unsize
+                                                          (Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "array")
+                                                                [ Value.Integer IntegerKind.Usize 2
+                                                                ]
+                                                                [ Ty.path "u8" ]
+                                                            ])
+                                                          (Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "slice")
+                                                                []
+                                                                [ Ty.path "u8" ]
+                                                            ]),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (|
+                                                              M.borrow (|
+                                                                Pointer.Kind.Ref,
+                                                                M.alloc (|
                                                                   Ty.apply
                                                                     (Ty.path "array")
                                                                     [
@@ -3637,24 +3871,35 @@ Module eof.
                                                                         2
                                                                     ]
                                                                     [ Ty.path "u8" ],
-                                                                  M.get_associated_function (|
-                                                                    Ty.path "u16",
-                                                                    "to_be_bytes",
-                                                                    [],
-                                                                    []
-                                                                  |),
-                                                                  [
-                                                                    M.read (|
-                                                                      M.deref (|
-                                                                        M.read (| size |)
+                                                                  M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path "array")
+                                                                      [
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          2
+                                                                      ]
+                                                                      [ Ty.path "u8" ],
+                                                                    M.get_associated_function (|
+                                                                      Ty.path "u16",
+                                                                      "to_be_bytes",
+                                                                      [],
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.read (|
+                                                                        M.deref (|
+                                                                          M.read (| size |)
+                                                                        |)
                                                                       |)
-                                                                    |)
-                                                                  ]
+                                                                    ]
+                                                                  |)
                                                                 |)
                                                               |)
                                                             |)
                                                           |)
-                                                        |))
+                                                        ]
+                                                      |)
                                                     ]
                                                   |) in
                                                 M.alloc (| Ty.tuple [], Value.Tuple [] |)
@@ -3776,63 +4021,84 @@ Module eof.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| buffer |) |)
                                 |);
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (|
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.alloc (|
-                                          Ty.apply
-                                            (Ty.path "array")
-                                            [ Value.Integer IntegerKind.Usize 2 ]
-                                            [ Ty.path "u8" ],
-                                          M.call_closure (|
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.Unsize
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 2 ]
+                                          [ Ty.path "u8" ]
+                                      ])
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
                                             Ty.apply
                                               (Ty.path "array")
                                               [ Value.Integer IntegerKind.Usize 2 ]
                                               [ Ty.path "u8" ],
-                                            M.get_associated_function (|
-                                              Ty.path "u16",
-                                              "to_be_bytes",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.cast
-                                                (Ty.path "u16")
-                                                (M.call_closure (|
-                                                  Ty.path "usize",
-                                                  M.get_associated_function (|
-                                                    Ty.apply
-                                                      (Ty.path "alloc::vec::Vec")
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 2 ]
+                                                [ Ty.path "u8" ],
+                                              M.get_associated_function (|
+                                                Ty.path "u16",
+                                                "to_be_bytes",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.cast
+                                                  (Ty.path "u16")
+                                                  (M.call_closure (|
+                                                    Ty.path "usize",
+                                                    M.get_associated_function (|
+                                                      Ty.apply
+                                                        (Ty.path "alloc::vec::Vec")
+                                                        []
+                                                        [
+                                                          Ty.path "u16";
+                                                          Ty.path "alloc::alloc::Global"
+                                                        ],
+                                                      "len",
+                                                      [],
                                                       []
-                                                      [
-                                                        Ty.path "u16";
-                                                        Ty.path "alloc::alloc::Global"
-                                                      ],
-                                                    "len",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        M.deref (| M.read (| self |) |),
-                                                        "revm_bytecode::eof::header::EofHeader",
-                                                        "container_sizes"
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.deref (| M.read (| self |) |),
+                                                          "revm_bytecode::eof::header::EofHeader",
+                                                          "container_sizes"
+                                                        |)
                                                       |)
-                                                    |)
-                                                  ]
-                                                |))
-                                            ]
+                                                    ]
+                                                  |))
+                                              ]
+                                            |)
                                           |)
                                         |)
                                       |)
                                     |)
-                                  |))
+                                  ]
+                                |)
                               ]
                             |) in
                           let~ _ : Ty.tuple [] :=
@@ -3994,23 +4260,47 @@ Module eof.
                                                                       M.read (| buffer |)
                                                                     |)
                                                                   |);
-                                                                  (* Unsize *)
-                                                                  M.pointer_coercion
-                                                                    (M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      M.deref (|
-                                                                        M.borrow (|
-                                                                          Pointer.Kind.Ref,
-                                                                          M.alloc (|
-                                                                            Ty.apply
-                                                                              (Ty.path "array")
-                                                                              [
-                                                                                Value.Integer
-                                                                                  IntegerKind.Usize
-                                                                                  2
-                                                                              ]
-                                                                              [ Ty.path "u8" ],
-                                                                            M.call_closure (|
+                                                                  M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "slice")
+                                                                          []
+                                                                          [ Ty.path "u8" ]
+                                                                      ],
+                                                                    M.pointer_coercion
+                                                                      M.PointerCoercion.Unsize
+                                                                      (Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "array")
+                                                                            [
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                2
+                                                                            ]
+                                                                            [ Ty.path "u8" ]
+                                                                        ])
+                                                                      (Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "slice")
+                                                                            []
+                                                                            [ Ty.path "u8" ]
+                                                                        ]),
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.borrow (|
+                                                                            Pointer.Kind.Ref,
+                                                                            M.alloc (|
                                                                               Ty.apply
                                                                                 (Ty.path "array")
                                                                                 [
@@ -4019,26 +4309,37 @@ Module eof.
                                                                                     2
                                                                                 ]
                                                                                 [ Ty.path "u8" ],
-                                                                              M.get_associated_function (|
-                                                                                Ty.path "u16",
-                                                                                "to_be_bytes",
-                                                                                [],
-                                                                                []
-                                                                              |),
-                                                                              [
-                                                                                M.read (|
-                                                                                  M.deref (|
-                                                                                    M.read (|
-                                                                                      size
+                                                                              M.call_closure (|
+                                                                                Ty.apply
+                                                                                  (Ty.path "array")
+                                                                                  [
+                                                                                    Value.Integer
+                                                                                      IntegerKind.Usize
+                                                                                      2
+                                                                                  ]
+                                                                                  [ Ty.path "u8" ],
+                                                                                M.get_associated_function (|
+                                                                                  Ty.path "u16",
+                                                                                  "to_be_bytes",
+                                                                                  [],
+                                                                                  []
+                                                                                |),
+                                                                                [
+                                                                                  M.read (|
+                                                                                    M.deref (|
+                                                                                      M.read (|
+                                                                                        size
+                                                                                      |)
                                                                                     |)
                                                                                   |)
-                                                                                |)
-                                                                              ]
+                                                                                ]
+                                                                              |)
                                                                             |)
                                                                           |)
                                                                         |)
                                                                       |)
-                                                                    |))
+                                                                    ]
+                                                                  |)
                                                                 ]
                                                               |) in
                                                             M.alloc (|
@@ -4098,43 +4399,61 @@ Module eof.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| buffer |) |) |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.alloc (|
-                              Ty.apply
-                                (Ty.path "array")
-                                [ Value.Integer IntegerKind.Usize 2 ]
-                                [ Ty.path "u8" ],
-                              M.call_closure (|
+                    M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                      M.pointer_coercion
+                        M.PointerCoercion.Unsize
+                        (Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 2 ]
+                              [ Ty.path "u8" ]
+                          ])
+                        (Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
                                 Ty.apply
                                   (Ty.path "array")
                                   [ Value.Integer IntegerKind.Usize 2 ]
                                   [ Ty.path "u8" ],
-                                M.get_associated_function (|
-                                  Ty.path "u16",
-                                  "to_be_bytes",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "revm_bytecode::eof::header::EofHeader",
-                                      "data_size"
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 2 ]
+                                    [ Ty.path "u8" ],
+                                  M.get_associated_function (|
+                                    Ty.path "u16",
+                                    "to_be_bytes",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "revm_bytecode::eof::header::EofHeader",
+                                        "data_size"
+                                      |)
                                     |)
-                                  |)
-                                ]
+                                  ]
+                                |)
                               |)
                             |)
                           |)
                         |)
-                      |))
+                      ]
+                    |)
                   ]
                 |) in
               let~ _ : Ty.tuple [] :=

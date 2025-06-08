@@ -8410,14 +8410,25 @@ Module str.
                       M.get_function (| "alloc::str::convert_while_ascii", [], [] |),
                       [
                         M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                        (* ReifyFnPointer *)
-                        M.pointer_coercion
-                          (M.get_associated_function (|
-                            Ty.path "u8",
-                            "to_ascii_lowercase",
-                            [],
-                            []
-                          |))
+                        M.call_closure (|
+                          Ty.function [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ] (Ty.path "u8"),
+                          M.pointer_coercion
+                            M.PointerCoercion.ReifyFnPointer
+                            (Ty.function
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
+                              (Ty.path "u8"))
+                            (Ty.function
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
+                              (Ty.path "u8")),
+                          [
+                            M.get_associated_function (|
+                              Ty.path "u8",
+                              "to_ascii_lowercase",
+                              [],
+                              []
+                            |)
+                          ]
+                        |)
                       ]
                     |)
                   |),
@@ -8953,9 +8964,14 @@ Module str.
                 M.get_function (| "alloc::str::convert_while_ascii", [], [] |),
                 [
                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                  (* ReifyFnPointer *)
-                  M.pointer_coercion
-                    (M.get_associated_function (| Ty.path "u8", "to_ascii_uppercase", [], [] |))
+                  M.call_closure (|
+                    Ty.function [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ] (Ty.path "u8"),
+                    M.pointer_coercion
+                      M.PointerCoercion.ReifyFnPointer
+                      (Ty.function [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ] (Ty.path "u8"))
+                      (Ty.function [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ] (Ty.path "u8")),
+                    [ M.get_associated_function (| Ty.path "u8", "to_ascii_uppercase", [], [] |) ]
+                  |)
                 ]
               |)
             |),
@@ -10213,12 +10229,47 @@ Module str.
                                                                 []
                                                               |),
                                                               [
-                                                                (* Unsize *)
-                                                                M.pointer_coercion
-                                                                  (M.borrow (|
-                                                                    Pointer.Kind.Ref,
-                                                                    is_ascii
-                                                                  |))
+                                                                M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "slice")
+                                                                        []
+                                                                        [ Ty.path "bool" ]
+                                                                    ],
+                                                                  M.pointer_coercion
+                                                                    M.PointerCoercion.Unsize
+                                                                    (Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "array")
+                                                                          [
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              16
+                                                                          ]
+                                                                          [ Ty.path "bool" ]
+                                                                      ])
+                                                                    (Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "slice")
+                                                                          []
+                                                                          [ Ty.path "bool" ]
+                                                                      ]),
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      is_ascii
+                                                                    |)
+                                                                  ]
+                                                                |)
                                                               ]
                                                             |);
                                                             M.closure

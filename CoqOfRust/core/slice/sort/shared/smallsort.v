@@ -1739,8 +1739,14 @@ Module slice.
                                               [ T; F ]
                                             |),
                                             [
-                                              (* MutToConstPointer *)
-                                              M.pointer_coercion (M.read (| v_base |));
+                                              M.call_closure (|
+                                                Ty.apply (Ty.path "*const") [] [ T ],
+                                                M.pointer_coercion
+                                                  M.PointerCoercion.MutToConstPointer
+                                                  (Ty.apply (Ty.path "*mut") [] [ T ])
+                                                  (Ty.apply (Ty.path "*const") [] [ T ]),
+                                                [ M.read (| v_base |) ]
+                                              |);
                                               M.read (| scratch_base |);
                                               M.borrow (|
                                                 Pointer.Kind.MutRef,
@@ -1757,18 +1763,25 @@ Module slice.
                                               [ T; F ]
                                             |),
                                             [
-                                              (* MutToConstPointer *)
-                                              M.pointer_coercion
-                                                (M.call_closure (|
-                                                  Ty.apply (Ty.path "*mut") [] [ T ],
-                                                  M.get_associated_function (|
+                                              M.call_closure (|
+                                                Ty.apply (Ty.path "*const") [] [ T ],
+                                                M.pointer_coercion
+                                                  M.PointerCoercion.MutToConstPointer
+                                                  (Ty.apply (Ty.path "*mut") [] [ T ])
+                                                  (Ty.apply (Ty.path "*const") [] [ T ]),
+                                                [
+                                                  M.call_closure (|
                                                     Ty.apply (Ty.path "*mut") [] [ T ],
-                                                    "add",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [ M.read (| v_base |); M.read (| len_div_2 |) ]
-                                                |));
+                                                    M.get_associated_function (|
+                                                      Ty.apply (Ty.path "*mut") [] [ T ],
+                                                      "add",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [ M.read (| v_base |); M.read (| len_div_2 |) ]
+                                                  |)
+                                                ]
+                                              |);
                                               M.call_closure (|
                                                 Ty.apply (Ty.path "*mut") [] [ T ],
                                                 M.get_associated_function (|
@@ -1803,8 +1816,14 @@ Module slice.
                                               [ T ]
                                             |),
                                             [
-                                              (* MutToConstPointer *)
-                                              M.pointer_coercion (M.read (| v_base |));
+                                              M.call_closure (|
+                                                Ty.apply (Ty.path "*const") [] [ T ],
+                                                M.pointer_coercion
+                                                  M.PointerCoercion.MutToConstPointer
+                                                  (Ty.apply (Ty.path "*mut") [] [ T ])
+                                                  (Ty.apply (Ty.path "*const") [] [ T ]),
+                                                [ M.read (| v_base |) ]
+                                              |);
                                               M.read (| scratch_base |);
                                               Value.Integer IntegerKind.Usize 1
                                             ]
@@ -1818,18 +1837,25 @@ Module slice.
                                               [ T ]
                                             |),
                                             [
-                                              (* MutToConstPointer *)
-                                              M.pointer_coercion
-                                                (M.call_closure (|
-                                                  Ty.apply (Ty.path "*mut") [] [ T ],
-                                                  M.get_associated_function (|
+                                              M.call_closure (|
+                                                Ty.apply (Ty.path "*const") [] [ T ],
+                                                M.pointer_coercion
+                                                  M.PointerCoercion.MutToConstPointer
+                                                  (Ty.apply (Ty.path "*mut") [] [ T ])
+                                                  (Ty.apply (Ty.path "*const") [] [ T ]),
+                                                [
+                                                  M.call_closure (|
                                                     Ty.apply (Ty.path "*mut") [] [ T ],
-                                                    "add",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [ M.read (| v_base |); M.read (| len_div_2 |) ]
-                                                |));
+                                                    M.get_associated_function (|
+                                                      Ty.apply (Ty.path "*mut") [] [ T ],
+                                                      "add",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [ M.read (| v_base |); M.read (| len_div_2 |) ]
+                                                  |)
+                                                ]
+                                              |);
                                               M.call_closure (|
                                                 Ty.apply (Ty.path "*mut") [] [ T ],
                                                 M.get_associated_function (|
@@ -2171,16 +2197,28 @@ Module slice.
                                                                                           [ T ]
                                                                                         |),
                                                                                         [
-                                                                                          (* MutToConstPointer *)
-                                                                                          M.pointer_coercion
-                                                                                            (M.call_closure (|
-                                                                                              Ty.apply
+                                                                                          M.call_closure (|
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "*const")
+                                                                                              []
+                                                                                              [ T ],
+                                                                                            M.pointer_coercion
+                                                                                              M.PointerCoercion.MutToConstPointer
+                                                                                              (Ty.apply
                                                                                                 (Ty.path
                                                                                                   "*mut")
                                                                                                 []
                                                                                                 [ T
-                                                                                                ],
-                                                                                              M.get_associated_function (|
+                                                                                                ])
+                                                                                              (Ty.apply
+                                                                                                (Ty.path
+                                                                                                  "*const")
+                                                                                                []
+                                                                                                [ T
+                                                                                                ]),
+                                                                                            [
+                                                                                              M.call_closure (|
                                                                                                 Ty.apply
                                                                                                   (Ty.path
                                                                                                     "*mut")
@@ -2188,19 +2226,29 @@ Module slice.
                                                                                                   [
                                                                                                     T
                                                                                                   ],
-                                                                                                "add",
-                                                                                                [],
-                                                                                                []
-                                                                                              |),
-                                                                                              [
-                                                                                                M.read (|
-                                                                                                  src
-                                                                                                |);
-                                                                                                M.read (|
-                                                                                                  i
-                                                                                                |)
-                                                                                              ]
-                                                                                            |));
+                                                                                                M.get_associated_function (|
+                                                                                                  Ty.apply
+                                                                                                    (Ty.path
+                                                                                                      "*mut")
+                                                                                                    []
+                                                                                                    [
+                                                                                                      T
+                                                                                                    ],
+                                                                                                  "add",
+                                                                                                  [],
+                                                                                                  []
+                                                                                                |),
+                                                                                                [
+                                                                                                  M.read (|
+                                                                                                    src
+                                                                                                  |);
+                                                                                                  M.read (|
+                                                                                                    i
+                                                                                                  |)
+                                                                                                ]
+                                                                                              |)
+                                                                                            ]
+                                                                                          |);
                                                                                           M.call_closure (|
                                                                                             Ty.apply
                                                                                               (Ty.path
@@ -2319,7 +2367,14 @@ Module slice.
                         [ T ]
                         [
                           ("src",
-                            (* MutToConstPointer *) M.pointer_coercion (M.read (| scratch_base |)));
+                            M.call_closure (|
+                              Ty.apply (Ty.path "*const") [] [ T ],
+                              M.pointer_coercion
+                                M.PointerCoercion.MutToConstPointer
+                                (Ty.apply (Ty.path "*mut") [] [ T ])
+                                (Ty.apply (Ty.path "*const") [] [ T ]),
+                              [ M.read (| scratch_base |) ]
+                            |));
                           ("dst", M.read (| v_base |));
                           ("len", M.read (| len |))
                         ] in
@@ -2946,8 +3001,14 @@ Module slice.
                                                     |)
                                                   ]
                                                 |);
-                                                (* MutToConstPointer *)
-                                                M.pointer_coercion (M.read (| v_base |))
+                                                M.call_closure (|
+                                                  Ty.apply (Ty.path "*const") [] [ T ],
+                                                  M.pointer_coercion
+                                                    M.PointerCoercion.MutToConstPointer
+                                                    (Ty.apply (Ty.path "*mut") [] [ T ])
+                                                    (Ty.apply (Ty.path "*const") [] [ T ]),
+                                                  [ M.read (| v_base |) ]
+                                                |)
                                               ]
                                             |)
                                           |)) in
@@ -3074,7 +3135,14 @@ Module slice.
                         Ty.tuple [],
                         M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                         [
-                          (* MutToConstPointer *) M.pointer_coercion (M.read (| scratch_base |));
+                          M.call_closure (|
+                            Ty.apply (Ty.path "*const") [] [ T ],
+                            M.pointer_coercion
+                              M.PointerCoercion.MutToConstPointer
+                              (Ty.apply (Ty.path "*mut") [] [ T ])
+                              (Ty.apply (Ty.path "*const") [] [ T ]),
+                            [ M.read (| scratch_base |) ]
+                          |);
                           M.read (| v_base |);
                           M.read (| len |)
                         ]
@@ -3234,7 +3302,16 @@ Module slice.
                       M.call_closure (|
                         T,
                         M.get_function (| "core::ptr::read", [], [ T ] |),
-                        [ (* MutToConstPointer *) M.pointer_coercion (M.read (| right_swap |)) ]
+                        [
+                          M.call_closure (|
+                            Ty.apply (Ty.path "*const") [] [ T ],
+                            M.pointer_coercion
+                              M.PointerCoercion.MutToConstPointer
+                              (Ty.apply (Ty.path "*mut") [] [ T ])
+                              (Ty.apply (Ty.path "*const") [] [ T ]),
+                            [ M.read (| right_swap |) ]
+                          |)
+                        ]
                       |)
                     ]
                   |) in
@@ -3243,7 +3320,14 @@ Module slice.
                     Ty.tuple [],
                     M.get_function (| "core::intrinsics::copy", [], [ T ] |),
                     [
-                      (* MutToConstPointer *) M.pointer_coercion (M.read (| left_swap |));
+                      M.call_closure (|
+                        Ty.apply (Ty.path "*const") [] [ T ],
+                        M.pointer_coercion
+                          M.PointerCoercion.MutToConstPointer
+                          (Ty.apply (Ty.path "*mut") [] [ T ])
+                          (Ty.apply (Ty.path "*const") [] [ T ]),
+                        [ M.read (| left_swap |) ]
+                      |);
                       M.read (| v_a |);
                       Value.Integer IntegerKind.Usize 1
                     ]
@@ -4802,7 +4886,14 @@ Module slice.
                             Ty.tuple [],
                             M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                             [
-                              (* MutToConstPointer *) M.pointer_coercion (M.read (| sift |));
+                              M.call_closure (|
+                                Ty.apply (Ty.path "*const") [] [ T ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.MutToConstPointer
+                                  (Ty.apply (Ty.path "*mut") [] [ T ])
+                                  (Ty.apply (Ty.path "*const") [] [ T ]),
+                                [ M.read (| sift |) ]
+                              |);
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   gap_guard,
@@ -5754,7 +5845,14 @@ Module slice.
                           [ T; F ]
                         |),
                         [
-                          (* MutToConstPointer *) M.pointer_coercion (M.read (| v_base |));
+                          M.call_closure (|
+                            Ty.apply (Ty.path "*const") [] [ T ],
+                            M.pointer_coercion
+                              M.PointerCoercion.MutToConstPointer
+                              (Ty.apply (Ty.path "*mut") [] [ T ])
+                              (Ty.apply (Ty.path "*const") [] [ T ]),
+                            [ M.read (| v_base |) ]
+                          |);
                           M.read (| scratch_base |);
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| is_less |) |) |)
                         ]
@@ -5768,18 +5866,25 @@ Module slice.
                           [ T; F ]
                         |),
                         [
-                          (* MutToConstPointer *)
-                          M.pointer_coercion
-                            (M.call_closure (|
-                              Ty.apply (Ty.path "*mut") [] [ T ],
-                              M.get_associated_function (|
+                          M.call_closure (|
+                            Ty.apply (Ty.path "*const") [] [ T ],
+                            M.pointer_coercion
+                              M.PointerCoercion.MutToConstPointer
+                              (Ty.apply (Ty.path "*mut") [] [ T ])
+                              (Ty.apply (Ty.path "*const") [] [ T ]),
+                            [
+                              M.call_closure (|
                                 Ty.apply (Ty.path "*mut") [] [ T ],
-                                "add",
-                                [],
-                                []
-                              |),
-                              [ M.read (| v_base |); Value.Integer IntegerKind.Usize 4 ]
-                            |));
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "*mut") [] [ T ],
+                                  "add",
+                                  [],
+                                  []
+                                |),
+                                [ M.read (| v_base |); Value.Integer IntegerKind.Usize 4 ]
+                              |)
+                            ]
+                          |);
                           M.call_closure (|
                             Ty.apply (Ty.path "*mut") [] [ T ],
                             M.get_associated_function (|
@@ -5817,8 +5922,14 @@ Module slice.
                                   [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                 M.get_function (| "core::ptr::slice_from_raw_parts", [], [ T ] |),
                                 [
-                                  (* MutToConstPointer *)
-                                  M.pointer_coercion (M.read (| scratch_base |));
+                                  M.call_closure (|
+                                    Ty.apply (Ty.path "*const") [] [ T ],
+                                    M.pointer_coercion
+                                      M.PointerCoercion.MutToConstPointer
+                                      (Ty.apply (Ty.path "*mut") [] [ T ])
+                                      (Ty.apply (Ty.path "*const") [] [ T ]),
+                                    [ M.read (| scratch_base |) ]
+                                  |);
                                   Value.Integer IntegerKind.Usize 8
                                 ]
                               |)

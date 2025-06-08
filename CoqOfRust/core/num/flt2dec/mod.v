@@ -769,12 +769,33 @@ Module num.
                                   []
                                   []
                                   [
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| UnsupportedLiteral |) |)
-                                      |))
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                      M.pointer_coercion
+                                        M.PointerCoercion.Unsize
+                                        (Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 2 ]
+                                              [ Ty.path "u8" ]
+                                          ])
+                                        (Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| UnsupportedLiteral |) |)
+                                        |)
+                                      ]
+                                    |)
                                   ]
                               ]
                             |)
@@ -1339,12 +1360,39 @@ Module num.
                                               []
                                               []
                                               [
-                                                (* Unsize *)
-                                                M.pointer_coercion
-                                                  (M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (| M.read (| UnsupportedLiteral |) |)
-                                                  |))
+                                                M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                    ],
+                                                  M.pointer_coercion
+                                                    M.PointerCoercion.Unsize
+                                                    (Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "array")
+                                                          [ Value.Integer IntegerKind.Usize 1 ]
+                                                          [ Ty.path "u8" ]
+                                                      ])
+                                                    (Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [ Ty.path "u8" ]
+                                                      ]),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| UnsupportedLiteral |) |)
+                                                    |)
+                                                  ]
+                                                |)
                                               ]
                                           ]
                                         |)
@@ -1947,14 +1995,49 @@ Module num.
                                                           []
                                                           []
                                                           [
-                                                            (* Unsize *)
-                                                            M.pointer_coercion
-                                                              (M.borrow (|
-                                                                Pointer.Kind.Ref,
-                                                                M.deref (|
-                                                                  M.read (| UnsupportedLiteral |)
+                                                            M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "slice")
+                                                                    []
+                                                                    [ Ty.path "u8" ]
+                                                                ],
+                                                              M.pointer_coercion
+                                                                M.PointerCoercion.Unsize
+                                                                (Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path "array")
+                                                                      [
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          1
+                                                                      ]
+                                                                      [ Ty.path "u8" ]
+                                                                  ])
+                                                                (Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path "slice")
+                                                                      []
+                                                                      [ Ty.path "u8" ]
+                                                                  ]),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (|
+                                                                    M.read (| UnsupportedLiteral |)
+                                                                  |)
                                                                 |)
-                                                              |))
+                                                              ]
+                                                            |)
                                                           ]
                                                       ]
                                                     |)
@@ -2576,12 +2659,33 @@ Module num.
                                   []
                                   []
                                   [
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| UnsupportedLiteral |) |)
-                                      |))
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                      M.pointer_coercion
+                                        M.PointerCoercion.Unsize
+                                        (Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 1 ]
+                                              [ Ty.path "u8" ]
+                                          ])
+                                        (Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| UnsupportedLiteral |) |)
+                                        |)
+                                      ]
+                                    |)
                                   ]
                               ]
                             |)
@@ -2853,20 +2957,64 @@ Module num.
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| M.read (| UnsupportedLiteral |) |)
-                                              |))));
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                              M.pointer_coercion
+                                                M.PointerCoercion.Unsize
+                                                (Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 2 ]
+                                                      [ Ty.path "u8" ]
+                                                  ])
+                                                (Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ]),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| UnsupportedLiteral |) |)
+                                                |)
+                                              ]
+                                            |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (* Unsize *)
-                                            (M.pointer_coercion
-                                              (M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| M.read (| UnsupportedLiteral |) |)
-                                              |))))
+                                            (M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                              M.pointer_coercion
+                                                M.PointerCoercion.Unsize
+                                                (Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 2 ]
+                                                      [ Ty.path "u8" ]
+                                                  ])
+                                                (Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ]),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| UnsupportedLiteral |) |)
+                                                |)
+                                              ]
+                                            |)))
                                       ]
                                     |)
                                   ]
@@ -2952,20 +3100,64 @@ Module num.
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| M.read (| UnsupportedLiteral |) |)
-                                              |))));
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                              M.pointer_coercion
+                                                M.PointerCoercion.Unsize
+                                                (Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 1 ]
+                                                      [ Ty.path "u8" ]
+                                                  ])
+                                                (Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ]),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| UnsupportedLiteral |) |)
+                                                |)
+                                              ]
+                                            |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (* Unsize *)
-                                            (M.pointer_coercion
-                                              (M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| M.read (| UnsupportedLiteral |) |)
-                                              |))))
+                                            (M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                              M.pointer_coercion
+                                                M.PointerCoercion.Unsize
+                                                (Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 1 ]
+                                                      [ Ty.path "u8" ]
+                                                  ])
+                                                (Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ]),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| UnsupportedLiteral |) |)
+                                                |)
+                                              ]
+                                            |)))
                                       ]
                                     |)
                                   ]
@@ -3706,12 +3898,39 @@ Module num.
                                               []
                                               []
                                               [
-                                                (* Unsize *)
-                                                M.pointer_coercion
-                                                  (M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (| M.read (| UnsupportedLiteral |) |)
-                                                  |))
+                                                M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                    ],
+                                                  M.pointer_coercion
+                                                    M.PointerCoercion.Unsize
+                                                    (Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "array")
+                                                          [ Value.Integer IntegerKind.Usize 3 ]
+                                                          [ Ty.path "u8" ]
+                                                      ])
+                                                    (Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [ Ty.path "u8" ]
+                                                      ]),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| UnsupportedLiteral |) |)
+                                                    |)
+                                                  ]
+                                                |)
                                               ]
                                           ]
                                         |)
@@ -3867,12 +4086,39 @@ Module num.
                                               []
                                               []
                                               [
-                                                (* Unsize *)
-                                                M.pointer_coercion
-                                                  (M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (| M.read (| UnsupportedLiteral |) |)
-                                                  |))
+                                                M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                    ],
+                                                  M.pointer_coercion
+                                                    M.PointerCoercion.Unsize
+                                                    (Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "array")
+                                                          [ Value.Integer IntegerKind.Usize 3 ]
+                                                          [ Ty.path "u8" ]
+                                                      ])
+                                                    (Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [ Ty.path "u8" ]
+                                                      ]),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| UnsupportedLiteral |) |)
+                                                    |)
+                                                  ]
+                                                |)
                                               ]
                                           ]
                                         |)
@@ -4053,14 +4299,49 @@ Module num.
                                                       []
                                                       []
                                                       [
-                                                        (* Unsize *)
-                                                        M.pointer_coercion
-                                                          (M.borrow (|
-                                                            Pointer.Kind.Ref,
-                                                            M.deref (|
-                                                              M.read (| UnsupportedLiteral |)
+                                                        M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "slice")
+                                                                []
+                                                                [ Ty.path "u8" ]
+                                                            ],
+                                                          M.pointer_coercion
+                                                            M.PointerCoercion.Unsize
+                                                            (Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "array")
+                                                                  [
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      2
+                                                                  ]
+                                                                  [ Ty.path "u8" ]
+                                                              ])
+                                                            (Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "slice")
+                                                                  []
+                                                                  [ Ty.path "u8" ]
+                                                              ]),
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.read (| UnsupportedLiteral |)
+                                                              |)
                                                             |)
-                                                          |))
+                                                          ]
+                                                        |)
                                                       ]
                                                   ]
                                                 |)
@@ -4244,14 +4525,49 @@ Module num.
                                                       []
                                                       []
                                                       [
-                                                        (* Unsize *)
-                                                        M.pointer_coercion
-                                                          (M.borrow (|
-                                                            Pointer.Kind.Ref,
-                                                            M.deref (|
-                                                              M.read (| UnsupportedLiteral |)
+                                                        M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "slice")
+                                                                []
+                                                                [ Ty.path "u8" ]
+                                                            ],
+                                                          M.pointer_coercion
+                                                            M.PointerCoercion.Unsize
+                                                            (Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "array")
+                                                                  [
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      1
+                                                                  ]
+                                                                  [ Ty.path "u8" ]
+                                                              ])
+                                                            (Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "slice")
+                                                                  []
+                                                                  [ Ty.path "u8" ]
+                                                              ]),
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.read (| UnsupportedLiteral |)
+                                                              |)
                                                             |)
-                                                          |))
+                                                          ]
+                                                        |)
                                                       ]
                                                   ]
                                                 |)
@@ -4856,12 +5172,39 @@ Module num.
                                               []
                                               []
                                               [
-                                                (* Unsize *)
-                                                M.pointer_coercion
-                                                  (M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (| M.read (| UnsupportedLiteral |) |)
-                                                  |))
+                                                M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                    ],
+                                                  M.pointer_coercion
+                                                    M.PointerCoercion.Unsize
+                                                    (Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "array")
+                                                          [ Value.Integer IntegerKind.Usize 3 ]
+                                                          [ Ty.path "u8" ]
+                                                      ])
+                                                    (Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [ Ty.path "u8" ]
+                                                      ]),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| UnsupportedLiteral |) |)
+                                                    |)
+                                                  ]
+                                                |)
                                               ]
                                           ]
                                         |)
@@ -5017,12 +5360,39 @@ Module num.
                                               []
                                               []
                                               [
-                                                (* Unsize *)
-                                                M.pointer_coercion
-                                                  (M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (| M.read (| UnsupportedLiteral |) |)
-                                                  |))
+                                                M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                    ],
+                                                  M.pointer_coercion
+                                                    M.PointerCoercion.Unsize
+                                                    (Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "array")
+                                                          [ Value.Integer IntegerKind.Usize 3 ]
+                                                          [ Ty.path "u8" ]
+                                                      ])
+                                                    (Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [ Ty.path "u8" ]
+                                                      ]),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| UnsupportedLiteral |) |)
+                                                    |)
+                                                  ]
+                                                |)
                                               ]
                                           ]
                                         |)
@@ -5227,14 +5597,49 @@ Module num.
                                                       []
                                                       []
                                                       [
-                                                        (* Unsize *)
-                                                        M.pointer_coercion
-                                                          (M.borrow (|
-                                                            Pointer.Kind.Ref,
-                                                            M.deref (|
-                                                              M.read (| UnsupportedLiteral |)
+                                                        M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "slice")
+                                                                []
+                                                                [ Ty.path "u8" ]
+                                                            ],
+                                                          M.pointer_coercion
+                                                            M.PointerCoercion.Unsize
+                                                            (Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "array")
+                                                                  [
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      1
+                                                                  ]
+                                                                  [ Ty.path "u8" ]
+                                                              ])
+                                                            (Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "slice")
+                                                                  []
+                                                                  [ Ty.path "u8" ]
+                                                              ]),
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.read (| UnsupportedLiteral |)
+                                                              |)
                                                             |)
-                                                          |))
+                                                          ]
+                                                        |)
                                                       ]
                                                   ]
                                                 |)));
@@ -5281,28 +5686,98 @@ Module num.
                                                                     M.read (| γ |),
                                                                     Value.Bool true
                                                                   |) in
-                                                                (* Unsize *)
-                                                                M.pointer_coercion
-                                                                  (M.borrow (|
-                                                                    Pointer.Kind.Ref,
-                                                                    M.deref (|
-                                                                      M.read (|
-                                                                        UnsupportedLiteral
+                                                                M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "slice")
+                                                                        []
+                                                                        [ Ty.path "u8" ]
+                                                                    ],
+                                                                  M.pointer_coercion
+                                                                    M.PointerCoercion.Unsize
+                                                                    (Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "array")
+                                                                          [
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              3
+                                                                          ]
+                                                                          [ Ty.path "u8" ]
+                                                                      ])
+                                                                    (Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "slice")
+                                                                          []
+                                                                          [ Ty.path "u8" ]
+                                                                      ]),
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.read (|
+                                                                          UnsupportedLiteral
+                                                                        |)
                                                                       |)
                                                                     |)
-                                                                  |))));
+                                                                  ]
+                                                                |)));
                                                             fun γ =>
                                                               ltac:(M.monadic
-                                                                (* Unsize *)
-                                                                (M.pointer_coercion
-                                                                  (M.borrow (|
-                                                                    Pointer.Kind.Ref,
-                                                                    M.deref (|
-                                                                      M.read (|
-                                                                        UnsupportedLiteral
+                                                                (M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "slice")
+                                                                        []
+                                                                        [ Ty.path "u8" ]
+                                                                    ],
+                                                                  M.pointer_coercion
+                                                                    M.PointerCoercion.Unsize
+                                                                    (Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "array")
+                                                                          [
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              3
+                                                                          ]
+                                                                          [ Ty.path "u8" ]
+                                                                      ])
+                                                                    (Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "slice")
+                                                                          []
+                                                                          [ Ty.path "u8" ]
+                                                                      ]),
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.read (|
+                                                                          UnsupportedLiteral
+                                                                        |)
                                                                       |)
                                                                     |)
-                                                                  |))))
+                                                                  ]
+                                                                |)))
                                                           ]
                                                         |)
                                                       ]
@@ -6036,12 +6511,39 @@ Module num.
                                               []
                                               []
                                               [
-                                                (* Unsize *)
-                                                M.pointer_coercion
-                                                  (M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (| M.read (| UnsupportedLiteral |) |)
-                                                  |))
+                                                M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                    ],
+                                                  M.pointer_coercion
+                                                    M.PointerCoercion.Unsize
+                                                    (Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "array")
+                                                          [ Value.Integer IntegerKind.Usize 3 ]
+                                                          [ Ty.path "u8" ]
+                                                      ])
+                                                    (Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [ Ty.path "u8" ]
+                                                      ]),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| UnsupportedLiteral |) |)
+                                                    |)
+                                                  ]
+                                                |)
                                               ]
                                           ]
                                         |)
@@ -6197,12 +6699,39 @@ Module num.
                                               []
                                               []
                                               [
-                                                (* Unsize *)
-                                                M.pointer_coercion
-                                                  (M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (| M.read (| UnsupportedLiteral |) |)
-                                                  |))
+                                                M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                    ],
+                                                  M.pointer_coercion
+                                                    M.PointerCoercion.Unsize
+                                                    (Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "array")
+                                                          [ Value.Integer IntegerKind.Usize 3 ]
+                                                          [ Ty.path "u8" ]
+                                                      ])
+                                                    (Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [ Ty.path "u8" ]
+                                                      ]),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| UnsupportedLiteral |) |)
+                                                    |)
+                                                  ]
+                                                |)
                                               ]
                                           ]
                                         |)
@@ -6383,14 +6912,49 @@ Module num.
                                                       []
                                                       []
                                                       [
-                                                        (* Unsize *)
-                                                        M.pointer_coercion
-                                                          (M.borrow (|
-                                                            Pointer.Kind.Ref,
-                                                            M.deref (|
-                                                              M.read (| UnsupportedLiteral |)
+                                                        M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "slice")
+                                                                []
+                                                                [ Ty.path "u8" ]
+                                                            ],
+                                                          M.pointer_coercion
+                                                            M.PointerCoercion.Unsize
+                                                            (Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "array")
+                                                                  [
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      2
+                                                                  ]
+                                                                  [ Ty.path "u8" ]
+                                                              ])
+                                                            (Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "slice")
+                                                                  []
+                                                                  [ Ty.path "u8" ]
+                                                              ]),
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.read (| UnsupportedLiteral |)
+                                                              |)
                                                             |)
-                                                          |))
+                                                          ]
+                                                        |)
                                                       ]
                                                   ]
                                                 |)
@@ -6481,28 +7045,98 @@ Module num.
                                                                     M.read (| γ |),
                                                                     Value.Bool true
                                                                   |) in
-                                                                (* Unsize *)
-                                                                M.pointer_coercion
-                                                                  (M.borrow (|
-                                                                    Pointer.Kind.Ref,
-                                                                    M.deref (|
-                                                                      M.read (|
-                                                                        UnsupportedLiteral
+                                                                M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "slice")
+                                                                        []
+                                                                        [ Ty.path "u8" ]
+                                                                    ],
+                                                                  M.pointer_coercion
+                                                                    M.PointerCoercion.Unsize
+                                                                    (Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "array")
+                                                                          [
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              2
+                                                                          ]
+                                                                          [ Ty.path "u8" ]
+                                                                      ])
+                                                                    (Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "slice")
+                                                                          []
+                                                                          [ Ty.path "u8" ]
+                                                                      ]),
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.read (|
+                                                                          UnsupportedLiteral
+                                                                        |)
                                                                       |)
                                                                     |)
-                                                                  |))));
+                                                                  ]
+                                                                |)));
                                                             fun γ =>
                                                               ltac:(M.monadic
-                                                                (* Unsize *)
-                                                                (M.pointer_coercion
-                                                                  (M.borrow (|
-                                                                    Pointer.Kind.Ref,
-                                                                    M.deref (|
-                                                                      M.read (|
-                                                                        UnsupportedLiteral
+                                                                (M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "slice")
+                                                                        []
+                                                                        [ Ty.path "u8" ]
+                                                                    ],
+                                                                  M.pointer_coercion
+                                                                    M.PointerCoercion.Unsize
+                                                                    (Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "array")
+                                                                          [
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              2
+                                                                          ]
+                                                                          [ Ty.path "u8" ]
+                                                                      ])
+                                                                    (Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "slice")
+                                                                          []
+                                                                          [ Ty.path "u8" ]
+                                                                      ]),
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.read (|
+                                                                          UnsupportedLiteral
+                                                                        |)
                                                                       |)
                                                                     |)
-                                                                  |))))
+                                                                  ]
+                                                                |)))
                                                           ]
                                                         |)
                                                       ]
@@ -6678,28 +7312,98 @@ Module num.
                                                                     M.read (| γ |),
                                                                     Value.Bool true
                                                                   |) in
-                                                                (* Unsize *)
-                                                                M.pointer_coercion
-                                                                  (M.borrow (|
-                                                                    Pointer.Kind.Ref,
-                                                                    M.deref (|
-                                                                      M.read (|
-                                                                        UnsupportedLiteral
+                                                                M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "slice")
+                                                                        []
+                                                                        [ Ty.path "u8" ]
+                                                                    ],
+                                                                  M.pointer_coercion
+                                                                    M.PointerCoercion.Unsize
+                                                                    (Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "array")
+                                                                          [
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              3
+                                                                          ]
+                                                                          [ Ty.path "u8" ]
+                                                                      ])
+                                                                    (Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "slice")
+                                                                          []
+                                                                          [ Ty.path "u8" ]
+                                                                      ]),
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.read (|
+                                                                          UnsupportedLiteral
+                                                                        |)
                                                                       |)
                                                                     |)
-                                                                  |))));
+                                                                  ]
+                                                                |)));
                                                             fun γ =>
                                                               ltac:(M.monadic
-                                                                (* Unsize *)
-                                                                (M.pointer_coercion
-                                                                  (M.borrow (|
-                                                                    Pointer.Kind.Ref,
-                                                                    M.deref (|
-                                                                      M.read (|
-                                                                        UnsupportedLiteral
+                                                                (M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "slice")
+                                                                        []
+                                                                        [ Ty.path "u8" ]
+                                                                    ],
+                                                                  M.pointer_coercion
+                                                                    M.PointerCoercion.Unsize
+                                                                    (Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "array")
+                                                                          [
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              3
+                                                                          ]
+                                                                          [ Ty.path "u8" ]
+                                                                      ])
+                                                                    (Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "slice")
+                                                                          []
+                                                                          [ Ty.path "u8" ]
+                                                                      ]),
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      M.deref (|
+                                                                        M.read (|
+                                                                          UnsupportedLiteral
+                                                                        |)
                                                                       |)
                                                                     |)
-                                                                  |))))
+                                                                  ]
+                                                                |)))
                                                           ]
                                                         |)
                                                       ]
@@ -7467,12 +8171,39 @@ Module num.
                                               []
                                               []
                                               [
-                                                (* Unsize *)
-                                                M.pointer_coercion
-                                                  (M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (| M.read (| UnsupportedLiteral |) |)
-                                                  |))
+                                                M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                    ],
+                                                  M.pointer_coercion
+                                                    M.PointerCoercion.Unsize
+                                                    (Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "array")
+                                                          [ Value.Integer IntegerKind.Usize 3 ]
+                                                          [ Ty.path "u8" ]
+                                                      ])
+                                                    (Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [ Ty.path "u8" ]
+                                                      ]),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| UnsupportedLiteral |) |)
+                                                    |)
+                                                  ]
+                                                |)
                                               ]
                                           ]
                                         |)
@@ -7628,12 +8359,39 @@ Module num.
                                               []
                                               []
                                               [
-                                                (* Unsize *)
-                                                M.pointer_coercion
-                                                  (M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (| M.read (| UnsupportedLiteral |) |)
-                                                  |))
+                                                M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                    ],
+                                                  M.pointer_coercion
+                                                    M.PointerCoercion.Unsize
+                                                    (Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "array")
+                                                          [ Value.Integer IntegerKind.Usize 3 ]
+                                                          [ Ty.path "u8" ]
+                                                      ])
+                                                    (Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [ Ty.path "u8" ]
+                                                      ]),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| UnsupportedLiteral |) |)
+                                                    |)
+                                                  ]
+                                                |)
                                               ]
                                           ]
                                         |)
@@ -7814,14 +8572,49 @@ Module num.
                                                       []
                                                       []
                                                       [
-                                                        (* Unsize *)
-                                                        M.pointer_coercion
-                                                          (M.borrow (|
-                                                            Pointer.Kind.Ref,
-                                                            M.deref (|
-                                                              M.read (| UnsupportedLiteral |)
+                                                        M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "slice")
+                                                                []
+                                                                [ Ty.path "u8" ]
+                                                            ],
+                                                          M.pointer_coercion
+                                                            M.PointerCoercion.Unsize
+                                                            (Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "array")
+                                                                  [
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      2
+                                                                  ]
+                                                                  [ Ty.path "u8" ]
+                                                              ])
+                                                            (Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "slice")
+                                                                  []
+                                                                  [ Ty.path "u8" ]
+                                                              ]),
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.read (| UnsupportedLiteral |)
+                                                              |)
                                                             |)
-                                                          |))
+                                                          ]
+                                                        |)
                                                       ]
                                                   ]
                                                 |)
@@ -8005,14 +8798,49 @@ Module num.
                                                       []
                                                       []
                                                       [
-                                                        (* Unsize *)
-                                                        M.pointer_coercion
-                                                          (M.borrow (|
-                                                            Pointer.Kind.Ref,
-                                                            M.deref (|
-                                                              M.read (| UnsupportedLiteral |)
+                                                        M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "slice")
+                                                                []
+                                                                [ Ty.path "u8" ]
+                                                            ],
+                                                          M.pointer_coercion
+                                                            M.PointerCoercion.Unsize
+                                                            (Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "array")
+                                                                  [
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      1
+                                                                  ]
+                                                                  [ Ty.path "u8" ]
+                                                              ])
+                                                            (Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "slice")
+                                                                  []
+                                                                  [ Ty.path "u8" ]
+                                                              ]),
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.Ref,
+                                                              M.deref (|
+                                                                M.read (| UnsupportedLiteral |)
+                                                              |)
                                                             |)
-                                                          |))
+                                                          ]
+                                                        |)
                                                       ]
                                                   ]
                                                 |)
@@ -8775,16 +9603,63 @@ Module num.
                                                                               []
                                                                               []
                                                                               [
-                                                                                (* Unsize *)
-                                                                                M.pointer_coercion
-                                                                                  (M.borrow (|
-                                                                                    Pointer.Kind.Ref,
-                                                                                    M.deref (|
-                                                                                      M.read (|
-                                                                                        UnsupportedLiteral
+                                                                                M.call_closure (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path "&")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "slice")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "u8"
+                                                                                        ]
+                                                                                    ],
+                                                                                  M.pointer_coercion
+                                                                                    M.PointerCoercion.Unsize
+                                                                                    (Ty.apply
+                                                                                      (Ty.path "&")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "array")
+                                                                                          [
+                                                                                            Value.Integer
+                                                                                              IntegerKind.Usize
+                                                                                              2
+                                                                                          ]
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "u8"
+                                                                                          ]
+                                                                                      ])
+                                                                                    (Ty.apply
+                                                                                      (Ty.path "&")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "slice")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "u8"
+                                                                                          ]
+                                                                                      ]),
+                                                                                  [
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      M.deref (|
+                                                                                        M.read (|
+                                                                                          UnsupportedLiteral
+                                                                                        |)
                                                                                       |)
                                                                                     |)
-                                                                                  |))
+                                                                                  ]
+                                                                                |)
                                                                               ]
                                                                           ]
                                                                         |)
@@ -9015,16 +9890,63 @@ Module num.
                                                                               []
                                                                               []
                                                                               [
-                                                                                (* Unsize *)
-                                                                                M.pointer_coercion
-                                                                                  (M.borrow (|
-                                                                                    Pointer.Kind.Ref,
-                                                                                    M.deref (|
-                                                                                      M.read (|
-                                                                                        UnsupportedLiteral
+                                                                                M.call_closure (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path "&")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "slice")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "u8"
+                                                                                        ]
+                                                                                    ],
+                                                                                  M.pointer_coercion
+                                                                                    M.PointerCoercion.Unsize
+                                                                                    (Ty.apply
+                                                                                      (Ty.path "&")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "array")
+                                                                                          [
+                                                                                            Value.Integer
+                                                                                              IntegerKind.Usize
+                                                                                              1
+                                                                                          ]
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "u8"
+                                                                                          ]
+                                                                                      ])
+                                                                                    (Ty.apply
+                                                                                      (Ty.path "&")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "slice")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "u8"
+                                                                                          ]
+                                                                                      ]),
+                                                                                  [
+                                                                                    M.borrow (|
+                                                                                      Pointer.Kind.Ref,
+                                                                                      M.deref (|
+                                                                                        M.read (|
+                                                                                          UnsupportedLiteral
+                                                                                        |)
                                                                                       |)
                                                                                     |)
-                                                                                  |))
+                                                                                  ]
+                                                                                |)
                                                                               ]
                                                                           ]
                                                                         |)

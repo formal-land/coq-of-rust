@@ -75,6 +75,14 @@ Module Impl_Slice.
       (IterMut.t T).
   Admitted.
 
+  (* pub const fn as_ptr(&self) -> *const T *)
+  Instance run_as_ptr
+      (T : Set) `{Link T}
+      (self : Ref.t Pointer.Kind.Ref (Self T)) :
+    Run.Trait (slice.Impl_slice_T.as_ptr (Φ T)) [] [] [φ self]
+      (Ref.t Pointer.Kind.ConstPointer T).
+  Admitted.
+
   (* pub const fn as_mut_ptr(&mut self) -> *mut T *)
   Instance run_as_mut_ptr
       (T : Set) `{Link T}

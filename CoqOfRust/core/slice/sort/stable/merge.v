@@ -271,7 +271,14 @@ Module slice.
                         Ty.tuple [],
                         M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                         [
-                          (* MutToConstPointer *) M.pointer_coercion (M.read (| save_base |));
+                          M.call_closure (|
+                            Ty.apply (Ty.path "*const") [] [ T ],
+                            M.pointer_coercion
+                              M.PointerCoercion.MutToConstPointer
+                              (Ty.apply (Ty.path "*mut") [] [ T ])
+                              (Ty.apply (Ty.path "*const") [] [ T ]),
+                            [ M.read (| save_base |) ]
+                          |);
                           M.read (| buf |);
                           M.read (| save_len |)
                         ]
@@ -326,10 +333,22 @@ Module slice.
                                     |),
                                     [
                                       M.borrow (| Pointer.Kind.MutRef, merge_state |);
-                                      (* MutToConstPointer *)
-                                      M.pointer_coercion (M.read (| v_mid |));
-                                      (* MutToConstPointer *)
-                                      M.pointer_coercion (M.read (| v_end |));
+                                      M.call_closure (|
+                                        Ty.apply (Ty.path "*const") [] [ T ],
+                                        M.pointer_coercion
+                                          M.PointerCoercion.MutToConstPointer
+                                          (Ty.apply (Ty.path "*mut") [] [ T ])
+                                          (Ty.apply (Ty.path "*const") [] [ T ]),
+                                        [ M.read (| v_mid |) ]
+                                      |);
+                                      M.call_closure (|
+                                        Ty.apply (Ty.path "*const") [] [ T ],
+                                        M.pointer_coercion
+                                          M.PointerCoercion.MutToConstPointer
+                                          (Ty.apply (Ty.path "*mut") [] [ T ])
+                                          (Ty.apply (Ty.path "*const") [] [ T ]),
+                                        [ M.read (| v_end |) ]
+                                      |);
                                       M.borrow (|
                                         Pointer.Kind.MutRef,
                                         M.deref (| M.read (| is_less |) |)
@@ -355,9 +374,22 @@ Module slice.
                                     |),
                                     [
                                       M.borrow (| Pointer.Kind.MutRef, merge_state |);
-                                      (* MutToConstPointer *)
-                                      M.pointer_coercion (M.read (| v_base |));
-                                      (* MutToConstPointer *) M.pointer_coercion (M.read (| buf |));
+                                      M.call_closure (|
+                                        Ty.apply (Ty.path "*const") [] [ T ],
+                                        M.pointer_coercion
+                                          M.PointerCoercion.MutToConstPointer
+                                          (Ty.apply (Ty.path "*mut") [] [ T ])
+                                          (Ty.apply (Ty.path "*const") [] [ T ]),
+                                        [ M.read (| v_base |) ]
+                                      |);
+                                      M.call_closure (|
+                                        Ty.apply (Ty.path "*const") [] [ T ],
+                                        M.pointer_coercion
+                                          M.PointerCoercion.MutToConstPointer
+                                          (Ty.apply (Ty.path "*mut") [] [ T ])
+                                          (Ty.apply (Ty.path "*const") [] [ T ]),
+                                        [ M.read (| buf |) ]
+                                      |);
                                       M.read (| v_end |);
                                       M.borrow (|
                                         Pointer.Kind.MutRef,
@@ -576,9 +608,14 @@ Module slice.
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
-                                            (* MutToConstPointer *)
-                                            M.pointer_coercion
-                                              (M.read (| M.deref (| M.read (| left |) |) |))));
+                                            M.call_closure (|
+                                              Ty.apply (Ty.path "*const") [] [ T ],
+                                              M.pointer_coercion
+                                                M.PointerCoercion.MutToConstPointer
+                                                (Ty.apply (Ty.path "*mut") [] [ T ])
+                                                (Ty.apply (Ty.path "*const") [] [ T ]),
+                                              [ M.read (| M.deref (| M.read (| left |) |) |) ]
+                                            |)));
                                         fun γ => ltac:(M.monadic (M.read (| right |)))
                                       ]
                                     |) in
@@ -844,7 +881,14 @@ Module slice.
                           Ty.tuple [],
                           M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                           [
-                            (* MutToConstPointer *) M.pointer_coercion (M.read (| src |));
+                            M.call_closure (|
+                              Ty.apply (Ty.path "*const") [] [ T ],
+                              M.pointer_coercion
+                                M.PointerCoercion.MutToConstPointer
+                                (Ty.apply (Ty.path "*mut") [] [ T ])
+                                (Ty.apply (Ty.path "*const") [] [ T ]),
+                              [ M.read (| src |) ]
+                            |);
                             M.read (| out |);
                             Value.Integer IntegerKind.Usize 1
                           ]
@@ -910,15 +954,22 @@ Module slice.
                                           [
                                             M.cast
                                               (Ty.apply (Ty.path "*const") [] [ T ])
-                                              (* MutToConstPointer *)
-                                              (M.pointer_coercion
-                                                (M.read (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.deref (| M.read (| self |) |),
-                                                    "core::slice::sort::stable::merge::MergeState",
-                                                    "dst"
+                                              (M.call_closure (|
+                                                Ty.apply (Ty.path "*const") [] [ T ],
+                                                M.pointer_coercion
+                                                  M.PointerCoercion.MutToConstPointer
+                                                  (Ty.apply (Ty.path "*mut") [] [ T ])
+                                                  (Ty.apply (Ty.path "*const") [] [ T ]),
+                                                [
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.deref (| M.read (| self |) |),
+                                                      "core::slice::sort::stable::merge::MergeState",
+                                                      "dst"
+                                                    |)
                                                   |)
-                                                |)));
+                                                ]
+                                              |));
                                             M.read (| left_end |)
                                           ]
                                         |),
@@ -929,15 +980,22 @@ Module slice.
                                             [
                                               M.cast
                                                 (Ty.apply (Ty.path "*const") [] [ T ])
-                                                (* MutToConstPointer *)
-                                                (M.pointer_coercion
-                                                  (M.read (|
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.deref (| M.read (| self |) |),
-                                                      "core::slice::sort::stable::merge::MergeState",
-                                                      "end"
+                                                (M.call_closure (|
+                                                  Ty.apply (Ty.path "*const") [] [ T ],
+                                                  M.pointer_coercion
+                                                    M.PointerCoercion.MutToConstPointer
+                                                    (Ty.apply (Ty.path "*mut") [] [ T ])
+                                                    (Ty.apply (Ty.path "*const") [] [ T ]),
+                                                  [
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| self |) |),
+                                                        "core::slice::sort::stable::merge::MergeState",
+                                                        "end"
+                                                      |)
                                                     |)
-                                                  |)));
+                                                  ]
+                                                |));
                                               M.read (| right_end |)
                                             ]
                                           |)))
@@ -1014,15 +1072,22 @@ Module slice.
                             "end"
                           |)
                         |);
-                        (* MutToConstPointer *)
-                        M.pointer_coercion
-                          (M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::slice::sort::stable::merge::MergeState",
-                              "start"
+                        M.call_closure (|
+                          Ty.apply (Ty.path "*const") [] [ T ],
+                          M.pointer_coercion
+                            M.PointerCoercion.MutToConstPointer
+                            (Ty.apply (Ty.path "*mut") [] [ T ])
+                            (Ty.apply (Ty.path "*const") [] [ T ]),
+                          [
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::slice::sort::stable::merge::MergeState",
+                                "start"
+                              |)
                             |)
-                          |))
+                          ]
+                        |)
                       ]
                     |) in
                   let~ _ : Ty.tuple [] :=
@@ -1030,15 +1095,22 @@ Module slice.
                       Ty.tuple [],
                       M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                       [
-                        (* MutToConstPointer *)
-                        M.pointer_coercion
-                          (M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::slice::sort::stable::merge::MergeState",
-                              "start"
+                        M.call_closure (|
+                          Ty.apply (Ty.path "*const") [] [ T ],
+                          M.pointer_coercion
+                            M.PointerCoercion.MutToConstPointer
+                            (Ty.apply (Ty.path "*mut") [] [ T ])
+                            (Ty.apply (Ty.path "*const") [] [ T ]),
+                          [
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::slice::sort::stable::merge::MergeState",
+                                "start"
+                              |)
                             |)
-                          |));
+                          ]
+                        |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| self |) |),

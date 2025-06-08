@@ -1258,9 +1258,17 @@ Module vec.
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |))
+                            M.call_closure (|
+                              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                              M.pointer_coercion
+                                M.PointerCoercion.Unsize
+                                (Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "array") [ N ] [ T ] ])
+                                (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]),
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                            |)
                           ]
                         |)
                       |)

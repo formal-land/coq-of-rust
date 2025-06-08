@@ -762,9 +762,38 @@ Module fmt.
               M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [], [ T ] |),
               [
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |);
-                (* ReifyFnPointer *)
-                M.pointer_coercion
-                  (M.get_trait_method (| "core::fmt::Display", T, [], [], "fmt", [], [] |))
+                M.call_closure (|
+                  Ty.function
+                    [
+                      Ty.apply (Ty.path "&") [] [ T ];
+                      Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]
+                    ]
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                  M.pointer_coercion
+                    M.PointerCoercion.ReifyFnPointer
+                    (Ty.function
+                      [
+                        Ty.apply (Ty.path "&") [] [ T ];
+                        Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]
+                      ]
+                      (Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ]))
+                    (Ty.function
+                      [
+                        Ty.apply (Ty.path "&") [] [ T ];
+                        Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]
+                      ]
+                      (Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ])),
+                  [ M.get_trait_method (| "core::fmt::Display", T, [], [], "fmt", [], [] |) ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -790,9 +819,38 @@ Module fmt.
               M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [], [ T ] |),
               [
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |);
-                (* ReifyFnPointer *)
-                M.pointer_coercion
-                  (M.get_trait_method (| "core::fmt::Debug", T, [], [], "fmt", [], [] |))
+                M.call_closure (|
+                  Ty.function
+                    [
+                      Ty.apply (Ty.path "&") [] [ T ];
+                      Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]
+                    ]
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                  M.pointer_coercion
+                    M.PointerCoercion.ReifyFnPointer
+                    (Ty.function
+                      [
+                        Ty.apply (Ty.path "&") [] [ T ];
+                        Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]
+                      ]
+                      (Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ]))
+                    (Ty.function
+                      [
+                        Ty.apply (Ty.path "&") [] [ T ];
+                        Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]
+                      ]
+                      (Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ])),
+                  [ M.get_trait_method (| "core::fmt::Debug", T, [], [], "fmt", [], [] |) ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -818,49 +876,80 @@ Module fmt.
               M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [], [ T ] |),
               [
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |);
-                (* ClosureFnPointer(Safe) *)
-                M.pointer_coercion
-                  (M.closure
-                    (fun γ =>
-                      ltac:(M.monadic
-                        match γ with
-                        | [ α0; α1 ] =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                              M.alloc (| Ty.apply (Ty.path "&") [] [ T ], α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (M.match_operator (|
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
-                                        []
-                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                                      M.alloc (|
+                M.call_closure (|
+                  Ty.function
+                    [
+                      Ty.apply (Ty.path "&") [] [ T ];
+                      Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]
+                    ]
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                  M.pointer_coercion
+                    (M.PointerCoercion.ClosureFnPointer M.PointerCoercion.Safety.Safe)
+                    (Ty.function
+                      [
+                        Ty.apply (Ty.path "&") [] [ T ];
+                        Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]
+                      ]
+                      (Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ]))
+                    (Ty.function
+                      [
+                        Ty.apply (Ty.path "&") [] [ T ];
+                        Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]
+                      ]
+                      (Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ])),
+                  [
+                    M.closure
+                      (fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [ α0; α1 ] =>
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                M.alloc (| Ty.apply (Ty.path "&") [] [ T ], α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
                                         Ty.apply
-                                          (Ty.path "&mut")
+                                          (Ty.path "core::result::Result")
                                           []
-                                          [ Ty.path "core::fmt::Formatter" ],
-                                        α1
-                                      |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (Value.StructTuple
-                                              "core::result::Result::Ok"
-                                              []
-                                              [ Ty.tuple []; Ty.path "core::fmt::Error" ]
-                                              [ Value.Tuple [] ]))
-                                      ]
-                                    |)))
-                              ]
-                            |)))
-                        | _ => M.impossible "wrong number of arguments"
-                        end)))
+                                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                        M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "&mut")
+                                            []
+                                            [ Ty.path "core::fmt::Formatter" ],
+                                          α1
+                                        |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (Value.StructTuple
+                                                "core::result::Result::Ok"
+                                                []
+                                                [ Ty.tuple []; Ty.path "core::fmt::Error" ]
+                                                [ Value.Tuple [] ]))
+                                        ]
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end))
+                  ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -886,9 +975,38 @@ Module fmt.
               M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [], [ T ] |),
               [
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |);
-                (* ReifyFnPointer *)
-                M.pointer_coercion
-                  (M.get_trait_method (| "core::fmt::Octal", T, [], [], "fmt", [], [] |))
+                M.call_closure (|
+                  Ty.function
+                    [
+                      Ty.apply (Ty.path "&") [] [ T ];
+                      Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]
+                    ]
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                  M.pointer_coercion
+                    M.PointerCoercion.ReifyFnPointer
+                    (Ty.function
+                      [
+                        Ty.apply (Ty.path "&") [] [ T ];
+                        Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]
+                      ]
+                      (Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ]))
+                    (Ty.function
+                      [
+                        Ty.apply (Ty.path "&") [] [ T ];
+                        Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]
+                      ]
+                      (Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ])),
+                  [ M.get_trait_method (| "core::fmt::Octal", T, [], [], "fmt", [], [] |) ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -914,9 +1032,38 @@ Module fmt.
               M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [], [ T ] |),
               [
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |);
-                (* ReifyFnPointer *)
-                M.pointer_coercion
-                  (M.get_trait_method (| "core::fmt::LowerHex", T, [], [], "fmt", [], [] |))
+                M.call_closure (|
+                  Ty.function
+                    [
+                      Ty.apply (Ty.path "&") [] [ T ];
+                      Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]
+                    ]
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                  M.pointer_coercion
+                    M.PointerCoercion.ReifyFnPointer
+                    (Ty.function
+                      [
+                        Ty.apply (Ty.path "&") [] [ T ];
+                        Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]
+                      ]
+                      (Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ]))
+                    (Ty.function
+                      [
+                        Ty.apply (Ty.path "&") [] [ T ];
+                        Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]
+                      ]
+                      (Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ])),
+                  [ M.get_trait_method (| "core::fmt::LowerHex", T, [], [], "fmt", [], [] |) ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -942,9 +1089,38 @@ Module fmt.
               M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [], [ T ] |),
               [
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |);
-                (* ReifyFnPointer *)
-                M.pointer_coercion
-                  (M.get_trait_method (| "core::fmt::UpperHex", T, [], [], "fmt", [], [] |))
+                M.call_closure (|
+                  Ty.function
+                    [
+                      Ty.apply (Ty.path "&") [] [ T ];
+                      Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]
+                    ]
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                  M.pointer_coercion
+                    M.PointerCoercion.ReifyFnPointer
+                    (Ty.function
+                      [
+                        Ty.apply (Ty.path "&") [] [ T ];
+                        Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]
+                      ]
+                      (Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ]))
+                    (Ty.function
+                      [
+                        Ty.apply (Ty.path "&") [] [ T ];
+                        Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]
+                      ]
+                      (Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ])),
+                  [ M.get_trait_method (| "core::fmt::UpperHex", T, [], [], "fmt", [], [] |) ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -970,9 +1146,38 @@ Module fmt.
               M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [], [ T ] |),
               [
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |);
-                (* ReifyFnPointer *)
-                M.pointer_coercion
-                  (M.get_trait_method (| "core::fmt::Pointer", T, [], [], "fmt", [], [] |))
+                M.call_closure (|
+                  Ty.function
+                    [
+                      Ty.apply (Ty.path "&") [] [ T ];
+                      Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]
+                    ]
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                  M.pointer_coercion
+                    M.PointerCoercion.ReifyFnPointer
+                    (Ty.function
+                      [
+                        Ty.apply (Ty.path "&") [] [ T ];
+                        Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]
+                      ]
+                      (Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ]))
+                    (Ty.function
+                      [
+                        Ty.apply (Ty.path "&") [] [ T ];
+                        Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]
+                      ]
+                      (Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ])),
+                  [ M.get_trait_method (| "core::fmt::Pointer", T, [], [], "fmt", [], [] |) ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -998,9 +1203,38 @@ Module fmt.
               M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [], [ T ] |),
               [
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |);
-                (* ReifyFnPointer *)
-                M.pointer_coercion
-                  (M.get_trait_method (| "core::fmt::Binary", T, [], [], "fmt", [], [] |))
+                M.call_closure (|
+                  Ty.function
+                    [
+                      Ty.apply (Ty.path "&") [] [ T ];
+                      Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]
+                    ]
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                  M.pointer_coercion
+                    M.PointerCoercion.ReifyFnPointer
+                    (Ty.function
+                      [
+                        Ty.apply (Ty.path "&") [] [ T ];
+                        Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]
+                      ]
+                      (Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ]))
+                    (Ty.function
+                      [
+                        Ty.apply (Ty.path "&") [] [ T ];
+                        Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]
+                      ]
+                      (Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ])),
+                  [ M.get_trait_method (| "core::fmt::Binary", T, [], [], "fmt", [], [] |) ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1026,9 +1260,38 @@ Module fmt.
               M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [], [ T ] |),
               [
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |);
-                (* ReifyFnPointer *)
-                M.pointer_coercion
-                  (M.get_trait_method (| "core::fmt::LowerExp", T, [], [], "fmt", [], [] |))
+                M.call_closure (|
+                  Ty.function
+                    [
+                      Ty.apply (Ty.path "&") [] [ T ];
+                      Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]
+                    ]
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                  M.pointer_coercion
+                    M.PointerCoercion.ReifyFnPointer
+                    (Ty.function
+                      [
+                        Ty.apply (Ty.path "&") [] [ T ];
+                        Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]
+                      ]
+                      (Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ]))
+                    (Ty.function
+                      [
+                        Ty.apply (Ty.path "&") [] [ T ];
+                        Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]
+                      ]
+                      (Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ])),
+                  [ M.get_trait_method (| "core::fmt::LowerExp", T, [], [], "fmt", [], [] |) ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1054,9 +1317,38 @@ Module fmt.
               M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [], [ T ] |),
               [
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |);
-                (* ReifyFnPointer *)
-                M.pointer_coercion
-                  (M.get_trait_method (| "core::fmt::UpperExp", T, [], [], "fmt", [], [] |))
+                M.call_closure (|
+                  Ty.function
+                    [
+                      Ty.apply (Ty.path "&") [] [ T ];
+                      Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]
+                    ]
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                  M.pointer_coercion
+                    M.PointerCoercion.ReifyFnPointer
+                    (Ty.function
+                      [
+                        Ty.apply (Ty.path "&") [] [ T ];
+                        Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]
+                      ]
+                      (Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ]))
+                    (Ty.function
+                      [
+                        Ty.apply (Ty.path "&") [] [ T ];
+                        Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]
+                      ]
+                      (Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ])),
+                  [ M.get_trait_method (| "core::fmt::UpperExp", T, [], [], "fmt", [], [] |) ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"

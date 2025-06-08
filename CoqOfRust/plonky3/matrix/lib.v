@@ -3421,29 +3421,58 @@ Module Matrix.
                                                                                                   [])
                                                                                               ]
                                                                                           ],
-                                                                                        (* Unsize *)
-                                                                                        M.pointer_coercion
-                                                                                          (M.borrow (|
-                                                                                            Pointer.Kind.Ref,
-                                                                                            M.deref (|
-                                                                                              M.borrow (|
-                                                                                                Pointer.Kind.Ref,
-                                                                                                M.alloc (|
-                                                                                                  Ty.apply
-                                                                                                    (Ty.path
-                                                                                                      "tracing_core::field::DisplayValue")
-                                                                                                    []
-                                                                                                    [
-                                                                                                      Ty.apply
-                                                                                                        (Ty.path
-                                                                                                          "&")
-                                                                                                        []
-                                                                                                        [
-                                                                                                          Ty.path
-                                                                                                            "p3_matrix::Dimensions"
-                                                                                                        ]
-                                                                                                    ],
-                                                                                                  M.call_closure (|
+                                                                                        M.call_closure (|
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "&")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.dyn
+                                                                                                [
+                                                                                                  ("tracing_core::field::Value::Trait",
+                                                                                                    [])
+                                                                                                ]
+                                                                                            ],
+                                                                                          M.pointer_coercion
+                                                                                            M.PointerCoercion.Unsize
+                                                                                            (Ty.apply
+                                                                                              (Ty.path
+                                                                                                "&")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "tracing_core::field::DisplayValue")
+                                                                                                  []
+                                                                                                  [
+                                                                                                    Ty.apply
+                                                                                                      (Ty.path
+                                                                                                        "&")
+                                                                                                      []
+                                                                                                      [
+                                                                                                        Ty.path
+                                                                                                          "p3_matrix::Dimensions"
+                                                                                                      ]
+                                                                                                  ]
+                                                                                              ])
+                                                                                            (Ty.apply
+                                                                                              (Ty.path
+                                                                                                "&")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.dyn
+                                                                                                  [
+                                                                                                    ("tracing_core::field::Value::Trait",
+                                                                                                      [])
+                                                                                                  ]
+                                                                                              ]),
+                                                                                          [
+                                                                                            M.borrow (|
+                                                                                              Pointer.Kind.Ref,
+                                                                                              M.deref (|
+                                                                                                M.borrow (|
+                                                                                                  Pointer.Kind.Ref,
+                                                                                                  M.alloc (|
                                                                                                     Ty.apply
                                                                                                       (Ty.path
                                                                                                         "tracing_core::field::DisplayValue")
@@ -3458,59 +3487,76 @@ Module Matrix.
                                                                                                               "p3_matrix::Dimensions"
                                                                                                           ]
                                                                                                       ],
-                                                                                                    M.get_function (|
-                                                                                                      "tracing_core::field::display",
-                                                                                                      [],
+                                                                                                    M.call_closure (|
+                                                                                                      Ty.apply
+                                                                                                        (Ty.path
+                                                                                                          "tracing_core::field::DisplayValue")
+                                                                                                        []
+                                                                                                        [
+                                                                                                          Ty.apply
+                                                                                                            (Ty.path
+                                                                                                              "&")
+                                                                                                            []
+                                                                                                            [
+                                                                                                              Ty.path
+                                                                                                                "p3_matrix::Dimensions"
+                                                                                                            ]
+                                                                                                        ],
+                                                                                                      M.get_function (|
+                                                                                                        "tracing_core::field::display",
+                                                                                                        [],
+                                                                                                        [
+                                                                                                          Ty.apply
+                                                                                                            (Ty.path
+                                                                                                              "&")
+                                                                                                            []
+                                                                                                            [
+                                                                                                              Ty.path
+                                                                                                                "p3_matrix::Dimensions"
+                                                                                                            ]
+                                                                                                        ]
+                                                                                                      |),
                                                                                                       [
-                                                                                                        Ty.apply
-                                                                                                          (Ty.path
-                                                                                                            "&")
-                                                                                                          []
-                                                                                                          [
-                                                                                                            Ty.path
-                                                                                                              "p3_matrix::Dimensions"
-                                                                                                          ]
-                                                                                                      ]
-                                                                                                    |),
-                                                                                                    [
-                                                                                                      M.borrow (|
-                                                                                                        Pointer.Kind.Ref,
-                                                                                                        M.alloc (|
-                                                                                                          Ty.path
-                                                                                                            "p3_matrix::Dimensions",
-                                                                                                          M.call_closure (|
+                                                                                                        M.borrow (|
+                                                                                                          Pointer.Kind.Ref,
+                                                                                                          M.alloc (|
                                                                                                             Ty.path
                                                                                                               "p3_matrix::Dimensions",
-                                                                                                            M.get_trait_method (|
-                                                                                                              "p3_matrix::Matrix",
-                                                                                                              Self,
-                                                                                                              [],
+                                                                                                            M.call_closure (|
+                                                                                                              Ty.path
+                                                                                                                "p3_matrix::Dimensions",
+                                                                                                              M.get_trait_method (|
+                                                                                                                "p3_matrix::Matrix",
+                                                                                                                Self,
+                                                                                                                [],
+                                                                                                                [
+                                                                                                                  T
+                                                                                                                ],
+                                                                                                                "dimensions",
+                                                                                                                [],
+                                                                                                                []
+                                                                                                              |),
                                                                                                               [
-                                                                                                                T
-                                                                                                              ],
-                                                                                                              "dimensions",
-                                                                                                              [],
-                                                                                                              []
-                                                                                                            |),
-                                                                                                            [
-                                                                                                              M.borrow (|
-                                                                                                                Pointer.Kind.Ref,
-                                                                                                                M.deref (|
-                                                                                                                  M.read (|
-                                                                                                                    self
+                                                                                                                M.borrow (|
+                                                                                                                  Pointer.Kind.Ref,
+                                                                                                                  M.deref (|
+                                                                                                                    M.read (|
+                                                                                                                      self
+                                                                                                                    |)
                                                                                                                   |)
                                                                                                                 |)
-                                                                                                              |)
-                                                                                                            ]
+                                                                                                              ]
+                                                                                                            |)
                                                                                                           |)
                                                                                                         |)
-                                                                                                      |)
-                                                                                                    ]
+                                                                                                      ]
+                                                                                                    |)
                                                                                                   |)
                                                                                                 |)
                                                                                               |)
                                                                                             |)
-                                                                                          |))
+                                                                                          ]
+                                                                                        |)
                                                                                       |))
                                                                                   |)
                                                                                 ]

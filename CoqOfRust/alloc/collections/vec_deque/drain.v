@@ -519,78 +519,135 @@ Module collections.
                                                       |)
                                                     |)
                                                   |);
-                                                  (* Unsize *)
-                                                  M.pointer_coercion
-                                                    (M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.deref (|
-                                                        M.borrow (|
-                                                          Pointer.Kind.Ref,
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            M.deref (| M.read (| self |) |),
-                                                            "alloc::collections::vec_deque::drain::Drain",
-                                                            "drain_len"
+                                                  M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ]
+                                                      ],
+                                                    M.pointer_coercion
+                                                      M.PointerCoercion.Unsize
+                                                      (Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [ Ty.path "usize" ])
+                                                      (Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ]
+                                                        ]),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.SubPointer.get_struct_record_field (|
+                                                              M.deref (| M.read (| self |) |),
+                                                              "alloc::collections::vec_deque::drain::Drain",
+                                                              "drain_len"
+                                                            |)
                                                           |)
                                                         |)
                                                       |)
-                                                    |))
+                                                    ]
+                                                  |)
                                                 ]
                                               |)
                                             |)
                                           |);
-                                          (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (|
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.deref (| M.read (| self |) |),
-                                                    "alloc::collections::vec_deque::drain::Drain",
-                                                    "idx"
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                            M.pointer_coercion
+                                              M.PointerCoercion.Unsize
+                                              (Ty.apply (Ty.path "&") [] [ Ty.path "usize" ])
+                                              (Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.deref (| M.read (| self |) |),
+                                                      "alloc::collections::vec_deque::drain::Drain",
+                                                      "idx"
+                                                    |)
                                                   |)
                                                 |)
                                               |)
-                                            |))
+                                            ]
+                                          |)
                                         ]
                                       |)
                                     |)
                                   |);
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (|
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "alloc::collections::vec_deque::drain::Drain",
-                                            "new_len"
+                                  M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                    M.pointer_coercion
+                                      M.PointerCoercion.Unsize
+                                      (Ty.apply (Ty.path "&") [] [ Ty.path "usize" ])
+                                      (Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "alloc::collections::vec_deque::drain::Drain",
+                                              "new_len"
+                                            |)
                                           |)
                                         |)
                                       |)
-                                    |))
+                                    ]
+                                  |)
                                 ]
                               |)
                             |)
                           |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "alloc::collections::vec_deque::drain::Drain",
-                                    "remaining"
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                            M.pointer_coercion
+                              M.PointerCoercion.Unsize
+                              (Ty.apply (Ty.path "&") [] [ Ty.path "usize" ])
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "alloc::collections::vec_deque::drain::Drain",
+                                      "remaining"
+                                    |)
                                   |)
                                 |)
                               |)
-                            |))
+                            ]
+                          |)
                         ]
                       |)
                     |)

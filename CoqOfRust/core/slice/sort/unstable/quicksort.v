@@ -1188,22 +1188,72 @@ Module slice.
                             |)
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      (* ReifyFnPointer *)
-                      M.pointer_coercion
-                        (M.get_function (|
-                          "core::slice::sort::unstable::quicksort::partition_lomuto_branchless_cyclic",
-                          [],
-                          [ T; F ]
-                        |))));
+                      M.call_closure (|
+                        Ty.function
+                          [
+                            Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ];
+                            Ty.apply (Ty.path "&") [] [ T ];
+                            Ty.apply (Ty.path "&mut") [] [ F ]
+                          ]
+                          (Ty.path "usize"),
+                        M.pointer_coercion
+                          M.PointerCoercion.ReifyFnPointer
+                          (Ty.function
+                            [
+                              Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ];
+                              Ty.apply (Ty.path "&") [] [ T ];
+                              Ty.apply (Ty.path "&mut") [] [ F ]
+                            ]
+                            (Ty.path "usize"))
+                          (Ty.function
+                            [
+                              Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ];
+                              Ty.apply (Ty.path "&") [] [ T ];
+                              Ty.apply (Ty.path "&mut") [] [ F ]
+                            ]
+                            (Ty.path "usize")),
+                        [
+                          M.get_function (|
+                            "core::slice::sort::unstable::quicksort::partition_lomuto_branchless_cyclic",
+                            [],
+                            [ T; F ]
+                          |)
+                        ]
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (* ReifyFnPointer *)
-                      (M.pointer_coercion
-                        (M.get_function (|
-                          "core::slice::sort::unstable::quicksort::partition_hoare_branchy_cyclic",
-                          [],
-                          [ T; F ]
-                        |))))
+                      (M.call_closure (|
+                        Ty.function
+                          [
+                            Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ];
+                            Ty.apply (Ty.path "&") [] [ T ];
+                            Ty.apply (Ty.path "&mut") [] [ F ]
+                          ]
+                          (Ty.path "usize"),
+                        M.pointer_coercion
+                          M.PointerCoercion.ReifyFnPointer
+                          (Ty.function
+                            [
+                              Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ];
+                              Ty.apply (Ty.path "&") [] [ T ];
+                              Ty.apply (Ty.path "&mut") [] [ F ]
+                            ]
+                            (Ty.path "usize"))
+                          (Ty.function
+                            [
+                              Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ];
+                              Ty.apply (Ty.path "&") [] [ T ];
+                              Ty.apply (Ty.path "&mut") [] [ F ]
+                            ]
+                            (Ty.path "usize")),
+                        [
+                          M.get_function (|
+                            "core::slice::sort::unstable::quicksort::partition_hoare_branchy_cyclic",
+                            [],
+                            [ T; F ]
+                          |)
+                        ]
+                      |)))
                 ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -1720,8 +1770,23 @@ Module slice.
                                                               [ T ]
                                                             |),
                                                             [
-                                                              (* MutToConstPointer *)
-                                                              M.pointer_coercion (M.read (| left |))
+                                                              M.call_closure (|
+                                                                Ty.apply
+                                                                  (Ty.path "*const")
+                                                                  []
+                                                                  [ T ],
+                                                                M.pointer_coercion
+                                                                  M.PointerCoercion.MutToConstPointer
+                                                                  (Ty.apply
+                                                                    (Ty.path "*mut")
+                                                                    []
+                                                                    [ T ])
+                                                                  (Ty.apply
+                                                                    (Ty.path "*const")
+                                                                    []
+                                                                    [ T ]),
+                                                                [ M.read (| left |) ]
+                                                              |)
                                                             ]
                                                           |)
                                                         ]
@@ -1838,8 +1903,14 @@ Module slice.
                                               [ T ]
                                             |),
                                             [
-                                              (* MutToConstPointer *)
-                                              M.pointer_coercion (M.read (| left |));
+                                              M.call_closure (|
+                                                Ty.apply (Ty.path "*const") [] [ T ],
+                                                M.pointer_coercion
+                                                  M.PointerCoercion.MutToConstPointer
+                                                  (Ty.apply (Ty.path "*mut") [] [ T ])
+                                                  (Ty.apply (Ty.path "*const") [] [ T ]),
+                                                [ M.read (| left |) ]
+                                              |);
                                               M.read (|
                                                 M.SubPointer.get_struct_record_field (|
                                                   M.deref (| M.read (| gap |) |),
@@ -1873,7 +1944,14 @@ Module slice.
                                   [ T ]
                                 |),
                                 [
-                                  (* MutToConstPointer *) M.pointer_coercion (M.read (| right |));
+                                  M.call_closure (|
+                                    Ty.apply (Ty.path "*const") [] [ T ],
+                                    M.pointer_coercion
+                                      M.PointerCoercion.MutToConstPointer
+                                      (Ty.apply (Ty.path "*mut") [] [ T ])
+                                      (Ty.apply (Ty.path "*const") [] [ T ]),
+                                    [ M.read (| right |) ]
+                                  |);
                                   M.read (| left |);
                                   Value.Integer IntegerKind.Usize 1
                                 ]
@@ -1907,7 +1985,14 @@ Module slice.
                         |),
                         [
                           M.read (| left |);
-                          (* MutToConstPointer *) M.pointer_coercion (M.read (| v_base |))
+                          M.call_closure (|
+                            Ty.apply (Ty.path "*const") [] [ T ],
+                            M.pointer_coercion
+                              M.PointerCoercion.MutToConstPointer
+                              (Ty.apply (Ty.path "*mut") [] [ T ])
+                              (Ty.apply (Ty.path "*const") [] [ T ]),
+                            [ M.read (| v_base |) ]
+                          |)
                         ]
                       |)
                     |)
@@ -2225,8 +2310,14 @@ Module slice.
                                                 [ T ]
                                               |),
                                               [
-                                                (* MutToConstPointer *)
-                                                M.pointer_coercion (M.read (| left |));
+                                                M.call_closure (|
+                                                  Ty.apply (Ty.path "*const") [] [ T ],
+                                                  M.pointer_coercion
+                                                    M.PointerCoercion.MutToConstPointer
+                                                    (Ty.apply (Ty.path "*mut") [] [ T ])
+                                                    (Ty.apply (Ty.path "*const") [] [ T ]),
+                                                  [ M.read (| left |) ]
+                                                |);
                                                 M.read (|
                                                   M.SubPointer.get_struct_record_field (|
                                                     M.SubPointer.get_struct_record_field (|
@@ -2250,15 +2341,22 @@ Module slice.
                                                 [ T ]
                                               |),
                                               [
-                                                (* MutToConstPointer *)
-                                                M.pointer_coercion
-                                                  (M.read (|
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.deref (| M.read (| state |) |),
-                                                      "core::slice::sort::unstable::quicksort::PartitionState",
-                                                      "right"
+                                                M.call_closure (|
+                                                  Ty.apply (Ty.path "*const") [] [ T ],
+                                                  M.pointer_coercion
+                                                    M.PointerCoercion.MutToConstPointer
+                                                    (Ty.apply (Ty.path "*mut") [] [ T ])
+                                                    (Ty.apply (Ty.path "*const") [] [ T ]),
+                                                  [
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| state |) |),
+                                                        "core::slice::sort::unstable::quicksort::PartitionState",
+                                                        "right"
+                                                      |)
                                                     |)
-                                                  |));
+                                                  ]
+                                                |);
                                                 M.read (| left |);
                                                 Value.Integer IntegerKind.Usize 1
                                               ]
@@ -2349,7 +2447,16 @@ Module slice.
                           M.call_closure (|
                             T,
                             M.get_function (| "core::ptr::read", [], [ T ] |),
-                            [ (* MutToConstPointer *) M.pointer_coercion (M.read (| v_base |)) ]
+                            [
+                              M.call_closure (|
+                                Ty.apply (Ty.path "*const") [] [ T ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.MutToConstPointer
+                                  (Ty.apply (Ty.path "*mut") [] [ T ])
+                                  (Ty.apply (Ty.path "*const") [] [ T ]),
+                                [ M.read (| v_base |) ]
+                              |)
+                            ]
                           |)
                         ]
                       |) in
@@ -3040,15 +3147,22 @@ Module slice.
                       Ty.tuple [],
                       M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                       [
-                        (* MutToConstPointer *)
-                        M.pointer_coercion
-                          (M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::slice::sort::unstable::quicksort::GapGuardRaw",
-                              "value"
+                        M.call_closure (|
+                          Ty.apply (Ty.path "*const") [] [ T ],
+                          M.pointer_coercion
+                            M.PointerCoercion.MutToConstPointer
+                            (Ty.apply (Ty.path "*mut") [] [ T ])
+                            (Ty.apply (Ty.path "*const") [] [ T ]),
+                          [
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::slice::sort::unstable::quicksort::GapGuardRaw",
+                                "value"
+                              |)
                             |)
-                          |));
+                          ]
+                        |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| self |) |),

@@ -241,21 +241,31 @@ Module slice.
       | [], [ T ], [ s ] =>
         ltac:(M.monadic
           (let s := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], s |) in
-          (* Unsize *)
-          M.pointer_coercion
-            (M.borrow (|
-              Pointer.Kind.Ref,
-              M.deref (|
-                M.call_closure (|
-                  Ty.apply
-                    (Ty.path "&")
-                    []
-                    [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ T ] ],
-                  M.get_function (| "core::array::from_ref", [], [ T ] |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
+          M.call_closure (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+            M.pointer_coercion
+              M.PointerCoercion.Unsize
+              (Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ T ] ])
+              (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]),
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ T ] ],
+                    M.get_function (| "core::array::from_ref", [], [ T ] |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
+                  |)
                 |)
               |)
-            |))))
+            ]
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -277,21 +287,32 @@ Module slice.
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.MutRef,
-                  M.deref (|
-                    M.call_closure (|
-                      Ty.apply
-                        (Ty.path "&mut")
-                        []
-                        [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ T ] ],
-                      M.get_function (| "core::array::from_mut", [], [ T ] |),
-                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| s |) |) |) ]
+              M.call_closure (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&mut")
+                    []
+                    [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ T ] ])
+                  (Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ T ]
+                          ],
+                        M.get_function (| "core::array::from_mut", [], [ T ] |),
+                        [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| s |) |) |) ]
+                      |)
                     |)
                   |)
-                |))
+                ]
+              |)
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -425,15 +446,22 @@ Module slice.
                                   "end"
                                 |)
                               |);
-                              (* MutToConstPointer *)
-                              M.pointer_coercion
-                                (M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    range,
-                                    "core::ops::range::Range",
-                                    "start"
+                              M.call_closure (|
+                                Ty.apply (Ty.path "*const") [] [ T ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.MutToConstPointer
+                                  (Ty.apply (Ty.path "*mut") [] [ T ])
+                                  (Ty.apply (Ty.path "*const") [] [ T ]),
+                                [
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      range,
+                                      "core::ops::range::Range",
+                                      "start"
+                                    |)
                                   |)
-                                |))
+                                ]
+                              |)
                             ]
                           |)
                         ]

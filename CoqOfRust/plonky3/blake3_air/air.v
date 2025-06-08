@@ -4106,16 +4106,83 @@ Module air.
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| local |) |),
-                                        "p3_blake3_air::columns::Blake3Cols",
-                                        "inputs"
+                                  M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 32 ]
+                                              [
+                                                Ty.associated_in_trait
+                                                  "p3_air::air::AirBuilder"
+                                                  []
+                                                  []
+                                                  AB
+                                                  "Var"
+                                              ]
+                                          ]
+                                      ],
+                                    M.pointer_coercion
+                                      M.PointerCoercion.Unsize
+                                      (Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 16 ]
+                                            [
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 32 ]
+                                                [
+                                                  Ty.associated_in_trait
+                                                    "p3_air::air::AirBuilder"
+                                                    []
+                                                    []
+                                                    AB
+                                                    "Var"
+                                                ]
+                                            ]
+                                        ])
+                                      (Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "slice")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 32 ]
+                                                [
+                                                  Ty.associated_in_trait
+                                                    "p3_air::air::AirBuilder"
+                                                    []
+                                                    []
+                                                    AB
+                                                    "Var"
+                                                ]
+                                            ]
+                                        ]),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| local |) |),
+                                          "p3_blake3_air::columns::Blake3Cols",
+                                          "inputs"
+                                        |)
                                       |)
-                                    |))
+                                    ]
+                                  |)
                                 ]
                               |);
                               M.call_closure (|
@@ -4157,19 +4224,86 @@ Module air.
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.SubPointer.get_array_field (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| local |) |),
-                                          "p3_blake3_air::columns::Blake3Cols",
-                                          "chaining_values"
-                                        |),
-                                        Value.Integer IntegerKind.Usize 0
+                                  M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 32 ]
+                                              [
+                                                Ty.associated_in_trait
+                                                  "p3_air::air::AirBuilder"
+                                                  []
+                                                  []
+                                                  AB
+                                                  "Var"
+                                              ]
+                                          ]
+                                      ],
+                                    M.pointer_coercion
+                                      M.PointerCoercion.Unsize
+                                      (Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 4 ]
+                                            [
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 32 ]
+                                                [
+                                                  Ty.associated_in_trait
+                                                    "p3_air::air::AirBuilder"
+                                                    []
+                                                    []
+                                                    AB
+                                                    "Var"
+                                                ]
+                                            ]
+                                        ])
+                                      (Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "slice")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 32 ]
+                                                [
+                                                  Ty.associated_in_trait
+                                                    "p3_air::air::AirBuilder"
+                                                    []
+                                                    []
+                                                    AB
+                                                    "Var"
+                                                ]
+                                            ]
+                                        ]),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_array_field (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| local |) |),
+                                            "p3_blake3_air::columns::Blake3Cols",
+                                            "chaining_values"
+                                          |),
+                                          Value.Integer IntegerKind.Usize 0
+                                        |)
                                       |)
-                                    |))
+                                    ]
+                                  |)
                                 ]
                               |)
                             ]
@@ -4207,19 +4341,86 @@ Module air.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_array_field (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| local |) |),
-                                      "p3_blake3_air::columns::Blake3Cols",
-                                      "chaining_values"
-                                    |),
-                                    Value.Integer IntegerKind.Usize 1
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "slice")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 32 ]
+                                          [
+                                            Ty.associated_in_trait
+                                              "p3_air::air::AirBuilder"
+                                              []
+                                              []
+                                              AB
+                                              "Var"
+                                          ]
+                                      ]
+                                  ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 4 ]
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 32 ]
+                                            [
+                                              Ty.associated_in_trait
+                                                "p3_air::air::AirBuilder"
+                                                []
+                                                []
+                                                AB
+                                                "Var"
+                                            ]
+                                        ]
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "slice")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 32 ]
+                                            [
+                                              Ty.associated_in_trait
+                                                "p3_air::air::AirBuilder"
+                                                []
+                                                []
+                                                AB
+                                                "Var"
+                                            ]
+                                        ]
+                                    ]),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_array_field (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| local |) |),
+                                        "p3_blake3_air::columns::Blake3Cols",
+                                        "chaining_values"
+                                      |),
+                                      Value.Integer IntegerKind.Usize 1
+                                    |)
                                   |)
-                                |))
+                                ]
+                              |)
                             ]
                           |)
                         ]
@@ -4249,8 +4450,74 @@ Module air.
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, initial_row_3 |))
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 32 ]
+                                      [
+                                        Ty.associated_in_trait
+                                          "p3_air::air::AirBuilder"
+                                          []
+                                          []
+                                          AB
+                                          "Var"
+                                      ]
+                                  ]
+                              ],
+                            M.pointer_coercion
+                              M.PointerCoercion.Unsize
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 4 ]
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 32 ]
+                                        [
+                                          Ty.associated_in_trait
+                                            "p3_air::air::AirBuilder"
+                                            []
+                                            []
+                                            AB
+                                            "Var"
+                                        ]
+                                    ]
+                                ])
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 32 ]
+                                        [
+                                          Ty.associated_in_trait
+                                            "p3_air::air::AirBuilder"
+                                            []
+                                            []
+                                            AB
+                                            "Var"
+                                        ]
+                                    ]
+                                ]),
+                            [ M.borrow (| Pointer.Kind.Ref, initial_row_3 |) ]
+                          |)
                         ]
                       |)
                     ]
@@ -4372,12 +4639,64 @@ Module air.
                                             []
                                           |),
                                           [
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| M.read (| elem |) |)
-                                              |))
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "slice")
+                                                    []
+                                                    [
+                                                      Ty.associated_in_trait
+                                                        "p3_air::air::AirBuilder"
+                                                        []
+                                                        []
+                                                        AB
+                                                        "Var"
+                                                    ]
+                                                ],
+                                              M.pointer_coercion
+                                                M.PointerCoercion.Unsize
+                                                (Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 32 ]
+                                                      [
+                                                        Ty.associated_in_trait
+                                                          "p3_air::air::AirBuilder"
+                                                          []
+                                                          []
+                                                          AB
+                                                          "Var"
+                                                      ]
+                                                  ])
+                                                (Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "slice")
+                                                      []
+                                                      [
+                                                        Ty.associated_in_trait
+                                                          "p3_air::air::AirBuilder"
+                                                          []
+                                                          []
+                                                          AB
+                                                          "Var"
+                                                      ]
+                                                  ]),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| elem |) |)
+                                                |)
+                                              ]
+                                            |)
                                           ]
                                         |);
                                         M.closure
@@ -4588,19 +4907,86 @@ Module air.
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.SubPointer.get_array_field (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| local |) |),
-                                  "p3_blake3_air::columns::Blake3Cols",
-                                  "chaining_values"
-                                |),
-                                Value.Integer IntegerKind.Usize 0
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 32 ]
+                                      [
+                                        Ty.associated_in_trait
+                                          "p3_air::air::AirBuilder"
+                                          []
+                                          []
+                                          AB
+                                          "Var"
+                                      ]
+                                  ]
+                              ],
+                            M.pointer_coercion
+                              M.PointerCoercion.Unsize
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 4 ]
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 32 ]
+                                        [
+                                          Ty.associated_in_trait
+                                            "p3_air::air::AirBuilder"
+                                            []
+                                            []
+                                            AB
+                                            "Var"
+                                        ]
+                                    ]
+                                ])
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 32 ]
+                                        [
+                                          Ty.associated_in_trait
+                                            "p3_air::air::AirBuilder"
+                                            []
+                                            []
+                                            AB
+                                            "Var"
+                                        ]
+                                    ]
+                                ]),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_array_field (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| local |) |),
+                                    "p3_blake3_air::columns::Blake3Cols",
+                                    "chaining_values"
+                                  |),
+                                  Value.Integer IntegerKind.Usize 0
+                                |)
                               |)
-                            |))
+                            ]
+                          |)
                         ]
                       |);
                       M.read (|
@@ -5304,16 +5690,83 @@ Module air.
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| local |) |),
-                                "p3_blake3_air::columns::Blake3Cols",
-                                "initial_row2"
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 2 ]
+                                      [
+                                        Ty.associated_in_trait
+                                          "p3_air::air::AirBuilder"
+                                          []
+                                          []
+                                          AB
+                                          "Var"
+                                      ]
+                                  ]
+                              ],
+                            M.pointer_coercion
+                              M.PointerCoercion.Unsize
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 4 ]
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 2 ]
+                                        [
+                                          Ty.associated_in_trait
+                                            "p3_air::air::AirBuilder"
+                                            []
+                                            []
+                                            AB
+                                            "Var"
+                                        ]
+                                    ]
+                                ])
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 2 ]
+                                        [
+                                          Ty.associated_in_trait
+                                            "p3_air::air::AirBuilder"
+                                            []
+                                            []
+                                            AB
+                                            "Var"
+                                        ]
+                                    ]
+                                ]),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| local |) |),
+                                  "p3_blake3_air::columns::Blake3Cols",
+                                  "initial_row2"
+                                |)
                               |)
-                            |))
+                            ]
+                          |)
                         ]
                       |);
                       M.read (|
@@ -6674,16 +7127,83 @@ Module air.
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| local |) |),
-                                "p3_blake3_air::columns::Blake3Cols",
-                                "final_round_helpers"
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 32 ]
+                                      [
+                                        Ty.associated_in_trait
+                                          "p3_air::air::AirBuilder"
+                                          []
+                                          []
+                                          AB
+                                          "Var"
+                                      ]
+                                  ]
+                              ],
+                            M.pointer_coercion
+                              M.PointerCoercion.Unsize
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 4 ]
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 32 ]
+                                        [
+                                          Ty.associated_in_trait
+                                            "p3_air::air::AirBuilder"
+                                            []
+                                            []
+                                            AB
+                                            "Var"
+                                        ]
+                                    ]
+                                ])
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 32 ]
+                                        [
+                                          Ty.associated_in_trait
+                                            "p3_air::air::AirBuilder"
+                                            []
+                                            []
+                                            AB
+                                            "Var"
+                                        ]
+                                    ]
+                                ]),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| local |) |),
+                                  "p3_blake3_air::columns::Blake3Cols",
+                                  "final_round_helpers"
+                                |)
                               |)
-                            |))
+                            ]
+                          |)
                         ]
                       |);
                       M.read (|
@@ -7390,16 +7910,83 @@ Module air.
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| local |) |),
-                                "p3_blake3_air::columns::Blake3Cols",
-                                "final_round_helpers"
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 32 ]
+                                      [
+                                        Ty.associated_in_trait
+                                          "p3_air::air::AirBuilder"
+                                          []
+                                          []
+                                          AB
+                                          "Var"
+                                      ]
+                                  ]
+                              ],
+                            M.pointer_coercion
+                              M.PointerCoercion.Unsize
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 4 ]
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 32 ]
+                                        [
+                                          Ty.associated_in_trait
+                                            "p3_air::air::AirBuilder"
+                                            []
+                                            []
+                                            AB
+                                            "Var"
+                                        ]
+                                    ]
+                                ])
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 32 ]
+                                        [
+                                          Ty.associated_in_trait
+                                            "p3_air::air::AirBuilder"
+                                            []
+                                            []
+                                            AB
+                                            "Var"
+                                        ]
+                                    ]
+                                ]),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| local |) |),
+                                  "p3_blake3_air::columns::Blake3Cols",
+                                  "final_round_helpers"
+                                |)
                               |)
-                            |))
+                            ]
+                          |)
                         ]
                       |);
                       M.call_closure (|
@@ -7427,19 +8014,86 @@ Module air.
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.SubPointer.get_array_field (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| local |) |),
-                                  "p3_blake3_air::columns::Blake3Cols",
-                                  "outputs"
-                                |),
-                                Value.Integer IntegerKind.Usize 0
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 32 ]
+                                      [
+                                        Ty.associated_in_trait
+                                          "p3_air::air::AirBuilder"
+                                          []
+                                          []
+                                          AB
+                                          "Var"
+                                      ]
+                                  ]
+                              ],
+                            M.pointer_coercion
+                              M.PointerCoercion.Unsize
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 4 ]
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 32 ]
+                                        [
+                                          Ty.associated_in_trait
+                                            "p3_air::air::AirBuilder"
+                                            []
+                                            []
+                                            AB
+                                            "Var"
+                                        ]
+                                    ]
+                                ])
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 32 ]
+                                        [
+                                          Ty.associated_in_trait
+                                            "p3_air::air::AirBuilder"
+                                            []
+                                            []
+                                            AB
+                                            "Var"
+                                        ]
+                                    ]
+                                ]),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_array_field (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| local |) |),
+                                    "p3_blake3_air::columns::Blake3Cols",
+                                    "outputs"
+                                  |),
+                                  Value.Integer IntegerKind.Usize 0
+                                |)
                               |)
-                            |))
+                            ]
+                          |)
                         ]
                       |)
                     ]
@@ -7561,12 +8215,64 @@ Module air.
                                             []
                                           |),
                                           [
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| M.read (| bits |) |)
-                                              |))
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "slice")
+                                                    []
+                                                    [
+                                                      Ty.associated_in_trait
+                                                        "p3_air::air::AirBuilder"
+                                                        []
+                                                        []
+                                                        AB
+                                                        "Var"
+                                                    ]
+                                                ],
+                                              M.pointer_coercion
+                                                M.PointerCoercion.Unsize
+                                                (Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 32 ]
+                                                      [
+                                                        Ty.associated_in_trait
+                                                          "p3_air::air::AirBuilder"
+                                                          []
+                                                          []
+                                                          AB
+                                                          "Var"
+                                                      ]
+                                                  ])
+                                                (Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "slice")
+                                                      []
+                                                      [
+                                                        Ty.associated_in_trait
+                                                          "p3_air::air::AirBuilder"
+                                                          []
+                                                          []
+                                                          AB
+                                                          "Var"
+                                                      ]
+                                                  ]),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| bits |) |)
+                                                |)
+                                              ]
+                                            |)
                                           ]
                                         |);
                                         M.closure

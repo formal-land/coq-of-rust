@@ -452,6 +452,37 @@ fn compile_literal_integer(
     }
 }
 
+fn compile_pointer_coercion_safety(safety: &rustc_hir::Safety) -> PointerCoercionSafety {
+    match safety {
+        rustc_hir::Safety::Unsafe => PointerCoercionSafety::Unsafe,
+        rustc_hir::Safety::Safe => PointerCoercionSafety::Safe,
+    }
+}
+
+fn compile_pointer_coercion(
+    coercion: &rustc_middle::ty::adjustment::PointerCoercion,
+) -> PointerCoercion {
+    match coercion {
+        rustc_middle::ty::adjustment::PointerCoercion::ReifyFnPointer => {
+            PointerCoercion::ReifyFnPointer
+        }
+        rustc_middle::ty::adjustment::PointerCoercion::UnsafeFnPointer => {
+            PointerCoercion::UnsafeFnPointer
+        }
+        rustc_middle::ty::adjustment::PointerCoercion::ClosureFnPointer(safety) => {
+            PointerCoercion::ClosureFnPointer(compile_pointer_coercion_safety(safety))
+        }
+        rustc_middle::ty::adjustment::PointerCoercion::MutToConstPointer => {
+            PointerCoercion::MutToConstPointer
+        }
+        rustc_middle::ty::adjustment::PointerCoercion::ArrayToPointer => {
+            PointerCoercion::ArrayToPointer
+        }
+        rustc_middle::ty::adjustment::PointerCoercion::Unsize => PointerCoercion::Unsize,
+        rustc_middle::ty::adjustment::PointerCoercion::DynStar => PointerCoercion::DynStar,
+    }
+}
+
 pub(crate) fn compile_expr<'a>(
     env: &Env<'a>,
     generics: &'a rustc_middle::ty::Generics,
@@ -617,17 +648,21 @@ pub(crate) fn compile_expr<'a>(
             cast,
             is_from_as_cast: _,
         } => {
-            let func = Expr::local_var("M.pointer_coercion");
+            let coercion = compile_pointer_coercion(cast);
+            let source_expr = thir.exprs.get(*source).unwrap();
+            let source_ty = compile_type(env, &source_expr.span, generics, &source_expr.ty);
             let source = compile_expr(env, generics, thir, source).read();
+            let func = Rc::new(Expr::PointerCoercion {
+                coercion,
+                source_ty,
+                target_ty: ty.clone(),
+            });
 
-            Rc::new(Expr::Comment(
-                format!("{cast:?}"),
-                Rc::new(Expr::Call {
-                    func,
-                    args: vec![source],
-                    kind: CallKind::Pure,
-                }),
-            ))
+            Rc::new(Expr::Call {
+                func,
+                args: vec![source],
+                kind: CallKind::Closure(ty.clone()),
+            })
             .alloc(ty)
         }
         thir::ExprKind::Loop { body, .. } => {

@@ -193,21 +193,34 @@ Module iter.
                             |)
                           |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "iter" |) |) |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "core::iter::adapters::filter_map::FilterMap",
-                                    "iter"
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                            M.pointer_coercion
+                              M.PointerCoercion.Unsize
+                              (Ty.apply (Ty.path "&") [] [ I ])
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::iter::adapters::filter_map::FilterMap",
+                                      "iter"
+                                    |)
                                   |)
                                 |)
                               |)
-                            |))
+                            ]
+                          |)
                         ]
                       |)
                     |)
@@ -627,12 +640,54 @@ Module iter.
                     [ B ]
                     [
                       ("array",
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (|
-                            Pointer.Kind.MutRef,
-                            M.deref (| M.borrow (| Pointer.Kind.MutRef, array |) |)
-                          |)));
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "slice")
+                                []
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ B ]
+                                ]
+                            ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ N ]
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ B ]
+                                  ]
+                              ])
+                            (Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ B ]
+                                  ]
+                              ]),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.deref (| M.borrow (| Pointer.Kind.MutRef, array |) |)
+                            |)
+                          ]
+                        |));
                       ("initialized", Value.Integer IntegerKind.Usize 0)
                     ] in
                 let~ result :

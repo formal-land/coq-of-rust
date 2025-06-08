@@ -795,16 +795,65 @@ Module slice.
                                           []
                                         |),
                                         [
-                                          (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.borrow (|
-                                              Pointer.Kind.MutRef,
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.deref (| M.read (| self |) |),
-                                                "core::slice::sort::stable::AlignedStorage",
-                                                "storage"
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&mut")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "slice")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "core::mem::maybe_uninit::MaybeUninit")
+                                                      []
+                                                      [ Ty.path "u8" ]
+                                                  ]
+                                              ],
+                                            M.pointer_coercion
+                                              M.PointerCoercion.Unsize
+                                              (Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "array")
+                                                    [ N ]
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "core::mem::maybe_uninit::MaybeUninit")
+                                                        []
+                                                        [ Ty.path "u8" ]
+                                                    ]
+                                                ])
+                                              (Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "slice")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "core::mem::maybe_uninit::MaybeUninit")
+                                                        []
+                                                        [ Ty.path "u8" ]
+                                                    ]
+                                                ]),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "core::slice::sort::stable::AlignedStorage",
+                                                  "storage"
+                                                |)
                                               |)
-                                            |))
+                                            ]
+                                          |)
                                         ]
                                       |)
                                     ]

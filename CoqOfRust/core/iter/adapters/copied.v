@@ -104,27 +104,34 @@ Module iter.
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Copied" |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "it" |) |) |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.alloc (|
-                            Ty.apply (Ty.path "&") [] [ I ],
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "core::iter::adapters::copied::Copied",
-                                "it"
+                  M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                    M.pointer_coercion
+                      M.PointerCoercion.Unsize
+                      (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ I ] ])
+                      (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Ty.apply (Ty.path "&") [] [ I ],
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::iter::adapters::copied::Copied",
+                                  "it"
+                                |)
                               |)
                             |)
                           |)
                         |)
                       |)
-                    |))
+                    ]
+                  |)
                 ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -1835,9 +1842,56 @@ Module iter.
                                               []
                                             |),
                                             [
-                                              (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.borrow (| Pointer.Kind.MutRef, raw_array |))
+                                              M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "slice")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "core::mem::maybe_uninit::MaybeUninit")
+                                                          []
+                                                          [ T ]
+                                                      ]
+                                                  ],
+                                                M.pointer_coercion
+                                                  M.PointerCoercion.Unsize
+                                                  (Ty.apply
+                                                    (Ty.path "&mut")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "array")
+                                                        [ N ]
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::mem::maybe_uninit::MaybeUninit")
+                                                            []
+                                                            [ T ]
+                                                        ]
+                                                    ])
+                                                  (Ty.apply
+                                                    (Ty.path "&mut")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "slice")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::mem::maybe_uninit::MaybeUninit")
+                                                            []
+                                                            [ T ]
+                                                        ]
+                                                    ]),
+                                                [ M.borrow (| Pointer.Kind.MutRef, raw_array |) ]
+                                              |)
                                             ]
                                           |));
                                         M.read (| len |)
@@ -2004,8 +2058,53 @@ Module iter.
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion (M.borrow (| Pointer.Kind.MutRef, raw_array |))
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "slice")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
+                                            [ T ]
+                                        ]
+                                    ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.Unsize
+                                    (Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ N ]
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
+                                              [ T ]
+                                          ]
+                                      ])
+                                    (Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
+                                              [ T ]
+                                          ]
+                                      ]),
+                                  [ M.borrow (| Pointer.Kind.MutRef, raw_array |) ]
+                                |)
                               ]
                             |));
                           N

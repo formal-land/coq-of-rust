@@ -583,61 +583,57 @@ Module legacy.
                           |)
                         |);
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "map" |) |) |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.alloc (|
-                                  Ty.path "alloc::string::String",
-                                  M.call_closure (|
+                        M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ])
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
                                     Ty.path "alloc::string::String",
-                                    M.get_function (|
-                                      "const_hex::encode",
-                                      [],
-                                      [
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                                      ]
-                                    |),
-                                    [
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "bitvec::vec::BitVec")
-                                            []
-                                            [ Ty.path "u8"; Ty.path "bitvec::order::Lsb0" ],
-                                          "as_raw_slice",
-                                          [],
-                                          []
-                                        |),
+                                    M.call_closure (|
+                                      Ty.path "alloc::string::String",
+                                      M.get_function (|
+                                        "const_hex::encode",
+                                        [],
                                         [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (|
-                                              M.call_closure (|
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "bitvec::vec::BitVec")
-                                                      []
-                                                      [ Ty.path "u8"; Ty.path "bitvec::order::Lsb0"
-                                                      ]
-                                                  ],
-                                                M.get_trait_method (|
-                                                  "core::ops::deref::Deref",
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                        ]
+                                      |),
+                                      [
+                                        M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "bitvec::vec::BitVec")
+                                              []
+                                              [ Ty.path "u8"; Ty.path "bitvec::order::Lsb0" ],
+                                            "as_raw_slice",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.call_closure (|
                                                   Ty.apply
-                                                    (Ty.path "alloc::sync::Arc")
+                                                    (Ty.path "&")
                                                     []
                                                     [
                                                       Ty.apply
@@ -646,36 +642,52 @@ Module legacy.
                                                         [
                                                           Ty.path "u8";
                                                           Ty.path "bitvec::order::Lsb0"
-                                                        ];
-                                                      Ty.path "alloc::alloc::Global"
+                                                        ]
                                                     ],
-                                                  [],
-                                                  [],
-                                                  "deref",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.SubPointer.get_struct_tuple_field (|
-                                                      M.deref (| M.read (| self |) |),
-                                                      "revm_bytecode::legacy::jump_map::JumpTable",
-                                                      0
+                                                  M.get_trait_method (|
+                                                    "core::ops::deref::Deref",
+                                                    Ty.apply
+                                                      (Ty.path "alloc::sync::Arc")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "bitvec::vec::BitVec")
+                                                          []
+                                                          [
+                                                            Ty.path "u8";
+                                                            Ty.path "bitvec::order::Lsb0"
+                                                          ];
+                                                        Ty.path "alloc::alloc::Global"
+                                                      ],
+                                                    [],
+                                                    [],
+                                                    "deref",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.SubPointer.get_struct_tuple_field (|
+                                                        M.deref (| M.read (| self |) |),
+                                                        "revm_bytecode::legacy::jump_map::JumpTable",
+                                                        0
+                                                      |)
                                                     |)
-                                                  |)
-                                                ]
+                                                  ]
+                                                |)
                                               |)
                                             |)
-                                          |)
-                                        ]
-                                      |)
-                                    ]
+                                          ]
+                                        |)
+                                      ]
+                                    |)
                                   |)
                                 |)
                               |)
                             |)
-                          |))
+                          ]
+                        |)
                       ]
                     |)
                   |)

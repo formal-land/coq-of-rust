@@ -2577,15 +2577,32 @@ Module vec.
                                                                                 (Ty.path "*const")
                                                                                 []
                                                                                 [ T ])
-                                                                              (* MutToConstPointer *)
-                                                                              (M.pointer_coercion
-                                                                                (M.read (|
-                                                                                  M.SubPointer.get_struct_record_field (|
-                                                                                    sink,
-                                                                                    "alloc::vec::in_place_drop::InPlaceDrop",
-                                                                                    "dst"
+                                                                              (M.call_closure (|
+                                                                                Ty.apply
+                                                                                  (Ty.path "*const")
+                                                                                  []
+                                                                                  [ T ],
+                                                                                M.pointer_coercion
+                                                                                  M.PointerCoercion.MutToConstPointer
+                                                                                  (Ty.apply
+                                                                                    (Ty.path "*mut")
+                                                                                    []
+                                                                                    [ T ])
+                                                                                  (Ty.apply
+                                                                                    (Ty.path
+                                                                                      "*const")
+                                                                                    []
+                                                                                    [ T ]),
+                                                                                [
+                                                                                  M.read (|
+                                                                                    M.SubPointer.get_struct_record_field (|
+                                                                                      sink,
+                                                                                      "alloc::vec::in_place_drop::InPlaceDrop",
+                                                                                      "dst"
+                                                                                    |)
                                                                                   |)
-                                                                                |)));
+                                                                                ]
+                                                                              |));
                                                                             M.read (| src_end |)
                                                                           ]
                                                                         |)
@@ -2935,7 +2952,14 @@ Module vec.
                         "dst"
                       |)
                     |);
-                    (* MutToConstPointer *) M.pointer_coercion (M.read (| dst_buf |))
+                    M.call_closure (|
+                      Ty.apply (Ty.path "*const") [] [ T ],
+                      M.pointer_coercion
+                        M.PointerCoercion.MutToConstPointer
+                        (Ty.apply (Ty.path "*mut") [] [ T ])
+                        (Ty.apply (Ty.path "*const") [] [ T ]),
+                      [ M.read (| dst_buf |) ]
+                    |)
                   ]
                 |)
               |)
@@ -3168,11 +3192,30 @@ Module vec.
                                                                                         "*const")
                                                                                       []
                                                                                       [ T ])
-                                                                                    (* MutToConstPointer *)
-                                                                                    (M.pointer_coercion
-                                                                                      (M.read (|
-                                                                                        dst
-                                                                                      |)));
+                                                                                    (M.call_closure (|
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "*const")
+                                                                                        []
+                                                                                        [ T ],
+                                                                                      M.pointer_coercion
+                                                                                        M.PointerCoercion.MutToConstPointer
+                                                                                        (Ty.apply
+                                                                                          (Ty.path
+                                                                                            "*mut")
+                                                                                          []
+                                                                                          [ T ])
+                                                                                        (Ty.apply
+                                                                                          (Ty.path
+                                                                                            "*const")
+                                                                                          []
+                                                                                          [ T ]),
+                                                                                      [
+                                                                                        M.read (|
+                                                                                          dst
+                                                                                        |)
+                                                                                      ]
+                                                                                    |));
                                                                                   M.read (| end_ |)
                                                                                 ]
                                                                               |)

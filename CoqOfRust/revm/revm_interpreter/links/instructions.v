@@ -29,20 +29,32 @@ Instance run_instruction_table
 Proof.
   constructor.
   run_symbolic; cbn.
-  { exact (Function2.of_run (run_unknown run_InterpreterTypes_for_WIRE)). }
-  { reflexivity. }
+  { change (Value.Closure _) with
+      (φ (Function2.of_run (run_unknown run_InterpreterTypes_for_WIRE))).
+    set (F := Function2.t _ _ _).
+    now pose proof (run_pointer_coercion_intrinsic_reify_fn_pointer F).
+  }
   { (* unknown *)
     eapply Run.Rewrite. {
       exact (array.repeat_φ_eq 256 _).
     }
     run_symbolic.
   }
-  { exact (Function2.of_run (run_stop run_InterpreterTypes_for_WIRE)). }
-  { reflexivity. }
-  { exact (Function2.of_run (run_add run_InterpreterTypes_for_WIRE)). }
-  { reflexivity. }
-  { exact (Function2.of_run (run_balance run_InterpreterTypes_for_WIRE run_Host_for_H)). }
-  { reflexivity. }
+  { change (Value.Closure _) with
+      (φ (Function2.of_run (run_stop run_InterpreterTypes_for_WIRE))).
+    set (F := Function2.t _ _ _).
+    now pose proof (run_pointer_coercion_intrinsic_reify_fn_pointer F).
+  }
+  { change (Value.Closure _) with
+      (φ (Function2.of_run (run_add run_InterpreterTypes_for_WIRE))).
+    set (F := Function2.t _ _ _).
+    now pose proof (run_pointer_coercion_intrinsic_reify_fn_pointer F).
+  }
+  { change (Value.Closure _) with
+      (φ (Function2.of_run (run_balance run_InterpreterTypes_for_WIRE run_Host_for_H))).
+    set (F := Function2.t _ _ _).
+    now pose proof (run_pointer_coercion_intrinsic_reify_fn_pointer F).
+  }
 Defined.
 
 (*

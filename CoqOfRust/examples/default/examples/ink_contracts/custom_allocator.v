@@ -49,21 +49,36 @@ Module Impl_custom_allocator_CustomAllocator.
                   [ Ty.path "alloc::alloc::Global" ]
                 |),
                 [
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.read (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "alloc::boxed::Box")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "array")
-                              [ Value.Integer IntegerKind.Usize 1 ]
-                              [ Ty.path "bool" ];
-                            Ty.path "alloc::alloc::Global"
-                          ],
-                        M.get_associated_function (|
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      []
+                      [
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "bool" ];
+                        Ty.path "alloc::alloc::Global"
+                      ],
+                    M.pointer_coercion
+                      M.PointerCoercion.Unsize
+                      (Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 1 ]
+                            [ Ty.path "bool" ];
+                          Ty.path "alloc::alloc::Global"
+                        ])
+                      (Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        []
+                        [
+                          Ty.apply (Ty.path "slice") [] [ Ty.path "bool" ];
+                          Ty.path "alloc::alloc::Global"
+                        ]),
+                    [
+                      M.read (|
+                        M.call_closure (|
                           Ty.apply
                             (Ty.path "alloc::boxed::Box")
                             []
@@ -74,21 +89,34 @@ Module Impl_custom_allocator_CustomAllocator.
                                 [ Ty.path "bool" ];
                               Ty.path "alloc::alloc::Global"
                             ],
-                          "new",
-                          [],
-                          []
-                        |),
-                        [
-                          M.alloc (|
+                          M.get_associated_function (|
                             Ty.apply
-                              (Ty.path "array")
-                              [ Value.Integer IntegerKind.Usize 1 ]
-                              [ Ty.path "bool" ],
-                            Value.Array [ M.read (| init_value |) ]
-                          |)
-                        ]
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                  [ Ty.path "bool" ];
+                                Ty.path "alloc::alloc::Global"
+                              ],
+                            "new",
+                            [],
+                            []
+                          |),
+                          [
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "bool" ],
+                              Value.Array [ M.read (| init_value |) ]
+                            |)
+                          ]
+                        |)
                       |)
-                    |))
+                    ]
+                  |)
                 ]
               |))
           ]))

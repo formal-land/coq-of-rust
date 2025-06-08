@@ -3635,12 +3635,47 @@ Module net.
                                                             []
                                                           |),
                                                           [
-                                                            (* Unsize *)
-                                                            M.pointer_coercion
-                                                              (M.borrow (|
-                                                                Pointer.Kind.MutRef,
-                                                                groups
-                                                              |))
+                                                            M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "&mut")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "slice")
+                                                                    []
+                                                                    [ Ty.path "u8" ]
+                                                                ],
+                                                              M.pointer_coercion
+                                                                M.PointerCoercion.Unsize
+                                                                (Ty.apply
+                                                                  (Ty.path "&mut")
+                                                                  []
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path "array")
+                                                                      [
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          4
+                                                                      ]
+                                                                      [ Ty.path "u8" ]
+                                                                  ])
+                                                                (Ty.apply
+                                                                  (Ty.path "&mut")
+                                                                  []
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path "slice")
+                                                                      []
+                                                                      [ Ty.path "u8" ]
+                                                                  ]),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.MutRef,
+                                                                  groups
+                                                                |)
+                                                              ]
+                                                            |)
                                                           ]
                                                         |)
                                                       ]
@@ -4284,14 +4319,41 @@ Module net.
                                                 Pointer.Kind.MutRef,
                                                 M.deref (| M.read (| p |) |)
                                               |);
-                                              (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.borrow (|
-                                                  Pointer.Kind.MutRef,
-                                                  M.deref (|
-                                                    M.borrow (| Pointer.Kind.MutRef, head |)
+                                              M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ]
+                                                  ],
+                                                M.pointer_coercion
+                                                  M.PointerCoercion.Unsize
+                                                  (Ty.apply
+                                                    (Ty.path "&mut")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "array")
+                                                        [ Value.Integer IntegerKind.Usize 8 ]
+                                                        [ Ty.path "u16" ]
+                                                    ])
+                                                  (Ty.apply
+                                                    (Ty.path "&mut")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "slice")
+                                                        []
+                                                        [ Ty.path "u16" ]
+                                                    ]),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutRef,
+                                                    M.deref (|
+                                                      M.borrow (| Pointer.Kind.MutRef, head |)
+                                                    |)
                                                   |)
-                                                |))
+                                                ]
+                                              |)
                                             ]
                                           |)
                                         |),
@@ -8155,27 +8217,37 @@ Module net.
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "AddrParseError" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          Ty.apply (Ty.path "&") [] [ Ty.path "core::net::parser::AddrKind" ],
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_tuple_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::net::parser::AddrParseError",
-                              0
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ Ty.path "core::net::parser::AddrKind" ] ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            Ty.apply (Ty.path "&") [] [ Ty.path "core::net::parser::AddrKind" ],
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::net::parser::AddrParseError",
+                                0
+                              |)
                             |)
                           |)
                         |)
                       |)
                     |)
-                  |))
+                  ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"

@@ -54,8 +54,38 @@ Module num.
                                         []
                                       |),
                                       [
-                                        (* Unsize *)
-                                        M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, result |))
+                                        M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "slice")
+                                                []
+                                                [ Ty.tuple [ Ty.path "u8"; Ty.path "u8" ] ]
+                                            ],
+                                          M.pointer_coercion
+                                            M.PointerCoercion.Unsize
+                                            (Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "array")
+                                                  [ Value.Integer IntegerKind.Usize 256 ]
+                                                  [ Ty.tuple [ Ty.path "u8"; Ty.path "u8" ] ]
+                                              ])
+                                            (Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "slice")
+                                                  []
+                                                  [ Ty.tuple [ Ty.path "u8"; Ty.path "u8" ] ]
+                                              ]),
+                                          [ M.borrow (| Pointer.Kind.Ref, result |) ]
+                                        |)
                                       ]
                                     |)
                                   ]

@@ -259,12 +259,40 @@ Module collections.
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "A" |) |) |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                            |))
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                            M.pointer_coercion
+                              M.PointerCoercion.Unsize
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.associated_in_trait
+                                        "core::iter::traits::iterator::Iterator"
+                                        []
+                                        []
+                                        I
+                                        "Item"
+                                    ]
+                                ])
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                              |)
+                            ]
+                          |)
                         ]
                       |)));
                   fun γ =>
@@ -305,12 +333,40 @@ Module collections.
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "B" |) |) |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                            |))
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                            M.pointer_coercion
+                              M.PointerCoercion.Unsize
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.associated_in_trait
+                                        "core::iter::traits::iterator::Iterator"
+                                        []
+                                        []
+                                        I
+                                        "Item"
+                                    ]
+                                ])
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                              |)
+                            ]
+                          |)
                         ]
                       |)))
                 ]
@@ -551,59 +607,111 @@ Module collections.
                                               |)
                                             |)
                                           |);
-                                          (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (|
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.deref (| M.read (| self |) |),
-                                                    "alloc::collections::btree::merge_iter::MergeIterInner",
-                                                    "a"
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                            M.pointer_coercion
+                                              M.PointerCoercion.Unsize
+                                              (Ty.apply (Ty.path "&") [] [ I ])
+                                              (Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.deref (| M.read (| self |) |),
+                                                      "alloc::collections::btree::merge_iter::MergeIterInner",
+                                                      "a"
+                                                    |)
                                                   |)
                                                 |)
                                               |)
-                                            |))
+                                            ]
+                                          |)
                                         ]
                                       |)
                                     |)
                                   |);
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (|
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "alloc::collections::btree::merge_iter::MergeIterInner",
-                                            "b"
+                                  M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                    M.pointer_coercion
+                                      M.PointerCoercion.Unsize
+                                      (Ty.apply (Ty.path "&") [] [ I ])
+                                      (Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "alloc::collections::btree::merge_iter::MergeIterInner",
+                                              "b"
+                                            |)
                                           |)
                                         |)
                                       |)
-                                    |))
+                                    ]
+                                  |)
                                 ]
                               |)
                             |)
                           |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "alloc::collections::btree::merge_iter::MergeIterInner",
-                                    "peeked"
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                            M.pointer_coercion
+                              M.PointerCoercion.Unsize
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::collections::btree::merge_iter::Peeked")
+                                        []
+                                        [ I ]
+                                    ]
+                                ])
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "alloc::collections::btree::merge_iter::MergeIterInner",
+                                      "peeked"
+                                    |)
                                   |)
                                 |)
                               |)
-                            |))
+                            ]
+                          |)
                         ]
                       |)
                     |)

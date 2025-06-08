@@ -142,70 +142,118 @@ Module signature.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Signature" |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "v" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "alloy_primitives::signature::sig::Signature",
-                          "v"
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.path "alloy_primitives::signature::parity::Parity" ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloy_primitives::signature::sig::Signature",
+                            "v"
+                          |)
                         |)
                       |)
                     |)
-                  |));
+                  ]
+                |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "r" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "alloy_primitives::signature::sig::Signature",
-                          "r"
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "ruint::Uint")
+                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                          []
+                      ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloy_primitives::signature::sig::Signature",
+                            "r"
+                          |)
                         |)
                       |)
                     |)
-                  |));
+                  ]
+                |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "s" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          Ty.apply
-                            (Ty.path "&")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "ruint::Uint")
-                                [
-                                  Value.Integer IntegerKind.Usize 256;
-                                  Value.Integer IntegerKind.Usize 4
-                                ]
-                                []
-                            ],
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "alloy_primitives::signature::sig::Signature",
-                              "s"
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [
+                                Value.Integer IntegerKind.Usize 256;
+                                Value.Integer IntegerKind.Usize 4
+                              ]
+                              []
+                          ]
+                      ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
+                                  []
+                              ],
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "alloy_primitives::signature::sig::Signature",
+                                "s"
+                              |)
                             |)
                           |)
                         |)
                       |)
                     |)
-                  |))
+                  ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1110,30 +1158,45 @@ Module signature.
                 []
               |),
               [
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "array")
-                        [ Value.Integer IntegerKind.Usize 65 ]
-                        [ Ty.path "u8" ],
-                      M.call_closure (|
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 65 ]
+                          [ Ty.path "u8" ]
+                      ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
                         Ty.apply
                           (Ty.path "array")
                           [ Value.Integer IntegerKind.Usize 65 ]
                           [ Ty.path "u8" ],
-                        M.get_associated_function (|
-                          Ty.path "alloy_primitives::signature::sig::Signature",
-                          "as_bytes",
-                          [],
-                          []
-                        |),
-                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value |) |) |) ]
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 65 ]
+                            [ Ty.path "u8" ],
+                          M.get_associated_function (|
+                            Ty.path "alloy_primitives::signature::sig::Signature",
+                            "as_bytes",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value |) |) |) ]
+                        |)
                       |)
                     |)
-                  |))
+                  ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1176,30 +1239,45 @@ Module signature.
                 []
               |),
               [
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      Ty.apply
-                        (Ty.path "array")
-                        [ Value.Integer IntegerKind.Usize 65 ]
-                        [ Ty.path "u8" ],
-                      M.call_closure (|
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 65 ]
+                          [ Ty.path "u8" ]
+                      ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
                         Ty.apply
                           (Ty.path "array")
                           [ Value.Integer IntegerKind.Usize 65 ]
                           [ Ty.path "u8" ],
-                        M.get_associated_function (|
-                          Ty.path "alloy_primitives::signature::sig::Signature",
-                          "as_bytes",
-                          [],
-                          []
-                        |),
-                        [ M.borrow (| Pointer.Kind.Ref, value |) ]
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 65 ]
+                            [ Ty.path "u8" ],
+                          M.get_associated_function (|
+                            Ty.path "alloy_primitives::signature::sig::Signature",
+                            "as_bytes",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, value |) ]
+                        |)
                       |)
                     |)
-                  |))
+                  ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2530,50 +2608,68 @@ Module signature.
                         |)
                       |)
                     |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.alloc (|
-                              Ty.apply
-                                (Ty.path "array")
-                                [ Value.Integer IntegerKind.Usize 32 ]
-                                [ Ty.path "u8" ],
-                              M.call_closure (|
+                    M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                      M.pointer_coercion
+                        M.PointerCoercion.Unsize
+                        (Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 32 ]
+                              [ Ty.path "u8" ]
+                          ])
+                        (Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
                                 Ty.apply
                                   (Ty.path "array")
                                   [ Value.Integer IntegerKind.Usize 32 ]
                                   [ Ty.path "u8" ],
-                                M.get_associated_function (|
+                                M.call_closure (|
                                   Ty.apply
-                                    (Ty.path "ruint::Uint")
-                                    [
-                                      Value.Integer IntegerKind.Usize 256;
-                                      Value.Integer IntegerKind.Usize 4
-                                    ]
-                                    [],
-                                  "to_be_bytes",
-                                  [ Value.Integer IntegerKind.Usize 32 ],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "alloy_primitives::signature::sig::Signature",
-                                      "r"
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 32 ]
+                                    [ Ty.path "u8" ],
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [
+                                        Value.Integer IntegerKind.Usize 256;
+                                        Value.Integer IntegerKind.Usize 4
+                                      ]
+                                      [],
+                                    "to_be_bytes",
+                                    [ Value.Integer IntegerKind.Usize 32 ],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloy_primitives::signature::sig::Signature",
+                                        "r"
+                                      |)
                                     |)
-                                  |)
-                                ]
+                                  ]
+                                |)
                               |)
                             |)
                           |)
                         |)
-                      |))
+                      ]
+                    |)
                   ]
                 |) in
               let~ _ : Ty.tuple [] :=
@@ -2620,50 +2716,68 @@ Module signature.
                         |)
                       |)
                     |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.alloc (|
-                              Ty.apply
-                                (Ty.path "array")
-                                [ Value.Integer IntegerKind.Usize 32 ]
-                                [ Ty.path "u8" ],
-                              M.call_closure (|
+                    M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                      M.pointer_coercion
+                        M.PointerCoercion.Unsize
+                        (Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 32 ]
+                              [ Ty.path "u8" ]
+                          ])
+                        (Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.deref (|
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (|
                                 Ty.apply
                                   (Ty.path "array")
                                   [ Value.Integer IntegerKind.Usize 32 ]
                                   [ Ty.path "u8" ],
-                                M.get_associated_function (|
+                                M.call_closure (|
                                   Ty.apply
-                                    (Ty.path "ruint::Uint")
-                                    [
-                                      Value.Integer IntegerKind.Usize 256;
-                                      Value.Integer IntegerKind.Usize 4
-                                    ]
-                                    [],
-                                  "to_be_bytes",
-                                  [ Value.Integer IntegerKind.Usize 32 ],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "alloy_primitives::signature::sig::Signature",
-                                      "s"
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 32 ]
+                                    [ Ty.path "u8" ],
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [
+                                        Value.Integer IntegerKind.Usize 256;
+                                        Value.Integer IntegerKind.Usize 4
+                                      ]
+                                      [],
+                                    "to_be_bytes",
+                                    [ Value.Integer IntegerKind.Usize 32 ],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloy_primitives::signature::sig::Signature",
+                                        "s"
+                                      |)
                                     |)
-                                  |)
-                                ]
+                                  ]
+                                |)
                               |)
                             |)
                           |)
                         |)
-                      |))
+                      ]
+                    |)
                   ]
                 |) in
               let~ _ : Ty.tuple [] :=

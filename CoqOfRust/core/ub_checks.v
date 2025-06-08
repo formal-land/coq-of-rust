@@ -163,8 +163,14 @@ Module intrinsics.
                                         []
                                       |),
                                       [
-                                        (* MutToConstPointer *)
-                                        M.pointer_coercion (M.read (| dst |));
+                                        M.call_closure (|
+                                          Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
+                                          M.pointer_coercion
+                                            M.PointerCoercion.MutToConstPointer
+                                            (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
+                                            (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]),
+                                          [ M.read (| dst |) ]
+                                        |);
                                         M.read (| align |);
                                         M.read (| zero_size |)
                                       ]
@@ -180,7 +186,14 @@ Module intrinsics.
                                     |),
                                     [
                                       M.read (| src |);
-                                      (* MutToConstPointer *) M.pointer_coercion (M.read (| dst |));
+                                      M.call_closure (|
+                                        Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
+                                        M.pointer_coercion
+                                          M.PointerCoercion.MutToConstPointer
+                                          (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
+                                          (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]),
+                                        [ M.read (| dst |) ]
+                                      |);
                                       M.read (| size |);
                                       M.read (| count |)
                                     ]
@@ -262,7 +275,14 @@ Module intrinsics.
                                   []
                                 |),
                                 [
-                                  (* MutToConstPointer *) M.pointer_coercion (M.read (| dst |));
+                                  M.call_closure (|
+                                    Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
+                                    M.pointer_coercion
+                                      M.PointerCoercion.MutToConstPointer
+                                      (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
+                                      (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]),
+                                    [ M.read (| dst |) ]
+                                  |);
                                   M.read (| align |);
                                   M.read (| zero_size |)
                                 ]
@@ -416,7 +436,14 @@ Module ptr.
                                       []
                                     |),
                                     [
-                                      (* MutToConstPointer *) M.pointer_coercion (M.read (| x |));
+                                      M.call_closure (|
+                                        Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
+                                        M.pointer_coercion
+                                          M.PointerCoercion.MutToConstPointer
+                                          (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
+                                          (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]),
+                                        [ M.read (| x |) ]
+                                      |);
                                       M.read (| align |);
                                       M.read (| zero_size |)
                                     ]
@@ -430,7 +457,14 @@ Module ptr.
                                         []
                                       |),
                                       [
-                                        (* MutToConstPointer *) M.pointer_coercion (M.read (| y |));
+                                        M.call_closure (|
+                                          Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
+                                          M.pointer_coercion
+                                            M.PointerCoercion.MutToConstPointer
+                                            (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
+                                            (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]),
+                                          [ M.read (| y |) ]
+                                        |);
                                         M.read (| align |);
                                         M.read (| zero_size |)
                                       ]
@@ -445,8 +479,22 @@ Module ptr.
                                       []
                                     |),
                                     [
-                                      (* MutToConstPointer *) M.pointer_coercion (M.read (| x |));
-                                      (* MutToConstPointer *) M.pointer_coercion (M.read (| y |));
+                                      M.call_closure (|
+                                        Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
+                                        M.pointer_coercion
+                                          M.PointerCoercion.MutToConstPointer
+                                          (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
+                                          (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]),
+                                        [ M.read (| x |) ]
+                                      |);
+                                      M.call_closure (|
+                                        Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
+                                        M.pointer_coercion
+                                          M.PointerCoercion.MutToConstPointer
+                                          (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
+                                          (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]),
+                                        [ M.read (| y |) ]
+                                      |);
                                       M.read (| size |);
                                       M.read (| count |)
                                     ]
@@ -642,7 +690,14 @@ Module ptr.
                               []
                             |),
                             [
-                              (* MutToConstPointer *) M.pointer_coercion (M.read (| addr |));
+                              M.call_closure (|
+                                Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.MutToConstPointer
+                                  (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
+                                  (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]),
+                                [ M.read (| addr |) ]
+                              |);
                               M.read (| align |);
                               M.read (| is_zst |)
                             ]
@@ -772,7 +827,14 @@ Module ptr.
                               []
                             |),
                             [
-                              (* MutToConstPointer *) M.pointer_coercion (M.read (| addr |));
+                              M.call_closure (|
+                                Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.MutToConstPointer
+                                  (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
+                                  (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]),
+                                [ M.read (| addr |) ]
+                              |);
                               M.read (| align |);
                               M.read (| is_zst |)
                             ]
@@ -1209,7 +1271,14 @@ Module slice.
                                   []
                                 |),
                                 [
-                                  (* MutToConstPointer *) M.pointer_coercion (M.read (| data |));
+                                  M.call_closure (|
+                                    Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
+                                    M.pointer_coercion
+                                      M.PointerCoercion.MutToConstPointer
+                                      (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
+                                      (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]),
+                                    [ M.read (| data |) ]
+                                  |);
                                   M.read (| align |);
                                   Value.Bool false
                                 ]
@@ -1289,7 +1358,14 @@ Module slice.
                                   []
                                 |),
                                 [
-                                  (* MutToConstPointer *) M.pointer_coercion (M.read (| data |));
+                                  M.call_closure (|
+                                    Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
+                                    M.pointer_coercion
+                                      M.PointerCoercion.MutToConstPointer
+                                      (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
+                                      (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]),
+                                    [ M.read (| data |) ]
+                                  |);
                                   M.read (| align |);
                                   Value.Bool false
                                 ]

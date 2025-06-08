@@ -543,12 +543,19 @@ Module boxed.
                                   M.use
                                     (M.alloc (|
                                       Ty.apply (Ty.path "&") [] [ Dyn ],
-                                      (* Unsize *)
-                                      M.pointer_coercion
-                                        (M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (| M.borrow (| Pointer.Kind.Ref, value |) |)
-                                        |))
+                                      M.call_closure (|
+                                        Ty.apply (Ty.path "&") [] [ Dyn ],
+                                        M.pointer_coercion
+                                          M.PointerCoercion.Unsize
+                                          (Ty.apply (Ty.path "&") [] [ T ])
+                                          (Ty.apply (Ty.path "&") [] [ Dyn ]),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.borrow (| Pointer.Kind.Ref, value |) |)
+                                          |)
+                                        ]
+                                      |)
                                     |))
                                 |)
                               |)
@@ -2530,7 +2537,16 @@ Module boxed.
                           [],
                           [ T ]
                         |),
-                        [ (* MutToConstPointer *) M.pointer_coercion (M.read (| value |)) ]
+                        [
+                          M.call_closure (|
+                            Ty.apply (Ty.path "*const") [] [ T ],
+                            M.pointer_coercion
+                              M.PointerCoercion.MutToConstPointer
+                              (Ty.apply (Ty.path "*mut") [] [ T ])
+                              (Ty.apply (Ty.path "*const") [] [ T ]),
+                            [ M.read (| value |) ]
+                          |)
+                        ]
                       |));
                     ("_marker", Value.StructTuple "core::marker::PhantomData" [] [ H ] [])
                   ] in

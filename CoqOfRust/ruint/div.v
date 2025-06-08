@@ -546,28 +546,60 @@ Module div.
                 Ty.tuple [],
                 M.get_function (| "ruint::algorithms::div::div", [], [] |),
                 [
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.SubPointer.get_struct_record_field (| self, "ruint::Uint", "limbs" |)
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ],
+                    M.pointer_coercion
+                      M.PointerCoercion.Unsize
+                      (Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ])
+                      (Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ]),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (| self, "ruint::Uint", "limbs" |)
+                          |)
                         |)
                       |)
-                    |));
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.SubPointer.get_struct_record_field (| rhs, "ruint::Uint", "limbs" |)
+                    ]
+                  |);
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ],
+                    M.pointer_coercion
+                      M.PointerCoercion.Unsize
+                      (Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ])
+                      (Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ]),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (| rhs, "ruint::Uint", "limbs" |)
+                          |)
                         |)
                       |)
-                    |))
+                    ]
+                  |)
                 ]
               |) in
             M.alloc (|

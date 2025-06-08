@@ -471,27 +471,48 @@ Module algorithms.
                               [ Ty.path "usize" ]
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.read (|
-                                      get_constant (|
-                                        "ruint::algorithms::div::reciprocal::reciprocal_mg10::TABLE",
-                                        Ty.apply
-                                          (Ty.path "&")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "array")
-                                              [ Value.Integer IntegerKind.Usize 256 ]
-                                              [ Ty.path "u16" ]
-                                          ]
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ] ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 256 ]
+                                        [ Ty.path "u16" ]
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ] ]),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.read (|
+                                        get_constant (|
+                                          "ruint::algorithms::div::reciprocal::reciprocal_mg10::TABLE",
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 256 ]
+                                                [ Ty.path "u16" ]
+                                            ]
+                                        |)
                                       |)
                                     |)
                                   |)
-                                |));
+                                ]
+                              |);
                               M.cast
                                 (Ty.path "usize")
                                 (M.call_closure (|

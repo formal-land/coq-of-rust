@@ -287,12 +287,28 @@ Module error.
                                         (Ty.path "*const")
                                         []
                                         [ Ty.dyn [ ("core::error::Error::Trait", []) ] ],
-                                      (* Unsize *)
-                                      M.pointer_coercion
-                                        (M.borrow (|
-                                          Pointer.Kind.ConstPointer,
-                                          M.deref (| M.read (| self |) |)
-                                        |))
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "*const")
+                                          []
+                                          [ Ty.dyn [ ("core::error::Error::Trait", []) ] ],
+                                        M.pointer_coercion
+                                          M.PointerCoercion.Unsize
+                                          (Ty.apply
+                                            (Ty.path "*const")
+                                            []
+                                            [ Ty.dyn [ ("core::error::Error::Trait", []) ] ])
+                                          (Ty.apply
+                                            (Ty.path "*const")
+                                            []
+                                            [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.ConstPointer,
+                                            M.deref (| M.read (| self |) |)
+                                          |)
+                                        ]
+                                      |)
                                     |))
                                 |))
                             |)
@@ -378,12 +394,28 @@ Module error.
                                         (Ty.path "*mut")
                                         []
                                         [ Ty.dyn [ ("core::error::Error::Trait", []) ] ],
-                                      (* Unsize *)
-                                      M.pointer_coercion
-                                        (M.borrow (|
-                                          Pointer.Kind.MutPointer,
-                                          M.deref (| M.read (| self |) |)
-                                        |))
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "*mut")
+                                          []
+                                          [ Ty.dyn [ ("core::error::Error::Trait", []) ] ],
+                                        M.pointer_coercion
+                                          M.PointerCoercion.Unsize
+                                          (Ty.apply
+                                            (Ty.path "*mut")
+                                            []
+                                            [ Ty.dyn [ ("core::error::Error::Trait", []) ] ])
+                                          (Ty.apply
+                                            (Ty.path "*mut")
+                                            []
+                                            [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutPointer,
+                                            M.deref (| M.read (| self |) |)
+                                          |)
+                                        ]
+                                      |)
                                     |))
                                 |))
                             |)
@@ -444,9 +476,17 @@ Module error.
                   []
                   [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ] ]
                   [
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |))
+                    M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ],
+                      M.pointer_coercion
+                        M.PointerCoercion.Unsize
+                        (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ])
+                        (Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                    |)
                   ])
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -490,8 +530,20 @@ Module error.
               [ T ]
             |),
             [
-              (* Unsize *)
-              M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |))
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.dyn
+                        [ ("core::error::Error::Trait", []); ("core::marker::Send::AutoTrait", []) ]
+                    ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -530,8 +582,20 @@ Module error.
               [ T ]
             |),
             [
-              (* Unsize *)
-              M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |))
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.dyn
+                        [ ("core::error::Error::Trait", []); ("core::marker::Send::AutoTrait", []) ]
+                    ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -571,9 +635,20 @@ Module error.
               [ T ]
             |),
             [
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |))
+              M.call_closure (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&mut")
+                    []
+                    [
+                      Ty.dyn
+                        [ ("core::error::Error::Trait", []); ("core::marker::Send::AutoTrait", []) ]
+                    ])
+                  (Ty.apply (Ty.path "&mut") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]),
+                [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -627,8 +702,24 @@ Module error.
               [ T ]
             |),
             [
-              (* Unsize *)
-              M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |))
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.dyn
+                        [
+                          ("core::error::Error::Trait", []);
+                          ("core::marker::Sync::AutoTrait", []);
+                          ("core::marker::Send::AutoTrait", [])
+                        ]
+                    ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -671,8 +762,24 @@ Module error.
               [ T ]
             |),
             [
-              (* Unsize *)
-              M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |))
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.dyn
+                        [
+                          ("core::error::Error::Trait", []);
+                          ("core::marker::Sync::AutoTrait", []);
+                          ("core::marker::Send::AutoTrait", [])
+                        ]
+                    ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -716,9 +823,24 @@ Module error.
               [ T ]
             |),
             [
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |))
+              M.call_closure (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&mut")
+                    []
+                    [
+                      Ty.dyn
+                        [
+                          ("core::error::Error::Trait", []);
+                          ("core::marker::Sync::AutoTrait", []);
+                          ("core::marker::Send::AutoTrait", [])
+                        ]
+                    ])
+                  (Ty.apply (Ty.path "&mut") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]),
+                [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1678,30 +1800,45 @@ Module error.
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Value" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          Ty.apply
-                            (Ty.path "&")
-                            []
-                            [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ] ],
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_tuple_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::error::tags::Value",
-                              0
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ] ]
+                      ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ] ],
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::error::tags::Value",
+                                0
+                              |)
                             |)
                           |)
                         |)
                       |)
                     |)
-                  |))
+                  ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1775,30 +1912,45 @@ Module error.
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "MaybeSizedValue" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          Ty.apply
-                            (Ty.path "&")
-                            []
-                            [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ] ],
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_tuple_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::error::tags::MaybeSizedValue",
-                              0
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ] ]
+                      ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ] ],
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::error::tags::MaybeSizedValue",
+                                0
+                              |)
                             |)
                           |)
                         |)
                       |)
                     |)
-                  |))
+                  ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1869,30 +2021,45 @@ Module error.
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Ref" |) |) |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          Ty.apply
-                            (Ty.path "&")
-                            []
-                            [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ I ] ],
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_tuple_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::error::tags::Ref",
-                              0
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ I ] ]
+                      ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ I ] ],
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::error::tags::Ref",
+                                0
+                              |)
                             |)
                           |)
                         |)
                       |)
                     |)
-                  |))
+                  ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2002,9 +2169,38 @@ Module error.
                               []
                               [ Ty.dyn [ ("core::error::Erased::Trait", []) ] ]
                           ],
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |))
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::error::Tagged")
+                                []
+                                [ Ty.dyn [ ("core::error::Erased::Trait", []) ] ]
+                            ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::error::Tagged")
+                                  []
+                                  [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ]
+                              ])
+                            (Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::error::Tagged")
+                                  []
+                                  [ Ty.dyn [ ("core::error::Erased::Trait", []) ] ]
+                              ]),
+                          [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
+                        |)
                       |))
                   |) in
                 M.alloc (|
@@ -2032,12 +2228,43 @@ Module error.
                                             []
                                             [ Ty.dyn [ ("core::error::Erased::Trait", []) ] ]
                                         ],
-                                      (* Unsize *)
-                                      M.pointer_coercion
-                                        (M.borrow (|
-                                          Pointer.Kind.MutPointer,
-                                          M.deref (| M.read (| erased |) |)
-                                        |))
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "*mut")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::error::Tagged")
+                                              []
+                                              [ Ty.dyn [ ("core::error::Erased::Trait", []) ] ]
+                                          ],
+                                        M.pointer_coercion
+                                          M.PointerCoercion.Unsize
+                                          (Ty.apply
+                                            (Ty.path "*mut")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::error::Tagged")
+                                                []
+                                                [ Ty.dyn [ ("core::error::Erased::Trait", []) ] ]
+                                            ])
+                                          (Ty.apply
+                                            (Ty.path "*mut")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::error::Tagged")
+                                                []
+                                                [ Ty.dyn [ ("core::error::Erased::Trait", []) ] ]
+                                            ]),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.MutPointer,
+                                            M.deref (| M.read (| erased |) |)
+                                          |)
+                                        ]
+                                      |)
                                     |))
                                 |))
                             |)
@@ -2249,12 +2476,52 @@ Module error.
                                                     [ Ty.dyn [ ("core::error::Erased::Trait", []) ]
                                                     ]
                                                 ],
-                                              (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.borrow (|
-                                                  Pointer.Kind.ConstPointer,
-                                                  M.deref (| M.read (| self |) |)
-                                                |))
+                                              M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "*const")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::error::Tagged")
+                                                      []
+                                                      [
+                                                        Ty.dyn
+                                                          [ ("core::error::Erased::Trait", []) ]
+                                                      ]
+                                                  ],
+                                                M.pointer_coercion
+                                                  M.PointerCoercion.Unsize
+                                                  (Ty.apply
+                                                    (Ty.path "*const")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::error::Tagged")
+                                                        []
+                                                        [
+                                                          Ty.dyn
+                                                            [ ("core::error::Erased::Trait", []) ]
+                                                        ]
+                                                    ])
+                                                  (Ty.apply
+                                                    (Ty.path "*const")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::error::Tagged")
+                                                        []
+                                                        [
+                                                          Ty.dyn
+                                                            [ ("core::error::Erased::Trait", []) ]
+                                                        ]
+                                                    ]),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.ConstPointer,
+                                                    M.deref (| M.read (| self |) |)
+                                                  |)
+                                                ]
+                                              |)
                                             |))
                                         |)
                                       ]
@@ -2454,12 +2721,52 @@ Module error.
                                                     [ Ty.dyn [ ("core::error::Erased::Trait", []) ]
                                                     ]
                                                 ],
-                                              (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.borrow (|
-                                                  Pointer.Kind.MutPointer,
-                                                  M.deref (| M.read (| self |) |)
-                                                |))
+                                              M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "*mut")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::error::Tagged")
+                                                      []
+                                                      [
+                                                        Ty.dyn
+                                                          [ ("core::error::Erased::Trait", []) ]
+                                                      ]
+                                                  ],
+                                                M.pointer_coercion
+                                                  M.PointerCoercion.Unsize
+                                                  (Ty.apply
+                                                    (Ty.path "*mut")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::error::Tagged")
+                                                        []
+                                                        [
+                                                          Ty.dyn
+                                                            [ ("core::error::Erased::Trait", []) ]
+                                                        ]
+                                                    ])
+                                                  (Ty.apply
+                                                    (Ty.path "*mut")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::error::Tagged")
+                                                        []
+                                                        [
+                                                          Ty.dyn
+                                                            [ ("core::error::Erased::Trait", []) ]
+                                                        ]
+                                                    ]),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.MutPointer,
+                                                    M.deref (| M.read (| self |) |)
+                                                  |)
+                                                ]
+                                              |)
                                             |))
                                         |)
                                       ]
@@ -2602,40 +2909,65 @@ Module error.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Source" |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "current" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "core::option::Option")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
-                              ]
-                          ],
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "core::error::Source",
-                            "current"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
+                            ]
+                        ]
+                    ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
+                                ]
+                            ],
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::error::Source",
+                              "current"
+                            |)
                           |)
                         |)
                       |)
                     |)
                   |)
-                |))
+                ]
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

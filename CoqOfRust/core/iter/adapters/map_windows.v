@@ -1708,16 +1708,77 @@ Module iter.
                       []
                     |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "core::iter::adapters::map_windows::Buffer",
-                            "buffer"
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "slice")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ N ]
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ T ]
+                                  ]
+                              ]
+                          ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ N ]
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        []
+                                        [ T ]
+                                    ]
+                                ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "slice")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ N ]
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        []
+                                        [ T ]
+                                    ]
+                                ]
+                            ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::iter::adapters::map_windows::Buffer",
+                              "buffer"
+                            |)
                           |)
-                        |))
+                        ]
+                      |)
                     ]
                   |)
                 ]
@@ -1800,16 +1861,77 @@ Module iter.
                       []
                     |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "core::iter::adapters::map_windows::Buffer",
-                            "buffer"
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "slice")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ N ]
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ T ]
+                                  ]
+                              ]
+                          ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ N ]
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        []
+                                        [ T ]
+                                    ]
+                                ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "slice")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ N ]
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        []
+                                        [ T ]
+                                    ]
+                                ]
+                            ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::iter::adapters::map_windows::Buffer",
+                              "buffer"
+                            |)
                           |)
-                        |))
+                        ]
+                      |)
                     ]
                   |)
                 ]
@@ -2487,10 +2609,19 @@ Module iter.
                                       ]
                                     |),
                                     [
-                                      (* MutToConstPointer *)
-                                      M.pointer_coercion
-                                        (M.call_closure (|
-                                          Ty.apply
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "*const")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
+                                              [ T ]
+                                          ],
+                                        M.pointer_coercion
+                                          M.PointerCoercion.MutToConstPointer
+                                          (Ty.apply
                                             (Ty.path "*mut")
                                             []
                                             [
@@ -2498,8 +2629,18 @@ Module iter.
                                                 (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                                                 []
                                                 [ T ]
-                                            ],
-                                          M.get_associated_function (|
+                                            ])
+                                          (Ty.apply
+                                            (Ty.path "*const")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                []
+                                                [ T ]
+                                            ]),
+                                        [
+                                          M.call_closure (|
                                             Ty.apply
                                               (Ty.path "*mut")
                                               []
@@ -2509,28 +2650,40 @@ Module iter.
                                                   []
                                                   [ T ]
                                               ],
-                                            "add",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.read (| buffer_mut_ptr |);
-                                            M.call_closure (|
-                                              Ty.path "usize",
-                                              BinOp.Wrap.add,
-                                              [
-                                                M.read (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.deref (| M.read (| self |) |),
-                                                    "core::iter::adapters::map_windows::Buffer",
-                                                    "start"
-                                                  |)
-                                                |);
-                                                Value.Integer IntegerKind.Usize 1
-                                              ]
-                                            |)
-                                          ]
-                                        |));
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path "*mut")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                    []
+                                                    [ T ]
+                                                ],
+                                              "add",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.read (| buffer_mut_ptr |);
+                                              M.call_closure (|
+                                                Ty.path "usize",
+                                                BinOp.Wrap.add,
+                                                [
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.deref (| M.read (| self |) |),
+                                                      "core::iter::adapters::map_windows::Buffer",
+                                                      "start"
+                                                    |)
+                                                  |);
+                                                  Value.Integer IntegerKind.Usize 1
+                                                ]
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                      |);
                                       M.read (| buffer_mut_ptr |);
                                       M.call_closure (|
                                         Ty.path "usize",
@@ -3779,25 +3932,41 @@ Module iter.
                             |)
                           |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "iter" |) |) |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                            M.pointer_coercion
+                              M.PointerCoercion.Unsize
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "core::option::Option") [] [ I ] ])
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
                                     M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "core::iter::adapters::map_windows::MapWindows",
-                                      "inner"
-                                    |),
-                                    "core::iter::adapters::map_windows::MapWindowsInner",
-                                    "iter"
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::iter::adapters::map_windows::MapWindows",
+                                        "inner"
+                                      |),
+                                      "core::iter::adapters::map_windows::MapWindowsInner",
+                                      "iter"
+                                    |)
                                   |)
                                 |)
                               |)
-                            |))
+                            ]
+                          |)
                         ]
                       |)
                     |)

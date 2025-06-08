@@ -213,89 +213,127 @@ Module collections.
                                       |)
                                     |)
                                   |);
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (|
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.alloc (|
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                            M.call_closure (|
+                                  M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                                    M.pointer_coercion
+                                      M.PointerCoercion.Unsize
+                                      (Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                                        ])
+                                      (Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (|
                                               Ty.apply
                                                 (Ty.path "&")
                                                 []
                                                 [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                              M.get_associated_function (|
+                                              M.call_closure (|
                                                 Ty.apply
-                                                  (Ty.path "core::slice::iter::Iter")
+                                                  (Ty.path "&")
                                                   []
-                                                  [ T ],
-                                                "as_slice",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.deref (| M.read (| self |) |),
-                                                    "alloc::collections::vec_deque::iter::Iter",
-                                                    "i1"
+                                                  [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                                M.get_associated_function (|
+                                                  Ty.apply
+                                                    (Ty.path "core::slice::iter::Iter")
+                                                    []
+                                                    [ T ],
+                                                  "as_slice",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.deref (| M.read (| self |) |),
+                                                      "alloc::collections::vec_deque::iter::Iter",
+                                                      "i1"
+                                                    |)
                                                   |)
-                                                |)
-                                              ]
+                                                ]
+                                              |)
                                             |)
                                           |)
                                         |)
                                       |)
-                                    |))
+                                    ]
+                                  |)
                                 ]
                               |)
                             |)
                           |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.alloc (|
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                    M.call_closure (|
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                            M.pointer_coercion
+                              M.PointerCoercion.Unsize
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                                ])
+                              (Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
                                       Ty.apply
                                         (Ty.path "&")
                                         []
                                         [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                      M.get_associated_function (|
-                                        Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
-                                        "as_slice",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "alloc::collections::vec_deque::iter::Iter",
-                                            "i2"
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
+                                          "as_slice",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "alloc::collections::vec_deque::iter::Iter",
+                                              "i2"
+                                            |)
                                           |)
-                                        |)
-                                      ]
+                                        ]
+                                      |)
                                     |)
                                   |)
                                 |)
                               |)
-                            |))
+                            ]
+                          |)
                         ]
                       |)
                     |)

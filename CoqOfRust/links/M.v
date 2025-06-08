@@ -1283,7 +1283,11 @@ Ltac as_of_values elements :=
   | ?element :: ?elements =>
     let elements := as_of_values elements in
     constr:(
-      (let value := OfValue.get_value (value' := element) ltac:(repeat (smpl of_value || reflexivity)) in
+      (let value := OfValue.get_value (value' := element) ltac:(repeat (
+        smpl of_value ||
+        smpl of_ty ||
+        reflexivity
+      )) in
       φ value) ::
       elements
     )
@@ -1544,6 +1548,11 @@ Axiom is_discriminant_record_eq :
   M.IsDiscriminant variant_name discriminant ->
   M.cast (Φ (Integer.t kind)) (Value.StructRecord variant_name consts tys fields) =
   Value.Integer kind (Integer.normalize_wrap kind discriminant).
+
+Instance run_pointer_coercion_intrinsic_reify_fn_pointer (F : Set) `{Link F} (f : F) :
+  Run.Trait (pointer_coercion_intrinsic PointerCoercion.ReifyFnPointer)
+    [] [ Φ F; Φ F ] [ φ f ] F.
+Admitted.
 
 Module Function1.
   Record t {A Output : Set} `{Link A} `{Link Output} : Set := {

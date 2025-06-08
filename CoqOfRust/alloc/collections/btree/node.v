@@ -3486,30 +3486,53 @@ Module collections.
                       []
                       [ Ty.apply (Ty.path "alloc::collections::btree::node::LeafNode") [] [ K; V ]
                       ] :=
-                  (* MutToConstPointer *)
-                  M.pointer_coercion
-                    (M.call_closure (|
-                      Ty.apply
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "*const")
+                      []
+                      [ Ty.apply (Ty.path "alloc::collections::btree::node::LeafNode") [] [ K; V ]
+                      ],
+                    M.pointer_coercion
+                      M.PointerCoercion.MutToConstPointer
+                      (Ty.apply
                         (Ty.path "*mut")
                         []
                         [ Ty.apply (Ty.path "alloc::collections::btree::node::LeafNode") [] [ K; V ]
-                        ],
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::collections::btree::node::NodeRef")
-                          []
-                          [ BorrowType; K; V; Type_ ],
-                        "as_leaf_ptr",
-                        [],
+                        ])
+                      (Ty.apply
+                        (Ty.path "*const")
                         []
-                      |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, self |) |)
-                        |)
-                      ]
-                    |)) in
+                        [ Ty.apply (Ty.path "alloc::collections::btree::node::LeafNode") [] [ K; V ]
+                        ]),
+                    [
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "*mut")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::collections::btree::node::LeafNode")
+                              []
+                              [ K; V ]
+                          ],
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "alloc::collections::btree::node::NodeRef")
+                            []
+                            [ BorrowType; K; V; Type_ ],
+                          "as_leaf_ptr",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, self |) |)
+                          |)
+                        ]
+                      |)
+                    ]
+                  |) in
                 M.alloc (|
                   Ty.apply
                     (Ty.path "core::result::Result")
@@ -4891,16 +4914,62 @@ Module collections.
                                   ]
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| leaf |) |),
-                                        "alloc::collections::btree::node::LeafNode",
-                                        "keys"
+                                  M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
+                                              [ K ]
+                                          ]
+                                      ],
+                                    M.pointer_coercion
+                                      M.PointerCoercion.Unsize
+                                      (Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 11 ]
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                []
+                                                [ K ]
+                                            ]
+                                        ])
+                                      (Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "slice")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                []
+                                                [ K ]
+                                            ]
+                                        ]),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| leaf |) |),
+                                          "alloc::collections::btree::node::LeafNode",
+                                          "keys"
+                                        |)
                                       |)
-                                    |));
+                                    ]
+                                  |);
                                   Value.mkStructRecord
                                     "core::ops::range::RangeTo"
                                     []
@@ -6271,7 +6340,38 @@ Module collections.
                           []
                           [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ] ]
                       ] :=
-                  (* Unsize *) M.pointer_coercion (M.read (| keys |)) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "*const")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ] ]
+                      ],
+                    M.pointer_coercion
+                      M.PointerCoercion.Unsize
+                      (Ty.apply
+                        (Ty.path "*const")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 11 ]
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ] ]
+                        ])
+                      (Ty.apply
+                        (Ty.path "*const")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "slice")
+                            []
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ] ]
+                        ]),
+                    [ M.read (| keys |) ]
+                  |) in
                 let~ vals :
                     Ty.apply
                       (Ty.path "*mut")
@@ -6282,7 +6382,38 @@ Module collections.
                           []
                           [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ] ]
                       ] :=
-                  (* Unsize *) M.pointer_coercion (M.read (| vals |)) in
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "*mut")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ] ]
+                      ],
+                    M.pointer_coercion
+                      M.PointerCoercion.Unsize
+                      (Ty.apply
+                        (Ty.path "*mut")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 11 ]
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ] ]
+                        ])
+                      (Ty.apply
+                        (Ty.path "*mut")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "slice")
+                            []
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ] ]
+                        ]),
+                    [ M.read (| vals |) ]
+                  |) in
                 let~ key : Ty.apply (Ty.path "&") [] [ K ] :=
                   M.call_closure (|
                     Ty.apply (Ty.path "&") [] [ K ],
@@ -15819,16 +15950,95 @@ Module collections.
                               [ Ty.path "usize" ]
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| parent_ptr |) |),
-                                    "alloc::collections::btree::node::InternalNode",
-                                    "edges"
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "slice")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::ptr::non_null::NonNull")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path
+                                                    "alloc::collections::btree::node::LeafNode")
+                                                  []
+                                                  [ K; V ]
+                                              ]
+                                          ]
+                                      ]
+                                  ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 12 ]
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::ptr::non_null::NonNull")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path
+                                                      "alloc::collections::btree::node::LeafNode")
+                                                    []
+                                                    [ K; V ]
+                                                ]
+                                            ]
+                                        ]
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "slice")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::ptr::non_null::NonNull")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path
+                                                      "alloc::collections::btree::node::LeafNode")
+                                                    []
+                                                    [ K; V ]
+                                                ]
+                                            ]
+                                        ]
+                                    ]),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| parent_ptr |) |),
+                                      "alloc::collections::btree::node::InternalNode",
+                                      "edges"
+                                    |)
                                   |)
-                                |));
+                                ]
+                              |);
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   self,
@@ -16235,16 +16445,62 @@ Module collections.
                               [ Ty.path "usize" ]
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| leaf |) |),
-                                    "alloc::collections::btree::node::LeafNode",
-                                    "keys"
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "slice")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                          []
+                                          [ K ]
+                                      ]
+                                  ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 11 ]
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
+                                            [ K ]
+                                        ]
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "slice")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
+                                            [ K ]
+                                        ]
+                                    ]),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| leaf |) |),
+                                      "alloc::collections::btree::node::LeafNode",
+                                      "keys"
+                                    |)
                                   |)
-                                |));
+                                ]
+                              |);
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   self,
@@ -16288,16 +16544,62 @@ Module collections.
                               [ Ty.path "usize" ]
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| leaf |) |),
-                                    "alloc::collections::btree::node::LeafNode",
-                                    "vals"
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "slice")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                          []
+                                          [ V ]
+                                      ]
+                                  ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 11 ]
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
+                                            [ V ]
+                                        ]
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "slice")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
+                                            [ V ]
+                                        ]
+                                    ]),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| leaf |) |),
+                                      "alloc::collections::btree::node::LeafNode",
+                                      "vals"
+                                    |)
                                   |)
-                                |));
+                                ]
+                              |);
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   self,
@@ -16680,16 +16982,65 @@ Module collections.
                                           [ Ty.path "usize" ]
                                         |),
                                         [
-                                          (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.borrow (|
-                                              Pointer.Kind.MutRef,
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.deref (| M.read (| leaf |) |),
-                                                "alloc::collections::btree::node::LeafNode",
-                                                "vals"
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&mut")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "slice")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "core::mem::maybe_uninit::MaybeUninit")
+                                                      []
+                                                      [ V ]
+                                                  ]
+                                              ],
+                                            M.pointer_coercion
+                                              M.PointerCoercion.Unsize
+                                              (Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "array")
+                                                    [ Value.Integer IntegerKind.Usize 11 ]
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "core::mem::maybe_uninit::MaybeUninit")
+                                                        []
+                                                        [ V ]
+                                                    ]
+                                                ])
+                                              (Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "slice")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "core::mem::maybe_uninit::MaybeUninit")
+                                                        []
+                                                        [ V ]
+                                                    ]
+                                                ]),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.MutRef,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| leaf |) |),
+                                                  "alloc::collections::btree::node::LeafNode",
+                                                  "vals"
+                                                |)
                                               |)
-                                            |));
+                                            ]
+                                          |);
                                           M.read (|
                                             M.SubPointer.get_struct_record_field (|
                                               self,
@@ -16917,16 +17268,62 @@ Module collections.
                                   [ Ty.path "usize" ]
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.borrow (|
-                                      Pointer.Kind.MutRef,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| leaf |) |),
-                                        "alloc::collections::btree::node::LeafNode",
-                                        "keys"
+                                  M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
+                                              [ K ]
+                                          ]
+                                      ],
+                                    M.pointer_coercion
+                                      M.PointerCoercion.Unsize
+                                      (Ty.apply
+                                        (Ty.path "&mut")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 11 ]
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                []
+                                                [ K ]
+                                            ]
+                                        ])
+                                      (Ty.apply
+                                        (Ty.path "&mut")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "slice")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                []
+                                                [ K ]
+                                            ]
+                                        ]),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| leaf |) |),
+                                          "alloc::collections::btree::node::LeafNode",
+                                          "keys"
+                                        |)
                                       |)
-                                    |));
+                                    ]
+                                  |);
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       self,
@@ -16983,16 +17380,62 @@ Module collections.
                                   [ Ty.path "usize" ]
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.borrow (|
-                                      Pointer.Kind.MutRef,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| leaf |) |),
-                                        "alloc::collections::btree::node::LeafNode",
-                                        "vals"
+                                  M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
+                                              [ V ]
+                                          ]
+                                      ],
+                                    M.pointer_coercion
+                                      M.PointerCoercion.Unsize
+                                      (Ty.apply
+                                        (Ty.path "&mut")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 11 ]
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                []
+                                                [ V ]
+                                            ]
+                                        ])
+                                      (Ty.apply
+                                        (Ty.path "&mut")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "slice")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                []
+                                                [ V ]
+                                            ]
+                                        ]),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| leaf |) |),
+                                          "alloc::collections::btree::node::LeafNode",
+                                          "vals"
+                                        |)
                                       |)
-                                    |));
+                                    ]
+                                  |);
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       self,
@@ -17223,16 +17666,62 @@ Module collections.
                               [ Ty.path "usize" ]
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.borrow (|
-                                  Pointer.Kind.MutRef,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| leaf |) |),
-                                    "alloc::collections::btree::node::LeafNode",
-                                    "keys"
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "slice")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                          []
+                                          [ K ]
+                                      ]
+                                  ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 11 ]
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
+                                            [ K ]
+                                        ]
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "slice")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
+                                            [ K ]
+                                        ]
+                                    ]),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| leaf |) |),
+                                      "alloc::collections::btree::node::LeafNode",
+                                      "keys"
+                                    |)
                                   |)
-                                |));
+                                ]
+                              |);
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.deref (| M.read (| self |) |),
@@ -17276,16 +17765,62 @@ Module collections.
                               [ Ty.path "usize" ]
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.borrow (|
-                                  Pointer.Kind.MutRef,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| leaf |) |),
-                                    "alloc::collections::btree::node::LeafNode",
-                                    "vals"
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "slice")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                          []
+                                          [ V ]
+                                      ]
+                                  ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 11 ]
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
+                                            [ V ]
+                                        ]
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "slice")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
+                                            [ V ]
+                                        ]
+                                    ]),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| leaf |) |),
+                                      "alloc::collections::btree::node::LeafNode",
+                                      "vals"
+                                    |)
                                   |)
-                                |));
+                                ]
+                              |);
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.deref (| M.read (| self |) |),
@@ -18388,16 +18923,62 @@ Module collections.
                               [ Ty.path "usize" ]
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.borrow (|
-                                  Pointer.Kind.MutRef,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| leaf |) |),
-                                    "alloc::collections::btree::node::LeafNode",
-                                    "keys"
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "slice")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                          []
+                                          [ K ]
+                                      ]
+                                  ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 11 ]
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
+                                            [ K ]
+                                        ]
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "slice")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
+                                            [ K ]
+                                        ]
+                                    ]),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| leaf |) |),
+                                      "alloc::collections::btree::node::LeafNode",
+                                      "keys"
+                                    |)
                                   |)
-                                |));
+                                ]
+                              |);
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   self,
@@ -18441,16 +19022,62 @@ Module collections.
                               [ Ty.path "usize" ]
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.borrow (|
-                                  Pointer.Kind.MutRef,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| leaf |) |),
-                                    "alloc::collections::btree::node::LeafNode",
-                                    "vals"
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "slice")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                          []
+                                          [ V ]
+                                      ]
+                                  ],
+                                M.pointer_coercion
+                                  M.PointerCoercion.Unsize
+                                  (Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 11 ]
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
+                                            [ V ]
+                                        ]
+                                    ])
+                                  (Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "slice")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
+                                            [ V ]
+                                        ]
+                                    ]),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| leaf |) |),
+                                      "alloc::collections::btree::node::LeafNode",
+                                      "vals"
+                                    |)
                                   |)
-                                |));
+                                ]
+                              |);
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   self,
@@ -18669,16 +19296,49 @@ Module collections.
                       [ Ty.path "usize" ]
                     |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| leaf |) |),
-                            "alloc::collections::btree::node::LeafNode",
-                            "keys"
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "slice")
+                              []
+                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ] ]
+                          ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 11 ]
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
+                                ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "slice")
+                                []
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
+                                ]
+                            ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| leaf |) |),
+                              "alloc::collections::btree::node::LeafNode",
+                              "keys"
+                            |)
                           |)
-                        |));
+                        ]
+                      |);
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
                           self,
@@ -18708,16 +19368,49 @@ Module collections.
                       [ Ty.path "usize" ]
                     |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| leaf |) |),
-                            "alloc::collections::btree::node::LeafNode",
-                            "vals"
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "slice")
+                              []
+                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ] ]
+                          ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 11 ]
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
+                                ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "slice")
+                                []
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
+                                ]
+                            ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| leaf |) |),
+                              "alloc::collections::btree::node::LeafNode",
+                              "vals"
+                            |)
                           |)
-                        |));
+                        ]
+                      |);
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
                           self,
@@ -29323,10 +30016,19 @@ Module collections.
                                 ]
                               |),
                               [
-                                (* MutToConstPointer *)
-                                M.pointer_coercion
-                                  (M.call_closure (|
-                                    Ty.apply
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "*const")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        []
+                                        [ T ]
+                                    ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.MutToConstPointer
+                                    (Ty.apply
                                       (Ty.path "*mut")
                                       []
                                       [
@@ -29334,8 +30036,18 @@ Module collections.
                                           (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                                           []
                                           [ T ]
-                                      ],
-                                    M.get_associated_function (|
+                                      ])
+                                    (Ty.apply
+                                      (Ty.path "*const")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                          []
+                                          [ T ]
+                                      ]),
+                                  [
+                                    M.call_closure (|
                                       Ty.apply
                                         (Ty.path "*mut")
                                         []
@@ -29345,12 +30057,24 @@ Module collections.
                                             []
                                             [ T ]
                                         ],
-                                      "add",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.read (| slice_ptr |); M.read (| idx |) ]
-                                  |));
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "*mut")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
+                                              [ T ]
+                                          ],
+                                        "add",
+                                        [],
+                                        []
+                                      |),
+                                      [ M.read (| slice_ptr |); M.read (| idx |) ]
+                                    |)
+                                  ]
+                                |);
                                 M.call_closure (|
                                   Ty.apply
                                     (Ty.path "*mut")
@@ -29606,31 +30330,48 @@ Module collections.
                     [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                   |),
                   [
-                    (* MutToConstPointer *)
-                    M.pointer_coercion
-                      (M.call_closure (|
-                        Ty.apply
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "*const")
+                        []
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
+                      M.pointer_coercion
+                        M.PointerCoercion.MutToConstPointer
+                        (Ty.apply
                           (Ty.path "*mut")
                           []
-                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
-                        M.get_associated_function (|
+                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ])
+                        (Ty.apply
+                          (Ty.path "*const")
+                          []
+                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]),
+                      [
+                        M.call_closure (|
                           Ty.apply
                             (Ty.path "*mut")
                             []
                             [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
-                          "add",
-                          [],
-                          []
-                        |),
-                        [
-                          M.read (| slice_ptr |);
-                          M.call_closure (|
-                            Ty.path "usize",
-                            BinOp.Wrap.add,
-                            [ M.read (| idx |); Value.Integer IntegerKind.Usize 1 ]
-                          |)
-                        ]
-                      |));
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "*mut")
+                              []
+                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                              ],
+                            "add",
+                            [],
+                            []
+                          |),
+                          [
+                            M.read (| slice_ptr |);
+                            M.call_closure (|
+                              Ty.path "usize",
+                              BinOp.Wrap.add,
+                              [ M.read (| idx |); Value.Integer IntegerKind.Usize 1 ]
+                            |)
+                          ]
+                        |)
+                      ]
+                    |);
                     M.call_closure (|
                       Ty.apply
                         (Ty.path "*mut")
@@ -29728,24 +30469,41 @@ Module collections.
                     [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                   |),
                   [
-                    (* MutToConstPointer *)
-                    M.pointer_coercion
-                      (M.call_closure (|
-                        Ty.apply
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "*const")
+                        []
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
+                      M.pointer_coercion
+                        M.PointerCoercion.MutToConstPointer
+                        (Ty.apply
                           (Ty.path "*mut")
                           []
-                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
-                        M.get_associated_function (|
+                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ])
+                        (Ty.apply
+                          (Ty.path "*const")
+                          []
+                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]),
+                      [
+                        M.call_closure (|
                           Ty.apply
                             (Ty.path "*mut")
                             []
                             [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
-                          "add",
-                          [],
-                          []
-                        |),
-                        [ M.read (| slice_ptr |); M.read (| distance |) ]
-                      |));
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "*mut")
+                              []
+                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                              ],
+                            "add",
+                            [],
+                            []
+                          |),
+                          [ M.read (| slice_ptr |); M.read (| distance |) ]
+                        |)
+                      ]
+                    |);
                     M.read (| slice_ptr |);
                     M.call_closure (|
                       Ty.path "usize",
@@ -29837,7 +30595,23 @@ Module collections.
                     [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
                   |),
                   [
-                    (* MutToConstPointer *) M.pointer_coercion (M.read (| slice_ptr |));
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "*const")
+                        []
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ],
+                      M.pointer_coercion
+                        M.PointerCoercion.MutToConstPointer
+                        (Ty.apply
+                          (Ty.path "*mut")
+                          []
+                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ])
+                        (Ty.apply
+                          (Ty.path "*const")
+                          []
+                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]),
+                      [ M.read (| slice_ptr |) ]
+                    |);
                     M.call_closure (|
                       Ty.apply
                         (Ty.path "*mut")

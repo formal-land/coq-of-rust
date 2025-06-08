@@ -129,13 +129,59 @@ Module instructions.
                         Ty.apply (Ty.path "&mut") [] [ H ]
                       ]
                       (Ty.tuple []),
-                    (* ReifyFnPointer *)
-                    M.pointer_coercion
-                      (M.get_function (|
-                        "revm_interpreter::instructions::control::unknown",
-                        [],
-                        [ WIRE; H ]
-                      |))
+                    M.call_closure (|
+                      Ty.function
+                        [
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "revm_interpreter::interpreter::Interpreter")
+                                []
+                                [ WIRE ]
+                            ];
+                          Ty.apply (Ty.path "&mut") [] [ H ]
+                        ]
+                        (Ty.tuple []),
+                      M.pointer_coercion
+                        M.PointerCoercion.ReifyFnPointer
+                        (Ty.function
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "revm_interpreter::interpreter::Interpreter")
+                                  []
+                                  [ WIRE ]
+                              ];
+                            Ty.apply (Ty.path "&mut") [] [ H ]
+                          ]
+                          (Ty.tuple []))
+                        (Ty.function
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "revm_interpreter::interpreter::Interpreter")
+                                  []
+                                  [ WIRE ]
+                              ];
+                            Ty.apply (Ty.path "&mut") [] [ H ]
+                          ]
+                          (Ty.tuple [])),
+                      [
+                        M.get_function (|
+                          "revm_interpreter::instructions::control::unknown",
+                          [],
+                          [ WIRE; H ]
+                        |)
+                      ]
+                    |)
                   |))
               |),
               Value.Integer IntegerKind.Usize 256
@@ -148,13 +194,55 @@ Module instructions.
                   (Ty.path "usize")
                   (M.read (| get_constant (| "revm_bytecode::opcode::STOP", Ty.path "u8" |) |))
               |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::control::stop",
-                  [],
-                  [ WIRE; H ]
-                |))
+              M.call_closure (|
+                Ty.function
+                  [
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [ Ty.apply (Ty.path "revm_interpreter::interpreter::Interpreter") [] [ WIRE ]
+                      ];
+                    Ty.apply (Ty.path "&mut") [] [ H ]
+                  ]
+                  (Ty.tuple []),
+                M.pointer_coercion
+                  M.PointerCoercion.ReifyFnPointer
+                  (Ty.function
+                    [
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "revm_interpreter::interpreter::Interpreter")
+                            []
+                            [ WIRE ]
+                        ];
+                      Ty.apply (Ty.path "&mut") [] [ H ]
+                    ]
+                    (Ty.tuple []))
+                  (Ty.function
+                    [
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "revm_interpreter::interpreter::Interpreter")
+                            []
+                            [ WIRE ]
+                        ];
+                      Ty.apply (Ty.path "&mut") [] [ H ]
+                    ]
+                    (Ty.tuple [])),
+                [
+                  M.get_function (|
+                    "revm_interpreter::instructions::control::stop",
+                    [],
+                    [ WIRE; H ]
+                  |)
+                ]
+              |)
             |) in
           let~ _ : Ty.tuple [] :=
             M.write (|
@@ -164,13 +252,55 @@ Module instructions.
                   (Ty.path "usize")
                   (M.read (| get_constant (| "revm_bytecode::opcode::ADD", Ty.path "u8" |) |))
               |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::arithmetic::add",
-                  [],
-                  [ WIRE; H ]
-                |))
+              M.call_closure (|
+                Ty.function
+                  [
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [ Ty.apply (Ty.path "revm_interpreter::interpreter::Interpreter") [] [ WIRE ]
+                      ];
+                    Ty.apply (Ty.path "&mut") [] [ H ]
+                  ]
+                  (Ty.tuple []),
+                M.pointer_coercion
+                  M.PointerCoercion.ReifyFnPointer
+                  (Ty.function
+                    [
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "revm_interpreter::interpreter::Interpreter")
+                            []
+                            [ WIRE ]
+                        ];
+                      Ty.apply (Ty.path "&mut") [] [ H ]
+                    ]
+                    (Ty.tuple []))
+                  (Ty.function
+                    [
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "revm_interpreter::interpreter::Interpreter")
+                            []
+                            [ WIRE ]
+                        ];
+                      Ty.apply (Ty.path "&mut") [] [ H ]
+                    ]
+                    (Ty.tuple [])),
+                [
+                  M.get_function (|
+                    "revm_interpreter::instructions::arithmetic::add",
+                    [],
+                    [ WIRE; H ]
+                  |)
+                ]
+              |)
             |) in
           let~ _ : Ty.tuple [] :=
             M.write (|
@@ -180,13 +310,55 @@ Module instructions.
                   (Ty.path "usize")
                   (M.read (| get_constant (| "revm_bytecode::opcode::BALANCE", Ty.path "u8" |) |))
               |),
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (|
-                  "revm_interpreter::instructions::host::balance",
-                  [],
-                  [ WIRE; H ]
-                |))
+              M.call_closure (|
+                Ty.function
+                  [
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [ Ty.apply (Ty.path "revm_interpreter::interpreter::Interpreter") [] [ WIRE ]
+                      ];
+                    Ty.apply (Ty.path "&mut") [] [ H ]
+                  ]
+                  (Ty.tuple []),
+                M.pointer_coercion
+                  M.PointerCoercion.ReifyFnPointer
+                  (Ty.function
+                    [
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "revm_interpreter::interpreter::Interpreter")
+                            []
+                            [ WIRE ]
+                        ];
+                      Ty.apply (Ty.path "&mut") [] [ H ]
+                    ]
+                    (Ty.tuple []))
+                  (Ty.function
+                    [
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "revm_interpreter::interpreter::Interpreter")
+                            []
+                            [ WIRE ]
+                        ];
+                      Ty.apply (Ty.path "&mut") [] [ H ]
+                    ]
+                    (Ty.tuple [])),
+                [
+                  M.get_function (|
+                    "revm_interpreter::instructions::host::balance",
+                    [],
+                    [ WIRE; H ]
+                  |)
+                ]
+              |)
             |) in
           table
         |)))

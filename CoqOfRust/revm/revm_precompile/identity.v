@@ -16,9 +16,47 @@ Module identity.
               M.get_function (| "revm_precompile::u64_to_address", [], [] |),
               [ Value.Integer IntegerKind.U64 4 ]
             |);
-            (* ReifyFnPointer *)
-            M.pointer_coercion
-              (M.get_function (| "revm_precompile::identity::identity_run", [], [] |))
+            M.call_closure (|
+              Ty.function
+                [
+                  Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                  Ty.path "u64"
+                ]
+                (Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.path "revm_precompile::interface::PrecompileOutput";
+                    Ty.path "revm_precompile::interface::PrecompileErrors"
+                  ]),
+              M.pointer_coercion
+                M.PointerCoercion.ReifyFnPointer
+                (Ty.function
+                  [
+                    Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                    Ty.path "u64"
+                  ]
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.path "revm_precompile::interface::PrecompileOutput";
+                      Ty.path "revm_precompile::interface::PrecompileErrors"
+                    ]))
+                (Ty.function
+                  [
+                    Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                    Ty.path "u64"
+                  ]
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.path "revm_precompile::interface::PrecompileOutput";
+                      Ty.path "revm_precompile::interface::PrecompileErrors"
+                    ])),
+              [ M.get_function (| "revm_precompile::identity::identity_run", [], [] |) ]
+            |)
           ]
       |))).
   

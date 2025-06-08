@@ -374,16 +374,47 @@ Module array.
                     [ Ty.path "core::ops::index_range::IndexRange" ]
                   |),
                   [
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "core::array::iter::IntoIter",
-                          "data"
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "slice")
+                            []
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
+                        ],
+                      M.pointer_coercion
+                        M.PointerCoercion.Unsize
+                        (Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "array")
+                              [ N ]
+                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
+                          ])
+                        (Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "slice")
+                              []
+                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
+                          ]),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::array::iter::IntoIter",
+                            "data"
+                          |)
                         |)
-                      |));
+                      ]
+                    |);
                     M.call_closure (|
                       Ty.path "core::ops::index_range::IndexRange",
                       M.get_trait_method (|
@@ -504,16 +535,62 @@ Module array.
                             [ Ty.path "core::ops::index_range::IndexRange" ]
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.MutRef,
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "core::array::iter::IntoIter",
-                                  "data"
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        []
+                                        [ T ]
+                                    ]
+                                ],
+                              M.pointer_coercion
+                                M.PointerCoercion.Unsize
+                                (Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ N ]
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                          []
+                                          [ T ]
+                                      ]
+                                  ])
+                                (Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "slice")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                          []
+                                          [ T ]
+                                      ]
+                                  ]),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.MutRef,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::array::iter::IntoIter",
+                                    "data"
+                                  |)
                                 |)
-                              |));
+                              ]
+                            |);
                             M.call_closure (|
                               Ty.path "core::ops::index_range::IndexRange",
                               M.get_trait_method (|
@@ -700,16 +777,65 @@ Module array.
                                               [ Ty.path "usize" ]
                                             |),
                                             [
-                                              (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.deref (| M.read (| self |) |),
-                                                    "core::array::iter::IntoIter",
-                                                    "data"
+                                              M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "slice")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "core::mem::maybe_uninit::MaybeUninit")
+                                                          []
+                                                          [ T ]
+                                                      ]
+                                                  ],
+                                                M.pointer_coercion
+                                                  M.PointerCoercion.Unsize
+                                                  (Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "array")
+                                                        [ N ]
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::mem::maybe_uninit::MaybeUninit")
+                                                            []
+                                                            [ T ]
+                                                        ]
+                                                    ])
+                                                  (Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "slice")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::mem::maybe_uninit::MaybeUninit")
+                                                            []
+                                                            [ T ]
+                                                        ]
+                                                    ]),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.deref (| M.read (| self |) |),
+                                                      "core::array::iter::IntoIter",
+                                                      "data"
+                                                    |)
                                                   |)
-                                                |));
+                                                ]
+                                              |);
                                               M.read (| idx |)
                                             ]
                                           |)
@@ -950,14 +1076,63 @@ Module array.
                                                                   [ Ty.path "usize" ]
                                                                 |),
                                                                 [
-                                                                  (* Unsize *)
-                                                                  M.pointer_coercion
-                                                                    (M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      M.deref (|
-                                                                        M.read (| data |)
+                                                                  M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "slice")
+                                                                          []
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "core::mem::maybe_uninit::MaybeUninit")
+                                                                              []
+                                                                              [ T ]
+                                                                          ]
+                                                                      ],
+                                                                    M.pointer_coercion
+                                                                      M.PointerCoercion.Unsize
+                                                                      (Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "array")
+                                                                            [ N ]
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "core::mem::maybe_uninit::MaybeUninit")
+                                                                                []
+                                                                                [ T ]
+                                                                            ]
+                                                                        ])
+                                                                      (Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "slice")
+                                                                            []
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "core::mem::maybe_uninit::MaybeUninit")
+                                                                                []
+                                                                                [ T ]
+                                                                            ]
+                                                                        ]),
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| data |)
+                                                                        |)
                                                                       |)
-                                                                    |));
+                                                                    ]
+                                                                  |);
                                                                   M.read (| idx |)
                                                                 ]
                                                               |)
@@ -1157,16 +1332,58 @@ Module array.
                         [ Ty.path "core::ops::index_range::IndexRange" ]
                       |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (|
-                            Pointer.Kind.MutRef,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::array::iter::IntoIter",
-                              "data"
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "slice")
+                                []
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                                ]
+                            ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ N ]
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ T ]
+                                  ]
+                              ])
+                            (Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ T ]
+                                  ]
+                              ]),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::array::iter::IntoIter",
+                                "data"
+                              |)
                             |)
-                          |));
+                          ]
+                        |);
                         M.read (| range_to_drop |)
                       ]
                     |) in
@@ -1371,16 +1588,62 @@ Module array.
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "core::array::iter::IntoIter",
-                                      "data"
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "slice")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
+                                            [ T ]
+                                        ]
+                                    ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.Unsize
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ N ]
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
+                                              [ T ]
+                                          ]
+                                      ])
+                                    (Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
+                                              [ T ]
+                                          ]
+                                      ]),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::array::iter::IntoIter",
+                                        "data"
+                                      |)
                                     |)
-                                  |))
+                                  ]
+                                |)
                               ]
                             |);
                             M.call_closure (|
@@ -1559,16 +1822,65 @@ Module array.
                                               [ Ty.path "usize" ]
                                             |),
                                             [
-                                              (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.deref (| M.read (| self |) |),
-                                                    "core::array::iter::IntoIter",
-                                                    "data"
+                                              M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "slice")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "core::mem::maybe_uninit::MaybeUninit")
+                                                          []
+                                                          [ T ]
+                                                      ]
+                                                  ],
+                                                M.pointer_coercion
+                                                  M.PointerCoercion.Unsize
+                                                  (Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "array")
+                                                        [ N ]
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::mem::maybe_uninit::MaybeUninit")
+                                                            []
+                                                            [ T ]
+                                                        ]
+                                                    ])
+                                                  (Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "slice")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::mem::maybe_uninit::MaybeUninit")
+                                                            []
+                                                            [ T ]
+                                                        ]
+                                                    ]),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.deref (| M.read (| self |) |),
+                                                      "core::array::iter::IntoIter",
+                                                      "data"
+                                                    |)
                                                   |)
-                                                |));
+                                                ]
+                                              |);
                                               M.read (| idx |)
                                             ]
                                           |)
@@ -1749,14 +2061,63 @@ Module array.
                                                                   [ Ty.path "usize" ]
                                                                 |),
                                                                 [
-                                                                  (* Unsize *)
-                                                                  M.pointer_coercion
-                                                                    (M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      M.deref (|
-                                                                        M.read (| data |)
+                                                                  M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "slice")
+                                                                          []
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "core::mem::maybe_uninit::MaybeUninit")
+                                                                              []
+                                                                              [ T ]
+                                                                          ]
+                                                                      ],
+                                                                    M.pointer_coercion
+                                                                      M.PointerCoercion.Unsize
+                                                                      (Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "array")
+                                                                            [ N ]
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "core::mem::maybe_uninit::MaybeUninit")
+                                                                                []
+                                                                                [ T ]
+                                                                            ]
+                                                                        ])
+                                                                      (Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "slice")
+                                                                            []
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "core::mem::maybe_uninit::MaybeUninit")
+                                                                                []
+                                                                                [ T ]
+                                                                            ]
+                                                                        ]),
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| data |)
+                                                                        |)
                                                                       |)
-                                                                    |));
+                                                                    ]
+                                                                  |);
                                                                   M.read (| idx |)
                                                                 ]
                                                               |)
@@ -1888,16 +2249,58 @@ Module array.
                         [ Ty.path "core::ops::index_range::IndexRange" ]
                       |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (|
-                            Pointer.Kind.MutRef,
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::array::iter::IntoIter",
-                              "data"
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "slice")
+                                []
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                                ]
+                            ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ N ]
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ T ]
+                                  ]
+                              ])
+                            (Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ T ]
+                                  ]
+                              ]),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.MutRef,
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::array::iter::IntoIter",
+                                "data"
+                              |)
                             |)
-                          |));
+                          ]
+                        |);
                         M.read (| range_to_drop |)
                       ]
                     |) in
@@ -2814,37 +3217,56 @@ Module array.
                             |)
                           |)
                         |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.alloc (|
-                                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                  M.call_closure (|
+                        M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ])
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
                                     Ty.apply
                                       (Ty.path "&")
                                       []
                                       [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ],
-                                      "as_slice",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| self |) |)
-                                      |)
-                                    ]
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "core::array::iter::IntoIter")
+                                          [ N ]
+                                          [ T ],
+                                        "as_slice",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
+                                    |)
                                   |)
                                 |)
                               |)
                             |)
-                          |))
+                          ]
+                        |)
                       ]
                     |)
                   |)

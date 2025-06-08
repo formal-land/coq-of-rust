@@ -106,54 +106,60 @@ Module language_storage.
               []
             |),
             [
-              (* ClosureFnPointer(Safe) *)
-              M.pointer_coercion
-                (M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        ltac:(M.monadic
-                          (M.match_operator (|
-                            Ty.apply
-                              (Ty.path "move_core_types::gas_algebra::GasQuantity")
-                              []
-                              [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ],
-                            M.alloc (| Ty.tuple [], α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (M.call_closure (|
-                                    Ty.apply
-                                      (Ty.path "move_core_types::gas_algebra::GasQuantity")
-                                      []
-                                      [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit"
-                                      ],
-                                    M.get_trait_method (|
-                                      "core::ops::arith::Add",
+              M.call_closure (|
+                Ty.function
+                  []
+                  (Ty.apply
+                    (Ty.path "move_core_types::gas_algebra::GasQuantity")
+                    []
+                    [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ]),
+                M.pointer_coercion
+                  (M.PointerCoercion.ClosureFnPointer M.PointerCoercion.Safety.Safe)
+                  (Ty.function
+                    []
+                    (Ty.apply
+                      (Ty.path "move_core_types::gas_algebra::GasQuantity")
+                      []
+                      [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ]))
+                  (Ty.function
+                    []
+                    (Ty.apply
+                      (Ty.path "move_core_types::gas_algebra::GasQuantity")
+                      []
+                      [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ])),
+                [
+                  M.closure
+                    (fun γ =>
+                      ltac:(M.monadic
+                        match γ with
+                        | [ α0 ] =>
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              Ty.apply
+                                (Ty.path "move_core_types::gas_algebra::GasQuantity")
+                                []
+                                [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ],
+                              M.alloc (| Ty.tuple [], α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (M.call_closure (|
                                       Ty.apply
                                         (Ty.path "move_core_types::gas_algebra::GasQuantity")
                                         []
                                         [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit"
                                         ],
-                                      [],
-                                      [
+                                      M.get_trait_method (|
+                                        "core::ops::arith::Add",
                                         Ty.apply
                                           (Ty.path "move_core_types::gas_algebra::GasQuantity")
                                           []
                                           [
                                             Ty.path
                                               "move_core_types::gas_algebra::AbstractMemoryUnit"
-                                          ]
-                                      ],
-                                      "add",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.read (|
-                                        get_constant (|
-                                          "move_core_types::gas_algebra::ENUM_BASE_ABSTRACT_SIZE",
+                                          ],
+                                        [],
+                                        [
                                           Ty.apply
                                             (Ty.path "move_core_types::gas_algebra::GasQuantity")
                                             []
@@ -161,26 +167,44 @@ Module language_storage.
                                               Ty.path
                                                 "move_core_types::gas_algebra::AbstractMemoryUnit"
                                             ]
+                                        ],
+                                        "add",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.read (|
+                                          get_constant (|
+                                            "move_core_types::gas_algebra::ENUM_BASE_ABSTRACT_SIZE",
+                                            Ty.apply
+                                              (Ty.path "move_core_types::gas_algebra::GasQuantity")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_core_types::gas_algebra::AbstractMemoryUnit"
+                                              ]
+                                          |)
+                                        |);
+                                        M.read (|
+                                          get_constant (|
+                                            "move_core_types::gas_algebra::BOX_ABSTRACT_SIZE",
+                                            Ty.apply
+                                              (Ty.path "move_core_types::gas_algebra::GasQuantity")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_core_types::gas_algebra::AbstractMemoryUnit"
+                                              ]
+                                          |)
                                         |)
-                                      |);
-                                      M.read (|
-                                        get_constant (|
-                                          "move_core_types::gas_algebra::BOX_ABSTRACT_SIZE",
-                                          Ty.apply
-                                            (Ty.path "move_core_types::gas_algebra::GasQuantity")
-                                            []
-                                            [
-                                              Ty.path
-                                                "move_core_types::gas_algebra::AbstractMemoryUnit"
-                                            ]
-                                        |)
-                                      |)
-                                    ]
-                                  |)))
-                            ]
-                          |)))
-                      | _ => M.impossible "wrong number of arguments"
-                      end)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
+                        end))
+                ]
+              |)
             ]
           |)
         |)
@@ -2631,12 +2655,38 @@ Module language_storage.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Vector" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::boxed::Box")
+                                    []
+                                    [
+                                      Ty.path "move_core_types::language_storage::TypeTag";
+                                      Ty.path "alloc::alloc::Global"
+                                    ]
+                                ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -2678,12 +2728,38 @@ Module language_storage.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Struct" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::boxed::Box")
+                                    []
+                                    [
+                                      Ty.path "move_core_types::language_storage::StructTag";
+                                      Ty.path "alloc::alloc::Global"
+                                    ]
+                                ]
+                            ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -4539,86 +4615,133 @@ Module language_storage.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "StructTag" |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "address" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "move_core_types::language_storage::StructTag",
-                        "address"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.path "move_core_types::account_address::AccountAddress" ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::language_storage::StructTag",
+                          "address"
+                        |)
                       |)
                     |)
                   |)
-                |));
+                ]
+              |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "module" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "move_core_types::language_storage::StructTag",
-                        "module"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::identifier::Identifier" ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::language_storage::StructTag",
+                          "module"
+                        |)
                       |)
                     |)
                   |)
-                |));
+                ]
+              |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "name" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "move_core_types::language_storage::StructTag",
-                        "name"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::identifier::Identifier" ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::language_storage::StructTag",
+                          "name"
+                        |)
                       |)
                     |)
                   |)
-                |));
+                ]
+              |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "type_params" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "alloc::vec::Vec")
-                              []
-                              [
-                                Ty.path "move_core_types::language_storage::TypeTag";
-                                Ty.path "alloc::alloc::Global"
-                              ]
-                          ],
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "move_core_types::language_storage::StructTag",
-                            "type_params"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            []
+                            [
+                              Ty.path "move_core_types::language_storage::TypeTag";
+                              Ty.path "alloc::alloc::Global"
+                            ]
+                        ]
+                    ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::vec::Vec")
+                                []
+                                [
+                                  Ty.path "move_core_types::language_storage::TypeTag";
+                                  Ty.path "alloc::alloc::Global"
+                                ]
+                            ],
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "move_core_types::language_storage::StructTag",
+                              "type_params"
+                            |)
                           |)
                         |)
                       |)
                     |)
                   |)
-                |))
+                ]
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -5758,21 +5881,36 @@ Module language_storage.
                   [ Ty.path "alloc::alloc::Global" ]
                 |),
                 [
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.read (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "alloc::boxed::Box")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "array")
-                              [ Value.Integer IntegerKind.Usize 1 ]
-                              [ Ty.path "u8" ];
-                            Ty.path "alloc::alloc::Global"
-                          ],
-                        M.get_associated_function (|
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      []
+                      [
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ];
+                        Ty.path "alloc::alloc::Global"
+                      ],
+                    M.pointer_coercion
+                      M.PointerCoercion.Unsize
+                      (Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 1 ]
+                            [ Ty.path "u8" ];
+                          Ty.path "alloc::alloc::Global"
+                        ])
+                      (Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        []
+                        [
+                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ];
+                          Ty.path "alloc::alloc::Global"
+                        ]),
+                    [
+                      M.read (|
+                        M.call_closure (|
                           Ty.apply
                             (Ty.path "alloc::boxed::Box")
                             []
@@ -5783,29 +5921,42 @@ Module language_storage.
                                 [ Ty.path "u8" ];
                               Ty.path "alloc::alloc::Global"
                             ],
-                          "new",
-                          [],
-                          []
-                        |),
-                        [
-                          M.alloc (|
+                          M.get_associated_function (|
                             Ty.apply
-                              (Ty.path "array")
-                              [ Value.Integer IntegerKind.Usize 1 ]
-                              [ Ty.path "u8" ],
-                            Value.Array
+                              (Ty.path "alloc::boxed::Box")
+                              []
                               [
-                                M.read (|
-                                  get_constant (|
-                                    "move_core_types::language_storage::RESOURCE_TAG",
-                                    Ty.path "u8"
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                  [ Ty.path "u8" ];
+                                Ty.path "alloc::alloc::Global"
+                              ],
+                            "new",
+                            [],
+                            []
+                          |),
+                          [
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "u8" ],
+                              Value.Array
+                                [
+                                  M.read (|
+                                    get_constant (|
+                                      "move_core_types::language_storage::RESOURCE_TAG",
+                                      Ty.path "u8"
+                                    |)
                                   |)
-                                |)
-                              ]
-                          |)
-                        ]
+                                ]
+                            |)
+                          ]
+                        |)
                       |)
-                    |))
+                    ]
+                  |)
                 ]
               |) in
             let~ _ : Ty.tuple [] :=
@@ -6981,46 +7132,71 @@ Module language_storage.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ResourceKey" |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "address" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "move_core_types::language_storage::ResourceKey",
-                        "address"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.path "move_core_types::account_address::AccountAddress" ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::language_storage::ResourceKey",
+                          "address"
+                        |)
                       |)
                     |)
                   |)
-                |));
+                ]
+              |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "type_" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [ Ty.path "move_core_types::language_storage::StructTag" ],
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "move_core_types::language_storage::ResourceKey",
-                            "type_"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.path "move_core_types::language_storage::StructTag" ]
+                    ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_core_types::language_storage::StructTag" ],
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "move_core_types::language_storage::ResourceKey",
+                              "type_"
+                            |)
                           |)
                         |)
                       |)
                     |)
                   |)
-                |))
+                ]
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -7785,46 +7961,71 @@ Module language_storage.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ModuleId" |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "address" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "move_core_types::language_storage::ModuleId",
-                        "address"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.path "move_core_types::account_address::AccountAddress" ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "move_core_types::language_storage::ModuleId",
+                          "address"
+                        |)
                       |)
                     |)
                   |)
-                |));
+                ]
+              |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "name" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [ Ty.path "move_core_types::identifier::Identifier" ],
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "move_core_types::language_storage::ModuleId",
-                            "name"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.path "move_core_types::identifier::Identifier" ]
+                    ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_core_types::identifier::Identifier" ],
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "move_core_types::language_storage::ModuleId",
+                              "name"
+                            |)
                           |)
                         |)
                       |)
                     |)
                   |)
-                |))
+                ]
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -8617,21 +8818,36 @@ Module language_storage.
                   [ Ty.path "alloc::alloc::Global" ]
                 |),
                 [
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.read (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "alloc::boxed::Box")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "array")
-                              [ Value.Integer IntegerKind.Usize 1 ]
-                              [ Ty.path "u8" ];
-                            Ty.path "alloc::alloc::Global"
-                          ],
-                        M.get_associated_function (|
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      []
+                      [
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ];
+                        Ty.path "alloc::alloc::Global"
+                      ],
+                    M.pointer_coercion
+                      M.PointerCoercion.Unsize
+                      (Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 1 ]
+                            [ Ty.path "u8" ];
+                          Ty.path "alloc::alloc::Global"
+                        ])
+                      (Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        []
+                        [
+                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ];
+                          Ty.path "alloc::alloc::Global"
+                        ]),
+                    [
+                      M.read (|
+                        M.call_closure (|
                           Ty.apply
                             (Ty.path "alloc::boxed::Box")
                             []
@@ -8642,29 +8858,42 @@ Module language_storage.
                                 [ Ty.path "u8" ];
                               Ty.path "alloc::alloc::Global"
                             ],
-                          "new",
-                          [],
-                          []
-                        |),
-                        [
-                          M.alloc (|
+                          M.get_associated_function (|
                             Ty.apply
-                              (Ty.path "array")
-                              [ Value.Integer IntegerKind.Usize 1 ]
-                              [ Ty.path "u8" ],
-                            Value.Array
+                              (Ty.path "alloc::boxed::Box")
+                              []
                               [
-                                M.read (|
-                                  get_constant (|
-                                    "move_core_types::language_storage::CODE_TAG",
-                                    Ty.path "u8"
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                  [ Ty.path "u8" ];
+                                Ty.path "alloc::alloc::Global"
+                              ],
+                            "new",
+                            [],
+                            []
+                          |),
+                          [
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "u8" ],
+                              Value.Array
+                                [
+                                  M.read (|
+                                    get_constant (|
+                                      "move_core_types::language_storage::CODE_TAG",
+                                      Ty.path "u8"
+                                    |)
                                   |)
-                                |)
-                              ]
-                          |)
-                        ]
+                                ]
+                            |)
+                          ]
+                        |)
                       |)
-                    |))
+                    ]
+                  |)
                 ]
               |) in
             let~ _ : Ty.tuple [] :=

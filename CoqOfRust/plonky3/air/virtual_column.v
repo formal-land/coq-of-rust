@@ -153,43 +153,68 @@ Module virtual_column.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "VirtualPairCol" |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "column_weights" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "p3_air::virtual_column::VirtualPairCol",
-                        "column_weights"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [
+                          Ty.tuple [ Ty.path "p3_air::virtual_column::PairCol"; F ];
+                          Ty.path "alloc::alloc::Global"
+                        ]
+                    ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "p3_air::virtual_column::VirtualPairCol",
+                          "column_weights"
+                        |)
                       |)
                     |)
                   |)
-                |));
+                ]
+              |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "constant" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Ty.apply (Ty.path "&") [] [ F ],
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "p3_air::virtual_column::VirtualPairCol",
-                            "constant"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ F ] ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ F ],
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "p3_air::virtual_column::VirtualPairCol",
+                              "constant"
+                            |)
                           |)
                         |)
                       |)
                     |)
                   |)
-                |))
+                ]
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -317,12 +342,25 @@ Module virtual_column.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Preprocessed" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)));
               fun γ =>
@@ -350,12 +388,25 @@ Module virtual_column.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Main" |) |) |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
-                        |))
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ])
+                          (Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                          |)
+                        ]
+                      |)
                     ]
                   |)))
             ]
@@ -942,21 +993,42 @@ Module virtual_column.
                     [ Ty.path "alloc::alloc::Global" ]
                   |),
                   [
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.read (|
-                        M.call_closure (|
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        []
+                        [
                           Ty.apply
-                            (Ty.path "alloc::boxed::Box")
+                            (Ty.path "slice")
                             []
-                            [
-                              Ty.apply
-                                (Ty.path "array")
-                                [ Value.Integer IntegerKind.Usize 1 ]
-                                [ Ty.tuple [ Ty.path "p3_air::virtual_column::PairCol"; F ] ];
-                              Ty.path "alloc::alloc::Global"
-                            ],
-                          M.get_associated_function (|
+                            [ Ty.tuple [ Ty.path "p3_air::virtual_column::PairCol"; F ] ];
+                          Ty.path "alloc::alloc::Global"
+                        ],
+                      M.pointer_coercion
+                        M.PointerCoercion.Unsize
+                        (Ty.apply
+                          (Ty.path "alloc::boxed::Box")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 1 ]
+                              [ Ty.tuple [ Ty.path "p3_air::virtual_column::PairCol"; F ] ];
+                            Ty.path "alloc::alloc::Global"
+                          ])
+                        (Ty.apply
+                          (Ty.path "alloc::boxed::Box")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "slice")
+                              []
+                              [ Ty.tuple [ Ty.path "p3_air::virtual_column::PairCol"; F ] ];
+                            Ty.path "alloc::alloc::Global"
+                          ]),
+                      [
+                        M.read (|
+                          M.call_closure (|
                             Ty.apply
                               (Ty.path "alloc::boxed::Box")
                               []
@@ -967,33 +1039,46 @@ Module virtual_column.
                                   [ Ty.tuple [ Ty.path "p3_air::virtual_column::PairCol"; F ] ];
                                 Ty.path "alloc::alloc::Global"
                               ],
-                            "new",
-                            [],
-                            []
-                          |),
-                          [
-                            M.alloc (|
+                            M.get_associated_function (|
                               Ty.apply
-                                (Ty.path "array")
-                                [ Value.Integer IntegerKind.Usize 1 ]
-                                [ Ty.tuple [ Ty.path "p3_air::virtual_column::PairCol"; F ] ],
-                              Value.Array
+                                (Ty.path "alloc::boxed::Box")
+                                []
                                 [
-                                  Value.Tuple
-                                    [
-                                      M.read (| column |);
-                                      M.read (|
-                                        get_constant (|
-                                          "p3_field::field::PrimeCharacteristicRing::ONE",
-                                          F
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.tuple [ Ty.path "p3_air::virtual_column::PairCol"; F ] ];
+                                  Ty.path "alloc::alloc::Global"
+                                ],
+                              "new",
+                              [],
+                              []
+                            |),
+                            [
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                  [ Ty.tuple [ Ty.path "p3_air::virtual_column::PairCol"; F ] ],
+                                Value.Array
+                                  [
+                                    Value.Tuple
+                                      [
+                                        M.read (| column |);
+                                        M.read (|
+                                          get_constant (|
+                                            "p3_field::field::PrimeCharacteristicRing::ONE",
+                                            F
+                                          |)
                                         |)
-                                      |)
-                                    ]
-                                ]
-                            |)
-                          ]
+                                      ]
+                                  ]
+                              |)
+                            ]
+                          |)
                         |)
-                      |))
+                      ]
+                    |)
                   ]
                 |));
               ("constant",
@@ -1446,21 +1531,36 @@ Module virtual_column.
                   [ Ty.path "alloc::alloc::Global" ]
                 |),
                 [
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.read (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "alloc::boxed::Box")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "array")
-                              [ Value.Integer IntegerKind.Usize 2 ]
-                              [ Ty.tuple [ Ty.path "usize"; F ] ];
-                            Ty.path "alloc::alloc::Global"
-                          ],
-                        M.get_associated_function (|
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      []
+                      [
+                        Ty.apply (Ty.path "slice") [] [ Ty.tuple [ Ty.path "usize"; F ] ];
+                        Ty.path "alloc::alloc::Global"
+                      ],
+                    M.pointer_coercion
+                      M.PointerCoercion.Unsize
+                      (Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 2 ]
+                            [ Ty.tuple [ Ty.path "usize"; F ] ];
+                          Ty.path "alloc::alloc::Global"
+                        ])
+                      (Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        []
+                        [
+                          Ty.apply (Ty.path "slice") [] [ Ty.tuple [ Ty.path "usize"; F ] ];
+                          Ty.path "alloc::alloc::Global"
+                        ]),
+                    [
+                      M.read (|
+                        M.call_closure (|
                           Ty.apply
                             (Ty.path "alloc::boxed::Box")
                             []
@@ -1471,43 +1571,56 @@ Module virtual_column.
                                 [ Ty.tuple [ Ty.path "usize"; F ] ];
                               Ty.path "alloc::alloc::Global"
                             ],
-                          "new",
-                          [],
-                          []
-                        |),
-                        [
-                          M.alloc (|
+                          M.get_associated_function (|
                             Ty.apply
-                              (Ty.path "array")
-                              [ Value.Integer IntegerKind.Usize 2 ]
-                              [ Ty.tuple [ Ty.path "usize"; F ] ],
-                            Value.Array
+                              (Ty.path "alloc::boxed::Box")
+                              []
                               [
-                                Value.Tuple
-                                  [
-                                    M.read (| a_col |);
-                                    M.read (|
-                                      get_constant (|
-                                        "p3_field::field::PrimeCharacteristicRing::ONE",
-                                        F
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 2 ]
+                                  [ Ty.tuple [ Ty.path "usize"; F ] ];
+                                Ty.path "alloc::alloc::Global"
+                              ],
+                            "new",
+                            [],
+                            []
+                          |),
+                          [
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.tuple [ Ty.path "usize"; F ] ],
+                              Value.Array
+                                [
+                                  Value.Tuple
+                                    [
+                                      M.read (| a_col |);
+                                      M.read (|
+                                        get_constant (|
+                                          "p3_field::field::PrimeCharacteristicRing::ONE",
+                                          F
+                                        |)
                                       |)
-                                    |)
-                                  ];
-                                Value.Tuple
-                                  [
-                                    M.read (| b_col |);
-                                    M.read (|
-                                      get_constant (|
-                                        "p3_field::field::PrimeCharacteristicRing::NEG_ONE",
-                                        F
+                                    ];
+                                  Value.Tuple
+                                    [
+                                      M.read (| b_col |);
+                                      M.read (|
+                                        get_constant (|
+                                          "p3_field::field::PrimeCharacteristicRing::NEG_ONE",
+                                          F
+                                        |)
                                       |)
-                                    |)
-                                  ]
-                              ]
-                          |)
-                        ]
+                                    ]
+                                ]
+                            |)
+                          ]
+                        |)
                       |)
-                    |))
+                    ]
+                  |)
                 ]
               |);
               M.read (| get_constant (| "p3_field::field::PrimeCharacteristicRing::ZERO", F |) |)
@@ -1555,21 +1668,36 @@ Module virtual_column.
                   [ Ty.path "alloc::alloc::Global" ]
                 |),
                 [
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.read (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "alloc::boxed::Box")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "array")
-                              [ Value.Integer IntegerKind.Usize 2 ]
-                              [ Ty.tuple [ Ty.path "usize"; F ] ];
-                            Ty.path "alloc::alloc::Global"
-                          ],
-                        M.get_associated_function (|
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      []
+                      [
+                        Ty.apply (Ty.path "slice") [] [ Ty.tuple [ Ty.path "usize"; F ] ];
+                        Ty.path "alloc::alloc::Global"
+                      ],
+                    M.pointer_coercion
+                      M.PointerCoercion.Unsize
+                      (Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 2 ]
+                            [ Ty.tuple [ Ty.path "usize"; F ] ];
+                          Ty.path "alloc::alloc::Global"
+                        ])
+                      (Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        []
+                        [
+                          Ty.apply (Ty.path "slice") [] [ Ty.tuple [ Ty.path "usize"; F ] ];
+                          Ty.path "alloc::alloc::Global"
+                        ]),
+                    [
+                      M.read (|
+                        M.call_closure (|
                           Ty.apply
                             (Ty.path "alloc::boxed::Box")
                             []
@@ -1580,43 +1708,56 @@ Module virtual_column.
                                 [ Ty.tuple [ Ty.path "usize"; F ] ];
                               Ty.path "alloc::alloc::Global"
                             ],
-                          "new",
-                          [],
-                          []
-                        |),
-                        [
-                          M.alloc (|
+                          M.get_associated_function (|
                             Ty.apply
-                              (Ty.path "array")
-                              [ Value.Integer IntegerKind.Usize 2 ]
-                              [ Ty.tuple [ Ty.path "usize"; F ] ],
-                            Value.Array
+                              (Ty.path "alloc::boxed::Box")
+                              []
                               [
-                                Value.Tuple
-                                  [
-                                    M.read (| a_col |);
-                                    M.read (|
-                                      get_constant (|
-                                        "p3_field::field::PrimeCharacteristicRing::ONE",
-                                        F
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 2 ]
+                                  [ Ty.tuple [ Ty.path "usize"; F ] ];
+                                Ty.path "alloc::alloc::Global"
+                              ],
+                            "new",
+                            [],
+                            []
+                          |),
+                          [
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.tuple [ Ty.path "usize"; F ] ],
+                              Value.Array
+                                [
+                                  Value.Tuple
+                                    [
+                                      M.read (| a_col |);
+                                      M.read (|
+                                        get_constant (|
+                                          "p3_field::field::PrimeCharacteristicRing::ONE",
+                                          F
+                                        |)
                                       |)
-                                    |)
-                                  ];
-                                Value.Tuple
-                                  [
-                                    M.read (| b_col |);
-                                    M.read (|
-                                      get_constant (|
-                                        "p3_field::field::PrimeCharacteristicRing::NEG_ONE",
-                                        F
+                                    ];
+                                  Value.Tuple
+                                    [
+                                      M.read (| b_col |);
+                                      M.read (|
+                                        get_constant (|
+                                          "p3_field::field::PrimeCharacteristicRing::NEG_ONE",
+                                          F
+                                        |)
                                       |)
-                                    |)
-                                  ]
-                              ]
-                          |)
-                        ]
+                                    ]
+                                ]
+                            |)
+                          ]
+                        |)
                       |)
-                    |))
+                    ]
+                  |)
                 ]
               |);
               M.read (| get_constant (| "p3_field::field::PrimeCharacteristicRing::ZERO", F |) |)

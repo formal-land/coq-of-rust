@@ -2949,8 +2949,34 @@ Module sync.
                                           [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ]
                                         |),
                                         [
-                                          (* MutToConstPointer *)
-                                          M.pointer_coercion (M.read (| inner |))
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "*const")
+                                              []
+                                              [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ]
+                                              ],
+                                            M.pointer_coercion
+                                              M.PointerCoercion.MutToConstPointer
+                                              (Ty.apply
+                                                (Ty.path "*mut")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "alloc::sync::ArcInner")
+                                                    []
+                                                    [ T ]
+                                                ])
+                                              (Ty.apply
+                                                (Ty.path "*const")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "alloc::sync::ArcInner")
+                                                    []
+                                                    [ T ]
+                                                ]),
+                                            [ M.read (| inner |) ]
+                                          |)
                                         ]
                                       |)
                                     |)
@@ -7002,16 +7028,23 @@ Module sync.
               |) in
             M.alloc (|
               Ty.apply (Ty.path "*const") [] [ T ],
-              (* MutToConstPointer *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.MutPointer,
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| ptr |) |),
-                    "alloc::sync::ArcInner",
-                    "data"
+              M.call_closure (|
+                Ty.apply (Ty.path "*const") [] [ T ],
+                M.pointer_coercion
+                  M.PointerCoercion.MutToConstPointer
+                  (Ty.apply (Ty.path "*mut") [] [ T ])
+                  (Ty.apply (Ty.path "*const") [] [ T ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.MutPointer,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| ptr |) |),
+                      "alloc::sync::ArcInner",
+                      "data"
+                    |)
                   |)
-                |))
+                ]
+              |)
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -7470,10 +7503,20 @@ Module sync.
                                                                             ]
                                                                           |),
                                                                           [
-                                                                            (* MutToConstPointer *)
-                                                                            M.pointer_coercion
-                                                                              (M.call_closure (|
-                                                                                Ty.apply
+                                                                            M.call_closure (|
+                                                                              Ty.apply
+                                                                                (Ty.path "*const")
+                                                                                []
+                                                                                [
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "alloc::sync::ArcInner")
+                                                                                    []
+                                                                                    [ T ]
+                                                                                ],
+                                                                              M.pointer_coercion
+                                                                                M.PointerCoercion.MutToConstPointer
+                                                                                (Ty.apply
                                                                                   (Ty.path "*mut")
                                                                                   []
                                                                                   [
@@ -7482,11 +7525,21 @@ Module sync.
                                                                                         "alloc::sync::ArcInner")
                                                                                       []
                                                                                       [ T ]
-                                                                                  ],
-                                                                                M.get_associated_function (|
+                                                                                  ])
+                                                                                (Ty.apply
+                                                                                  (Ty.path "*const")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "alloc::sync::ArcInner")
+                                                                                      []
+                                                                                      [ T ]
+                                                                                  ]),
+                                                                              [
+                                                                                M.call_closure (|
                                                                                   Ty.apply
-                                                                                    (Ty.path
-                                                                                      "core::ptr::non_null::NonNull")
+                                                                                    (Ty.path "*mut")
                                                                                     []
                                                                                     [
                                                                                       Ty.apply
@@ -7495,24 +7548,38 @@ Module sync.
                                                                                         []
                                                                                         [ T ]
                                                                                     ],
-                                                                                  "as_ptr",
-                                                                                  [],
-                                                                                  []
-                                                                                |),
-                                                                                [
-                                                                                  M.read (|
-                                                                                    M.SubPointer.get_struct_record_field (|
-                                                                                      M.deref (|
-                                                                                        M.read (|
-                                                                                          this
-                                                                                        |)
-                                                                                      |),
-                                                                                      "alloc::sync::Arc",
-                                                                                      "ptr"
+                                                                                  M.get_associated_function (|
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "core::ptr::non_null::NonNull")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "alloc::sync::ArcInner")
+                                                                                          []
+                                                                                          [ T ]
+                                                                                      ],
+                                                                                    "as_ptr",
+                                                                                    [],
+                                                                                    []
+                                                                                  |),
+                                                                                  [
+                                                                                    M.read (|
+                                                                                      M.SubPointer.get_struct_record_field (|
+                                                                                        M.deref (|
+                                                                                          M.read (|
+                                                                                            this
+                                                                                          |)
+                                                                                        |),
+                                                                                        "alloc::sync::Arc",
+                                                                                        "ptr"
+                                                                                      |)
                                                                                     |)
-                                                                                  |)
-                                                                                ]
-                                                                              |))
+                                                                                  ]
+                                                                                |)
+                                                                              ]
+                                                                            |)
                                                                           ]
                                                                         |)
                                                                       |)
@@ -8122,58 +8189,90 @@ Module sync.
               ]
             |),
             [
-              (* MutToConstPointer *)
-              M.pointer_coercion
-                (M.call_closure (|
-                  Ty.apply
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "*const")
+                  []
+                  [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.MutToConstPointer
+                  (Ty.apply
                     (Ty.path "*mut")
                     []
-                    [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
-                  M.get_associated_function (|
+                    [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ])
+                  (Ty.apply
+                    (Ty.path "*const")
+                    []
+                    [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ]),
+                [
+                  M.call_closure (|
                     Ty.apply
-                      (Ty.path "core::ptr::non_null::NonNull")
+                      (Ty.path "*mut")
                       []
                       [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
-                    "as_ptr",
-                    [],
-                    []
-                  |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| this |) |),
-                        "alloc::sync::Arc",
-                        "ptr"
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "core::ptr::non_null::NonNull")
+                        []
+                        [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
+                      "as_ptr",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| this |) |),
+                          "alloc::sync::Arc",
+                          "ptr"
+                        |)
                       |)
-                    |)
-                  ]
-                |));
-              (* MutToConstPointer *)
-              M.pointer_coercion
-                (M.call_closure (|
-                  Ty.apply
+                    ]
+                  |)
+                ]
+              |);
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "*const")
+                  []
+                  [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.MutToConstPointer
+                  (Ty.apply
                     (Ty.path "*mut")
                     []
-                    [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
-                  M.get_associated_function (|
+                    [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ])
+                  (Ty.apply
+                    (Ty.path "*const")
+                    []
+                    [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ]),
+                [
+                  M.call_closure (|
                     Ty.apply
-                      (Ty.path "core::ptr::non_null::NonNull")
+                      (Ty.path "*mut")
                       []
                       [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
-                    "as_ptr",
-                    [],
-                    []
-                  |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| other |) |),
-                        "alloc::sync::Arc",
-                        "ptr"
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "core::ptr::non_null::NonNull")
+                        []
+                        [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
+                      "as_ptr",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| other |) |),
+                          "alloc::sync::Arc",
+                          "ptr"
+                        |)
                       |)
-                    |)
-                  ]
-                |))
+                    ]
+                  |)
+                ]
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -10991,7 +11090,40 @@ Module sync.
                       [ Ty.apply (Ty.path "slice") [] [ T ] ]
                   ]
                 |),
-                [ (* MutToConstPointer *) M.pointer_coercion (M.read (| ptr |)) ]
+                [
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "*const")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloc::sync::ArcInner")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                      ],
+                    M.pointer_coercion
+                      M.PointerCoercion.MutToConstPointer
+                      (Ty.apply
+                        (Ty.path "*mut")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::sync::ArcInner")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                        ])
+                      (Ty.apply
+                        (Ty.path "*const")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::sync::ArcInner")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                        ]),
+                    [ M.read (| ptr |) ]
+                  |)
+                ]
               |) in
             let~ elems : Ty.apply (Ty.path "*mut") [] [ T ] :=
               M.cast
@@ -12825,10 +12957,19 @@ Module sync.
                                                     ]
                                                   |),
                                                   [
-                                                    (* MutToConstPointer *)
-                                                    M.pointer_coercion
-                                                      (M.call_closure (|
-                                                        Ty.apply
+                                                    M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "*const")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "alloc::sync::ArcInner")
+                                                            []
+                                                            [ T ]
+                                                        ],
+                                                      M.pointer_coercion
+                                                        M.PointerCoercion.MutToConstPointer
+                                                        (Ty.apply
                                                           (Ty.path "*mut")
                                                           []
                                                           [
@@ -12836,10 +12977,20 @@ Module sync.
                                                               (Ty.path "alloc::sync::ArcInner")
                                                               []
                                                               [ T ]
-                                                          ],
-                                                        M.get_associated_function (|
+                                                          ])
+                                                        (Ty.apply
+                                                          (Ty.path "*const")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "alloc::sync::ArcInner")
+                                                              []
+                                                              [ T ]
+                                                          ]),
+                                                      [
+                                                        M.call_closure (|
                                                           Ty.apply
-                                                            (Ty.path "core::ptr::non_null::NonNull")
+                                                            (Ty.path "*mut")
                                                             []
                                                             [
                                                               Ty.apply
@@ -12847,20 +12998,33 @@ Module sync.
                                                                 []
                                                                 [ T ]
                                                             ],
-                                                          "as_ptr",
-                                                          [],
-                                                          []
-                                                        |),
-                                                        [
-                                                          M.read (|
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.deref (| M.read (| self |) |),
-                                                              "alloc::sync::Arc",
-                                                              "ptr"
+                                                          M.get_associated_function (|
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "core::ptr::non_null::NonNull")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "alloc::sync::ArcInner")
+                                                                  []
+                                                                  [ T ]
+                                                              ],
+                                                            "as_ptr",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.read (|
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.deref (| M.read (| self |) |),
+                                                                "alloc::sync::Arc",
+                                                                "ptr"
+                                                              |)
                                                             |)
-                                                          |)
-                                                        ]
-                                                      |));
+                                                          ]
+                                                        |)
+                                                      ]
+                                                    |);
                                                     M.borrow (|
                                                       Pointer.Kind.ConstPointer,
                                                       M.deref (|
@@ -13300,7 +13464,49 @@ Module sync.
                           A
                         ]
                     ]
-                    [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]))
+                    [
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "alloc::sync::Arc")
+                          []
+                          [
+                            Ty.dyn
+                              [
+                                ("core::any::Any::Trait", []);
+                                ("core::marker::Sync::AutoTrait", []);
+                                ("core::marker::Send::AutoTrait", [])
+                              ];
+                            A
+                          ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply
+                            (Ty.path "alloc::sync::Arc")
+                            []
+                            [
+                              Ty.dyn
+                                [
+                                  ("core::any::Any::Trait", []);
+                                  ("core::marker::Sync::AutoTrait", []);
+                                  ("core::marker::Send::AutoTrait", [])
+                                ];
+                              A
+                            ])
+                          (Ty.apply
+                            (Ty.path "alloc::sync::Arc")
+                            []
+                            [
+                              Ty.dyn
+                                [
+                                  ("core::any::Any::Trait", []);
+                                  ("core::marker::Sync::AutoTrait", []);
+                                  ("core::marker::Send::AutoTrait", [])
+                                ];
+                              A
+                            ]),
+                        [ M.read (| self |) ]
+                      |)
+                    ]))
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -13770,23 +13976,48 @@ Module sync.
                                 [],
                                 [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ]
                               |),
-                              [ (* MutToConstPointer *) M.pointer_coercion (M.read (| ptr |)) ]
+                              [
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "*const")
+                                    []
+                                    [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.MutToConstPointer
+                                    (Ty.apply
+                                      (Ty.path "*mut")
+                                      []
+                                      [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ])
+                                    (Ty.apply
+                                      (Ty.path "*const")
+                                      []
+                                      [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ]),
+                                  [ M.read (| ptr |) ]
+                                |)
+                              ]
                             |)
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.cast (Ty.apply (Ty.path "*const") [] [ T ]) (M.read (| ptr |))));
                   fun γ =>
                     ltac:(M.monadic
-                      (* MutToConstPointer *)
-                      (M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.MutPointer,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| ptr |) |),
-                            "alloc::sync::ArcInner",
-                            "data"
+                      (M.call_closure (|
+                        Ty.apply (Ty.path "*const") [] [ T ],
+                        M.pointer_coercion
+                          M.PointerCoercion.MutToConstPointer
+                          (Ty.apply (Ty.path "*mut") [] [ T ])
+                          (Ty.apply (Ty.path "*const") [] [ T ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutPointer,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| ptr |) |),
+                              "alloc::sync::ArcInner",
+                              "data"
+                            |)
                           |)
-                        |))))
+                        ]
+                      |)))
                 ]
               |)
             |)
@@ -14800,7 +15031,25 @@ Module sync.
                                 [],
                                 [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ]
                               |),
-                              [ (* MutToConstPointer *) M.pointer_coercion (M.read (| ptr |)) ]
+                              [
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "*const")
+                                    []
+                                    [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.MutToConstPointer
+                                    (Ty.apply
+                                      (Ty.path "*mut")
+                                      []
+                                      [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ])
+                                    (Ty.apply
+                                      (Ty.path "*const")
+                                      []
+                                      [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ]),
+                                  [ M.read (| ptr |) ]
+                                |)
+                              ]
                             |)
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -14895,58 +15144,90 @@ Module sync.
               ]
             |),
             [
-              (* MutToConstPointer *)
-              M.pointer_coercion
-                (M.call_closure (|
-                  Ty.apply
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "*const")
+                  []
+                  [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.MutToConstPointer
+                  (Ty.apply
                     (Ty.path "*mut")
                     []
-                    [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
-                  M.get_associated_function (|
+                    [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ])
+                  (Ty.apply
+                    (Ty.path "*const")
+                    []
+                    [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ]),
+                [
+                  M.call_closure (|
                     Ty.apply
-                      (Ty.path "core::ptr::non_null::NonNull")
+                      (Ty.path "*mut")
                       []
                       [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
-                    "as_ptr",
-                    [],
-                    []
-                  |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "alloc::sync::Weak",
-                        "ptr"
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "core::ptr::non_null::NonNull")
+                        []
+                        [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
+                      "as_ptr",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::sync::Weak",
+                          "ptr"
+                        |)
                       |)
-                    |)
-                  ]
-                |));
-              (* MutToConstPointer *)
-              M.pointer_coercion
-                (M.call_closure (|
-                  Ty.apply
+                    ]
+                  |)
+                ]
+              |);
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "*const")
+                  []
+                  [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.MutToConstPointer
+                  (Ty.apply
                     (Ty.path "*mut")
                     []
-                    [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
-                  M.get_associated_function (|
+                    [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ])
+                  (Ty.apply
+                    (Ty.path "*const")
+                    []
+                    [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ]),
+                [
+                  M.call_closure (|
                     Ty.apply
-                      (Ty.path "core::ptr::non_null::NonNull")
+                      (Ty.path "*mut")
                       []
                       [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
-                    "as_ptr",
-                    [],
-                    []
-                  |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| other |) |),
-                        "alloc::sync::Weak",
-                        "ptr"
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "core::ptr::non_null::NonNull")
+                        []
+                        [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
+                      "as_ptr",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| other |) |),
+                          "alloc::sync::Weak",
+                          "ptr"
+                        |)
                       |)
-                    |)
-                  ]
-                |))
+                    ]
+                  |)
+                ]
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -15396,10 +15677,20 @@ Module sync.
                                                                 ]
                                                               |),
                                                               [
-                                                                (* MutToConstPointer *)
-                                                                M.pointer_coercion
-                                                                  (M.call_closure (|
-                                                                    Ty.apply
+                                                                M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "*const")
+                                                                    []
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "alloc::sync::ArcInner")
+                                                                        []
+                                                                        [ T ]
+                                                                    ],
+                                                                  M.pointer_coercion
+                                                                    M.PointerCoercion.MutToConstPointer
+                                                                    (Ty.apply
                                                                       (Ty.path "*mut")
                                                                       []
                                                                       [
@@ -15408,11 +15699,21 @@ Module sync.
                                                                             "alloc::sync::ArcInner")
                                                                           []
                                                                           [ T ]
-                                                                      ],
-                                                                    M.get_associated_function (|
+                                                                      ])
+                                                                    (Ty.apply
+                                                                      (Ty.path "*const")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "alloc::sync::ArcInner")
+                                                                          []
+                                                                          [ T ]
+                                                                      ]),
+                                                                  [
+                                                                    M.call_closure (|
                                                                       Ty.apply
-                                                                        (Ty.path
-                                                                          "core::ptr::non_null::NonNull")
+                                                                        (Ty.path "*mut")
                                                                         []
                                                                         [
                                                                           Ty.apply
@@ -15421,22 +15722,36 @@ Module sync.
                                                                             []
                                                                             [ T ]
                                                                         ],
-                                                                      "as_ptr",
-                                                                      [],
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      M.read (|
-                                                                        M.SubPointer.get_struct_record_field (|
-                                                                          M.deref (|
-                                                                            M.read (| self |)
-                                                                          |),
-                                                                          "alloc::sync::Weak",
-                                                                          "ptr"
+                                                                      M.get_associated_function (|
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::ptr::non_null::NonNull")
+                                                                          []
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "alloc::sync::ArcInner")
+                                                                              []
+                                                                              [ T ]
+                                                                          ],
+                                                                        "as_ptr",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.read (|
+                                                                          M.SubPointer.get_struct_record_field (|
+                                                                            M.deref (|
+                                                                              M.read (| self |)
+                                                                            |),
+                                                                            "alloc::sync::Weak",
+                                                                            "ptr"
+                                                                          |)
                                                                         |)
-                                                                      |)
-                                                                    ]
-                                                                  |));
+                                                                      ]
+                                                                    |)
+                                                                  ]
+                                                                |);
                                                                 M.borrow (|
                                                                   Pointer.Kind.ConstPointer,
                                                                   M.deref (|
@@ -15588,33 +15903,55 @@ Module sync.
                                       [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ]
                                     |),
                                     [
-                                      (* MutToConstPointer *)
-                                      M.pointer_coercion
-                                        (M.call_closure (|
-                                          Ty.apply
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "*const")
+                                          []
+                                          [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
+                                        M.pointer_coercion
+                                          M.PointerCoercion.MutToConstPointer
+                                          (Ty.apply
                                             (Ty.path "*mut")
                                             []
-                                            [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
-                                          M.get_associated_function (|
+                                            [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ])
+                                          (Ty.apply
+                                            (Ty.path "*const")
+                                            []
+                                            [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ]
+                                            ]),
+                                        [
+                                          M.call_closure (|
                                             Ty.apply
-                                              (Ty.path "core::ptr::non_null::NonNull")
+                                              (Ty.path "*mut")
                                               []
                                               [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ]
                                               ],
-                                            "as_ptr",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.deref (| M.read (| self |) |),
-                                                "alloc::sync::Weak",
-                                                "ptr"
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path "core::ptr::non_null::NonNull")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "alloc::sync::ArcInner")
+                                                    []
+                                                    [ T ]
+                                                ],
+                                              "as_ptr",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "alloc::sync::Weak",
+                                                  "ptr"
+                                                |)
                                               |)
-                                            |)
-                                          ]
-                                        |))
+                                            ]
+                                          |)
+                                        ]
+                                      |)
                                     ]
                                   |)
                                 ]
@@ -17342,10 +17679,19 @@ Module sync.
                       []
                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                   ] :=
-              (* Unsize *)
-              M.pointer_coercion
-                (M.call_closure (|
-                  Ty.apply
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::ptr::non_null::NonNull")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::sync::ArcInner")
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                  ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
                     (Ty.path "core::ptr::non_null::NonNull")
                     []
                     [
@@ -17358,9 +17704,18 @@ Module sync.
                             [ Value.Integer IntegerKind.Usize 1 ]
                             [ Ty.path "u8" ]
                         ]
-                    ],
-                  M.get_trait_method (|
-                    "core::convert::From",
+                    ])
+                  (Ty.apply
+                    (Ty.path "core::ptr::non_null::NonNull")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::sync::ArcInner")
+                        []
+                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                    ]),
+                [
+                  M.call_closure (|
                     Ty.apply
                       (Ty.path "core::ptr::non_null::NonNull")
                       []
@@ -17375,10 +17730,10 @@ Module sync.
                               [ Ty.path "u8" ]
                           ]
                       ],
-                    [],
-                    [
+                    M.get_trait_method (|
+                      "core::convert::From",
                       Ty.apply
-                        (Ty.path "&")
+                        (Ty.path "core::ptr::non_null::NonNull")
                         []
                         [
                           Ty.apply
@@ -17390,33 +17745,51 @@ Module sync.
                                 [ Value.Integer IntegerKind.Usize 1 ]
                                 [ Ty.path "u8" ]
                             ]
-                        ]
-                    ],
-                    "from",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (|
-                          M.read (|
-                            get_constant (|
-                              "alloc::sync::STATIC_INNER_SLICE",
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.path "alloc::sync::SliceArcInnerForStatic" ]
+                        ],
+                      [],
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::sync::ArcInner")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                  [ Ty.path "u8" ]
+                              ]
+                          ]
+                      ],
+                      "from",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (|
+                            M.read (|
+                              get_constant (|
+                                "alloc::sync::STATIC_INNER_SLICE",
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "alloc::sync::SliceArcInnerForStatic" ]
+                              |)
                             |)
-                          |)
-                        |),
-                        "alloc::sync::SliceArcInnerForStatic",
-                        "inner"
+                          |),
+                          "alloc::sync::SliceArcInnerForStatic",
+                          "inner"
+                        |)
                       |)
-                    |)
-                  ]
-                |)) in
+                    ]
+                  |)
+                ]
+              |) in
             let~ inner :
                 Ty.apply
                   (Ty.path "core::ptr::non_null::NonNull")
@@ -17904,10 +18277,17 @@ Module sync.
                                   ]
                                 |) in
                               M.return_ (|
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.call_closure (|
-                                    Ty.apply
+                                M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "alloc::sync::Arc")
+                                    []
+                                    [
+                                      Ty.apply (Ty.path "slice") [] [ T ];
+                                      Ty.path "alloc::alloc::Global"
+                                    ],
+                                  M.pointer_coercion
+                                    M.PointerCoercion.Unsize
+                                    (Ty.apply
                                       (Ty.path "alloc::sync::Arc")
                                       []
                                       [
@@ -17916,9 +18296,16 @@ Module sync.
                                           [ Value.Integer IntegerKind.Usize 0 ]
                                           [ T ];
                                         Ty.path "alloc::alloc::Global"
-                                      ],
-                                    M.get_trait_method (|
-                                      "core::clone::Clone",
+                                      ])
+                                    (Ty.apply
+                                      (Ty.path "alloc::sync::Arc")
+                                      []
+                                      [
+                                        Ty.apply (Ty.path "slice") [] [ T ];
+                                        Ty.path "alloc::alloc::Global"
+                                      ]),
+                                  [
+                                    M.call_closure (|
                                       Ty.apply
                                         (Ty.path "alloc::sync::Arc")
                                         []
@@ -17929,36 +18316,31 @@ Module sync.
                                             [ T ];
                                           Ty.path "alloc::alloc::Global"
                                         ],
-                                      [],
-                                      [],
-                                      "clone",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (|
-                                          M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::clone::Clone",
+                                        Ty.apply
+                                          (Ty.path "alloc::sync::Arc")
+                                          []
+                                          [
                                             Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "alloc::sync::Arc")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "array")
-                                                      [ Value.Integer IntegerKind.Usize 0 ]
-                                                      [ T ];
-                                                    Ty.path "alloc::alloc::Global"
-                                                  ]
-                                              ],
-                                            M.get_trait_method (|
-                                              "core::ops::deref::Deref",
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 0 ]
+                                              [ T ];
+                                            Ty.path "alloc::alloc::Global"
+                                          ],
+                                        [],
+                                        [],
+                                        "clone",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.call_closure (|
                                               Ty.apply
-                                                (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                                (Ty.path "&")
                                                 []
                                                 [
                                                   Ty.apply
@@ -17972,18 +18354,37 @@ Module sync.
                                                       Ty.path "alloc::alloc::Global"
                                                     ]
                                                 ],
-                                              [],
-                                              [],
-                                              "deref",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.borrow (| Pointer.Kind.Ref, this |) ]
+                                              M.get_trait_method (|
+                                                "core::ops::deref::Deref",
+                                                Ty.apply
+                                                  (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "alloc::sync::Arc")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "array")
+                                                          [ Value.Integer IntegerKind.Usize 0 ]
+                                                          [ T ];
+                                                        Ty.path "alloc::alloc::Global"
+                                                      ]
+                                                  ],
+                                                [],
+                                                [],
+                                                "deref",
+                                                [],
+                                                []
+                                              |),
+                                              [ M.borrow (| Pointer.Kind.Ref, this |) ]
+                                            |)
                                           |)
                                         |)
-                                      |)
-                                    ]
-                                  |))
+                                      ]
+                                    |)
+                                  ]
+                                |)
                               |)
                             |)
                           |)));
@@ -18151,27 +18552,43 @@ Module sync.
       | [], [], [ v ] =>
         ltac:(M.monadic
           (let v := M.alloc (| Ty.apply (Ty.path "array") [ N ] [ T ], v |) in
-          (* Unsize *)
-          M.pointer_coercion
-            (M.call_closure (|
-              Ty.apply
+          M.call_closure (|
+            Ty.apply
+              (Ty.path "alloc::sync::Arc")
+              []
+              [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
+            M.pointer_coercion
+              M.PointerCoercion.Unsize
+              (Ty.apply
                 (Ty.path "alloc::sync::Arc")
                 []
-                [ Ty.apply (Ty.path "array") [ N ] [ T ]; Ty.path "alloc::alloc::Global" ],
-              M.get_trait_method (|
-                "core::convert::From",
+                [ Ty.apply (Ty.path "array") [ N ] [ T ]; Ty.path "alloc::alloc::Global" ])
+              (Ty.apply
+                (Ty.path "alloc::sync::Arc")
+                []
+                [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ]),
+            [
+              M.call_closure (|
                 Ty.apply
                   (Ty.path "alloc::sync::Arc")
                   []
                   [ Ty.apply (Ty.path "array") [ N ] [ T ]; Ty.path "alloc::alloc::Global" ],
-                [],
-                [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
-                "from",
-                [],
-                []
-              |),
-              [ M.read (| v |) ]
-            |))))
+                M.get_trait_method (|
+                  "core::convert::From",
+                  Ty.apply
+                    (Ty.path "alloc::sync::Arc")
+                    []
+                    [ Ty.apply (Ty.path "array") [ N ] [ T ]; Ty.path "alloc::alloc::Global" ],
+                  [],
+                  [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
+                  "from",
+                  [],
+                  []
+                |),
+                [ M.read (| v |) ]
+              |)
+            ]
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -18640,7 +19057,14 @@ Module sync.
                         Ty.tuple [],
                         M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                         [
-                          (* MutToConstPointer *) M.pointer_coercion (M.read (| vec_ptr |));
+                          M.call_closure (|
+                            Ty.apply (Ty.path "*const") [] [ T ],
+                            M.pointer_coercion
+                              M.PointerCoercion.MutToConstPointer
+                              (Ty.apply (Ty.path "*mut") [] [ T ])
+                              (Ty.apply (Ty.path "*const") [] [ T ]),
+                            [ M.read (| vec_ptr |) ]
+                          |);
                           M.cast
                             (Ty.apply (Ty.path "*mut") [] [ T ])
                             (M.borrow (|

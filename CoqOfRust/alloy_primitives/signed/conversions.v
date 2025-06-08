@@ -1439,37 +1439,58 @@ Module signed.
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.call_closure (|
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ],
+                              M.pointer_coercion
+                                M.PointerCoercion.Unsize
+                                (Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
                                     Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "array")
-                                          [ Value.Integer IntegerKind.Usize 2 ]
-                                          [ Ty.path "u64" ]
-                                      ],
-                                    M.get_associated_function (|
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 2 ]
+                                      [ Ty.path "u64" ]
+                                  ])
+                                (Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ]),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.call_closure (|
                                       Ty.apply
-                                        (Ty.path "ruint::Uint")
+                                        (Ty.path "&")
+                                        []
                                         [
-                                          Value.Integer IntegerKind.Usize 128;
-                                          Value.Integer IntegerKind.Usize 2
-                                        ]
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 2 ]
+                                            [ Ty.path "u64" ]
+                                        ],
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [
+                                            Value.Integer IntegerKind.Usize 128;
+                                            Value.Integer IntegerKind.Usize 2
+                                          ]
+                                          [],
+                                        "as_limbs",
                                         [],
-                                      "as_limbs",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.borrow (| Pointer.Kind.Ref, stc |) ]
+                                        []
+                                      |),
+                                      [ M.borrow (| Pointer.Kind.Ref, stc |) ]
+                                    |)
                                   |)
                                 |)
-                              |))
+                              ]
+                            |)
                           ]
                         |)
                       |),

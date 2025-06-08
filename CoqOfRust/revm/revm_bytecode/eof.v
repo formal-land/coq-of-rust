@@ -230,59 +230,83 @@ Module eof.
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Eof" |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "header" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "revm_bytecode::eof::Eof",
-                        "header"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::header::EofHeader" ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "revm_bytecode::eof::Eof",
+                          "header"
+                        |)
                       |)
                     |)
                   |)
-                |));
+                ]
+              |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "body" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "revm_bytecode::eof::Eof",
-                        "body"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::body::EofBody" ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "revm_bytecode::eof::Eof",
+                          "body"
+                        |)
                       |)
                     |)
                   |)
-                |));
+                ]
+              |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "raw" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "revm_bytecode::eof::Eof",
-                            "raw"
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ] ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_bytecode::eof::Eof",
+                              "raw"
+                            |)
                           |)
                         |)
                       |)
                     |)
                   |)
-                |))
+                ]
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1018,21 +1042,42 @@ Module eof.
                         [ Ty.path "alloc::alloc::Global" ]
                       |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.read (|
-                            M.call_closure (|
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "alloc::boxed::Box")
+                            []
+                            [
                               Ty.apply
-                                (Ty.path "alloc::boxed::Box")
+                                (Ty.path "slice")
                                 []
-                                [
-                                  Ty.apply
-                                    (Ty.path "array")
-                                    [ Value.Integer IntegerKind.Usize 1 ]
-                                    [ Ty.path "revm_bytecode::eof::types_section::TypesSection" ];
-                                  Ty.path "alloc::alloc::Global"
-                                ],
-                              M.get_associated_function (|
+                                [ Ty.path "revm_bytecode::eof::types_section::TypesSection" ];
+                              Ty.path "alloc::alloc::Global"
+                            ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                  [ Ty.path "revm_bytecode::eof::types_section::TypesSection" ];
+                                Ty.path "alloc::alloc::Global"
+                              ])
+                            (Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [ Ty.path "revm_bytecode::eof::types_section::TypesSection" ];
+                                Ty.path "alloc::alloc::Global"
+                              ]),
+                          [
+                            M.read (|
+                              M.call_closure (|
                                 Ty.apply
                                   (Ty.path "alloc::boxed::Box")
                                   []
@@ -1043,36 +1088,51 @@ Module eof.
                                       [ Ty.path "revm_bytecode::eof::types_section::TypesSection" ];
                                     Ty.path "alloc::alloc::Global"
                                   ],
-                                "new",
-                                [],
-                                []
-                              |),
-                              [
-                                M.alloc (|
+                                M.get_associated_function (|
                                   Ty.apply
-                                    (Ty.path "array")
-                                    [ Value.Integer IntegerKind.Usize 1 ]
-                                    [ Ty.path "revm_bytecode::eof::types_section::TypesSection" ],
-                                  Value.Array
+                                    (Ty.path "alloc::boxed::Box")
+                                    []
                                     [
-                                      M.call_closure (|
-                                        Ty.path "revm_bytecode::eof::types_section::TypesSection",
-                                        M.get_trait_method (|
-                                          "core::default::Default",
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.path "revm_bytecode::eof::types_section::TypesSection"
+                                        ];
+                                      Ty.path "alloc::alloc::Global"
+                                    ],
+                                  "new",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 1 ]
+                                      [ Ty.path "revm_bytecode::eof::types_section::TypesSection" ],
+                                    Value.Array
+                                      [
+                                        M.call_closure (|
                                           Ty.path "revm_bytecode::eof::types_section::TypesSection",
-                                          [],
-                                          [],
-                                          "default",
-                                          [],
+                                          M.get_trait_method (|
+                                            "core::default::Default",
+                                            Ty.path
+                                              "revm_bytecode::eof::types_section::TypesSection",
+                                            [],
+                                            [],
+                                            "default",
+                                            [],
+                                            []
+                                          |),
                                           []
-                                        |),
-                                        []
-                                      |)
-                                    ]
-                                |)
-                              ]
+                                        |)
+                                      ]
+                                  |)
+                                ]
+                              |)
                             |)
-                          |))
+                          ]
+                        |)
                       ]
                     |));
                   ("code_section",
@@ -1088,21 +1148,36 @@ Module eof.
                         [ Ty.path "alloc::alloc::Global" ]
                       |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.read (|
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "alloc::boxed::Box")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "array")
-                                    [ Value.Integer IntegerKind.Usize 1 ]
-                                    [ Ty.path "usize" ];
-                                  Ty.path "alloc::alloc::Global"
-                                ],
-                              M.get_associated_function (|
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "alloc::boxed::Box")
+                            []
+                            [
+                              Ty.apply (Ty.path "slice") [] [ Ty.path "usize" ];
+                              Ty.path "alloc::alloc::Global"
+                            ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                  [ Ty.path "usize" ];
+                                Ty.path "alloc::alloc::Global"
+                              ])
+                            (Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
+                                Ty.apply (Ty.path "slice") [] [ Ty.path "usize" ];
+                                Ty.path "alloc::alloc::Global"
+                              ]),
+                          [
+                            M.read (|
+                              M.call_closure (|
                                 Ty.apply
                                   (Ty.path "alloc::boxed::Box")
                                   []
@@ -1113,21 +1188,34 @@ Module eof.
                                       [ Ty.path "usize" ];
                                     Ty.path "alloc::alloc::Global"
                                   ],
-                                "new",
-                                [],
-                                []
-                              |),
-                              [
-                                M.alloc (|
+                                M.get_associated_function (|
                                   Ty.apply
-                                    (Ty.path "array")
-                                    [ Value.Integer IntegerKind.Usize 1 ]
-                                    [ Ty.path "usize" ],
-                                  Value.Array [ Value.Integer IntegerKind.Usize 1 ]
-                                |)
-                              ]
+                                    (Ty.path "alloc::boxed::Box")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.path "usize" ];
+                                      Ty.path "alloc::alloc::Global"
+                                    ],
+                                  "new",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 1 ]
+                                      [ Ty.path "usize" ],
+                                    Value.Array [ Value.Integer IntegerKind.Usize 1 ]
+                                  |)
+                                ]
+                              |)
                             |)
-                          |))
+                          ]
+                        |)
                       ]
                     |));
                   ("code",
@@ -1140,23 +1228,44 @@ Module eof.
                         []
                       |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.alloc (|
-                                  Ty.apply
-                                    (Ty.path "array")
-                                    [ Value.Integer IntegerKind.Usize 1 ]
-                                    [ Ty.path "u8" ],
-                                  Value.Array [ Value.Integer IntegerKind.U8 0 ]
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                          M.pointer_coercion
+                            M.PointerCoercion.Unsize
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                  [ Ty.path "u8" ]
+                              ])
+                            (Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 1 ]
+                                      [ Ty.path "u8" ],
+                                    Value.Array [ Value.Integer IntegerKind.U8 0 ]
+                                  |)
                                 |)
                               |)
                             |)
-                          |))
+                          ]
+                        |)
                       ]
                     |));
                   ("container_section",
@@ -1689,23 +1798,41 @@ Module eof.
                             end))
                     ]
                   |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.alloc (|
-                            Ty.apply
-                              (Ty.path "array")
-                              [ Value.Integer IntegerKind.Usize 0 ]
-                              [ Ty.path "u8" ],
-                            Value.Array []
+                  M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                    M.pointer_coercion
+                      M.PointerCoercion.Unsize
+                      (Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 0 ]
+                            [ Ty.path "u8" ]
+                        ])
+                      (Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 0 ]
+                                [ Ty.path "u8" ],
+                              Value.Array []
+                            |)
                           |)
                         |)
                       |)
-                    |))
+                    ]
+                  |)
                 ]
               |)
             |)

@@ -134,27 +134,37 @@ Module array.
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FieldArray" |) |) |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.alloc (|
-                        Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ F ] ],
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_tuple_field (|
-                            M.deref (| M.read (| self |) |),
-                            "p3_field::array::FieldArray",
-                            0
+              M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ F ] ] ])
+                  (Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ F ] ],
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.deref (| M.read (| self |) |),
+                              "p3_field::array::FieldArray",
+                              0
+                            |)
                           |)
                         |)
                       |)
                     |)
                   |)
-                |))
+                ]
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -357,36 +367,50 @@ Module array.
                   [ F; Ty.function [ F ] F ]
                 |),
                 [
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_tuple_field (|
-                            M.deref (| M.read (| self |) |),
-                            "p3_field::array::FieldArray",
-                            0
+                  M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ F ] ],
+                    M.pointer_coercion
+                      M.PointerCoercion.Unsize
+                      (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ F ] ])
+                      (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ F ] ]),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.deref (| M.read (| self |) |),
+                              "p3_field::array::FieldArray",
+                              0
+                            |)
                           |)
                         |)
                       |)
-                    |));
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.SubPointer.get_struct_tuple_field (|
-                            result,
-                            "p3_field::array::FieldArray",
-                            0
+                    ]
+                  |);
+                  M.call_closure (|
+                    Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ F ] ],
+                    M.pointer_coercion
+                      M.PointerCoercion.Unsize
+                      (Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "array") [ N ] [ F ] ])
+                      (Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ F ] ]),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_tuple_field (|
+                              result,
+                              "p3_field::array::FieldArray",
+                              0
+                            |)
                           |)
                         |)
                       |)
-                    |));
+                    ]
+                  |);
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
@@ -1243,21 +1267,28 @@ Module array.
                 [ Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ] ],
               self
             |) in
-          (* Unsize *)
-          M.pointer_coercion
-            (M.borrow (|
-              Pointer.Kind.Ref,
-              M.deref (|
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.deref (| M.read (| self |) |),
-                    "p3_field::array::FieldArray",
-                    0
+          M.call_closure (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ F ] ],
+            M.pointer_coercion
+              M.PointerCoercion.Unsize
+              (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ F ] ])
+              (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ F ] ]),
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (|
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "p3_field::array::FieldArray",
+                      0
+                    |)
                   |)
                 |)
               |)
-            |))))
+            ]
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -1288,21 +1319,28 @@ Module array.
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|
-              (* Unsize *)
-              M.pointer_coercion
-                (M.borrow (|
-                  Pointer.Kind.MutRef,
-                  M.deref (|
-                    M.borrow (|
-                      Pointer.Kind.MutRef,
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.deref (| M.read (| self |) |),
-                        "p3_field::array::FieldArray",
-                        0
+              M.call_closure (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ F ] ],
+                M.pointer_coercion
+                  M.PointerCoercion.Unsize
+                  (Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "array") [ N ] [ F ] ])
+                  (Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ F ] ]),
+                [
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_struct_tuple_field (|
+                          M.deref (| M.read (| self |) |),
+                          "p3_field::array::FieldArray",
+                          0
+                        |)
                       |)
                     |)
                   |)
-                |))
+                ]
+              |)
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1622,16 +1660,29 @@ Module array.
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.SubPointer.get_struct_tuple_field (|
-                                M.deref (| M.read (| self |) |),
-                                "p3_field::array::FieldArray",
-                                0
+                          M.call_closure (|
+                            Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ F ] ],
+                            M.pointer_coercion
+                              M.PointerCoercion.Unsize
+                              (Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [ Ty.apply (Ty.path "array") [ N ] [ F ] ])
+                              (Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ F ] ]),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_tuple_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "p3_field::array::FieldArray",
+                                  0
+                                |)
                               |)
-                            |))
+                            ]
+                          |)
                         ]
                       |);
                       M.read (|
@@ -1753,16 +1804,23 @@ Module array.
                       []
                     |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.SubPointer.get_struct_tuple_field (|
-                            M.deref (| M.read (| self |) |),
-                            "p3_field::array::FieldArray",
-                            0
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ F ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "array") [ N ] [ F ] ])
+                          (Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ F ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.deref (| M.read (| self |) |),
+                              "p3_field::array::FieldArray",
+                              0
+                            |)
                           |)
-                        |))
+                        ]
+                      |)
                     ]
                   |);
                   M.closure
@@ -2113,16 +2171,29 @@ Module array.
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.SubPointer.get_struct_tuple_field (|
-                                M.deref (| M.read (| self |) |),
-                                "p3_field::array::FieldArray",
-                                0
+                          M.call_closure (|
+                            Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ F ] ],
+                            M.pointer_coercion
+                              M.PointerCoercion.Unsize
+                              (Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [ Ty.apply (Ty.path "array") [ N ] [ F ] ])
+                              (Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ F ] ]),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_tuple_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "p3_field::array::FieldArray",
+                                  0
+                                |)
                               |)
-                            |))
+                            ]
+                          |)
                         ]
                       |);
                       M.read (|
@@ -2244,16 +2315,23 @@ Module array.
                       []
                     |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.SubPointer.get_struct_tuple_field (|
-                            M.deref (| M.read (| self |) |),
-                            "p3_field::array::FieldArray",
-                            0
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ F ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "array") [ N ] [ F ] ])
+                          (Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ F ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.deref (| M.read (| self |) |),
+                              "p3_field::array::FieldArray",
+                              0
+                            |)
                           |)
-                        |))
+                        ]
+                      |)
                     ]
                   |);
                   M.closure
@@ -2702,16 +2780,29 @@ Module array.
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.SubPointer.get_struct_tuple_field (|
-                                M.deref (| M.read (| self |) |),
-                                "p3_field::array::FieldArray",
-                                0
+                          M.call_closure (|
+                            Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ F ] ],
+                            M.pointer_coercion
+                              M.PointerCoercion.Unsize
+                              (Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [ Ty.apply (Ty.path "array") [ N ] [ F ] ])
+                              (Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ F ] ]),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_tuple_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "p3_field::array::FieldArray",
+                                  0
+                                |)
                               |)
-                            |))
+                            ]
+                          |)
                         ]
                       |);
                       M.read (|
@@ -2833,16 +2924,23 @@ Module array.
                       []
                     |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.SubPointer.get_struct_tuple_field (|
-                            M.deref (| M.read (| self |) |),
-                            "p3_field::array::FieldArray",
-                            0
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ F ] ],
+                        M.pointer_coercion
+                          M.PointerCoercion.Unsize
+                          (Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "array") [ N ] [ F ] ])
+                          (Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ F ] ]),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.deref (| M.read (| self |) |),
+                              "p3_field::array::FieldArray",
+                              0
+                            |)
                           |)
-                        |))
+                        ]
+                      |)
                     ]
                   |);
                   M.closure

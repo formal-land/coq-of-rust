@@ -1241,12 +1241,27 @@ Module Impl_payment_channel_PaymentChannel.
                 []
               |),
               [
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.borrow (| Pointer.Kind.Ref, pub_key |) |)
-                  |));
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                  M.pointer_coercion
+                    M.PointerCoercion.Unsize
+                    (Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 33 ]
+                          [ Ty.path "u8" ]
+                      ])
+                    (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, pub_key |) |)
+                    |)
+                  ]
+                |);
                 M.borrow (|
                   Pointer.Kind.MutRef,
                   M.deref (| M.borrow (| Pointer.Kind.MutRef, signature_account_id |) |)

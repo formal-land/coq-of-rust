@@ -129,13 +129,13 @@
 - [x] `codesize`
 - [x] `memory_resize`
 - [x] `codecopy`
-- [ ] `calldataload`
+- [x] `calldataload`
 - [x] `calldatasize`
 - [x] `callvalue`
 - [x] `calldatacopy`
 - [x] `returndatasize`
 - [x] `returndatacopy`
-- [ ] `returndataload`
+- [x] `returndataload`
 - [x] `gas`
 
 ## Tx_info
@@ -203,6 +203,6 @@
 ## Summary
 
 - Total: 120
-- Admitted: 8
-- Defined: 112
-- Percentage: 93.33%
+- Admitted: 6
+- Defined: 114
+- Percentage: 95.00%
